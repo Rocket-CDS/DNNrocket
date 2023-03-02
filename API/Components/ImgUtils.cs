@@ -11,6 +11,9 @@ using ImageProcessor.Plugins.WebP;
 using ImageProcessor;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
 using ImageProcessor.Imaging.Formats;
+using DotNetNuke.Web.DDRMenu;
+using static System.Net.Mime.MediaTypeNames;
+using ThoughtWorks.QRCode.Codec;
 
 namespace DNNrocketAPI.Components
 {
@@ -152,7 +155,7 @@ namespace DNNrocketAPI.Components
             byte[] imageByte = ImageToByteArraybyMemoryStream(image);
             return imageByte;
         }
-        private static byte[] ImageToByteArraybyMemoryStream(Image image)
+        private static byte[] ImageToByteArraybyMemoryStream(System.Drawing.Image image)
         {
             MemoryStream ms = new MemoryStream();
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -162,7 +165,7 @@ namespace DNNrocketAPI.Components
         public static void ByteArrayToImageFilebyMemoryStream(byte[] imageByte, string fileMapPath)
         {
             MemoryStream ms = new MemoryStream(imageByte);
-            Image image = Image.FromStream(ms);
+            var image = System.Drawing.Image.FromStream(ms);
             image.Save(fileMapPath);
         }
 
@@ -717,6 +720,44 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+        public static void CreateQRcode(string data, string fileMapPath)
+        {
+            if (data != "" && fileMapPath != "")
+            {
+                fileMapPath = Path.GetDirectoryName(fileMapPath).TrimEnd('\\') + "\\" + Path.GetFileNameWithoutExtension(fileMapPath) + ".jpg";
+
+                var qrCodeEncoder = new QRCodeEncoder();
+                //qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+                //qrCodeEncoder.QRCodeScale = 16;
+                //qrCodeEncoder.QRCodeVersion = 29;
+                //qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
+                var newImage = qrCodeEncoder.Encode(data);
+
+                var useEncoder = GetEncoder(ImageFormat.Jpeg);
+                var encoderParameters = new EncoderParameters(1);
+                encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
+
+                try
+                {
+                    newImage.Save(fileMapPath, useEncoder, encoderParameters);
+                }
+                catch (Exception)
+                {
+                    GC.Collect();
+                    // attempt to clear all file locks and try again
+                    try
+                    {
+                        newImage.Save(fileMapPath, useEncoder, encoderParameters);
+                    }
+                    catch
+                    {
+                        //Assumption is the thumb already is there, but locked. So no need for error.
+                    }
+
+                }
+            }
+        }
+
 
     }
 

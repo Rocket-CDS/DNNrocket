@@ -248,6 +248,7 @@ namespace DNNrocketAPI.Components
                 ftpRequest.UseBinary = true;
                 ftpRequest.UsePassive = true;
                 ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
                 /* Specify the Type of FTP Request */
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 /* Establish Return Communication with the FTP Server */
@@ -335,6 +336,7 @@ namespace DNNrocketAPI.Components
                 ftpRequest.UseBinary = true;
                 ftpRequest.UsePassive = true;
                 ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
                 /* Specify the Type of FTP Request */
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 /* Establish Return Communication with the FTP Server */

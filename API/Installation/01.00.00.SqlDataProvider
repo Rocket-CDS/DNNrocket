@@ -816,7 +816,7 @@ set @sql += '	,[Lang]  '
 set @sql += '	,[UserId] '
 set @sql += '	,[SortOrder] '
 set @sql += '	from ' + @TableName + ' as R1 '
-set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' and R1.TypeCode like ''%LANG'' ' 
 
 print @sql
 

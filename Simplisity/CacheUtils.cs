@@ -23,7 +23,7 @@ namespace Simplisity
             {
                 return null;
             }
-            return cache.GetCacheItem(cacheKey).Value;
+            return cache.GetCacheItem(cacheKey)?.Value;
         }
         public static List<object> GetGroupCache(string groupid)
         {
@@ -36,7 +36,7 @@ namespace Simplisity
                 {
                     if (cacheKey.EndsWith("_groupid:" + groupid))
                     {
-                        if (cache.GetCacheItem(cacheKey) != null)  rtnList.Add(cache.GetCacheItem(cacheKey).Value);
+                        if (cache.GetCacheItem(cacheKey) != null)  rtnList.Add(cache.GetCacheItem(cacheKey)?.Value);
                     }
                 }
                 return rtnList;

@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.0.20</version>
+	<version>1.0.21</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules)$</regexpr>
   <name>0_DNNrocket</name>
@@ -59,7 +59,8 @@
     <!-- All paths should be from the source root (project root) -->
     <!-- These files will be NOT in the Resource.zip, they will be on the root of the install zip -->
     <value>\API\Installation\01.00.00.SqlDataProvider</value>
-    <value>\API\Installation\Uninstall.SqlDataProvider</value>
+	  <value>\API\Installation\01.00.21.SqlDataProvider</value>
+	  <value>\API\Installation\Uninstall.SqlDataProvider</value>
     <value>DNNrocketAPI.dnn</value>
 
     <value>\RocketPortal\Skins\rocketportal\rocketportal.ascx</value>
@@ -117,5 +118,6 @@
     <value>\API\_external\handlebars.dll</value>
 		<value>\API\_external\ImageProcessor.dll</value>
 		<value>\API\_external\ImageProcessor.Plugins.WebP.dll</value>
+		<value>\API\_external\ThoughtWorks.QRCode.dll</value>
 	</assembly>
 </root>

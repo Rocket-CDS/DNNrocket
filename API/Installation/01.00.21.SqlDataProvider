@@ -1,0 +1,59 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
+@ParentItemId int,
+@Lang nvarchar(10),
+@TableName nvarchar(100)
+AS
+begin
+
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SortOrder] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' and R1.TypeCode like ''%LANG'' ' 
+
+print @sql
+
+exec sp_executesql  @sql
+
+end
+GO
+
+

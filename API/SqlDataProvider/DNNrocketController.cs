@@ -488,7 +488,7 @@ namespace DNNrocketAPI
         public SimplisityInfo SaveData(SimplisityInfo sInfo, string tableName = "DNNrocket")
         {
             var requiredLang =  sInfo.Lang;
-            if (requiredLang == "") requiredLang = DNNrocketUtils.GetEditCulture();
+            if (String.IsNullOrEmpty(requiredLang)) requiredLang = DNNrocketUtils.GetEditCulture();
 
             var info = GetInfo(sInfo.ItemID, requiredLang, tableName);
             if (info == null) info = sInfo;
