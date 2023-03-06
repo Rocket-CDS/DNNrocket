@@ -74,13 +74,8 @@ namespace DNNrocketAPI.Components
             catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             return;
         }
-        //private bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
-        //{
-        //    return true;
-        //}
         public bool CreateFTPDirectory(string directory)
         {
-            //ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 
             if (!directory.ToLower().StartsWith("ftp:")) directory = "ftp://" + directory.TrimStart('/');
 
@@ -97,14 +92,8 @@ namespace DNNrocketAPI.Components
             ftpRequest.Method = WebRequestMethods.Ftp.MakeDirectory;
             /* Establish Return Communication with the FTP Server */
 
-
-            //WebRequest request = WebRequest.Create(directory);
-            //request.Method = WebRequestMethods.Ftp.MakeDirectory;
-            //request.Credentials = new NetworkCredential(user, pass);
-
             try
             {
-                //var resp = (FtpWebResponse)request.GetResponse();
                 var resp = ftpRequest.GetResponse();
                 return true;
             }
