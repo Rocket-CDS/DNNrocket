@@ -35,6 +35,9 @@ namespace DNNrocketAPI.Components
 
             //overwrite the certificate checks
             ServicePointManager.ServerCertificateValidationCallback = (s, certificate, chain, sslPolicyErrors) => true;
+
+            CreateFTPDirectory(_baseuri);
+
         }
 
         public void Upload(string localFile, string subDirectory = "")
@@ -45,7 +48,8 @@ namespace DNNrocketAPI.Components
                 if (subDirectory != "") rootUri = _baseuri + "/" + subDirectory;
                 var remoteFile = Path.GetFileName(localFile);
                 var fileuri = rootUri + "/" + remoteFile;
-                CreateFTPDirectory(rootUri);
+
+                //CreateFTPDirectory(rootUri); //SLOW SLOW SLOW!!! Create before file move
 
                 /* Create an FTP Request */
                 ftpRequest = (FtpWebRequest)FtpWebRequest.Create(fileuri);
@@ -60,66 +64,56 @@ namespace DNNrocketAPI.Components
                 ftpRequest.Method = WebRequestMethods.Ftp.UploadFile;
                 /* Establish Return Communication with the FTP Server */
 
-                ftpStream = ftpRequest.GetRequestStream();
-                /* Open a File Stream to Read the File for Upload */
-                FileStream localFileStream = new FileStream(localFile, FileMode.Open);
-                /* Buffer for the Downloaded Data */
-                byte[] byteBuffer = new byte[bufferSize];
-                int bytesSent = localFileStream.Read(byteBuffer, 0, bufferSize);
-                /* Upload the File by Sending the Buffered Data Until the Transfer is Complete */
-                try
+                using (Stream fileStream = File.OpenRead(localFile))
+                using (Stream ftpStream = ftpRequest.GetRequestStream())
                 {
-                    while (bytesSent != 0)
-                    {
-                        ftpStream.Write(byteBuffer, 0, bytesSent);
-                        bytesSent = localFileStream.Read(byteBuffer, 0, bufferSize);
-                    }
+                    fileStream.CopyTo(ftpStream);
                 }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-                /* Resource Cleanup */
-                localFileStream.Close();
-                ftpStream.Close();
-                ftpRequest = null;
+
             }
             catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             return;
         }
-
+        //private bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        //{
+        //    return true;
+        //}
         public bool CreateFTPDirectory(string directory)
         {
+            //ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+
+            if (!directory.ToLower().StartsWith("ftp:")) directory = "ftp://" + directory.TrimStart('/');
+
+            /* Create an FTP Request */
+            ftpRequest = (FtpWebRequest)FtpWebRequest.Create(directory);
+            /* Log in to the FTP Server with the User Name and Password Provided */
+            ftpRequest.Credentials = new NetworkCredential(user, pass);
+            /* When in doubt, use these options */
+            ftpRequest.UseBinary = true;
+            ftpRequest.UsePassive = true;
+            ftpRequest.KeepAlive = true;
+            ftpRequest.EnableSsl = true;
+            /* Specify the Type of FTP Request */
+            ftpRequest.Method = WebRequestMethods.Ftp.MakeDirectory;
+            /* Establish Return Communication with the FTP Server */
+
+
+            //WebRequest request = WebRequest.Create(directory);
+            //request.Method = WebRequestMethods.Ftp.MakeDirectory;
+            //request.Credentials = new NetworkCredential(user, pass);
+
             try
             {
-                //create the directory
-                FtpWebRequest requestDir = (FtpWebRequest)FtpWebRequest.Create(new Uri(directory));
-                requestDir.Method = WebRequestMethods.Ftp.MakeDirectory;
-                requestDir.Credentials = new NetworkCredential(user, pass);
-                requestDir.UsePassive = true;
-                requestDir.UseBinary = true;
-                requestDir.KeepAlive = false;
-                requestDir.EnableSsl = true;
-                FtpWebResponse response = (FtpWebResponse)requestDir.GetResponse();
-                Stream ftpStream = response.GetResponseStream();
-
-                ftpStream.Close();
-                response.Close();
-
+                //var resp = (FtpWebResponse)request.GetResponse();
+                var resp = ftpRequest.GetResponse();
                 return true;
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                //LogUtils.LogException(ex);
-                FtpWebResponse response = (FtpWebResponse)ex.Response;
-                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
-                {
-                    response.Close();
-                    return true;
-                }
-                else
-                {
-                    response.Close();
-                    return false;
-                }
+                LogUtils.LogException(ex);
+                return false;
             }
+
         }
         public string Download(string uri)
         {
