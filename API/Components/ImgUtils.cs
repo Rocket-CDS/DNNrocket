@@ -257,13 +257,15 @@ namespace DNNrocketAPI.Components
 
         public static string ResizeImage(string fileNamePath, string fileNamePathOut, double intMaxWidth)
         {
-            var extension = Path.GetExtension(fileNamePath);
+            var webpConvert = false;
+            var extension = Path.GetExtension(fileNamePathOut);
             if (extension != null && extension.ToLower() == ".webp")
             {
+                webpConvert = true;
                 fileNamePath = ConvertWebpToJpg(fileNamePath);
                 fileNamePathOut = Path.GetDirectoryName(fileNamePathOut) + "\\" + Path.GetFileNameWithoutExtension(fileNamePathOut) + ".jpg";
             }
-            extension = Path.GetExtension(fileNamePath);
+            extension = Path.GetExtension(fileNamePathOut);
 
             try
             {
@@ -310,6 +312,7 @@ namespace DNNrocketAPI.Components
                                 try
                                 {
                                     newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
+                                    if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
                                 }
                                 catch (Exception)
                                 {
@@ -318,13 +321,11 @@ namespace DNNrocketAPI.Components
                                     try
                                     {
                                         newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
+                                        if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
                                     }
-                                    // ReSharper disable EmptyGeneralCatchClause
                                     catch
-                                    // ReSharper restore EmptyGeneralCatchClause
                                     {
                                         //abandon save. 
-                                        //Assumption is the thumb already is there, but locked. So no need for error.
                                     }
                                 }
 
@@ -417,9 +418,11 @@ namespace DNNrocketAPI.Components
                 {
                     var thumbSizeList = thumbSizeCsv.Split(',');
 
+                    var webpConvert = false;
                     var extension = Path.GetExtension(imgPathName);
                     if (extension != null && extension.ToLower() == ".webp")
                     {
+                        webpConvert = true;
                         imgPathName = ConvertWebpToJpg(imgPathName);
                     }
                     extension = Path.GetExtension(imgPathName);
@@ -451,7 +454,10 @@ namespace DNNrocketAPI.Components
 
                                 try
                                 {
-                                    newImage.Save(filePathOut, useEncoder, encoderParameters);
+                                    if (!webpConvert)
+                                        newImage.Save(filePathOut, useEncoder, encoderParameters);
+                                    else
+                                        filePathOut = ConvertToWebp(imgPathName, filePathOut);
                                 }
                                 catch (Exception)
                                 {
@@ -459,14 +465,14 @@ namespace DNNrocketAPI.Components
                                     // attempt to clear all file locks and try again
                                     try
                                     {
-                                        newImage.Save(filePathOut, useEncoder, encoderParameters);
+                                        if (!webpConvert)
+                                            newImage.Save(filePathOut, useEncoder, encoderParameters);
+                                        else
+                                            filePathOut = ConvertToWebp(imgPathName, filePathOut);
                                     }
-                                    // ReSharper disable EmptyGeneralCatchClause
                                     catch
-                                    // ReSharper restore EmptyGeneralCatchClause
                                     {
                                         //abandon save. 
-                                        //Assumption is the thumb already is there, but locked. So no need for error.
                                     }
                                 }
 
@@ -498,15 +504,45 @@ namespace DNNrocketAPI.Components
 
             imageFactory.Dispose();
 
-            File.Delete(imgPathName);
+            return outFileMapPath;
+        }
+        public static string ConvertToWebp(string imgPathName, string outFileMapPath = "")
+        {
+            // Currently .webp is not well supported. (This may chnage in future)
+            if (outFileMapPath == "") outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".webp";
+
+            var imageFactory = new ImageFactory(preserveExifData: false);
+            imageFactory.Load(imgPathName)
+                        .Format(new WebPFormat())
+                        .Quality(80)
+                        .Save(outFileMapPath);
+
+            imageFactory.Dispose();
+
+            return outFileMapPath;
+        }
+        public static string ConvertToWebp(Stream streamOutput, string imgPathName)
+        {
+            // Currently .webp is not well supported. (This may chnage in future)
+            var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".webp";
+
+            var imageFactory = new ImageFactory(preserveExifData: false);
+            imageFactory.Load(imgPathName)
+                        .Format(new WebPFormat())
+                        .Quality(80)
+                        .Save(streamOutput);
+
+            imageFactory.Dispose();
 
             return outFileMapPath;
         }
         public static void CreateThumbnailOnDisk(string imgPathName, int intMaxWidth, int intMaxHeight, string filePathOut)
         {
+            var webpConvert = false;
             var extension = Path.GetExtension(imgPathName);
             if (extension != null && extension.ToLower() == ".webp")
             {
+                webpConvert = true;
                 imgPathName = ConvertWebpToJpg(imgPathName);
                 filePathOut = Path.GetDirectoryName(filePathOut) + "\\" + Path.GetFileNameWithoutExtension(filePathOut) + ".jpg";
             }
@@ -527,14 +563,20 @@ namespace DNNrocketAPI.Components
 
                     try
                     {
-                        newImage.Save(filePathOut, useEncoder, encoderParameters);
+                        if (!webpConvert)
+                            newImage.Save(filePathOut, useEncoder, encoderParameters);
+                        else
+                            filePathOut = ConvertToWebp(filePathOut);
                     }
                     catch (Exception)
                     {
                         GC.Collect();
                         try
                         {
-                            newImage.Save(filePathOut, useEncoder, encoderParameters);
+                            if (!webpConvert)
+                                newImage.Save(filePathOut, useEncoder, encoderParameters);
+                            else
+                                filePathOut = ConvertToWebp(filePathOut);
                         }
                         catch
                         {

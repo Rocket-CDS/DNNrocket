@@ -310,12 +310,49 @@ namespace DNNrocketAPI.render
             }
             return new RawString("");
         }
+        public IEncodedString ImageUrl(string url, string extraurlparams = "", string imgType = "")
+        {
+            return ImageUrl("", url, 0, 0, extraurlparams, imgType);
+        }
+        public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", string imgType = "")
+        {
+            return ImageUrl("", url, width, height, extraurlparams, imgType);
+        }
+        /// <summary>
+        /// Display Thumb URL
+        /// </summary>
+        /// <param name="engineUrl"></param>
+        /// <param name="url"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="extraurlparams"></param>
+        /// <param name="imgType">Force Image Type or default to image type. "webp","png","jpg",""</param>
+        /// <returns></returns>
+        public IEncodedString ImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", string imgType = "")
+        {
+            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (!imgType.StartsWith("&")) imgType = "&imgtype=" + imgType;
 
+            if (width > 0 || height > 0)
+            {
+                if (imgType == "" && url.ToLower().EndsWith(".png")) imgType = "&imgtype=png";
+                if (imgType == "" && url.ToLower().EndsWith(".webp")) imgType = "&imgtype=webp";
+
+                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + imgType;
+            }
+            else
+            {
+                url = engineUrl.TrimEnd('/') + "/" + url + "&w=" + width + "&h=" + height + extraurlparams;
+            }
+            return new RawString(url);
+        }
+        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
         public IEncodedString ThumbnailImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
             var pngType = "";
             if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
             if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
+            if (url.ToLower().EndsWith(".webp")) pngType = "&imgtype=webp";
             if (width > 0 || height > 0)
             {
                 url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
@@ -326,15 +363,18 @@ namespace DNNrocketAPI.render
             }
             return new RawString(url);
         }
+        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
         public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
             return ThumbnailImageUrl("", url, width, height, extraurlparams, pngImage);
         }
+        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
         public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
             return ThumbnailImageWebsiteDomainUrl(PortalUtils.DefaultPortalAlias(), url, width, height, extraurlparams, pngImage);
         }
 
+        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
         public IEncodedString ThumbnailImageWebsiteDomainUrl(string websiteDomainUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
             var pngType = "";
