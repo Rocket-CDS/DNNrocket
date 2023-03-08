@@ -406,9 +406,9 @@ namespace DNNrocketAPI.Components
 
         public static void CreateThumbOnDisk(string imgPathName, string thumbSizeCsv)
         {
-            CreateThumbOnDisk(imgPathName, thumbSizeCsv, "");
+            CreateThumbOnDisk(imgPathName, thumbSizeCsv, "", false);
         }
-        public static void CreateThumbOnDisk(string imgPathName, string thumbSizeCsv, string outMapPath)
+        public static void CreateThumbOnDisk(string imgPathName, string thumbSizeCsv, string outMapPath, bool webpConvert = false)
         {
 
             if (!string.IsNullOrEmpty(thumbSizeCsv))
@@ -418,7 +418,6 @@ namespace DNNrocketAPI.Components
                 {
                     var thumbSizeList = thumbSizeCsv.Split(',');
 
-                    var webpConvert = false;
                     var extension = Path.GetExtension(imgPathName);
                     if (extension != null && extension.ToLower() == ".webp")
                     {

@@ -51,7 +51,7 @@ namespace DNNrocketAPI.Components
                         if (!File.Exists(cacheFile))
                         {
                             if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
-                            ImgUtils.CreateThumbOnDisk(src, w + "," + h, cacheFile);
+                            ImgUtils.CreateThumbOnDisk(src, w + "," + h, cacheFile, true);
                         }
                         bytes = System.IO.File.ReadAllBytes(cacheFile);
 
