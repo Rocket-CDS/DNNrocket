@@ -14,7 +14,22 @@ Dependancies ONLY work on the Front View of the website.  For Admin View use "Ad
 
 **Tokens**  
 
-\{domainurl} = Protocol and domain URL of RocketAPI.
-\{appthemefolder} = Relitive URL of the from view AppTheme.
-\{appthemesystemfolder} = Relitive URL of the system.
+\{domainurl} = Protocol and domain URL of RocketAPI.  
+\{appthemefolder} = Relitive URL of the from view AppTheme.  
+\{appthemesystemfolder} = Relitive URL of the system.  
 
+Example:
+```
+<genxml>
+	<deps list="true">
+		<genxml>
+			<ctrltype><![CDATA[css]]></ctrltype>
+			<url><![CDATA[{domainurl}/DesktopModules/DNNrocket/css/w3.css]]></url>
+		</genxml>
+		<genxml>
+			<ctrltype><![CDATA[css]]></ctrltype>
+			<url><![CDATA[{domainurl}{appthemefolder}/css/HtmlContent.css]]></url>
+		</genxml>
+	</deps>
+</genxml>
+```

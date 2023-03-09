@@ -48,7 +48,22 @@ namespace DNNrocketAPI.Components
             CacheUtils.SetCache(_cacheKey, Record, ModuleRef);
             return Record.ItemID;
         }
-
+        public string GetSetting(string key)
+        {
+            return Record.GetXmlProperty("genxml/settings/" + key);
+        }
+        public int GetSettingInt(string key)
+        {
+            return Record.GetXmlPropertyInt("genxml/settings/" + key);
+        }
+        public bool GetSettingBool(string key)
+        {
+            return Record.GetXmlPropertyBool("genxml/settings/" + key);
+        }
+        public void SetSetting(string key, string value)
+        {
+            Record.SetXmlPropertyInt("genxml/settings/" + key, value);
+        }
         #region "properties"
 
         public string EntityTypeCode { get { return _entityTypeCode; } }
