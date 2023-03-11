@@ -507,24 +507,31 @@ namespace DNNrocketAPI.Components
         }
         public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = 0, string billingFrequency = "M", float trialFee = 0, int trialPeriod = 0, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
         {
-            var role = RoleController.Instance.GetRoleByName(portalId, roleName);
-            if (role == null)
+            try
             {
-                RoleInfo objRoleInfo = new RoleInfo();
-                objRoleInfo.PortalID = portalId;
-                objRoleInfo.RoleName = roleName;
-                objRoleInfo.RoleGroupID = Null.NullInteger;
-                objRoleInfo.Description = description;
-                objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
-                objRoleInfo.BillingPeriod = billingPeriod;
-                objRoleInfo.BillingFrequency = billingFrequency;
-                objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
-                objRoleInfo.TrialPeriod = trialPeriod;
-                objRoleInfo.TrialFrequency = trialFrequency;
-                objRoleInfo.IsPublic = isPublic;
-                objRoleInfo.AutoAssignment = isAuto;
-                objRoleInfo.Status = RoleStatus.Approved;
-                RoleController.Instance.AddRole(objRoleInfo);
+                var role = RoleController.Instance.GetRoleByName(portalId, roleName);
+                if (role == null)
+                {
+                    RoleInfo objRoleInfo = new RoleInfo();
+                    objRoleInfo.PortalID = portalId;
+                    objRoleInfo.RoleName = roleName;
+                    objRoleInfo.RoleGroupID = Null.NullInteger;
+                    objRoleInfo.Description = description;
+                    objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
+                    objRoleInfo.BillingPeriod = billingPeriod;
+                    objRoleInfo.BillingFrequency = billingFrequency;
+                    objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
+                    objRoleInfo.TrialPeriod = trialPeriod;
+                    objRoleInfo.TrialFrequency = trialFrequency;
+                    objRoleInfo.IsPublic = isPublic;
+                    objRoleInfo.AutoAssignment = isAuto;
+                    objRoleInfo.Status = RoleStatus.Approved;
+                    RoleController.Instance.AddRole(objRoleInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
             }
         }
         public static void AddRoleToModule(int portalId, int moduleid, int roleid)
