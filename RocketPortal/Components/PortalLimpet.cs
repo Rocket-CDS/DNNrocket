@@ -299,15 +299,6 @@ namespace RocketPortal.Components
             }
             set { Record.SetXmlProperty("genxml/lastschedulertime", value.ToString(), TypeCode.DateTime); }
         }
-        public int SchedulerRunHours
-        {
-            get
-            {
-                var rtn = Record.GetXmlPropertyInt("genxml/schedulerrunhours");
-                if (Record.GetXmlProperty("genxml/schedulerrunhours") == "") rtn = 24;
-                return rtn;
-            }
-        }
         public string SiteKey { get { return Record.GUIDKey; } set { Record.GUIDKey = value; } }
         public Dictionary<string, string> Managers { get; private set; }
         public SystemLimpetList SystemDataList { get; private set; }

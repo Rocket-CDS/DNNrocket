@@ -54,7 +54,7 @@ namespace DNNrocketAPI.Components
         }
         public SystemLimpet GetSystemByKey(String key)
         {
-            var ctrllist = from i in _systemList where i.Record.GUIDKey == key select i;
+            var ctrllist = from i in _systemList where i.Record.GetXmlProperty("genxml/systemkey") == key select i;
             if (ctrllist.Any()) return ctrllist.First(); 
             return null;
         }
