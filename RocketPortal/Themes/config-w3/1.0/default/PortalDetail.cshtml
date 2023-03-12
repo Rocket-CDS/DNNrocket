@@ -214,6 +214,15 @@
 
     </div>
 
+@if (UserUtils.IsAdministrator())
+{
+    <div>
+        @RenderXml(info)
+    </div>
+}
+
+
+
     <script>
 
         function selectmenu(selector) {

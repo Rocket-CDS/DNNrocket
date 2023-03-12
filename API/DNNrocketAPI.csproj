@@ -311,7 +311,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DNNpackager.dnnpack" />
-    <None Include="Docs\DebugAPI.md" />
+    <None Include="Documents\DebugAPI.md" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
@@ -319,7 +319,9 @@
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\Filtering_Sorting_Data.docx" />
+    <None Include="Documents\JQueryValidation.md" />
     <None Include="Documents\ManualSortList.docx" />
+    <None Include="Documents\SystemDefaults.md" />
     <None Include="downloadauthfile.ashx" />
     <None Include="downloadfile.ashx" />
     <None Include="DNNrocketThumb.ashx" />
