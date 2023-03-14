@@ -103,7 +103,37 @@ List with RocketIntra added...
 	</systems>
 </genxml>
 ```
+With Langauges added...
+```
+<genxml>
+	<systems list="true">
+		<genxml>
+			<systemkey>rocketcontentapi</systemkey>
+		</genxml>
+		<genxml>
+			<systemkey>rocketintra</systemkey>
+		</genxml>
+	</systems>
+	<languages>
+		<genxml>
+			<culturecode>en-US</culturecode>
+		</genxml>
+		<genxml>
+			<culturecode>fr-FR</culturecode>
+		</genxml>
+		<genxml>
+			<culturecode>en-GB</culturecode>
+		</genxml>
+		<genxml>
+			<culturecode>it-IT</culturecode>
+		</genxml>
+		<genxml>
+			<culturecode>es-ES</culturecode>
+		</genxml>
+	</languages>
+</genxml>
 
+```
 
 
 

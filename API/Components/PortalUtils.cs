@@ -166,7 +166,12 @@ namespace DNNrocketAPI.Components
                         var systemkey = s.GetXmlProperty("genxml/systemkey");
                         ActivateSystem(portalId, systemkey);
                     }
-
+                    // Add languages
+                    foreach (var s in sRec.GetRecordList("languages"))
+                    {
+                        var culturecode = s.GetXmlProperty("genxml/culturecode");
+                        AddLanguage(portalId, culturecode);
+                    }
                 }
             }
         }
