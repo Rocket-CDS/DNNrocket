@@ -21,7 +21,9 @@
         {
             selectedcolor = "w3-theme-l5";
         }
-        <div class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecodeedit', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+        <div class="w3-button w3-round @(selectedcolor) editlanguage simplisity_click" s-cmd="changeeditculture" s-reload="true" s-return="#languagereturn" s-fields='{"selectedculturecode":"@l"}' style="cursor:pointer;" editlang='@l'>
+            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/24/@(l).png' style="" alt='@(l)' />
+        </div>
     }
     <div class="w3-right">
         <button type="button" class="w3-button " onclick="topbaractiontools()"><span class="material-icons">more_vert</span></button>

@@ -101,10 +101,12 @@
             <div class="w3-bar-item w3-button w3-padding-16  w3-center" id="adminbtn"><span class="material-icons">more_horiz</span></div>
         </div>
         <div class="w3-bar-block w3-section" style="display:none;" id="adminmenu">
-            <div class="w3-row w3-padding">
+            <div class="w3-row w3-padding-small">
                 @foreach (var l in enabledlanguages)
                 {
-                    <div class="w3-button w3-round " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></div>
+                    <div class="w3-button w3-padding-small w3-round w3-small uilanguage simplisity_click" s-cmd="changeculture" s-reload="true" s-return="#languagereturn" s-fields='{"selectedculturecode":"@l"}' style="cursor:pointer;" uilang='@l'>
+                        <img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/@(l).png' style="width:24px;" alt='@(l)' />
+                    </div>
                 }
             </div>
         </div>
@@ -157,9 +159,6 @@ $(document).ready(function () {
     $("#adminbtn").click(function () {
         $('#adminmenu').slideToggle();
     });
-
-    simplisity_setSessionField('culturecode', '@(sessionParams.CultureCode)')
-    simplisity_setSessionField('culturecodeedit', '@(sessionParams.CultureCodeEdit)')
 
 });
 </script>

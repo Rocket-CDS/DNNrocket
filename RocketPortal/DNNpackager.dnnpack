@@ -37,6 +37,7 @@
     <value>\Skins\rocketportal\rocketcms.xml</value>
     <value>\WebsiteBuilds\0_CDS.rules</value>
     <value>\WebsiteBuilds\10_Blank.rules</value>
+	  <value>\WebsiteBuilds\SystemDefaults.rules</value>
   </file>
   <assembly>
 		<value>RocketPortal.dll</value>

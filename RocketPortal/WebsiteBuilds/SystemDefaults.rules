@@ -3,5 +3,8 @@
 		<genxml>
 			<systemkey>rocketcontentapi</systemkey>
 		</genxml>
+		<genxml>
+			<systemkey>rocketintra</systemkey>
+		</genxml>
 	</systems>
 </genxml>

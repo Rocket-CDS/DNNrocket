@@ -311,6 +311,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DNNpackager.dnnpack" />
+    <None Include="Documents\ChangeLanguage_Code.md" />
     <None Include="Documents\DebugAPI.md" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />

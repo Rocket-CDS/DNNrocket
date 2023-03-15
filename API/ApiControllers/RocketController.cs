@@ -247,6 +247,11 @@ namespace DNNrocketAPI.ApiControllers
                 paramInfo.SetXmlProperty("genxml/hidden/ismobile", "False");
             }
 
+            // Get languages. (/culturecode) is now a legacy field.
+            paramInfo.SetXmlProperty("genxml/hidden/simplisity_language", DNNrocketUtils.GetCookieValue("simplisity_language"));
+            paramInfo.SetXmlProperty("genxml/hidden/simplisity_editlanguage", DNNrocketUtils.GetCookieValue("simplisity_editlanguage"));
+
+
             return paramInfo;
         }
 
@@ -290,6 +295,12 @@ namespace DNNrocketAPI.ApiControllers
 
             try
             {
+                // Check if we have a "scmdprocess" param.
+                // A specific process command allows activation of a command in this method and then continues processing the original command.
+                // This is usually used for things like edit language change, where you do not want to reload the page.
+                var scmdprocess = paramInfo.GetXmlProperty("genxml/hidden/scmdprocess");
+                if (scmdprocess != "") paramCmd = scmdprocess; 
+                
                 var objCtrl = new DNNrocketController();
 
                 if (paramCmd == "login_signout")
@@ -322,9 +333,20 @@ namespace DNNrocketAPI.ApiControllers
                 switch (paramCmd)
                 {
                     case "changeculture":
-                        var lang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
-                        DNNrocketUtils.SetCookieValue("language", lang);
+                        var lang = paramInfo.GetXmlProperty("genxml/hidden/selectedculturecode");
+                        if (lang == "") lang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
+                        paramInfo.SetXmlProperty("genxml/hidden/simplisity_language", lang); // set the current value to the selected value.
+                        DNNrocketUtils.SetCookieValue("simplisity_language", lang);
+                        DNNrocketUtils.SetCookieValue("language", lang); // DNN legacy
                         strOut = lang; // the page will reload after the call
+                        break;
+                    case "changeeditculture":
+                        var editlang = paramInfo.GetXmlProperty("genxml/hidden/selectedculturecode");
+                        if (editlang == "") editlang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
+                        paramInfo.SetXmlProperty("genxml/hidden/simplisity_editlanguage", editlang); // set the current value to the selected value.
+                        DNNrocketUtils.SetCookieValue("simplisity_editlanguage", editlang);
+                        DNNrocketUtils.SetCookieValue("editlang", editlang); // DNN legacy
+                        strOut = editlang; // the page will reload after the call
                         break;
                     case "login_login":
                         UserUtils.DoLogin(postInfo, paramInfo);
@@ -395,6 +417,7 @@ namespace DNNrocketAPI.ApiControllers
                         strOut = "process"; // process the provider              
                         break;
                 }
+                if (scmdprocess != "") strOut = "process"; // continue processing
             }
             catch (Exception ex)
             {
@@ -535,6 +558,7 @@ namespace DNNrocketAPI.ApiControllers
         {
             try
             {
+                var sessionParams = new SessionParams(sInfo); // reload to ensure we get the lastest langauge.
                 var template = sInfo.GetXmlProperty("genxml/hidden/template");
                 if (template == "") template = "TopBar.cshtml";
                 var passSettings = sInfo.ToDictionary();
@@ -556,7 +580,7 @@ namespace DNNrocketAPI.ApiControllers
                     }
                 }
 
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, sInfo, null, passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, sInfo, null, passSettings, sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }

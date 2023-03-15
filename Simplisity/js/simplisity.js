@@ -348,6 +348,10 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
         simplisity_setParamField('activevalue', jQuery(element).val()); // do first
 
+        // Add language cookies to param
+        simplisity_setParamField("simplisity_language", simplisity_getCookieValue("simplisity_language"))
+        simplisity_setParamField("simplisity_editlanguage", simplisity_getCookieValue("simplisity_editlanguage"))
+
         var scmd = jQuery(element).attr("s-cmd");
         if (typeof scmd !== 'undefined' && scmd !== '' && scmd !== null) {
 

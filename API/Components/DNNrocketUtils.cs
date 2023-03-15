@@ -898,6 +898,7 @@ namespace DNNrocketAPI.Components
                 HttpCookie MyCookie = new HttpCookie(name);
                 MyCookie.Value = value;
                 MyCookie.Path = "/";
+                MyCookie.HttpOnly = false;
                 HttpContext.Current.Response.Cookies.Add(MyCookie);
             }
         }

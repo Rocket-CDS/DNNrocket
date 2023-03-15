@@ -6,4 +6,7 @@
 ## New Service (Portal)
 - Registration : none
 - Enable Popups : off
-- Langauges :fr-FR, en-US ??
+- Langauges : List of culturecodes in the "/DesktopModules/DNNrocket/RocketPortal/WebsiteBuilds/systemdefault.rules" or Current language is the list is empty.  
+
+ 
+

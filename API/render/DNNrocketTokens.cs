@@ -141,18 +141,35 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
+        public IEncodedString RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
+        {
+            model.SetSetting("scmd", scmd);
+            if (!sfieldDict.ContainsKey("selectedculturecode")) sfieldDict.Add("selectedculturecode", "[LANGUAGE]");
+            if (!sfieldDict.ContainsKey("scmdprocess")) sfieldDict.Add("scmdprocess", "changeeditculture");
+            var sfields = "{";
+            foreach (var ds in sfieldDict)
+            {
+                sfields += "\"" + ds.Key + "\":\"" + ds.Value + "\",";
+            }
+            sfields = sfields.TrimEnd(',') + "}";
+            model.SetSetting("sfields", sfields);
+            return RenderTemplate("LanguageChange.cshtml", appThemeSystem, model, true);
+        }
+        [Obsolete("Use: RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)")]
         public IEncodedString RenderLanguageSelector(string scmd, string sfields, string systemKey, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);
             model.SetSetting("sfields", sfields);
             return RenderTemplate("LanguageChange.cshtml", new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemKey), model, true);
         }
+        [Obsolete("Use: RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)")]
         public IEncodedString RenderLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);
             model.SetSetting("sfields", sfields);
             return RenderTemplate("LanguageChange.cshtml", appThemeSystem, model, true);
         }
+        [Obsolete("Use: RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)")]
         public IEncodedString RenderLanguageSelector(string scmd, string sfields, AppThemeDNNrocketLimpet appThemeDNNrocket, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);

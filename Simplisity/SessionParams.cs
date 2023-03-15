@@ -62,6 +62,10 @@ namespace Simplisity
             BrowserId = Get("browserid");
 
             PageDetailUrl = PageUrl; //Make sure we have detial URL in XML, for hbs.
+
+            // allow for legacy language flag
+            if (Info.GetXmlProperty("r/simplisity_editlanguage") != "") Info.SetXmlProperty("r/culturecodeedit", Info.GetXmlProperty("r/simplisity_editlanguage"));
+            if (Info.GetXmlProperty("r/simplisity_language") != "") Info.SetXmlProperty("r/culturecode", Info.GetXmlProperty("r/simplisity_language"));
         }
         public string GetCommand()
         {

@@ -188,13 +188,11 @@ namespace RocketPortal.API
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
             _globalData = new SystemGlobalData();
 
-            // Assign Langauge
-            DNNrocketUtils.SetCurrentCulture();
+            // Assign Language
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
             if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
             DNNrocketUtils.SetCurrentCulture(_sessionParams.CultureCode);
             DNNrocketUtils.SetEditCulture(_sessionParams.CultureCodeEdit);
-
 
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
