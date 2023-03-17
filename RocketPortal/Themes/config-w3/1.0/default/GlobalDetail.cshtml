@@ -100,6 +100,20 @@
         {
             <div class="w3-row">
                 <div class="w3-third w3-padding">
+                    <label>DeepL API URL</label>
+                    @TextBox(info, "genxml/textbox/deeplurl", " class='w3-input w3-border' autocomplete='off' ","https://api-free.deepl.com/v2/translate")
+                </div>
+                <div class="w3-third w3-padding">
+                    <label>DeepL AuthKey</label>
+                    @TextBox(info, "genxml/textbox/deeplauthkey", " class='w3-input w3-border' autocomplete='off' ")
+                </div>
+                <div class="w3-third w3-padding">
+                </div>
+            </div>
+
+
+            <div class="w3-row">
+                <div class="w3-third w3-padding">
                     <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#accesscode'))">
                         <b>@ResourceKey("RP.accesscode")</b>&nbsp;<span id="iconaccesscode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
                     <div id="accesscode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(systemGlobalData.AccessCode)</div>

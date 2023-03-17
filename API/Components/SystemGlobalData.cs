@@ -86,5 +86,7 @@ namespace DNNrocketAPI.Components
         public string AccessPassword { get { return Info.GetXmlProperty("genxml/config/accesspassword"); } set { Info.SetXmlProperty("genxml/config/accesspassword", value); } }
         public string LogoTemplate { get { if (Info.GetXmlProperty("genxml/textbox/logotemplate") != "") return Info.GetXmlProperty("genxml/textbox/logotemplate"); else return "Logo.cshtml"; } }
         public string[] ClientCodes { get { return Info.GetXmlProperty("genxml/textbox/clientcodes").Split(','); } }
+        public string DeepLurl { get { return Info.GetXmlProperty("genxml/textbox/deeplurl"); } set { Info.SetXmlProperty("genxml/textbox/deeplurl", value); } }
+        public string DeepLauthKey { get { return Info.GetXmlProperty("genxml/textbox/deeplauthkey"); } set { Info.SetXmlProperty("genxml/textbox/deeplauthkey", value); } }
     }
 }
