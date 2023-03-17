@@ -351,7 +351,7 @@ namespace Simplisity
                 var type = smi.GetXmlProperty(dataroot + "/type");
                 var checkfield = smi.GetXmlPropertyBool(dataroot + "/checked");
 
-                if (xpath.StartsWith(xmlOut.RootNodeName + "/lang"))
+                if (xpath.StartsWith(xmlOut.RootNodeName + "/lang/"))
                 {
                     supdate = "lang";
                     xpath = xpath.Substring(12);
