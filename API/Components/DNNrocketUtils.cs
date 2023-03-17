@@ -324,6 +324,16 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        public static List<string> GetPortalLanguageList(int portalId = -1)
+        {
+            var rtnList = new List<string>();
+            foreach (var l in GetCultureCodeList(portalId))
+            {
+                var lc = GetLanguageCode(l);
+                if (rtnList.Contains(lc))  rtnList.Add(lc);
+            }
+            return rtnList;
+        }        
         public static Dictionary<string, string> GetCurrencyList(int portalId = -1)
         {
             var rtnList = new Dictionary<string, string>();

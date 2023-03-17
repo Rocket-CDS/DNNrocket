@@ -221,6 +221,7 @@
     <Compile Include="Components\CacheUtilsDNN.cs" />
     <Compile Include="Components\CurrencyData.cs" />
     <Compile Include="Components\CurrencyUtils.cs" />
+    <Compile Include="Components\DeepLUtils.cs" />
     <Compile Include="Components\DynamicUtils.cs" />
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
