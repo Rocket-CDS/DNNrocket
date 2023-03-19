@@ -353,8 +353,9 @@ namespace Simplisity
         }
         public static bool IsUriValid(string uri, UriKind uriKind  = UriKind.RelativeOrAbsolute, bool checkexists = false)
         {
+            if (uri == "") return false;
             var isformatted = Uri.IsWellFormedUriString(uri, uriKind);            
-            if (checkexists)
+            if (isformatted && checkexists)
             {
                 bool br = false;
                 try
