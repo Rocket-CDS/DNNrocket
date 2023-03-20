@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
@@ -177,7 +179,12 @@ namespace DNNrocketAPI
             commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
             return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
         }
-
+        public override IDataReader ExecSqlList(string commandText)
+        {
+            commandText = commandText.Replace("{databaseOwner}", DatabaseOwner);
+            commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
+            return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, commandText);
+        }
         public override String GetSqlxml(string commandText)
         {
             // With the XML return we often want a large data return, so we need to increase the default command timout.

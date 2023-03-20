@@ -8,6 +8,8 @@ using DotNetNuke.Entities.Portals;
 using DNNrocketAPI.Interfaces;
 using Simplisity;
 using DNNrocketAPI.Components;
+using System.Drawing.Printing;
+using System.Reflection;
 
 namespace DNNrocketAPI
 {
@@ -715,6 +717,10 @@ namespace DNNrocketAPI
         public string ExecSql(string commandText)
         {
             return DataProvider.Instance().ExecSql(commandText);
+        }
+        public List<SimplisityInfo> ExecSqlList(string commandText)
+        {
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().ExecSqlList(commandText));
         }
 
         #endregion

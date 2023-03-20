@@ -248,8 +248,20 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             // Get languages. (/culturecode) is now a legacy field.
-            paramInfo.SetXmlProperty("genxml/hidden/simplisity_language", DNNrocketUtils.GetCookieValue("simplisity_language"));
-            paramInfo.SetXmlProperty("genxml/hidden/simplisity_editlanguage", DNNrocketUtils.GetCookieValue("simplisity_editlanguage"));
+            var simplisity_language = DNNrocketUtils.GetCookieValue("simplisity_language");
+            if (simplisity_language == "")
+            {
+                simplisity_language = DNNrocketUtils.GetCurrentCulture();
+                DNNrocketUtils.SetCookieValue("simplisity_language", simplisity_language);
+            }
+            var simplisity_editlanguage = DNNrocketUtils.GetCookieValue("simplisity_editlanguage");
+            if (simplisity_editlanguage == "")
+            {
+                simplisity_editlanguage = DNNrocketUtils.GetCurrentCulture();
+                DNNrocketUtils.SetCookieValue("simplisity_editlanguage", simplisity_editlanguage);
+            }
+            paramInfo.SetXmlProperty("genxml/hidden/simplisity_language", simplisity_language);
+            paramInfo.SetXmlProperty("genxml/hidden/simplisity_editlanguage", simplisity_editlanguage);
 
 
             return paramInfo;
