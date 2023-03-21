@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Routing;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -294,7 +295,28 @@ namespace DNNrocketAPI.render
         {
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
         }
-
+        public IEncodedString TranslationLock(SimplisityInfo info, string fieldId, int row = 0)
+        {
+            var checkboxid = fieldId;
+            if (row > 0) checkboxid = fieldId + "_" + row;
+            var unlocked = "";
+            var locked = "display:none;";
+            if (info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/translationlocked" + fieldId))
+            {
+                unlocked = "display:none;";
+                locked = "";
+            }
+            var strOut = "<img class='locktranslation locktranslation" + fieldId + row + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.on") + "' onclick=\"$('#translationlocked" + checkboxid + "').trigger('click');$('.locktranslation" + fieldId + row + "').hide();$('.unlocktranslation" + fieldId + row + "').show();\" src='/DesktopModules/DNNrocket/API/images/unlock.png' style='width:16px;cursor:pointer;" + unlocked + "' alt='unlock' />";
+            strOut += "<img class='unlocktranslation unlocktranslation" + fieldId + row + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.off") + "' onclick=\"$('#translationlocked" + checkboxid + "').trigger('click');$('.locktranslation" + fieldId + row + "').show();$('.unlocktranslation" + fieldId + row + "').hide();\" src='/DesktopModules/DNNrocket/API/images/lock.png' style='width:16px;cursor:pointer;" + locked + "' alt='lock' />";
+            return new RawString(strOut + CheckBox(info, "genxml/lang/genxml/checkbox/translationlocked" + fieldId, "", " style='display:none;'",false, true, row).ToString());
+        }
+        public IEncodedString TranslationKeyUp(string fieldId, int row = 0)
+        {
+            var checkboxid = fieldId;
+            if (row > 0) checkboxid = fieldId + "_" + row;
+            var strOut = " onkeyup=\"$('#translationlocked" + checkboxid + "').prop('checked', true);$('.locktranslation" + fieldId + row + "').hide();$('.unlocktranslation" + fieldId + row + "').show();\" ";
+            return new RawString(strOut);
+        }
         public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
         {
             var strOut = "<img class='" + classvalues + "' src='//" + PortalUtils.DomainSubUrl() + "/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";

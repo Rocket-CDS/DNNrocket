@@ -1004,4 +1004,7 @@ translate
   <data name="translate.Text" xml:space="preserve">
     <value>Translate</value>
   </data>
+  <data name="translation.Text" xml:space="preserve">
+    <value>Translation</value>
+  </data>
 </root>
