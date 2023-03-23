@@ -54,7 +54,7 @@ var debugmode = false;
 
         simplisity_panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
-        $('.simplisity_loader').hide();
+        //$('.simplisity_loader').hide();
 
     };
 }(jQuery));
