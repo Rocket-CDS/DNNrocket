@@ -1655,6 +1655,18 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId, "", param).ToString();
         }
+        public static string NavigateURL(int tabId, Dictionary<string,string> dictParams)        
+        {
+            var param = new string[dictParams.Count * 2];
+            var lp = 0;
+            foreach(var d in dictParams)
+            {
+                param[lp] = d.Key;
+                param[lp + 1] = d.Value;
+                lp += 2;
+            }
+            return Globals.NavigateURL(tabId, "", param).ToString();
+        }
 
         public static double ConvertTimeToDouble(string timeString)
         {

@@ -360,10 +360,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                 jQuery('.simplisity_loader').show();
             }
 
-            await simplisity_callBeforeFunction(element);
-            await simplisity_callSessionFields(element);
-
             if (jQuery(element).attr("s-stop") !== 'stop') {
+
+                await simplisity_callBeforeFunction(element);
 
                 var scmdurl = jQuery(element).attr("s-cmdurl");
                 if (typeof scmdurl === 'undefined' || scmdurl === '') {
@@ -420,6 +419,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                         sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadbase64":"' + jQuery('input[id*="simplisity_fileuploadbase64"]').val() + '"}';
                     }
                 }
+
+                simplisity_setSessionField("simplisity_return", sreturn);
+                await simplisity_callSessionFields(element);
 
                 simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, '');
             }

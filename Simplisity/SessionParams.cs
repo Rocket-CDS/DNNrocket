@@ -63,7 +63,7 @@ namespace Simplisity
 
             PageDetailUrl = PageUrl; //Make sure we have detial URL in XML, for hbs.
 
-            // allow for legacy language flag
+            // allow for legacy language flag (culturecodeedit & culturecode)
             if (Info.GetXmlProperty("r/simplisity_editlanguage") != "") Info.SetXmlProperty("r/culturecodeedit", Info.GetXmlProperty("r/simplisity_editlanguage"));
             if (Info.GetXmlProperty("r/simplisity_language") != "") Info.SetXmlProperty("r/culturecode", Info.GetXmlProperty("r/simplisity_language"));
         }
@@ -93,7 +93,6 @@ namespace Simplisity
         {
             SortActivate = 0;
         }
-
         #region "properties"
         //Order by
         public string OrderByRef { get { return Info.GetXmlProperty("r/orderbyref"); } set { Info.SetXmlProperty("r/orderbyref", value.ToString()); } }
@@ -123,6 +122,10 @@ namespace Simplisity
         public string UserHostAddress { get { return Info.GetXmlProperty("r/userhostaddress"); } set { Info.SetXmlProperty("r/userhostaddress", value.ToString()); } }
         public string ApiUrl { get { return Info.GetXmlProperty("r/apiurl"); } set { Info.SetXmlProperty("r/apiurl", value.ToString()); } }
         public bool IsMobile { get { return Info.GetXmlPropertyBool("r/ismobile"); } set { Info.SetXmlProperty("r/ismobile", value.ToString()); } }
+        public string ReturnHtmlElementId { get { return Info.GetXmlProperty("r/simplisity_return"); } }
+        public string Url { get { return Info.GetXmlProperty("r/url"); } set { Info.SetXmlProperty("r/url", value.ToString()); } }
+        public string UrlFriendly { get { return Info.GetXmlProperty("r/urlfriendly"); } set { Info.SetXmlProperty("r/urlfriendly", value.ToString()); } }
+        public string UrlReferrer { get { return Info.GetXmlProperty("r/urlreferrer"); } set { Info.SetXmlProperty("r/urlreferrer", value.ToString()); } }
 
         #endregion
 
