@@ -1651,12 +1651,21 @@ namespace DNNrocketAPI.Components
         #endregion
 
 
+        public static string NavigateURL(int tabId)
+        {
+            return Globals.NavigateURL(tabId).ToString();
+        }
         public static string NavigateURL(int tabId, string[] param)
         {
             return Globals.NavigateURL(tabId, "", param).ToString();
         }
-        public static string NavigateURL(int tabId, Dictionary<string,string> dictParams)        
+        public static string NavigateURL(int tabId, Dictionary<string, string> dictParams)
         {
+            return NavigateURL(tabId, dictParams, "").ToString();
+        }
+        public static string NavigateURL(int tabId, Dictionary<string,string> dictParams, string seoname)        
+        {
+            if (seoname != "") dictParams.Add(GeneralUtils.UrlFriendly(seoname), "");
             var param = new string[dictParams.Count * 2];
             var lp = 0;
             foreach(var d in dictParams)
