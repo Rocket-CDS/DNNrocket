@@ -21,8 +21,9 @@ namespace Simplisity
     public class SimplisityJson
     {
 
-        public static SimplisityInfo DeserializeJson(string requestJson)
+        public static SimplisityInfo DeserializeJson(string requestJson, string rootNode = "root")
         {
+            if (!requestJson.Trim(' ').StartsWith("{'?xml'")) requestJson = "{'?xml': {'@version': '1.0','@standalone': 'no'},'" + rootNode + "' :" + requestJson + "}";
             XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(requestJson);
             var sInfo = new SimplisityInfo();
             sInfo.ItemID = -1;
