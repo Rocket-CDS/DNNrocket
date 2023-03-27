@@ -129,7 +129,6 @@ namespace Simplisity
         public string ReturnHtmlElementId { get { return Info.GetXmlProperty("r/simplisity_return"); } }
         public string Url { get { return Info.GetXmlProperty("r/url"); } set { Info.SetXmlProperty("r/url", value.ToString()); } }
         public string UrlFriendly { get { return Info.GetXmlProperty("r/urlfriendly"); } set { Info.SetXmlProperty("r/urlfriendly", value.ToString()); } }
-        public string UrlReferrer { get { return Info.GetXmlProperty("r/urlreferrer"); } set { Info.SetXmlProperty("r/urlreferrer", value.ToString()); } }
 
         #endregion
 
