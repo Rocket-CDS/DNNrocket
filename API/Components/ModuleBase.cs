@@ -15,9 +15,9 @@ namespace DNNrocketAPI.Components
         private const string _tableName = "DNNrocket";
         private string _entityTypeCode;
         private string _cacheKey;
-        public ModuleBase(int portalId, string moduleRef, int moduleid = -1, int tabid = -1, string systemKey = "")
+        public ModuleBase(int portalId, string moduleRef, int moduleid = -1, int tabid = -1)
         {
-            _entityTypeCode = "MOD" + systemKey;
+            _entityTypeCode = "MODSETTINGS";
             _cacheKey = portalId + moduleRef + _entityTypeCode;
             _objCtrl = new DNNrocketController();
             Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, moduleRef);

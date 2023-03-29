@@ -87,6 +87,10 @@ namespace Simplisity
         {
             return Info.GetXmlPropertyInt("r/" + key);
         }
+        public bool GetBool(string key)
+        {
+            return Info.GetXmlPropertyBool("r/" + key);
+        }
         public SimplisityInfo Info { get; set; }
 
         public void ActivateItemSort(int itemid)
