@@ -766,6 +766,7 @@ namespace DNNrocketAPI.Components
             if (data != "" && fileMapPath != "")
             {
                 fileMapPath = Path.GetDirectoryName(fileMapPath).TrimEnd('\\') + "\\" + Path.GetFileNameWithoutExtension(fileMapPath) + ".jpg";
+                if (File.Exists(fileMapPath)) File.Delete(fileMapPath);
 
                 var qrCodeEncoder = new QRCodeEncoder();
                 //qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;

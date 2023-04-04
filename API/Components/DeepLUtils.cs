@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using DNNrocketAPI.ApiControllers;
+using DNNrocketAPI.Components;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Simplisity;
@@ -21,6 +22,11 @@ namespace RocketPortal.Components
             try
             {
                 if (text == "") return "";
+
+                // deal with culturecode if passed by accident.
+                if (destinationLanguage.Contains("-")) destinationLanguage = DNNrocketUtils.GetLanguageCode(destinationLanguage);
+                if (sourceLanguage.Contains("-")) sourceLanguage = DNNrocketUtils.GetLanguageCode(sourceLanguage);
+
                 if (destinationLanguage == sourceLanguage) return text;
 
                 //client.Timeout = TimeSpan.FromSeconds(10);
