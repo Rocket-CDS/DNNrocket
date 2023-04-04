@@ -14,9 +14,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace DNNrocketAPI.Components
 {
-
     public static class RenderRazorUtils
     {
+
         #region "render razor"
 
         /// <summary>
@@ -54,17 +54,7 @@ namespace DNNrocketAPI.Components
                     return processResult;
                 }
 
-                var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
-                if (service == null)
-                {
-                    // do razor test
-                    var config = new TemplateServiceConfiguration();
-                    config.Debug = debugMode;
-                    config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                    service = RazorEngineService.Create(config);
-                    HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
-                }
-                Engine.Razor = service;
+                Engine.Razor =  RazorEngineSingleton.Instance;
 
                 var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl)

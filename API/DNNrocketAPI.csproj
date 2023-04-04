@@ -228,6 +228,7 @@
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\ModuleBase.cs" />
     <Compile Include="Components\SecurityInput.cs" />
+    <Compile Include="Components\RazorRenderSingleton.cs" />
     <Compile Include="downloadauthfile.ashx.cs">
       <DependentUpon>downloadauthfile.ashx</DependentUpon>
     </Compile>
