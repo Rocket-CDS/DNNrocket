@@ -116,16 +116,19 @@ namespace DNNrocketAPI.Components
                     foreach (var p in pluginList)
                     {
                         var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
-                        if (pluginFileRelPath != _defaultFileRelPath && File.Exists(pluginFileRelPath))
+                        if (pluginFileRelPath != _defaultFileRelPath)
                         {
                             var pluginfilenamepath = DNNrocketUtils.MapPath(pluginFileRelPath);
-                            var xmlString2 = FileUtils.ReadFile(pluginfilenamepath);
-                            var sRec = new SimplisityRecord();
-                            sRec.XMLData = xmlString2;
-                            var cmdNodeList2 = sRec.XMLDoc.SelectNodes("root/commands/command");
-                            foreach (XmlNode nod in cmdNodeList2)
+                            if (File.Exists(pluginfilenamepath))
                             {
-                                _info.AddXmlNode(nod.OuterXml, "command","root/commands") ;
+                                var xmlString2 = FileUtils.ReadFile(pluginfilenamepath);
+                                var sRec = new SimplisityRecord();
+                                sRec.XMLData = xmlString2;
+                                var cmdNodeList2 = sRec.XMLDoc.SelectNodes("root/commands/command");
+                                foreach (XmlNode nod in cmdNodeList2)
+                                {
+                                    _info.AddXmlNode(nod.OuterXml, "command", "root/commands");
+                                }
                             }
                         }
 
