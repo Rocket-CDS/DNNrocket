@@ -107,7 +107,10 @@ namespace RocketPortal.API
                     var systemData = new SystemLimpet(s.SystemKey);
                     var interfacekey = "rocketsystem";
                     var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    if (systemData.Active)
+                    {
+                        var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    }
                 }
                 PortalUtils.DeletePortal(portalId); 
                 //DNNrocketUtils.RecycleApplicationPool();

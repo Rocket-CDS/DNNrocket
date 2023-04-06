@@ -116,7 +116,7 @@ namespace DNNrocketAPI.Components
                     foreach (var p in pluginList)
                     {
                         var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
-                        if (pluginFileRelPath != _defaultFileRelPath)
+                        if (pluginFileRelPath != _defaultFileRelPath && File.Exists(pluginFileRelPath))
                         {
                             var pluginfilenamepath = DNNrocketUtils.MapPath(pluginFileRelPath);
                             var xmlString2 = FileUtils.ReadFile(pluginfilenamepath);
