@@ -144,7 +144,7 @@ namespace DNNrocketAPI.Components
             var sInfo = new SimplisityInfo();
             sInfo.SetXmlProperty("genxml/textbox/name", key);
             sInfo.SetXmlProperty("genxml/textbox/value", value);
-            sInfo.SetXmlProperty("genxml/hidden/simplisity-listitemref/", GeneralUtils.GetUniqueString());
+            sInfo.SetXmlProperty("genxml/hidden/simplisity-listitemref", GeneralUtils.GetUniqueString());
             sInfo.SetXmlProperty("genxml/checkbox/localized", "false");
             Info.RemoveListItem(_listName, "genxml/textbox/name", key);
             Info.AddListItem(_listName, sInfo);

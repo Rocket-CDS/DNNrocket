@@ -83,7 +83,7 @@ Example...
 
 ## How it works
 
-- When a selector language is clicked a simplisity call to the server is made.  This call returns the coockie with the selected language.  
+- When a selector language is clicked a simplisity call to the server is made.  This call returns the cookie with the selected language.  
 - The reload of the page will now use the new cookie.  
 - Once the simplisityJS language cookie has been set, it will always be passed back to the server as a cookie.
 - Because .Net standard cannot easily deal with the .Net Framework return the cookie value is added to the paramInfo simplisity class.  
