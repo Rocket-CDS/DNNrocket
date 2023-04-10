@@ -4,7 +4,7 @@ Default systems can be activated on the creation of a portal.
 Currently The RocketContentAPI system is automatically activated on creation of a portal.  Other systems can also be setup to be activated.
 
 ## 1. Get the Default Data
-The defasult setup needs to be created.  The best way to do this is to setup a system in the RocketPortal and then get the "postnfo" data on the save event.  This can be done by putting a break on the paramcmd "rocketsystem_save".  
+The default setup needs to be created.  The best way to do this is to setup a system in the RocketPortal and then get the "postnfo" data on the save event.  This can be done by putting a break on the paramcmd "rocketsystem_save".  
 
 Once the data has been placed into an editor all the hidden fields can be removed.
 

@@ -295,7 +295,7 @@ namespace DNNrocketAPI.render
         {
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
         }
-        public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool show = true, int row = 0)
+        public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
         {
             var xpathSplit = xpath.Split('/');
             var fieldId = xpathSplit[xpathSplit.Length - 1];
@@ -311,12 +311,25 @@ namespace DNNrocketAPI.render
                 unlocked = "display:none;";
                 locked = "";
             }
-            var strOut = "<img class='locktranslation locktranslation" + checkboxid + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.on") + "' onclick=\"$('#" + checkboxid + "').prop('checked', true);$('.locktranslation" + checkboxid + "').hide();$('.unlocktranslation" + checkboxid + "').show();\" src='/DesktopModules/DNNrocket/API/images/unlock.png' style='width:16px;cursor:pointer;" + unlocked + "' alt='unlock' />";
-            strOut += "<img class='unlocktranslation unlocktranslation" + checkboxid + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.off") + "' onclick=\"$('#" + checkboxid + "').prop('checked', false);$('.locktranslation" + checkboxid + "').show();$('.unlocktranslation" + checkboxid + "').hide();\" src='/DesktopModules/DNNrocket/API/images/lock.png' style='width:16px;cursor:pointer;" + locked + "' alt='lock' />";
+            var strOut = "";
+            if (active)
+            {
+                strOut = "<img class='locktranslation locktranslation" + checkboxid + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.on") + "' onclick=\"$('#" + checkboxid + "').prop('checked', true);$('.locktranslation" + checkboxid + "').hide();$('.unlocktranslation" + checkboxid + "').show();\" src='/DesktopModules/DNNrocket/API/images/unlock.png' style='width:16px;cursor:pointer;" + unlocked + "' alt='unlock' />";
+                strOut += "<img class='unlocktranslation unlocktranslation" + checkboxid + "' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.off") + "' onclick=\"$('#" + checkboxid + "').prop('checked', false);$('.locktranslation" + checkboxid + "').show();$('.unlocktranslation" + checkboxid + "').hide();\" src='/DesktopModules/DNNrocket/API/images/lock.png' style='width:16px;cursor:pointer;" + locked + "' alt='lock' />";
+            }
+            else
+            {
+                if (locked == "")
+                {
+                    strOut = "<img class='' title='" + ResourceKeyString("DNNrocket.translation") + ": " + ResourceKeyString("DNNrocket.off") + "' onclick=\"$('#" + checkboxid + "').prop('checked', false);$('.locktranslation" + checkboxid + "').show();$('.unlocktranslation" + checkboxid + "').hide();\" src='/DesktopModules/DNNrocket/API/images/lock.png' style='width:16px;' alt='lock' />";
+                }
+            }
             return new RawString(strOut + CheckBox(info, xpathlock, "", " class='translationlockcheckbox' style='display:none;'", false, false, row).ToString());
         }
-        public IEncodedString Translate(SimplisityInfo info, string xpath, bool show = true, int row = 0)
+        public IEncodedString Translate(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
         {
+            if (!active) return new RawString("");
+
             var xpathSplit = xpath.Split('/');
             var fieldId = xpathSplit[xpathSplit.Length - 1];
             var itemlistref = "";
@@ -328,12 +341,17 @@ namespace DNNrocketAPI.render
             var strOut = "<img class='translatefield translate' itemlistref='" + itemlistref + "' xpath='" + xpath + "' fieldid='" + fieldId + "' itemid='" + info.ItemID + "' title='" + ResourceKeyString("DNNrocket.translate") + "' src='/DesktopModules/DNNrocket/API/images/translate.png' style='width:16px;cursor:pointer;' alt='" + ResourceKeyString("DNNrocket.translate") + "' />";
             return new RawString(strOut);
         }
-        public IEncodedString TranslationKeyUp(string fieldId, int row = 0)
+        public IEncodedString TranslationKeyUp(string fieldId, int row = 0, bool active = true)
         {
-            var checkboxid = fieldId;
-            if (row > 0) checkboxid = fieldId + "_" + row;
-            var strOut = " onkeyup=\"$('#translationlocked" + checkboxid + "').prop('checked', true);$('.locktranslation" + fieldId + row + "').hide();$('.unlocktranslation" + fieldId + row + "').show();\" ";
-            return new RawString(strOut);
+            if (!active) 
+                return new RawString(" disabled ");
+            else
+            {
+                var checkboxid = fieldId;
+                if (row > 0) checkboxid = fieldId + "_" + row;
+                var strOut = " onkeyup=\"$('#translationlocked" + checkboxid + "').prop('checked', true);$('.locktranslation" + checkboxid + "-lock').hide();$('.unlocktranslation" + checkboxid + "-lock').show();\" ";
+                return new RawString(strOut);
+            }
         }
         public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
         {
