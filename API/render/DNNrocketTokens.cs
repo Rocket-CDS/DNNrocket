@@ -297,6 +297,7 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
         {
+            if (!show) return new RawString("");
             var xpathSplit = xpath.Split('/');
             var fieldId = xpathSplit[xpathSplit.Length - 1];
             var checkboxid = fieldId + "-lock";
@@ -328,6 +329,7 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString Translate(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
         {
+            if (!show) return new RawString("");
             if (!active) return new RawString("");
 
             var xpathSplit = xpath.Split('/');
