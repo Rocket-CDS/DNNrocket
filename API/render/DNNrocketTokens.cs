@@ -295,9 +295,8 @@ namespace DNNrocketAPI.render
         {
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
         }
-        public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
+        public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)
         {
-            if (!show) return new RawString("");
             var xpathSplit = xpath.Split('/');
             var fieldId = xpathSplit[xpathSplit.Length - 1];
             var checkboxid = fieldId + "-lock";
@@ -327,9 +326,8 @@ namespace DNNrocketAPI.render
             }
             return new RawString(strOut + CheckBox(info, xpathlock, "", " class='translationlockcheckbox' style='display:none;'", false, false, row).ToString());
         }
-        public IEncodedString Translate(SimplisityInfo info, string xpath, bool show = true, int row = 0, bool active = true)
+        public IEncodedString Translate(SimplisityInfo info, string xpath, bool active = true, int row = 0)
         {
-            if (!show) return new RawString("");
             if (!active) return new RawString("");
 
             var xpathSplit = xpath.Split('/');
@@ -343,10 +341,10 @@ namespace DNNrocketAPI.render
             var strOut = "<img class='translatefield translate' itemlistref='" + itemlistref + "' xpath='" + xpath + "' fieldid='" + fieldId + "' itemid='" + info.ItemID + "' title='" + ResourceKeyString("DNNrocket.translate") + "' src='/DesktopModules/DNNrocket/API/images/translate.png' style='width:16px;cursor:pointer;' alt='" + ResourceKeyString("DNNrocket.translate") + "' />";
             return new RawString(strOut);
         }
-        public IEncodedString TranslationKeyUp(string fieldId, int row = 0, bool active = true)
+        public IEncodedString TranslationKeyUp(string fieldId, bool active = true, int row = 0)
         {
             if (!active) 
-                return new RawString(" disabled ");
+                return new RawString("");
             else
             {
                 var checkboxid = fieldId;
