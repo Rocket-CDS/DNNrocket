@@ -360,9 +360,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                 jQuery('.simplisity_loader').show();
             }
 
-            if (jQuery(element).attr("s-stop") !== 'stop') {
+            await simplisity_callBeforeFunction(element); // Before s-stop, so s-stop='stop' can be added on validation.
 
-                await simplisity_callBeforeFunction(element);
+            if (jQuery(element).attr("s-stop") !== 'stop') {
 
                 var scmdurl = jQuery(element).attr("s-cmdurl");
                 if (typeof scmdurl === 'undefined' || scmdurl === '') {
@@ -839,7 +839,9 @@ function simplisity_injectlink(value) {
     jQuery('head').append(link);
 }
 function simplisity_injectscript(value) {
-    jQuery.getScript(value, function () { console.log('script inject'); });
+    var script = document.createElement('script');
+    script.src = value;
+    document.head.appendChild(script);
 }
 function simplisity_systemkey() {
     return jQuery('#simplisity_systemkey').val();
