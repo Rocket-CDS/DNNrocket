@@ -18,6 +18,9 @@ namespace DNNrocketAPI.Components
             _objCtrl = new DNNrocketController();
             //var settingRecord = _objCtrl.GetByGuidKey(portalSettings.PortalId, -1, "SETTINGS", "ROCKETPL");
 
+
+            var x = DDRMenuSingleton.GetInstance("Testing,test");
+
             var nodeTabList = "*";
             foreach (var n in nodes)
             {

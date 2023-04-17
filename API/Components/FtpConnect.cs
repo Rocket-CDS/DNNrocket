@@ -99,7 +99,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                LogUtils.LogException(ex); // May already exists.
+                //LogUtils.LogException(ex); // May already exists.
                 return false;
             }
 

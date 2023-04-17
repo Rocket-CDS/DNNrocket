@@ -555,14 +555,16 @@ namespace DNNrocketAPI.Components
         private static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
         {
             var prop = new Dictionary<string, string>();
-            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
+            if (userInfo != null)
             {
-                prop.Add(p.PropertyName, p.PropertyValue);
+                foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
+                {
+                    prop.Add(p.PropertyName, p.PropertyValue);
+                }
+                if (!prop.ContainsKey("Email")) prop.Add("Email", userInfo.Email);
+                if (!prop.ContainsKey("Username")) prop.Add("Username", userInfo.Username);
+                if (!prop.ContainsKey("DisplayName")) prop.Add("DisplayName", userInfo.DisplayName);
             }
-            if (!prop.ContainsKey("Email")) prop.Add("Email", userInfo.Email);
-            if (!prop.ContainsKey("Username")) prop.Add("Username", userInfo.Username);
-            if (!prop.ContainsKey("DisplayName")) prop.Add("DisplayName", userInfo.DisplayName);
-
             return prop;
         }
         private static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
