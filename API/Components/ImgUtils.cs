@@ -41,7 +41,7 @@ namespace DNNrocketAPI.Components
                         var userfilename = userid + "_" + friendlyname;
                         if (imageCount <= maxImages)
                         {
-                            var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
+                            var unqName = DNNrocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + Path.GetExtension(friendlyname), destinationFolder);
                             var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
 
                             // change extension incase we converted from unsupported image type. (.webp)
