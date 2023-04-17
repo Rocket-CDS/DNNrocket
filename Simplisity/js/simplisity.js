@@ -958,7 +958,7 @@ async function simplisity_initFileUpload(fileuploadselector) {
 
         var rexpr = jQuery(fileuploadselector).attr('s-regexpr');
         if (rexpr === '') {
-            rexpr = '/(\.|\/)(gif|jpe?g|png|pdf|zip|xml|json)jQuery/i';
+            rexpr = '/(\.|\/)(gif|jpe?g|jpg|png|pdf|zip|xml|json)jQuery/i';
         }
         var maxFileSize = parseInt(jQuery(fileuploadselector).attr('s-maxfilesize'));
         if (maxFileSize === '') {
@@ -996,8 +996,8 @@ async function simplisity_initFileUpload(fileuploadselector) {
                 jQuery('.simplisity-file-progress-bar').text(progress + '%');
             })
             .bind('fileuploadsubmit', function (e, data) {
-                var identifier = simplisity_generateFileUniqueIdentifier(data);
-                data.headers = jQuery.extend(data.headers, { "X-File-Identifier": identifier });
+                var identifier = simplisity_encode(simplisity_generateFileUniqueIdentifier(data));
+                data.headers = jQuery.extend(data.headers, { "X-File-Identifier": identifier }); ///processing chunk ID.
             })
             .bind('fileuploadadd', function (e, data) {
                 jQuery('#simplisity-file-progress-bar').show();
