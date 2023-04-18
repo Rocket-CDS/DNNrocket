@@ -349,7 +349,7 @@ namespace DNNrocketAPI.render
             {
                 var checkboxid = fieldId;
                 if (row > 0) checkboxid = fieldId + "_" + row;
-                var strOut = " onkeyup=\"$('#translationlocked" + checkboxid + "').prop('checked', true);$('.locktranslation" + checkboxid + "-lock').hide();$('.unlocktranslation" + checkboxid + "-lock').show();\" ";
+                var strOut = " onkeyup=\"$('#" + checkboxid + "-lock').prop('checked', true);$('.locktranslation" + checkboxid + "-lock').hide();$('.unlocktranslation" + checkboxid + "-lock').show();\" ";
                 return new RawString(strOut);
             }
         }
