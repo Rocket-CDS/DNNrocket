@@ -138,7 +138,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                Exceptions.ProcessModuleLoadException("ValidateTabUrls: Error on NBrightPL", null, ex);
+                Exceptions.ProcessModuleLoadException("ValidateTabUrls: Error on DNNrocket PageUtils", null, ex);
             }
 
         }
