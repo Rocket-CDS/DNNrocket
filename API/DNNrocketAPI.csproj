@@ -227,7 +227,6 @@
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\ModuleBase.cs" />
-    <Compile Include="Components\DDRMenuSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
     <Compile Include="downloadauthfile.ashx.cs">
@@ -276,7 +275,6 @@
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Components\DDRMenuInterface.cs" />
     <Compile Include="Components\DNNrocketClassesConst.cs" />
     <Compile Include="Components\PagesUtils.cs" />
     <Compile Include="Components\FileStatus.cs" />
