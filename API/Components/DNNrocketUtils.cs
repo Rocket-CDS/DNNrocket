@@ -43,6 +43,7 @@ using DotNetNuke.UI.Skins;
 using Encoding = System.Text.Encoding;
 using System.Web.Hosting;
 using DotNetNuke.Services.ClientCapability;
+using DNNrocketAPI.Interfaces;
 
 namespace DNNrocketAPI.Components
 {
@@ -1241,12 +1242,12 @@ namespace DNNrocketAPI.Components
             {
                 if (rocketInterface.Exists && (rocketInterface.Assembly == "" || rocketInterface.NameSpaceClass == ""))
                 {
-                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
+                    var ajaxprov = APInterface.GetInstance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
                     rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, editlang);
                 }
                 else
                 {
-                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                    var ajaxprov = APInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                     rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
                 }
 
@@ -1270,7 +1271,7 @@ namespace DNNrocketAPI.Components
                             }
                             else
                             {
-                                var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                                var ajaxprov = APInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                                 rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
                             }
                         }

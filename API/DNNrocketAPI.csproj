@@ -232,6 +232,7 @@
     <Compile Include="downloadauthfile.ashx.cs">
       <DependentUpon>downloadauthfile.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
     <Compile Include="Interfaces\HandleBarsInterface.cs" />
     <Compile Include="render\HandlebarsEngine.cs" />
@@ -290,7 +291,6 @@
     <Compile Include="ApiControllers\FileUploadController.cs" />
     <Compile Include="Interfaces\SchedulerInterface.cs" />
     <Compile Include="Interfaces\EventInterface.cs" />
-    <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Components\DNNrocketUtils.cs" />
     <Compile Include="render\DNNrocketTokens.cs" />
