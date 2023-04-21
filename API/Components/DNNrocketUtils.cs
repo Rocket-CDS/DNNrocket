@@ -1301,13 +1301,8 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
-                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
-                        if (ajaxprov == null)
-                        {
-                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtils.SetCache(cacheKey, ajaxprov);
-                        }
+                        var ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                        ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                         rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
@@ -1329,13 +1324,8 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
-                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
-                        if (ajaxprov == null)
-                        {
-                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtils.SetCache(cacheKey, ajaxprov);
-                        }
+                        var ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                        ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                         rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
