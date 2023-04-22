@@ -232,12 +232,7 @@ namespace DNNrocketAPI.render
                     var assembly = p.Assembly;
                     var nameSpaceClass = p.NameSpaceClass;
                     var cacheKeyRazor = assembly + "," + nameSpaceClass;
-                    var razorprov = (RazorInterface)CacheUtils.GetCache(cacheKeyRazor);
-                    if (razorprov == null)
-                    {
-                        razorprov = RazorInterface.Instance(assembly, nameSpaceClass);
-                        CacheUtils.SetCache(cacheKeyRazor, razorprov);
-                    }
+                    var razorprov = RazorInterface.GetInstance(assembly, nameSpaceClass);
                     strOut = razorprov.RenderToken(interfaceKey, cmd, model);
                 }
             }
