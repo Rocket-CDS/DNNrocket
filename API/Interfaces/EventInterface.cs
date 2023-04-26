@@ -16,18 +16,26 @@ namespace DNNrocketAPI
 
     public sealed class EventInterface
     {
-        private static IEventAction _instance;
+        private static Dictionary<string, IEventAction> _instances;
         private static object _lock = new object();
         public static IEventAction GetInstance(string assembly, string nameSpaceClass)
         {
-            if (_instance == null)
+            var provKey = assembly + "," + nameSpaceClass;
+            if ((_instances == null))
             {
                 lock (_lock)
                 {
-                    _instance = CreateProvider(assembly, nameSpaceClass);
+                    _instances = new Dictionary<string, IEventAction>();
                 }
             }
-            return _instance;
+            if (!_instances.ContainsKey(provKey))
+            {
+                lock (_lock)
+                {
+                    _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
+                }
+            }
+            return _instances[provKey];
         }
         private static IEventAction CreateProvider(string assembly, string nameSpaceClass)
         {

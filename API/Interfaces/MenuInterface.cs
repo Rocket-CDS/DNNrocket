@@ -1,39 +1,33 @@
-﻿using DNNrocketAPI.Components;
-using DotNetNuke.Web.DDRMenu;
-using RazorEngine;
-using RazorEngine.Configuration;
-using RazorEngine.Templating;
-using Simplisity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Runtime.Remoting;
+using Simplisity;
+using DNNrocketAPI.Components;
+using HandlebarsDotNet;
+using DNNrocketAPI.Interfaces;
 
-namespace DNNrocketAPI.Interfaces
+namespace DNNrocketAPI
 {
-    public interface IProcessCommand
+    public interface IMenuInterface
     {
-        Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
+        List<PageRecordData> GetMenuItems(int portalId, string cultureCode, string rootref = "");
+        string TokenPrefix();
+        int PageId(int portalId, string cultureCode);
     }
-
-    public sealed class APInterface
+    public sealed class MenuInterface
     {
-        private static Dictionary<string, IProcessCommand> _instances;
+        private static Dictionary<string, IMenuInterface> _instances;
         private static object _lock = new object();
-        public static IProcessCommand GetInstance(string assembly, string nameSpaceClass)
+        public static IMenuInterface GetInstance(string assembly, string nameSpaceClass)
         {
             var provKey = assembly + "," + nameSpaceClass;
             if ((_instances == null))
             {
                 lock (_lock)
                 {
-                    _instances = new Dictionary<string, IProcessCommand>();
+                    _instances = new Dictionary<string, IMenuInterface>();
                 }
             }
-
             if (!_instances.ContainsKey(provKey))
             {
                 lock (_lock)
@@ -42,15 +36,16 @@ namespace DNNrocketAPI.Interfaces
                 }
             }
             return _instances[provKey];
+
         }
-        private static IProcessCommand CreateProvider(string assembly, string nameSpaceClass)
+        private static IMenuInterface CreateProvider(string assembly, string nameSpaceClass)
         {
             if (!string.IsNullOrEmpty(assembly) && !string.IsNullOrEmpty(nameSpaceClass))
             {
                 try
                 {
                     var handle = Activator.CreateInstance(assembly.Trim(), nameSpaceClass.Trim());
-                    return (IProcessCommand)handle.Unwrap();
+                    return (IMenuInterface)handle.Unwrap();
                 }
                 catch (Exception ex)
                 {
@@ -60,8 +55,10 @@ namespace DNNrocketAPI.Interfaces
             }
             return null;
         }
-        private APInterface()
+        private MenuInterface()
         {
         }
     }
+
 }
+

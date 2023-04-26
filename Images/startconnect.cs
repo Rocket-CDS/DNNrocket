@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.IO;
 
 namespace DNNrocket.Images
 {
-    public class StartConnect : DNNrocketAPI.APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private string _appthemeRelPath;
         private string _appthemeMapPath;
@@ -15,7 +16,7 @@ namespace DNNrocket.Images
         private SimplisityInfo _paramInfo;
         private RocketInterface _rocketInterface;
         private string _systemkey;
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 

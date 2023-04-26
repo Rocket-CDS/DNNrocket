@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using Rocket.AppThemes.Components;
 using RocketPortal.Components;
 using Simplisity;
@@ -15,7 +16,7 @@ using System.Xml.Linq;
 
 namespace DNNrocket.AppThemes
 {
-    public class StartConnect : DNNrocketAPI.APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -35,7 +36,7 @@ namespace DNNrocket.AppThemes
         private AppThemeProjectLimpet _appThemeProjectData;
         private string _returnUrl;
 
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             object jsonOut = null;
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.

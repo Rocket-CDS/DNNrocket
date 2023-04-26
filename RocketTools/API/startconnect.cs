@@ -4,12 +4,13 @@ using System.IO;
 using System.Xml;
 using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using RocketPortal.Components;
 using Simplisity;
 
 namespace RocketTools.API
 {
-    public class StartConnect : DNNrocketAPI.APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private RocketInterface _rocketInterface;
         private SystemLimpet _systemData;
@@ -23,7 +24,7 @@ namespace RocketTools.API
         private SessionParams _sessionParams;
         private string _pageRef;
 
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
             var rtnDic = new Dictionary<string, object>();

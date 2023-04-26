@@ -313,7 +313,7 @@
     <value>Images Dossier</value>
   </data>
   <data name="import.Text" xml:space="preserve">
-    <value>Import</value>
+    <value>Importer</value>
   </data>
   <data name="install.Text" xml:space="preserve">
     <value>Installer</value>
@@ -746,5 +746,29 @@
   </data>
   <data name="locked.Text" xml:space="preserve">
     <value>Verrouillé</value>
+  </data>
+  <data name="disablecache.Text" xml:space="preserve">
+    <value>Désactiver le cache</value>
+  </data>
+  <data name="disableheader.Text" xml:space="preserve">
+    <value>Désactiver l'en-tête</value>
+  </data>
+  <data name="enablecache.Text" xml:space="preserve">
+    <value>Activer le cache</value>
+  </data>
+  <data name="injectjquery.Text" xml:space="preserve">
+    <value>Injecter JQuery</value>
+  </data>
+  <data name="view.Text" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="title.Text" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="translate.Text" xml:space="preserve">
+    <value>Traduire</value>
+  </data>
+  <data name="translation.Text" xml:space="preserve">
+    <value>Traduction</value>
   </data>
 </root>

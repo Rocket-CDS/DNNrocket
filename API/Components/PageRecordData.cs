@@ -4,48 +4,64 @@ using System.Collections.Generic;
 using System.Text;
 using DNNrocketAPI.Components;
 using DotNetNuke.Entities.Tabs;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
     public class PageRecordData
     {
+        public PageRecordData()
+        {
+            PortalId = -1;
+            PageId = -1;
+            Init(PortalId, PageId, true);
+        }
         public PageRecordData(int portalId, int tabId, bool ignoreCache = false)
         {
             PortalId = portalId;
             PageId = tabId;
-
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(tabId, portalId, ignoreCache);
-
+            Init(PortalId, PageId, ignoreCache);
+        }
+        private void Init(int portalId, int tabId, bool ignoreCache = false)
+        {
             Record = new SimplisityRecord();
-            if (tabInfo != null)
+            if (PageId > 0)
             {
-                Record.ItemID = tabId;
-                Record.ParentItemId = tabInfo.ParentId;
-                Record.SetXmlProperty("genxml/name", tabInfo.TabName);
-                Record.SetXmlProperty("genxml/title", tabInfo.Title);
-                Record.SetXmlProperty("genxml/description", tabInfo.Description);
-                Record.SetXmlProperty("genxml/keywords", tabInfo.KeyWords);
-                Record.SetXmlProperty("genxml/url", tabInfo.Url);
-                Record.SetXmlProperty("genxml/fullurl", tabInfo.FullUrl);
+                var objTabs = new TabController();
+                var tabInfo = objTabs.GetTab(tabId, portalId, ignoreCache);
+                if (tabInfo != null)
+                {
+                    Record.ItemID = tabId;
+                    Record.ParentItemId = tabInfo.ParentId;
+                    Record.SetXmlProperty("genxml/name", tabInfo.TabName);
+                    Record.SetXmlProperty("genxml/title", tabInfo.Title);
+                    Record.SetXmlProperty("genxml/description", tabInfo.Description);
+                    Record.SetXmlProperty("genxml/keywords", tabInfo.KeyWords);
+                    Record.SetXmlProperty("genxml/url", tabInfo.Url);
+                    Record.SetXmlProperty("genxml/fullurl", tabInfo.FullUrl);
+                }
             }
         }
 
         public void Update()
         {
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(PageId, PortalId, true);
+            if (PageId > 0)
+            {
+                var objTabs = new TabController();
+                var tabInfo = objTabs.GetTab(PageId, PortalId, true);
 
-            tabInfo.TabName = Name;
-            tabInfo.Title = Title;
-            tabInfo.Description = Description;
-            tabInfo.KeyWords = KeyWords;
+                tabInfo.TabName = Name;
+                tabInfo.Title = Title;
+                tabInfo.Description = Description;
+                tabInfo.KeyWords = KeyWords;
 
-            objTabs.UpdateTab(tabInfo);
+                objTabs.UpdateTab(tabInfo);
+            }
         }
 
         public int PortalId { get; set; }
         public int PageId { get; set; }
+        public int ParentPageId { get; set; }
         public SimplisityRecord Record { get; set; }
         public string Name
         {

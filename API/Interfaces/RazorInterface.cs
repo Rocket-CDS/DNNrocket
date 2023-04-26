@@ -13,18 +13,26 @@ namespace DNNrocketAPI
     }
     public sealed class RazorInterface
     {
-        private static IRazorInterface _instance;
+        private static Dictionary<string, IRazorInterface> _instances;
         private static object _lock = new object();
         public static IRazorInterface GetInstance(string assembly, string nameSpaceClass)
         {
-            if (_instance == null)
+            var provKey = assembly + "," + nameSpaceClass;
+            if ((_instances == null))
             {
                 lock (_lock)
                 {
-                    _instance = CreateProvider(assembly, nameSpaceClass);
+                    _instances = new Dictionary<string, IRazorInterface>();
                 }
             }
-            return _instance;
+            if (!_instances.ContainsKey(provKey))
+            {
+                lock (_lock)
+                {
+                    _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
+                }
+            }
+            return _instances[provKey];
         }
         private static IRazorInterface CreateProvider(string assembly, string nameSpaceClass)
         {

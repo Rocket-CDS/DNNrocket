@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using RocketPortal.Components;
 using Simplisity;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RocketPortal.API
 {
-    public partial class StartConnect : APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -25,7 +26,7 @@ namespace RocketPortal.API
         private Dictionary<string, object> _dataObjects;
         private SystemGlobalData _globalData;
 
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 

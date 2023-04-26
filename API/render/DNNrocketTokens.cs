@@ -658,28 +658,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
         {
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
-
-            var tList = DNNrocketUtils.GetTreeTabList(showAllTabs);
-            var strOut = "";
-
-            var upd = getUpdateAttr(xpath, "", localized);
-            var id = getIdFromXpath(xpath, row, listname);
-
-            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
-            var s = "";
-            if (allowEmpty) strOut += "    <option value=''></option>";
-            foreach (var tItem in tList)
-            {
-                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
-                    s = "selected";
-                else
-                    s = "";
-                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
-            }
-            strOut += "</select>";
-
-            return new RawString(strOut);
+            return TabSelectListOnTabId(info, xpath, attributes, allowEmpty, localized, row, listname, showAllTabs);
         }
 
         public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)

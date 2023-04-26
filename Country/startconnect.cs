@@ -1,6 +1,7 @@
 ﻿using DNNrocket.Country.Components;
 using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using Newtonsoft.Json;
 using Simplisity;
 using System;
@@ -8,10 +9,10 @@ using System.Collections.Generic;
 
 namespace DNNrocket.Country
 {
-    public class StartConnect : APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private RocketInterface _rocketInterface;
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _rocketInterface = new RocketInterface(interfaceInfo);
 

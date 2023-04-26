@@ -233,6 +233,7 @@
       <DependentUpon>downloadauthfile.ashx</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\APInterface.cs" />
+    <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
     <Compile Include="Interfaces\HandleBarsInterface.cs" />
     <Compile Include="render\HandlebarsEngine.cs" />
