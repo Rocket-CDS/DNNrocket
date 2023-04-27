@@ -1672,7 +1672,10 @@ namespace DNNrocketAPI.Components
             }
             return Globals.NavigateURL(tabId, "", param).ToString();
         }
-
+        public static string UrlFriendly(string textstring)
+        {
+            return GeneralUtils.UrlFriendly(textstring);
+        }
         public static double ConvertTimeToDouble(string timeString)
         {
             if (timeString == "") return -1;
