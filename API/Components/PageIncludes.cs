@@ -128,7 +128,7 @@ namespace DNNrocketAPI.Components
                     cssLink.Attributes.Add("rel", "stylesheet");
                     cssLink.Attributes.Add("type", "text/css");
                     cssLink.Href = href;
-                    page.Header.Controls.Add(cssLink);
+                    page.Header.Controls.AddAt(0, cssLink);
                 }
             }
         }
@@ -151,7 +151,6 @@ namespace DNNrocketAPI.Components
         }
         public static void IncludeTextInHeaderAt(Page page, string TextToInclude, int addAt = 0)
         {
-            if (addAt == 0) addAt = page.Header.Controls.Count;
             if (TextToInclude != "") page.Header.Controls.AddAt(addAt, new LiteralControl(TextToInclude));
         }
     }
