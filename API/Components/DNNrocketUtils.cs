@@ -1272,7 +1272,13 @@ namespace DNNrocketAPI.Components
                             else
                             {
                                 var ajaxprov = APInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
+                                if (ajaxprov != null) 
+                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
+                                else
+                                {
+                                    rtnDic.Remove("outputhtml");
+                                    rtnDic.Add("outputhtml", "Provider Does Not Exists: " + rocketInterface.Assembly + ", " + rocketInterface.NameSpaceClass);
+                                }
                             }
                         }
                         else

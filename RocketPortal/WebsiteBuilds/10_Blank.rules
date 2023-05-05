@@ -15,7 +15,7 @@
       <modules>
         <module>
           <name></name>
-          <ctrl></ctrl>
+          <definitionname></definitionname>
           <container></container>
         </module>
       </modules>

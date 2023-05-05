@@ -111,12 +111,12 @@ namespace DNNrocketAPI.Components
                         foreach (XmlNode mNod in moduleList)
                         {
                             var modulename = nod.SelectSingleNode("module/name").Value;
-                            var modulectrl = nod.SelectSingleNode("module/ctrl").Value;
+                            var definitionname = nod.SelectSingleNode("module/definitionname").Value;
                             var modulecontainer = nod.SelectSingleNode("module/container").Value;
-                            if (modulectrl != "")
+                            if (definitionname != "")
                             {
                                 //[TODO: add required modules to containers.]
-                                var dtid = ModuleUtils.GetDesktopModuleId(portalid, modulectrl);
+                                var dtid = ModuleUtils.GetDesktopModuleId(portalid, definitionname);
                                 if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, tabid, modulename, dtid, "", 0, 0, "");
                             }
                         }
