@@ -151,6 +151,7 @@ namespace DNNrocketAPI.Components
                 SyncSystemLevel("js");
                 SyncSystemLevel("resx");
                 SyncSystemLevel("dep");
+                SyncSystemLevel("modt");
 
                 if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
                 foreach (string newPath in Directory.GetFiles(ImageFolderMapPath, "*.*", SearchOption.TopDirectoryOnly))
@@ -166,6 +167,7 @@ namespace DNNrocketAPI.Components
                 SyncPortalLevel("js");
                 SyncPortalLevel("resx");
                 SyncPortalLevel("dep");
+                SyncPortalLevel("modt");
             }
         }
         private void CreateVersionFolders(double dblVersionFolder)
@@ -274,6 +276,10 @@ namespace DNNrocketAPI.Components
             if (fileMapPath == "") return rtn;
             rtn.XMLData = FileUtils.ReadFile(fileMapPath);
             return rtn;
+        }
+        public SimplisityRecord GetModT(string templateFileName, string moduleref = "")
+        {
+            return GetDep(templateFileName, moduleref);
         }
         public void SaveResx(string filename, ResxData resxData, string moduleref = "")
         {
@@ -646,6 +652,15 @@ namespace DNNrocketAPI.Components
             foreach (var t in FileNameList)
             {
                 if (t.Key.ToLower().EndsWith(".dep")) rtnDict.Add(t.Key, t.Value);
+            }
+            return rtnDict;
+        }
+        public Dictionary<string, string> GetModuleTemples()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in FileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".modt")) rtnDict.Add(t.Key, t.Value);
             }
             return rtnDict;
         }
