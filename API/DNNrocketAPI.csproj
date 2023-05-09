@@ -324,6 +324,7 @@
     <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\JQueryValidation.md" />
     <None Include="Documents\ManualSortList.docx" />
+    <None Include="Documents\ModuleTemplate.md" />
     <None Include="Documents\SystemDefaults.md" />
     <None Include="downloadauthfile.ashx" />
     <None Include="downloadfile.ashx" />
