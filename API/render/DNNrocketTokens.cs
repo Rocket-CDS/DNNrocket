@@ -875,10 +875,10 @@ namespace DNNrocketAPI.render
             }
             return new RawString(strOut);
         }
-        public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, string systemKey, String attributes = "", bool addEmpty = true )
+        public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = "", bool addEmpty = true )
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
-            var modList = DNNrocketUtils.GetModList(portalId, systemKey);
+            var modList = DNNrocketUtils.GetModList(portalId);
 
             if (info == null) info = new SimplisityInfo();
             var strOut = "";
