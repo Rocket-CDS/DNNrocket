@@ -401,7 +401,7 @@ namespace DNNrocketAPI.render
         public IEncodedString ImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", string imgType = "")
         {
             if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
-            if (!imgType.StartsWith("&")) imgType = "&imgtype=" + imgType;
+            if (imgType != "" && !imgType.StartsWith("&")) imgType = "&imgtype=" + imgType;
 
             if (width > 0 || height > 0)
             {
@@ -412,7 +412,7 @@ namespace DNNrocketAPI.render
             }
             else
             {
-                url = engineUrl.TrimEnd('/') + "/" + url + "&w=" + width + "&h=" + height + extraurlparams;
+                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + imgType;
             }
             return new RawString(url);
         }
@@ -655,7 +655,7 @@ namespace DNNrocketAPI.render
             var strOut = DotNetNuke.Common.Globals.NavigateURL(tabid, false, portalSettings,"",cultureCode, extraparams);
             return new RawString(strOut);
         }
-
+        [Obsolete("Use TabSelectListOnTabId(...) instead")]
         public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
         {
             return TabSelectListOnTabId(info, xpath, attributes, allowEmpty, localized, row, listname, showAllTabs);
