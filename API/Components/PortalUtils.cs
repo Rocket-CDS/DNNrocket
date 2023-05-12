@@ -153,52 +153,47 @@ namespace DNNrocketAPI.Components
         }
         public static void BuildDefaultSystems(int portalId)
         {
-            var fName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/RocketPortal/WebsiteBuilds").TrimEnd('\\') + "\\SystemDefaults.rules";
-            if (File.Exists(fName))
+            var systems = new SystemLimpetList();
+            foreach (var s in systems.GetSystemList())
             {
-                var xmlData = FileUtils.ReadFile(fName);
-                if (xmlData != "")
-                {
-                    var sRec = new SimplisityInfo();
-                    sRec.XMLData = xmlData;
-                    foreach (var s in sRec.GetRecordList("systems"))
-                    {
-                        var systemkey = s.GetXmlProperty("genxml/systemkey");
-                        ActivateSystem(portalId, systemkey);
-                    }
-                    // Add languages
-                    foreach (var s in sRec.GetRecordList("languages"))
-                    {
-                        var culturecode = s.GetXmlProperty("genxml/culturecode");
-                        AddLanguage(portalId, culturecode);
-                    }
-                }
+                ActivateSystem(portalId, s);
             }
         }
-        public static void ActivateSystem(int portalId, string systemKey, SimplisityInfo postInfo = null)
+        public static void ActivateSystem(int portalId, SystemLimpet systemData, SimplisityInfo postInfo = null)
         {
-            var paramCmd = systemKey + "_activate";
-            var systemDataList = new SystemLimpetList();
-            var systemData = systemDataList.GetSystemByKey(systemKey);
             if (systemData != null && systemData.Exists)
             {
-                if (postInfo == null)
-                {
-                    var configFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNRocketModules/" + systemKey + "/Installation/SystemInit.rules");
-                    if (File.Exists(configFileName))
-                    {
-                        postInfo = new SimplisityInfo();
-                        var xmlData = FileUtils.ReadFile(configFileName);
-                        postInfo.XMLData = xmlData;
-                    }
-                }
+                var paramCmd = systemData.SystemKey + "_activate";
                 var interfacekey = paramCmd.Split('_')[0];
                 var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
                 if (rocketInterface.Exists)
                 {
                     var paramInfo = new SimplisityInfo();
                     paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                    DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    if (postInfo == null)
+                    {
+                        postInfo = new SimplisityInfo();
+                        var configFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNRocketModules/" + systemData.SystemKey + "/Installation/SystemInit.rules");
+                        if (File.Exists(configFileName))
+                        {
+                            var xmlData = FileUtils.ReadFile(configFileName);
+                            postInfo.XMLData = xmlData;
+
+                            var roles = new List<string>();
+                            roles.Add(DNNrocketRoles.Administrators);
+                            roles.Add(DNNrocketRoles.Manager);
+                            roles.Add(DNNrocketRoles.Editor);
+                            roles.Add(DNNrocketRoles.ClientEditor);
+                            PortalUtils.AddSysAdminSystemPage(portalId, systemData.SystemKey, roles);
+
+                            DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "/DesktopModules/DNNrocket/api", "");
+
+                        }
+                    }
+                    else
+                    {
+                        DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    }
                 }
             }
         }
@@ -697,6 +692,19 @@ namespace DNNrocketAPI.Components
         }
         public static void AddSysAdminSystemPage(int portalId, string systemkey)
         {
+            AddSysAdminSystemPage(portalId, systemkey, null);
+        }
+        public static void AddSysAdminSystemPage(int portalId, string systemkey, List<string> roles = null)
+        {
+            if (roles == null)
+            {
+                roles = new List<string>();
+                roles.Add(DNNrocketRoles.Administrators);
+                roles.Add(DNNrocketRoles.Manager);
+                roles.Add(DNNrocketRoles.Editor);
+                roles.Add(DNNrocketRoles.ClientEditor);
+                roles.Add("Registered Users");
+            }
             // Create a SysAdmin page, with subpages of each system.
             if (!PagesUtils.PageExists(portalId, "SysAdmin"))
             {
@@ -709,11 +717,10 @@ namespace DNNrocketAPI.Components
                 if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + systemkey) == -1)
                 {
                     var tabid = PagesUtils.CreatePage(portalId, systemkey, true, false, sysAdminTabId);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
-                    PagesUtils.AddPagePermissions(portalId, tabid, "Registered Users");
+                    foreach (var r in roles)
+                    {
+                        PagesUtils.AddPagePermissions(portalId, tabid, r);
+                    }
                     PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
                 }
             }

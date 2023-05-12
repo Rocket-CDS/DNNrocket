@@ -26,22 +26,22 @@ namespace DNNrocketAPI.Interfaces
         public static IProcessCommand GetInstance(string assembly, string nameSpaceClass)
         {
             var provKey = assembly + "," + nameSpaceClass;
-            if ((_instances == null))
+            lock (_lock)
             {
-                lock (_lock)
+                if ((_instances == null))
                 {
                     _instances = new Dictionary<string, IProcessCommand>();
                 }
-            }
-
-            if (!_instances.ContainsKey(provKey))
-            {
-                lock (_lock)
+                if (!_instances.ContainsKey(provKey))
                 {
                     _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
                 }
             }
             return _instances[provKey];
+        }
+        public static int InstanceCount()
+        {
+            return _instances.Count;
         }
         private static IProcessCommand CreateProvider(string assembly, string nameSpaceClass)
         {

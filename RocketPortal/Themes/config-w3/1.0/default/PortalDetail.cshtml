@@ -172,6 +172,8 @@
             </div>
             <div class="w3-half">
 
+            <div class="w3-xxlarge">@portalData.Name</div>
+            <div class="w3-large">@portalData.EngineUrl</div>
                 <div class="w3-panel w3-red w3-margin">
                     <h2>@ResourceKey("DNNrocket.danger")</h2>
                     <p>@ResourceKey("RP.deleteportal", "", "Msg")</p>
@@ -205,6 +207,11 @@
                 $('#confirmation2').on('keypress', function (e) {
                     if (e.keyCode == 13) {
                         return false; // prevent the button click from happening
+                    }
+                });
+                $("#confirmation2").bind("paste", function (e) {
+                    if ($('#confirmation1').val() == e.originalEvent.clipboardData.getData('text')) {
+                        $('#deleteportalbutton').show();
                     }
                 });
                 var s = simplisity_getCookieValue("rocketportal_tabselector")	

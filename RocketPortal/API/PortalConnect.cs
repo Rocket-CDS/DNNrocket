@@ -2,6 +2,7 @@
 using Simplisity;
 using System;
 using RocketPortal.Components;
+using System.Collections.Generic;
 
 namespace RocketPortal.API
 {
@@ -54,9 +55,10 @@ namespace RocketPortal.API
                     }
                     portalData.EngineUrl = engineurl;
                     portalData.Update();
-                    _portalData = new PortalLimpet(portalid);
 
                     PortalUtils.BuildPortal(portalid, portalAdminUserId, buildconfigfile);
+
+                    _portalData = new PortalLimpet(portalid); // reload before display
                 }
             }
             return GetPortalDetail();
@@ -101,17 +103,17 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 var PortalData = new PortalLimpet(portalId);
-                foreach (var s in PortalData.SystemDataList.GetSystemActiveList())
-                {
-                    // delete system data
-                    var systemData = new SystemLimpet(s.SystemKey);
-                    var interfacekey = "rocketsystem";
-                    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-                    if (systemData.Active)
-                    {
-                        var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
-                    }
-                }
+                //foreach (var s in PortalData.SystemDataList.GetSystemActiveList())
+                //{
+                //    // delete system data
+                //    var systemData = new SystemLimpet(s.SystemKey);
+                //    var interfacekey = "rocketsystem";
+                //    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                //    if (systemData.Active)
+                //    {
+                //        var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+                //    }
+                //}
                 PortalUtils.DeletePortal(portalId); 
                 //DNNrocketUtils.RecycleApplicationPool();
                 PortalData.Delete();
@@ -304,23 +306,20 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkeyref");
-                var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
+                var roles = new List<string>();
+                roles.Add(DNNrocketRoles.Administrators);
+                roles.Add(DNNrocketRoles.Manager);
+                roles.Add(DNNrocketRoles.Editor);
+                roles.Add(DNNrocketRoles.ClientEditor);
+                PortalUtils.AddSysAdminSystemPage(portalId, systemKey, roles);
+
                 _portalData = new PortalLimpet(portalId);
                 _portalData.Record.SetXmlProperty("genxml/systems/" + systemKey, "True");
                 _portalData.Update();
 
                 // Setup pages.
-                if (systemKey != "" && sysAdminTabId > 0)
+                if (systemKey != "")
                 {
-                    if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + systemKey) == -1)
-                    {
-                        var tabid = PagesUtils.CreatePage(portalId, systemKey, true, false, sysAdminTabId);
-                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
-                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
-                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
-                        PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
-                    }
-
                     // Create the system record in the DB.
                     var systemData = new SystemLimpet(systemKey);
                     if (!systemData.Exists)

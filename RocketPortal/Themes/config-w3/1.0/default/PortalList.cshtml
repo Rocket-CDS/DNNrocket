@@ -44,10 +44,11 @@
                     <th>@ResourceKey("RP.serviceurl")</th>
                 </tr>
             </thead>
-            @foreach (PortalLimpet portalData in portalList.GetPortalList())
+            @foreach (var p in PortalUtils.GetAllPortalRecords())
             {
+                PortalLimpet portalData = new PortalLimpet(p.PortalId);
                 <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
-                    <td><b>@portalData.Name</b></td>
+                    <td><b>@p.GetXmlProperty("settings/portalname")</b></td>
                     <td>
                         @portalData.EngineUrl
                     </td>
