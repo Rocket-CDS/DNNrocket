@@ -47,16 +47,23 @@ namespace DNNrocketAPI.Components
                     {
                         var cacheDir = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache";
                         var cacheFile = cacheDir + "\\" + GeneralUtils.GetMd5Hash(strCacheKey);
-                        byte[] bytes;
-                        if (!File.Exists(cacheFile))
+                        if (File.Exists(src))
                         {
-                            if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
-                            ImgUtils.CreateThumbOnDisk(src, w + "," + h, cacheFile, true);
-                        }
-                        bytes = System.IO.File.ReadAllBytes(cacheFile);
+                            byte[] bytes;
+                            if (!File.Exists(cacheFile))
+                            {
+                                if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
+                                ImgUtils.CreateThumbOnDisk(src, w + "," + h, cacheFile, true);
+                            }
+                            bytes = System.IO.File.ReadAllBytes(cacheFile);
 
-                        context.Response.ContentType = "image/webp";
-                        context.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                            context.Response.ContentType = "image/webp";
+                            context.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                        }
+                        else
+                        {
+                            File.Delete(cacheFile);
+                        }
                     }
                     catch (Exception exc)
                     {

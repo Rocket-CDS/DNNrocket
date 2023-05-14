@@ -18,16 +18,13 @@ namespace DNNrocketAPI
         public static IRazorInterface GetInstance(string assembly, string nameSpaceClass)
         {
             var provKey = assembly + "," + nameSpaceClass;
-            if ((_instances == null))
+            lock (_lock)
             {
-                lock (_lock)
+                if ((_instances == null))
                 {
                     _instances = new Dictionary<string, IRazorInterface>();
                 }
-            }
-            if (!_instances.ContainsKey(provKey))
-            {
-                lock (_lock)
+                if (!_instances.ContainsKey(provKey))
                 {
                     _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
                 }

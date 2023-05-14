@@ -11,6 +11,8 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Entities.Content.Taxonomy;
 using System.IO;
+using DotNetNuke.Services.Journal;
+using System.Reflection;
 
 namespace DNNrocketAPI.Components
 {
@@ -34,8 +36,36 @@ namespace DNNrocketAPI.Components
         /// -----------------------------------------------------------------------------
         public string ExportModule(int ModuleId)
         {
-            var xmlOut = "<export>";
-            xmlOut += "</export>";
+            var xmlOut = "";
+            var objModCtrl = new ModuleController();
+            var objModInfo = objModCtrl.GetModule(ModuleId, Null.NullInteger, true);
+            if (objModInfo != null)
+            {
+                var portalId = objModInfo.PortalID;
+                var moduleRef = objModInfo.PortalID + "_ModuleID_" + ModuleId;
+                var moduleSettings = new ModuleBase(objModInfo.PortalID, moduleRef, ModuleId, objModInfo.TabID); ;
+                var systemData = new SystemLimpet(moduleSettings.SystemKey);
+                if (systemData.Exists)
+                {
+                    foreach (var rocketInterface in systemData.ProviderList)
+                    {
+                        if (rocketInterface.IsProvider("exportmodule"))
+                        {
+                            if (rocketInterface.Exists)
+                            {
+                                var postInfo = new SimplisityInfo();
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+                                paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
+
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                if (returnDictionary.ContainsKey("outputhtml")) xmlOut += returnDictionary["outputhtml"];
+                            }
+                        }
+                    }
+                }
+            }
             return xmlOut;
         }
 
@@ -69,9 +99,8 @@ namespace DNNrocketAPI.Components
                 var systemData = new SystemLimpet(systemKey);
                 if (systemData.Exists)
                 {
-                    foreach (var r in systemData.InterfaceList)
+                    foreach (var rocketInterface in systemData.ProviderList)
                     {
-                        var rocketInterface = r.Value;
                         if (rocketInterface.IsProvider("importmodule"))
                         {
                             if (rocketInterface.Exists)

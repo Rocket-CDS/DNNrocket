@@ -94,6 +94,7 @@ namespace DNNrocketAPI.Components
         public bool DisableHeader { get { return Record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { Record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
         public bool SecureSave { get { return Record.GetXmlPropertyBool("genxml/settings/securesave"); } set { Record.SetXmlProperty("genxml/settings/securesave", value.ToString()); } }
         public string Name { get { return Record.GetXmlProperty("genxml/settings/name"); } set { Record.SetXmlProperty("genxml/settings/name", value); } }
+        public string SystemKey { get { return Record.GetXmlProperty("genxml/systemkey"); } set { Record.SetXmlProperty("genxml/systemkey", value); } }
         public bool IsSatellite { get { if (Record.GUIDKey == Record.GetXmlProperty("genxml/settings/dataref") || Record.GetXmlProperty("genxml/settings/dataref") == "") return false; else return true; } }
         #endregion
 
