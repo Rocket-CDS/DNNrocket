@@ -40,8 +40,10 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/documentpath" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/documentpath");
+                var rtn = Info.GetXmlProperty("genxml/hidden/documentpath" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/documentpath" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/hidden/documentpath");
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/documentpath");
                 return rtn;
             }
             set
