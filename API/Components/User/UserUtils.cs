@@ -667,7 +667,11 @@ namespace DNNrocketAPI.Components
         {
             return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
         }
-
+        public static bool IsSuperUser(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            return userInfo.IsSuperUser;
+        }
         public static bool IsSuperUser()
         {
             if (!IsAuthorised()) return false;
@@ -711,7 +715,11 @@ namespace DNNrocketAPI.Components
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)) return true;
             return false;
         }
-
+        public static bool IsAdministrator(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            return userInfo.IsAdmin;
+        }
         public static UserInfo GetValidUser(int PortalId, string username, string password)
         {
             var userLoginStatus = new UserLoginStatus();
