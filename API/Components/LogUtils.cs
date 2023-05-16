@@ -50,7 +50,7 @@ namespace DNNrocketAPI.Components
         {
             if (systemkey == "") systemkey = "systemapi";
             var dolog = false;
-            var systemData = new SystemLimpet(systemkey);
+            var systemData = SystemSingleton.Instance(systemkey);
             if (systemData.Exists && systemData.LogTracking) dolog = true;
             if (dolog)
             {

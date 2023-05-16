@@ -111,7 +111,7 @@ namespace Rocket.AppThemes.Components
             foreach (var d in dirlist2)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var systemData = new SystemLimpet(dr.Name);
+                var systemData = SystemSingleton.Instance(dr.Name);
                 if (systemData.Exists) SystemFolderList.Add(systemData);
             }
 

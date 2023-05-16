@@ -110,6 +110,8 @@ namespace DNNrocketAPI.Components
                 if (key != "" && !Settings.ContainsKey(key)) Settings.Add(key, s.GetXmlProperty("genxml/textbox/value"));
             }
             var l3 = Record.GetRecordList("providerdata");
+            l3 = l3.OrderBy(o => o.GetXmlPropertyInt("genxml/config/sortorder")).ToList();
+
             foreach (var r in l3)
             {
                 var rocketInterface = new RocketInterface(new SimplisityInfo(r));

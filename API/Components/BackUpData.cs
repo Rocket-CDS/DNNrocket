@@ -101,7 +101,7 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                var s = new SystemLimpet(SystemKey);
+                var s = SystemSingleton.Instance(SystemKey);
                 if (s == null || !s.Exists) return "";
                 return s.DatabaseTable;
             }

@@ -74,7 +74,7 @@ namespace Rocket.AppThemes.Components
         {
             SystemKey = systemKey;
             DownloadPlugin();
-            System = new SystemLimpet(SystemKey);
+            System = SystemSingleton.Instance(SystemKey);
 
         }
         private void DownloadPlugin()

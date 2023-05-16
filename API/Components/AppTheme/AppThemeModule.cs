@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
         private void InitAppThemeMod() {
 
             ModuleParams = new ModuleParams(ModuleId, _systemKey);
-            systemData = new SystemLimpet(_systemKey);
+            systemData = SystemSingleton.Instance(_systemKey);
 
             ModuleTemplateFolderMapPath = PortalUtils.HomeDirectoryMapPath(PortalUtils.GetPortalId()).Trim('\\') + "\\DNNrocketThemes";
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);

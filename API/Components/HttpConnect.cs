@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
             var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
             if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
 
-            _systemData = new SystemLimpet(selectedSystemKey);
+            _systemData = SystemSingleton.Instance(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
            // _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
         }

@@ -59,7 +59,7 @@ namespace DNNrocketAPI.ApiControllers
             var paramInfo = BuildParamInfo();
             var postInfo = BuildPostInfo();
 
-            var systemData = new SystemLimpet(systemkey);
+            var systemData = SystemSingleton.Instance(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
             TrackCmd(ref paramCmd, systemData, ref rocketInterface, ref paramInfo);
@@ -118,7 +118,7 @@ namespace DNNrocketAPI.ApiControllers
                     paramCmd = sRec.GetXmlProperty("genxml/cmd");
                     var systemkey = sRec.GetXmlProperty("genxml/systemkey");
                     var interfacekey = sRec.GetXmlProperty("genxml/interfacekey");
-                    var systemData = new SystemLimpet(systemkey);
+                    var systemData = SystemSingleton.Instance(systemkey);
                     var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
                     rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
                 }
@@ -129,7 +129,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
                 if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
 
-                var systemData = new SystemLimpet(systemkey);
+                var systemData = SystemSingleton.Instance(systemkey);
                 var interfacekey = paramCmd.Split('_')[0];
                 var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
                 rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
@@ -330,7 +330,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (systemkey == "") paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');
                 if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
                 if (systemkey == "") systemkey = "dnnrocket";
-                var systemData = new SystemLimpet(systemkey);
+                var systemData = SystemSingleton.Instance(systemkey);
 
                 var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
@@ -531,7 +531,7 @@ namespace DNNrocketAPI.ApiControllers
                 var rtn = (string)CacheUtils.GetCache("sidemenu" + systemkey + UserUtils.GetCurrentUserId(), PortalUtils.GetCurrentPortalId().ToString());
                 if (rtn != null) return rtn;
 
-                var systemData = new SystemLimpet(systemkey);
+                var systemData = SystemSingleton.Instance(systemkey);
                 if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.rules";
 
                 var template = sInfo.GetXmlProperty("genxml/hidden/template");

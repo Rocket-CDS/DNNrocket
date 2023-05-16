@@ -80,18 +80,18 @@ namespace DNNrocketAPI.Components
                 if (wrapperSystemKey != "")
                 {
                     _systemKey = wrapperSystemKey;
-                    SystemData = new SystemLimpet(_systemKey);
+                    SystemData = SystemSingleton.Instance(_systemKey);
                     _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                     if (!File.Exists(DNNrocketUtils.MapPath(_defaultFileRelPath)))
                     {
                         _systemKey = systemKey;
-                        SystemData = new SystemLimpet(_systemKey);
+                        SystemData = SystemSingleton.Instance(_systemKey);
                     }
                 }
                 else
                 {
                     _systemKey = systemKey;
-                    SystemData = new SystemLimpet(_systemKey);
+                    SystemData = SystemSingleton.Instance(_systemKey);
                 }
                 _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                 var filenamepath = DNNrocketUtils.MapPath(_defaultFileRelPath);

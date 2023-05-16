@@ -31,7 +31,7 @@ namespace DNNrocketAPI.Components
                 if (File.Exists(systemFile))
                 {
                     string dirName = new DirectoryInfo(d).Name;
-                    var systemData = new SystemLimpet(dirName);
+                    var systemData = SystemSingleton.Instance(dirName);
                     if (!systemData.IsPlugin) _systemList.Add(systemData); // Plugins are not systems
                 }
             }

@@ -19,7 +19,7 @@ namespace DNNrocketAPI.Components
             if (String.IsNullOrEmpty(EmailData.EmailBody) && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
             {
                 if (EmailData.SystemKey == null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
-                var systemData = new SystemLimpet(EmailData.SystemKey);
+                var systemData = SystemSingleton.Instance(EmailData.SystemKey);
                 var razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
                 
                 // if we have no theme template, look in the system folder.

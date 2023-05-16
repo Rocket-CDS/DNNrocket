@@ -106,7 +106,7 @@ namespace RocketPortal.API
                 //foreach (var s in PortalData.SystemDataList.GetSystemActiveList())
                 //{
                 //    // delete system data
-                //    var systemData = new SystemLimpet(s.SystemKey);
+                //    var systemData = SystemSingleton.Instance(s.SystemKey);
                 //    var interfacekey = "rocketsystem";
                 //    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
                 //    if (systemData.Active)
@@ -321,7 +321,7 @@ namespace RocketPortal.API
                 if (systemKey != "")
                 {
                     // Create the system record in the DB.
-                    var systemData = new SystemLimpet(systemKey);
+                    var systemData = SystemSingleton.Instance(systemKey);
                     if (!systemData.Exists)
                     {
                         var interfacekey = "rocketsystem";

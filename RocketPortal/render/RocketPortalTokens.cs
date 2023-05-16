@@ -8,7 +8,7 @@ namespace RocketPortal.Components
     {
         public IEncodedString IsSystemValid(int portalId, string systemKey)
         {
-            var systemData = new SystemLimpet(systemKey);
+            var systemData = SystemSingleton.Instance(systemKey);
             var interfacekey = "rocketsystem";
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
             var postInfo = new SimplisityInfo();

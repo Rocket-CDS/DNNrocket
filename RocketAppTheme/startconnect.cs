@@ -186,7 +186,7 @@ namespace DNNrocket.AppThemes
             _postInfo = postInfo;
             _paramInfo = paramInfo;
             _passSettings = new Dictionary<string, string>();
-            _systemData = new SystemLimpet(_systemKey);
+            _systemData = SystemSingleton.Instance(_systemKey);
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);

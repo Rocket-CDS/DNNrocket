@@ -9,7 +9,7 @@
 
 @{
     var systemGloablData = new SystemGlobalData();
-    var systemData = new SystemLimpet("rocketportal");
+    var systemData = SystemSingleton.Instance("rocketportal");
     var sessionParams = Model.SessionParamsData;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
 

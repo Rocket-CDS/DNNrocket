@@ -182,7 +182,7 @@ namespace RocketPortal.API
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _systemData = new SystemLimpet("rocketportal");
+            _systemData = SystemSingleton.Instance("rocketportal");
             _rocketInterface = new RocketInterface(interfaceInfo);
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);

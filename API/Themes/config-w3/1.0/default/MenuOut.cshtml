@@ -13,7 +13,7 @@
 
 @{
     var sidemenu = (SideMenu)Model.List.First();
-    var systemData = new SystemLimpet(sidemenu.SystemKey);
+    var systemData = SystemSingleton.Instance(sidemenu.SystemKey);
 
 
     var menuOut = "";
