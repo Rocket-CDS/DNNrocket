@@ -17,12 +17,7 @@ namespace DNNrocketAPI.Components
             Record = new SimplisityRecord();
             SystemKey = systemKey.ToLower();
             GetSystemRelPath();
-            Record = (SimplisityRecord)CacheUtils.GetCache(systemKey); // use cache for SystemKey read.
-            if (Record == null || Record.GetXmlProperty("genxml/systemkey") == "")
-            {
-                Record = GetConfig();
-                CacheUtils.SetCache(systemKey, Record);
-            }
+            Record = GetConfig();
             InitSystem();
         }
         private SimplisityRecord GetConfig()
