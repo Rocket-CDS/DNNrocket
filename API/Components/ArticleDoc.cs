@@ -12,10 +12,12 @@ namespace DNNrocketAPI.Components
         {
             Info = info;
             FieldId = fieldId;
+            Exists = true;
             if (Info.GetXmlProperty("genxml/hidden/dockey") == "")
             {
                 var dockey = GeneralUtils.GetUniqueString();
                 Info.SetXmlProperty("genxml/hidden/dockey", dockey);
+                Exists = false;
             }
         }
 
@@ -77,6 +79,7 @@ namespace DNNrocketAPI.Components
                 Info.SetXmlProperty("genxml/lang/genxml/checkbox/documenthidden" + FieldId, value.ToString());
             }
         }
+        public bool Exists { get; set; }
 
     }
 }
