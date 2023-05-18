@@ -312,7 +312,7 @@ namespace DNNrocketAPI.Components
                                 try
                                 {
                                     newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
-                                    if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
+                                    //if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
                                 }
                                 catch (Exception)
                                 {
@@ -321,7 +321,7 @@ namespace DNNrocketAPI.Components
                                     try
                                     {
                                         newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
-                                        if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
+                                        //if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
                                     }
                                     catch
                                     {
@@ -453,10 +453,7 @@ namespace DNNrocketAPI.Components
 
                                 try
                                 {
-                                    if (!webpConvert)
-                                        newImage.Save(filePathOut, useEncoder, encoderParameters);
-                                    else
-                                        filePathOut = ConvertToWebp(imgPathName, filePathOut);
+                                    newImage.Save(filePathOut, useEncoder, encoderParameters);
                                 }
                                 catch (Exception)
                                 {
@@ -464,10 +461,7 @@ namespace DNNrocketAPI.Components
                                     // attempt to clear all file locks and try again
                                     try
                                     {
-                                        if (!webpConvert)
-                                            newImage.Save(filePathOut, useEncoder, encoderParameters);
-                                        else
-                                            filePathOut = ConvertToWebp(imgPathName, filePathOut);
+                                        newImage.Save(filePathOut, useEncoder, encoderParameters);
                                     }
                                     catch
                                     {

@@ -405,6 +405,7 @@ namespace DNNrocketAPI.render
 
             if (width > 0 || height > 0)
             {
+                if (imgType == "" && url.ToLower().EndsWith(".jpg")) imgType = "&imgtype=jpg";
                 if (imgType == "" && url.ToLower().EndsWith(".png")) imgType = "&imgtype=png";
                 if (imgType == "" && url.ToLower().EndsWith(".webp")) imgType = "&imgtype=webp";
 
