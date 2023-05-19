@@ -5,7 +5,7 @@ var debugmode = false;
 (function ($) {
 
     $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, spost) {
-        if (debugmode) {
+        if (debugmode === true) {
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
             console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields, spost);
         }
@@ -110,7 +110,7 @@ function simplisity_panelAjaxFunction(panelelement) {
 
         simplisity_callserver(panelelement, cmdurl, sreturn);
 
-        if (debugmode) {
+        if (debugmode === true) {
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
             console.log('[simplisity_panelAjaxFunction()] s-cmd: ', jQuery(panelelement).attr('s-cmd'));
         }
@@ -135,7 +135,7 @@ function simplisity_nbxgetCompleted(e) {
     jQuery('input[id*="simplisity_fileuploadlist"]').val('');
     jQuery('input[id*="simplisity_fileuploadbase64"]').val('');
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('-------END AJAX CALL------- ');
     }
@@ -152,7 +152,7 @@ function simplisity_nbxgetCompleted(e) {
 
 function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields) {
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('[simplisityPost()] scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist);
     }
@@ -187,7 +187,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
         if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
 
-            if (debugmode) {
+            if (debugmode === true) {
                 // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
                 console.log('------- START AJAX CALL [dropdown] ------- ' + scmd);
             }
@@ -221,7 +221,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         }
         else {
 
-            if (debugmode) {
+            if (debugmode === true) {
                 // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
                 console.log('------- START AJAX CALL------- ' + scmd);
             }
@@ -284,7 +284,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                             }
                         }
 
-                        if (debugmode) {
+                        if (debugmode === true) {
                             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
                             //console.log('returned data: ' + data);
                         }
@@ -463,7 +463,7 @@ function simplisity_ConvertParamToJSON(sfields, paramfields) {
     var systemobj = simplisity_parsejson(system);
     viewData.system.push(systemobj);
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('[simplisity_ConvertParamToJSON(sfields)] stringify json: ' + simplisity_stringifyjson(viewData));
     }
@@ -583,7 +583,7 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields, paramfields) {
     viewData.system.push(systemobj);
 
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('json: ' + simplisity_stringifyjson(viewData));
     }
@@ -630,7 +630,7 @@ function simplisity_getpostjson(spost) {
         });
     }
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('json: ' + simplisity_stringifyjson(viewData));
     }
@@ -683,7 +683,7 @@ function simplisity_getlistjson(slist) {
         });
     }
 
-    if (debugmode) {
+    if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('json: ' + simplisity_stringifyjson(viewData));
     }
