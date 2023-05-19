@@ -44,6 +44,8 @@ using Encoding = System.Text.Encoding;
 using System.Web.Hosting;
 using DotNetNuke.Services.ClientCapability;
 using DNNrocketAPI.Interfaces;
+using DotNetNuke.Web.DDRMenu;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -1675,6 +1677,10 @@ namespace DNNrocketAPI.Components
                 lp += 2;
             }
             return Globals.NavigateURL(tabId, "", param).ToString();
+        }
+        public static string NavigateURL(int tabId, string cultureCode, string[] param)
+        {
+            return Globals.NavigateURL(tabId, false, null, "", cultureCode, param).ToString();
         }
         public static string UrlFriendly(string textstring)
         {
