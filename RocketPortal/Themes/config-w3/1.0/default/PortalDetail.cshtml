@@ -140,16 +140,16 @@
     </div>
 
     <div id="systemdata" class="w3-row w3-padding" style="display:none;">
-        @RenderTemplate("PortalSystems.cshtml", appThemeSystem, Model)
+        @RenderTemplate("PortalSystems.cshtml", appThemeSystem, Model, true)
     </div>
 
 
     <div id="languagesdata" class="w3-row w3-padding" style="display:none;">
-        @RenderTemplate("PortalLanguages.cshtml", appThemeSystem, Model)
+        @RenderTemplate("PortalLanguages.cshtml", appThemeSystem, Model, true)
     </div>
 
     <div id="managerdata" class="w3-row w3-padding" style="display:none;">
-        @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model)
+        @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model, true)
     </div>
 
     <div id="setupdata" class="w3-row w3-padding">
@@ -216,6 +216,7 @@
                 });
                 var s = simplisity_getCookieValue("rocketportal_tabselector")	
                 selectmenu(s);
+
             });
         </script>
 

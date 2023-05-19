@@ -47,6 +47,7 @@
 
         simplisity_setParamField("reload", true);  // This will flag that a reload is done.  The Server side code will get the last command tracked.
         simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
+        simplisity_setParamField("sysadmin", true); // identify sysadmin.aspx
 
     });
 

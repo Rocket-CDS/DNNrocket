@@ -11,6 +11,7 @@
     var info = new SimplisityInfo(portalData.Record);
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemActiveList();
+    var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
 }
 
 <div class="w3-row w3-margin-top">
@@ -38,7 +39,7 @@
                         {
                             rCol = "w3-text-red";
                         }
-                        <div class="w3-button @(rCol) simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
+                        <div class="w3-button @(rCol) simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return=".systempopup" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
                             @ButtonIcon(ButtonTypes.setup)
                         </div>
                     }
@@ -75,3 +76,15 @@
     </table>
 
 </div>
+
+@RenderTemplate("popups.cshtml", appThemeSystem, Model, true)
+
+<script>
+
+    function showsystempopup()
+    {
+        $('#systemmodal').show()
+    }
+
+</script>
+                            

@@ -216,7 +216,7 @@ namespace DNNrocketAPI.render
             if (pr.StatusCode == "00")
                 strOut = pr.RenderedText;
             else
-                if (debugMode) strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
+                strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
 
             return new RawString(strOut);
         }

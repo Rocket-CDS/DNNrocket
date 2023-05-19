@@ -46,8 +46,8 @@ namespace RocketPortal.API
                     }
                     strOut = "OK";
                     break;
-                case "dashboard_activesystems":
-                    strOut = ActiveSystems();
+                case "dashboard_portalsystems":
+                    strOut = portalsystems();
                     break;
                 case "dashboard_adminpanel":
                     strOut = AdminPanel();
@@ -266,11 +266,11 @@ namespace RocketPortal.API
             }
             return rtnxml.ToXmlItem();
         }
-        private string ActiveSystems()
+        private string portalsystems()
         {
             try
             {
-                var razorTempl = _appThemeSystem.GetTemplate("ActiveSystems.cshtml");
+                var razorTempl = _appThemeSystem.GetTemplate("portalsystems.cshtml");
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
                 if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
