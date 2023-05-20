@@ -847,7 +847,8 @@ function simplisity_systemkey() {
     return jQuery('#simplisity_systemkey').val();
 }
 function simplisity_sessionjson() {
-    var rtn = window.sessionStorage.getItem('simplisity_sessionparams'); // use session storage, idependant of browser.
+
+    var rtn = simplisity_getCookieValue('simplisity_sessionparams')
     var out = '{"null":"null"}';
     if (rtn && typeof rtn !== 'undefined' && rtn !== '') {
         out = rtn;
@@ -862,7 +863,6 @@ function simplisity_sessionjson() {
     }
 }
 function simplisity_sessionremove() {
-    window.sessionStorage.setItem('simplisity_sessionparams', ''); // use session storage, idependant of browser.
     simplisity_setCookieValue('simplisity_sessionparams', ''); // Cookies are created for toasted modules.
 }
 function simplisity_sessionpost() {
@@ -912,11 +912,7 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
         }
         obj[fieldkey] = fieldvalue;
 
-        window.sessionStorage.setItem('simplisity_sessionparams', simplisity_stringifyjson(obj)); // use session storage, idependant of browser.
-
-        // cookie needed as cookie for toated version, where the module calls the toast server and we assign in the module before client based API call.
-        simplisity_setCookieValue('simplisity_sessionparams', window.sessionStorage.getItem('simplisity_sessionparams'));
-
+        simplisity_setCookieValue('simplisity_sessionparams', simplisity_stringifyjson(obj));        
     }
 }
 function simplisity_getSessionField(fieldkey) {
