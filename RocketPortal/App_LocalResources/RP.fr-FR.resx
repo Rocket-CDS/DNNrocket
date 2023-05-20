@@ -123,4 +123,99 @@
   <data name="validate.Text" xml:space="preserve">
     <value>Valider</value>
   </data>
+  <data name="githuborg.Text" xml:space="preserve">
+    <value>GitHub Organization</value>
+  </data>
+  <data name="accesscode.Text" xml:space="preserve">
+    <value>Code d'accès à l'API</value>
+  </data>
+  <data name="accesspassword.Text" xml:space="preserve">
+    <value>Mot de passe d'accès à l'API</value>
+  </data>
+  <data name="actionprovider.Help" xml:space="preserve">
+    <value>Les fournisseurs d'actions peuvent être exécutés à partir d'ici.  Un fournisseur d'action est conçu pour effectuer une action unique sur l'installation du système, généralement pour mettre à jour des enregistrements ou résoudre des problèmes.
+&lt;br/&gt;
+L'assemblage qui sera exécuté doit être installé dans le dossier bin, puis l'assemblage, l'espace de noms, la classe et les données supplémentaires peuvent être ajoutés dans les champs ci-dessous. &lt;br/&gt;L'assemblage du fournisseur d'actions doit hériter de la classe "ActionProvider".</value>
+  </data>
+  <data name="actionprovider.Text" xml:space="preserve">
+    <value>Fournisseur d'actions</value>
+  </data>
+  <data name="addmanager.Text" xml:space="preserve">
+    <value>Ajouter un gestionnaire</value>
+  </data>
+  <data name="assembly.Text" xml:space="preserve">
+    <value>Nom de l'assemblée</value>
+  </data>
+  <data name="confirmationcode.Text" xml:space="preserve">
+    <value>Code de confirmation</value>
+  </data>
+  <data name="defaultlanguage.Text" xml:space="preserve">
+    <value>Langue par défaut</value>
+  </data>
+  <data name="deleteportal.Msg" xml:space="preserve">
+    <value>La suppression de ce service entraînera la suppression de TOUTES les données liées à ce service.  Pour continuer, entrez le code ci-dessous dans la zone de texte de confirmation.</value>
+  </data>
+  <data name="editapptheme.Text" xml:space="preserve">
+    <value>Modifier l'AppTheme</value>
+  </data>
+  <data name="general.Text" xml:space="preserve">
+    <value>Général !</value>
+  </data>
+  <data name="imagetype.Text" xml:space="preserve">
+    <value>Type d'image</value>
+  </data>
+  <data name="languages.Text" xml:space="preserve">
+    <value>Langues</value>
+  </data>
+  <data name="manageremail.Text" xml:space="preserve">
+    <value>Courriel du directeur</value>
+  </data>
+  <data name="managerpassword.Text" xml:space="preserve">
+    <value>Mot de passe du gestionnaire</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="namespaceclass.Text" xml:space="preserve">
+    <value>Namespace.Class</value>
+  </data>
+  <data name="newservice.Text" xml:space="preserve">
+    <value>Nouveau WebService</value>
+  </data>
+  <data name="portalexists.Text" xml:space="preserve">
+    <value>L'URL existe déjà</value>
+  </data>
+  <data name="protocol.Text" xml:space="preserve">
+    <value>Protocole</value>
+  </data>
+  <data name="resetsecurity.Confirm" xml:space="preserve">
+    <value>AVERTISSEMENT.  La réinitialisation des codes de sécurité peut interrompre la communication avec d'autres systèmes.  Voulez-vous continuer à réinitialiser les codes ?</value>
+  </data>
+  <data name="resetsecurity.Text" xml:space="preserve">
+    <value>Réinitialiser la sécurité</value>
+  </data>
+  <data name="resetwebservicecode.Confirm" xml:space="preserve">
+    <value>ATTENTION.  La réinitialisation des codes du WebService peut interrompre la communication avec d'autres systèmes.  Voulez-vous continuer à réinitialiser les codes ?</value>
+  </data>
+  <data name="resetwebservicecode.Text" xml:space="preserve">
+    <value>Code du WebService de réinitialisation</value>
+  </data>
+  <data name="rootdomain.Text" xml:space="preserve">
+    <value>Domaine racine</value>
+  </data>
+  <data name="securitycode.Help" xml:space="preserve">
+    <value>Le code du service Web est utilisé pour enregistrer un client Web.  Ce code est envoyé par le système client pour obtenir l'accès à ce WebService.  &lt;b&gt;GARDEZ CE CODE SECRET&lt;/b&gt;</value>
+  </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Code du service Web</value>
+  </data>
+  <data name="selectsystem.Text" xml:space="preserve">
+    <value>Sélectionnez le type de WebService.</value>
+  </data>
+  <data name="service.Text" xml:space="preserve">
+    <value>Services Web</value>
+  </data>
+  <data name="serviceurl.Text" xml:space="preserve">
+    <value>URL du service web</value>
+  </data>
 </root>

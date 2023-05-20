@@ -117,31 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DocGallery" xml:space="preserve">
-    <value>@* ----- Document Gallery: BEGIN ------------------------------------------ *@
-&lt;div class="w3-container"&gt;
-@foreach(var i in info.GetList("documentlistdocs"))
-{
-    if (i.GetXmlProperty("genxml/lang/genxml/hidden/reldocs") != "")
-    {
-        var docalign = "";
-        if (i.GetXmlPropertyInt("genxml/hidden/layoutdocs") == 1)
-        {
-            docalign = "w3-center";
-        }
-        if (i.GetXmlPropertyInt("genxml/hidden/layoutdocs") == 2)
-        {
-            docalign = "w3-right";
-        }
-    &lt;div class="@docalign"&gt;
-        &lt;a class="w3-button w3-theme w3-padding-8" style="cursor:pointer;" href="@(i.GetXmlProperty("genxml/lang/genxml/hidden/reldocs"))" download&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocs")&lt;/a&gt;
-    &lt;/div&gt;
-    }
-}
-&lt;/div&gt;
-        @* ----- Document Gallery: END ------------------------------------------ *@
-</value>
-  </data>
   <data name="Image" xml:space="preserve">
     <value>&lt;div&gt;
 	&lt;img src='@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), info.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , info.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/&gt;

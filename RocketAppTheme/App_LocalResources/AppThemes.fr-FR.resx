@@ -405,4 +405,16 @@
   <data name="versionmsg.Text" xml:space="preserve">
     <value>Créez une nouvelle version de cet AppTheme.!</value>
   </data>
+  <data name="addlanguage.Text" xml:space="preserve">
+    <value>Ajouter une langue</value>
+  </data>
+  <data name="dependancies.Note" xml:space="preserve">
+    <value>REMARQUE : les dépendances ne sont utilisées que dans la vue frontale du site web.  Pour l'administration, utilisez "AdminFirstHeader.cshtml".</value>
+  </data>
+  <data name="dependancies.Text" xml:space="preserve">
+    <value>Dépendances</value>
+  </data>
+  <data name="editportalappthemes.Text" xml:space="preserve">
+    <value>Modifier le portail AppThemes</value>
+  </data>
 </root>

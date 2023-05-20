@@ -135,9 +135,6 @@
   <data name="incorrectpass.Text" xml:space="preserve">
     <value>Incorrect UserName or Password!</value>
   </data>
-  <data name="login.Text" xml:space="preserve">
-    <value>Login</value>
-  </data>
   <data name="password.Text" xml:space="preserve">
     <value>Password</value>
   </data>
