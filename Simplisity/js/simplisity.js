@@ -124,7 +124,13 @@ function simplisity_nbxgetCompleted(e) {
     if ((typeof e.safter !== 'undefined') && e.safter !== '') {
         var funclist = e.safter.split(',');
         for (var i = 0; i < funclist.length; i++) {
-            window[funclist[i]]();
+
+            if (typeof (window[funclist[i]]) === "function" || typeof (window[funclist[i]]) === "object") {
+                window[funclist[i]]();
+            } else {
+                console.log('ERROR: function does not exist. ' + funclist[i]);
+            }
+
         }
     }
 
@@ -322,7 +328,13 @@ async function simplisity_callBeforeFunction(element) {
         if ((typeof jQuery(element).attr('s-before') !== 'undefined') && jQuery(element).attr('s-before') !== '') {
             var funclist = jQuery(element).attr('s-before').split(',');
             for (var i = 0; i < funclist.length; i++) {
-                window[funclist[i]]();
+
+                if (typeof (window[funclist[i]]) === "function" || typeof (window[funclist[i]]) === "object") {
+                    window[funclist[i]]();
+                } else {
+                    console.log('ERROR: function does not exist. ' + funclist[i]);
+                }
+
             }
         }
     }
