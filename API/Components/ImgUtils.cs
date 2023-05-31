@@ -557,9 +557,14 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         if (!webpConvert)
+                        {
                             newImage.Save(filePathOut, useEncoder, encoderParameters);
+                            filePathOut = ConvertToWebp(Path.GetDirectoryName(filePathOut) + "\\" + Path.GetFileNameWithoutExtension(filePathOut) +  ".webp");
+                        }
                         else
+                        {
                             filePathOut = ConvertToWebp(filePathOut);
+                        }
                     }
                     catch (Exception)
                     {
@@ -567,7 +572,10 @@ namespace DNNrocketAPI.Components
                         try
                         {
                             if (!webpConvert)
+                            {
                                 newImage.Save(filePathOut, useEncoder, encoderParameters);
+                                filePathOut = ConvertToWebp(Path.GetDirectoryName(filePathOut) + "\\" + Path.GetFileNameWithoutExtension(filePathOut) + ".webp");
+                            }
                             else
                                 filePathOut = ConvertToWebp(filePathOut);
                         }
@@ -738,8 +746,12 @@ namespace DNNrocketAPI.Components
                             imageFile.Write(bytes, 0, bytes.Length);
                             imageFile.Flush();
                         }
-                        var filename = ImgUtils.ResizeImage(tempFileMapPath, imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname)), size);
+                        var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
+                        var filename = ImgUtils.ResizeImage(tempFileMapPath, newfilename, size);
                         rtn.Add(filename);
+
+                        if (Path.GetExtension(newfilename).ToLower() != ".webp") ConvertToWebp(newfilename, Path.GetDirectoryName(newfilename) + "\\" + Path.GetFileNameWithoutExtension(newfilename) + ".webp");
+
                         try
                         {
                             File.Delete(tempFileMapPath);

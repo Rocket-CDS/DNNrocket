@@ -2,6 +2,7 @@
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace DNNrocketAPI.Components
@@ -55,6 +56,10 @@ namespace DNNrocketAPI.Components
             {
                 Info.SetXmlProperty("genxml/hidden/imagepath" + FieldId, value);
             }
+        }
+        public string RelPathWebp
+        {
+            get { return Path.GetDirectoryName(RelPath) + "/" + Path.GetFileNameWithoutExtension(RelPath) + ".webp"; }
         }
         public string Name
         {
