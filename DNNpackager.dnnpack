@@ -2,7 +2,7 @@
   <!-- To build install file use "Solution Directory" -->
 	<version>1.0.27</version>
 	<!-- Include only files that match the regular expression -->
-  <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules)$</regexpr>
+  <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>0_DNNrocket</name>
   <directory include='false'>
 		<!-- All paths should be from the source root (project root) -->
@@ -18,8 +18,9 @@
     <value>\API\images\*</value>
     <value>\API\Systems</value>
     <value>\API\Themes\*</value>
+	<value>\API\CKEditor\*</value>
 
-    <value>\Country</value>
+	  <value>\Country</value>
     <value>\Country\App_LocalResources</value>
     <value>\Country\Themes\*</value>
 
@@ -37,7 +38,6 @@
 	<value>\css\*</value>
     <value>\js\*</value>
     <value>\Quill\*</value>
-    <value>\CKEditor\*</value>
     <value>\CodeMirror\*</value>
 
     <value>\RocketPortal</value>

@@ -584,10 +584,10 @@ namespace DNNrocketAPI.render
             }
             var codedtext = "";
             if (coded) codedtext = " s-datatype='coded' ";
-            strOut += " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
+            strOut += " <textarea id='" + id + "' title='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
-        public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false)
+        public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
             var id = getIdFromXpath(xpath, row, listname);
@@ -595,21 +595,13 @@ namespace DNNrocketAPI.render
             if (localized && !xpath.StartsWith("genxml/lang/")) value = info.GetXmlProperty("genxml/lang/" + xpath);
             var codedtext = "";
             if (coded) codedtext = " s-datatype='coded' ";
-            var strOut = " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
-            strOut += "<script>";
-            strOut += "$(document).ready(function () {";
-            strOut += " CKEDITOR.replace('" + id + "');";
-            strOut += " CKEDITOR.config.allowedContent = true;";
-            strOut += " CKEDITOR.instances." + id + ".on('key', function () {";
-            strOut += " $('#" + id + "').val(CKEDITOR.instances." + id + ".getData());";
-            strOut += "";
-            strOut += " });";
-            strOut += " CKEDITOR.instances." + id + ".on('change', function () {";
-            strOut += " $('#" + id + "').val(CKEDITOR.instances." + id + ".getData());";
-            strOut += "";
-            strOut += " });";
-            strOut += "});";
-            strOut += "</script>";
+            var strOut = " <textarea id='" + id + "' title='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
+
+            var appTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+
+            strOut += appTheme.GetTemplate(filename);
+            strOut = strOut.Replace("{id}", id);
+
             return new RawString(strOut);
         }
 
