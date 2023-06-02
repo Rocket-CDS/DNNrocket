@@ -174,6 +174,10 @@ namespace DNNrocketAPI.Components
         }
         public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
         {
+            return UserLogin(sessionParams.UserHostAddress, username, password, rememberme);
+        }
+        public static bool UserLogin(string userHostAddress, string username, string password, bool rememberme)
+        {
             UserLoginStatus loginStatus = new UserLoginStatus();
 
             UserInfo objUser;
@@ -190,7 +194,7 @@ namespace DNNrocketAPI.Components
                 var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
                 if (userValid == UserValidStatus.VALID)
                 {
-                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, sessionParams.UserHostAddress, ref loginStatus, rememberme);
+                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, userHostAddress, ref loginStatus, rememberme);
                     if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
                     {
                         return true;
@@ -198,6 +202,26 @@ namespace DNNrocketAPI.Components
                 }
             }
             return false;
+        }
+        public static void UserLogin(int portalId, string portalName, string userHostAddress, string username, bool rememberme)
+        {
+            UserInfo objUser;
+            if (GeneralUtils.IsEmail(username))
+            {
+                objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, username);
+            }
+            else
+            {
+                objUser = UserController.GetUserByName(PortalSettings.Current.PortalId, username);
+            }
+            if (objUser != null)
+            {
+                var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
+                if (userValid == UserValidStatus.VALID)
+                {
+                    UserController.UserLogin(portalId, objUser, portalName, userHostAddress, rememberme);
+                }
+            }
         }
         /// <summary>
         /// Do login using gereric login form data. xpath must use...

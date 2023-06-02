@@ -227,6 +227,7 @@
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\ModuleBase.cs" />
+    <Compile Include="Components\AutoLogin.cs" />
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
@@ -348,6 +349,7 @@
     <None Include="CKEditor\ckeditor4.21.0\skins\moono-lisa\readme.md" />
     <None Include="CKEditor\ReadMe_CKEditor.md" />
     <None Include="DNNpackager.dnnpack" />
+    <None Include="Documents\AutoLogin.md" />
     <None Include="Documents\ChangeLanguage_Code.md" />
     <None Include="Documents\DebugAPI.md" />
     <None Include="Documents\AjaxDropDownCode.docx" />

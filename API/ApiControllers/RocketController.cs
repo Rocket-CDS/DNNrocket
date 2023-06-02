@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;  
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -424,6 +425,9 @@ namespace DNNrocketAPI.ApiControllers
                             strOut = SystemGlobalDetail(paramInfo);
                         }
                         break;
+                    case "rocketapi_autologin":
+                        strOut = AutoLoginCodeFile(paramInfo);
+                        break;
 
                     default:
                         strOut = "process"; // process the provider              
@@ -675,6 +679,26 @@ namespace DNNrocketAPI.ApiControllers
             DNNrocketUtils.RecycleApplicationPool();
             return "OK";
         }
+        private string AutoLoginCodeFile(SimplisityInfo paramInfo)
+        {
+            if (UserUtils.IsAuthorised())
+            {
+                var redirectsystemkey = paramInfo.GetXmlProperty("genxml/hidden/redirectsystemkey");
+                var newportal = paramInfo.GetXmlPropertyInt("genxml/hidden/newportal");
+                paramInfo.SetXmlProperty("genxml/username", UserUtils.GetCurrentUserName());
+                paramInfo.SetXmlProperty("genxml/useremail", UserUtils.GetCurrentUserEmail());
+                paramInfo.SetXmlProperty("genxml/userhostaddress", HttpContext.Current.Request.UserHostAddress);                
+                var logincode = DNNrocketUtils.SaveTempStorage(paramInfo.XMLData, 1);
+                var portalUrl = PortalUtils.DefaultPortalAlias(newportal);
+                // use http, https should be used but a rediect in IIS will solve that. http is easier for testing and there should be no security issue.
+                if (redirectsystemkey != "")
+                    return "http://" + portalUrl + "/sysadmin/" + redirectsystemkey + "?autologin=" + logincode; 
+                else
+                    return "http://" + portalUrl + "?autologin=" + logincode;
+            }
+            return "";
+        }
+        
         private String SystemGlobalDetail(SimplisityInfo paramInfo)
         {
             var passSettings = paramInfo.ToDictionary();
