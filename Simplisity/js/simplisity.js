@@ -39,7 +39,8 @@ var debugmode = false;
         var settings = $.extend({
             activatepanel: true,
             overlayclass: '',
-            debug: false
+            debug: false,
+            hideprocess: true
         }, options);
 
         debugmode = settings.debug;
@@ -54,7 +55,9 @@ var debugmode = false;
 
         simplisity_panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
-        //$('.simplisity_loader').hide();
+        if (settings.hideprocess) {
+            $('.simplisity_loader').hide();
+        }
 
     };
 }(jQuery));
