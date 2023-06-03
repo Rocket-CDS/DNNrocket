@@ -71,7 +71,10 @@ namespace DNNrocketAPI.Components
                 }
 
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            catch (Exception ex) {
+                LogUtils.LogSystem(ex.ToString());
+                Console.WriteLine(ex.ToString());
+            }
             return;
         }
         public bool CreateFTPDirectory(string directory)
