@@ -108,11 +108,24 @@ namespace DNNrocketAPI.Components
         {
             if (!string.IsNullOrEmpty(href))
             {
-                if (!page.ClientScript.IsClientScriptIncludeRegistered(id))
+                string strId = id.Replace(@"/", "");
+                var jsCtrl = page.Header.FindControl(strId);
+                if (jsCtrl == null)
                 {
-                    page.ClientScript.RegisterClientScriptInclude(id, href);
+                    jsCtrl = new LiteralControl("<script src=\"" + href + "\" type=\"text/javascript\"></script>");
+                    jsCtrl.ID = strId;
+                    page.Header.Controls.Add(jsCtrl); // add after jQuery
                 }
             }
+
+            // This adds script into the body, works but can cause problems.
+            //if (!string.IsNullOrEmpty(href))
+            //{
+            //    if (!page.ClientScript.IsClientScriptIncludeRegistered(id))
+            //    {
+            //        page.ClientScript.RegisterClientScriptInclude(id, href);
+            //    }
+            //}
         }
 
 
