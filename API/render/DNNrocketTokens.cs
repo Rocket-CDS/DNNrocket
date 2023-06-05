@@ -94,21 +94,23 @@ namespace DNNrocketAPI.render
             }
             return new RawString(strOut.TrimEnd(','));
         }
+        public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = "")
+        {
+            return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang) + "&nbsp;" + ResourceKeyString("Icons." + buttontype, lang, "Icon"));
+        }
+        public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = "")
+        {
+            return ButtonText(buttontype, lang);
+        }
         public IEncodedString ButtonText(ButtonTypes buttontype, String lang = "")
         {
-            if (buttontype == ButtonTypes.next)
-            {
-                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang) + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
-            }
-            else
-            {
-                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
-
-            }
+            return new RawString(ResourceKeyString("Icons." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
         }
         public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")
         {
-            return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
+            var rtn = ResourceKeyString("Icons." + buttontype, lang, "Icon");
+            if (!rtn.Contains("title=")) rtn = rtn.Replace("<span ","<span title=\"" + ResourceKeyString("DNNrocket." + buttontype, lang) + "\"");
+            return new RawString(rtn);
         }
         public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {

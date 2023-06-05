@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
 
 <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: Roboto, sans-serif;}
     #editBarContainer { display: none !important }
     .personalBarContainer { display: none !important }
     #Body { margin-left: 0px !important }
