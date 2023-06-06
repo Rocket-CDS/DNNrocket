@@ -21,7 +21,7 @@
         {
             <a href="@sessionParam.Get("returnurl")" class="w3-button w3-black" style="text-decoration: none;">@ButtonText(ButtonTypes.back)</a>
         }
-        @if (sessionParam.ModuleRef == "")
+        else
         {
             <span class="w3-button w3-black  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonText(ButtonTypes.back)</span>
         }
@@ -37,15 +37,6 @@
 
         @if (sessionParam.ModuleRef != "")
         {
-        <a href="@(portalData.EngineUrlWithProtocol)/sysadmin/rocketapptheme" target="_blank" class="w3-button w3-right" style="text-decoration:none;">
-            <span class="material-icons">
-                movie_edit
-            </span>
-                @ResourceKey("AppThemes.editportalappthemes")
-        </a>
-        }
-        @if (sessionParam.ModuleRef != "")
-        {
             <span class="w3-right w3-large w3-margin-right">@(sessionParam.ModuleRef)</span>
         }
         else
@@ -56,5 +47,42 @@
 
     </div>
 </div>
+<div class="w3-row">
+    <div class="w3-col m8 w3-padding">
+        @if (sessionParam.ModuleRef != "")
+        {
+        <a href="/sysadmin/rocketapptheme?modref=@sessionParam.Get("moduleref")&appthemefolder=@(appTheme.AppThemeFolder)&appversionfolder=@(appTheme.AppVersionFolder)&project=@(appTheme.ProjectName)&rtn=@sessionParam.Get("returnurlcode")" class="w3-button w3-pale-yellow w3-right" style="text-decoration:none;">
+            <span class="material-icons">
+                movie_edit
+            </span>
+            @ResourceKey("AppThemes.editportalapptheme")
+        </a>
+        }
+        else
+        {
+            <a href="/sysadmin/rocketapptheme?moduleref=@sessionParam.Get("modref")&appthemefolder=@(appTheme.AppThemeFolder)&appversionfolder=@(appTheme.AppVersionFolder)&project=@(appTheme.ProjectName)&rtn=@sessionParam.Get("returnurlcode")" class="w3-button w3-pale-blue w3-right" style="text-decoration:none;">
+            <span class="material-icons">
+                movie_edit
+            </span>
+            @ResourceKey("AppThemes.editmodelapptheme")
+        </a>
+        }
+
+
+    </div>
+    @if (sessionParam.ModuleRef != "")
+    {
+    <div class="w3-pale-blue w3-col m4 w3-padding w3-border-blue">
+        <span class="w3-xlarge">Module Level&nbsp;<img src="/images/level_module.svg" /></span>
+    </div>
+    }
+    else
+    {
+        <div class="w3-pale-yellow w3-col m4 w3-padding w3-border-blue">
+            <span class="w3-xlarge">Portal Level&nbsp;<img src="/images/level_portal.svg" /></span>
+        </div>
+    }
+</div>
 
 @RenderTemplate("AppThemeFields.cshtml", systemAppTheme, Model, true)
+

@@ -216,11 +216,17 @@
   <data name="edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="editmodelapptheme.Text" xml:space="preserve">
+    <value>Module Level</value>
+  </data>
   <data name="editmsg.Text" xml:space="preserve">
     <value>Edit an existing AppTheme.</value>
   </data>
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
+  </data>
+  <data name="editportalapptheme.Text" xml:space="preserve">
+    <value>Portal Level</value>
   </data>
   <data name="editportalappthemes.Text" xml:space="preserve">
     <value>Edit Portal AppThemes</value>

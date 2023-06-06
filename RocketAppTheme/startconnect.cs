@@ -32,9 +32,11 @@ namespace DNNrocket.AppThemes
         private SessionParams _sessionParams;
         private PortalLimpet _portalData;
         private string _moduleref;
+        private string _modref;
         private string _projectName;
         private AppThemeProjectLimpet _appThemeProjectData;
         private string _returnUrl;
+        private string _returnUrlCode;
 
         public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -43,8 +45,7 @@ namespace DNNrocket.AppThemes
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
-            var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
-            if (UserUtils.IsSuperUser() || _portalData.SecurityKeyEdit == sk)
+            if (UserUtils.IsSuperUser())
             {
 
                 AssignEditLang();
@@ -207,27 +208,39 @@ namespace DNNrocket.AppThemes
                 Uri requestUri = new Uri(requestUrl);
                 if (HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref") != "")
                 {
+                    _modref = HttpUtility.ParseQueryString(requestUri.Query).Get("modref");
                     _moduleref = HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref");
+                    if (_moduleref == null) _moduleref = "";
                     _appThemeFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appthemefolder");
                     _appVersionFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appversionfolder");
                     _projectName = HttpUtility.ParseQueryString(requestUri.Query).Get("project");
                     _returnUrl = HttpUtility.UrlDecode(GeneralUtils.DeCode(HttpUtility.ParseQueryString(requestUri.Query).Get("rtn")));
+                    _returnUrlCode = HttpUtility.ParseQueryString(requestUri.Query).Get("rtn");
                 }
             }
             else
             {
                 _moduleref = "";
+                _modref = "";
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
                 _projectName = _paramInfo.GetXmlProperty("genxml/remote/selectedproject");
                 if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
                 if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
                 _returnUrl = "";
+                _returnUrlCode = "";
             }
             _sessionParams.ModuleRef = _moduleref;
             _sessionParams.Set("returnurl", _returnUrl);
+            _sessionParams.Set("returnurlcode", _returnUrlCode);
+            _sessionParams.Set("modref", _modref);
 
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
+
+            if (paramCmd == "rocketapptheme_getlist" && _appThemeFolder != "")
+            {
+                paramCmd = "rocketapptheme_getdetail";
+            }
 
             return paramCmd;
         }
@@ -645,6 +658,7 @@ namespace DNNrocket.AppThemes
         {
             var razorTempl = _appThemeSystem.GetTemplate(templateName);
             var rtn = RenderRazorUtils.RazorProcessData(razorTempl, appTheme, null, _passSettings, _sessionParams, true);
+            if (rtn.StatusCode != "00") return rtn.ErrorMsg;
             return rtn.RenderedText;
         }
         private string ReloadPage()
