@@ -32,7 +32,7 @@
     @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
     {
         disableDelete = false;
-        <span class=" w3-bar-item w3-margin-left w3-text-pale-blue">[M]</span>
+        <span class=" w3-bar-item w3-margin-left w3-text-pale-blue"><img src="/images/level_module.svg" /></span>
     }
     else
     {
@@ -43,7 +43,7 @@
             {
                 disableDelete = true;
             }
-            <span class=" w3-bar-item w3-margin-left w3-text-indigo">[P]</span>
+            <span class=" w3-bar-item w3-margin-left w3-text-indigo"><img src="/images/level_portal.svg" /></span>
         }
     }
     @if (!disableDelete)
@@ -72,7 +72,7 @@
         <div class="w3-container">
             <div class="w3-display-container ">
 
-                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_adddepdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ResourceKey("DNNrocket.add", "", "Icon")</div>
+                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_adddepdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.add)</div>
 
                 <div class="w3-col m8 w3-center">
                     URL

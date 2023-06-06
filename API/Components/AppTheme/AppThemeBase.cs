@@ -385,11 +385,27 @@ namespace DNNrocketAPI.Components
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
-
+        public bool HasModuleLevel(string moduleref)
+        {
+            if (String.IsNullOrEmpty(moduleref)) return false;
+            foreach (var f in PortalFileNameList)
+            {
+                if (f.Key.ToLower().StartsWith(moduleref.ToLower())) return true;
+            }
+            return false;
+        }
         public bool IsModuleLevel(string fileName, string moduleref)
         {
             if (String.IsNullOrEmpty(moduleref)) return false;
             if (PortalFileNameList.ContainsKey(moduleref.ToLower() + "_" + fileName.ToLower())) return true;
+            return false;
+        }
+        public bool HasPortalLevel()
+        {
+            foreach (var f in PortalFileNameList)
+            {
+                if (!f.Key.Contains("_")) return true;
+            }
             return false;
         }
         public bool IsPortalLevel(string fileName)
