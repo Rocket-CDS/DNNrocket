@@ -14,6 +14,7 @@ using ImageProcessor.Imaging.Formats;
 using DotNetNuke.Web.DDRMenu;
 using static System.Net.Mime.MediaTypeNames;
 using ThoughtWorks.QRCode.Codec;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -257,22 +258,26 @@ namespace DNNrocketAPI.Components
 
         public static string ResizeImage(string fileNamePath, string fileNamePathOut, double intMaxWidth)
         {
-            var webpConvert = false;
             var extension = Path.GetExtension(fileNamePathOut);
-            if (extension != null && extension.ToLower() == ".webp")
-            {
-                webpConvert = true;
-                fileNamePath = ConvertWebpToJpg(fileNamePath);
-                fileNamePathOut = Path.GetDirectoryName(fileNamePathOut) + "\\" + Path.GetFileNameWithoutExtension(fileNamePathOut) + ".jpg";
-            }
-            extension = Path.GetExtension(fileNamePathOut);
-
             try
             {
                 // Get source Image
-                using (var sourceImage = new Bitmap(fileNamePath))
+                Bitmap sourceImage;
+                var imgtype = "";
+
+                if (extension != null && extension.ToLower() == ".webp")
                 {
-                    var thumbW = 0;
+                    using (WebP webp = new WebP())
+                        sourceImage = webp.Load(fileNamePath);
+                    imgtype = "webp";
+                }
+                else
+                {
+                    sourceImage = new Bitmap(fileNamePath);
+                }
+
+
+                var thumbW = 0;
                     var thumbH = 0;
                     if (sourceImage.Height > sourceImage.Width)
                     {
@@ -291,20 +296,30 @@ namespace DNNrocketAPI.Components
                         var fName2 = fName1.Replace(" ", "_");
                         fileNamePathOut = fileNamePathOut.Replace(fName1, fName2);
 
-                        using (var newImage = CreateThumbnail(fileNamePath, Convert.ToInt32(thumbW), Convert.ToInt32(thumbH)))
+                        using (var newImage = CreateThumbnail(fileNamePath, Convert.ToInt32(thumbW), Convert.ToInt32(thumbH), imgtype))
                         {
 
                             if ((newImage != null))
                             {
+                            if (extension != null && extension.ToLower() == ".webp")
+                            {
+                                try
+                                {
+                                    using (WebP webp = new WebP())
+                                        webp.Save(newImage, fileNamePathOut, 80);
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogUtils.LogSystem("ERROR on save Webp image: " + ex.ToString());
+                                }
+                            }
+                            else
+                            {
                                 ImageCodecInfo useEncoder;
                                 if (extension != null && extension.ToLower() == ".png")
-                                {
                                     useEncoder = GetEncoder(ImageFormat.Png);
-                                }
                                 else
-                                {
                                     useEncoder = GetEncoder(ImageFormat.Jpeg);
-                                }
 
                                 var encoderParameters = new EncoderParameters(1);
                                 encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
@@ -312,31 +327,21 @@ namespace DNNrocketAPI.Components
                                 try
                                 {
                                     newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
-                                    //if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
-                                    GC.Collect();
-                                    // attempt to clear all file locks and try again
-                                    try
-                                    {
-                                        newImage.Save(fileNamePathOut, useEncoder, encoderParameters);
-                                        //if (webpConvert) fileNamePathOut = ConvertToWebp(fileNamePathOut);
-                                    }
-                                    catch
-                                    {
-                                        //abandon save. 
-                                    }
+                                    LogUtils.LogSystem("ERROR on save image: " + ex.ToString());
                                 }
 
-                                // Clean up
-                                newImage.Dispose();
+                            }
+
+                            // Clean up
+                            newImage.Dispose();
                             }
                         }
                     }
                     // Clean up
                     sourceImage.Dispose();
-                }
 
                 return fileNamePathOut;
             }
@@ -486,46 +491,41 @@ namespace DNNrocketAPI.Components
         }
         public static string ConvertWebpToJpg(string imgPathName)
         {
-            // Currently .webp is not well supported, so we convert to jpeg. (This may chnage in future)
             var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".jpg";
-
-            var imageFactory = new ImageFactory(preserveExifData: false);
-            imageFactory.Load(imgPathName)
-                        .Format(new JpegFormat())
-                        .Quality(100)
-                        .Save(outFileMapPath);
-
-            imageFactory.Dispose();
-
+            byte[] rawWebP = File.ReadAllBytes("test.webp");
+            using (WebP webp = new WebP())
+            {
+                var bmp = webp.Decode(rawWebP);
+                bmp.Save(outFileMapPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
             return outFileMapPath;
         }
         public static string ConvertToWebp(string imgPathName, string outFileMapPath = "")
         {
             // Currently .webp is not well supported. (This may chnage in future)
             if (outFileMapPath == "") outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".webp";
-
-            var imageFactory = new ImageFactory(preserveExifData: false);
-            imageFactory.Load(imgPathName)
-                        .Format(new WebPFormat())
-                        .Quality(80)
-                        .Save(outFileMapPath);
-
-            imageFactory.Dispose();
-
-            return outFileMapPath;
-        }
-        public static string ConvertToWebp(Stream streamOutput, string imgPathName)
-        {
-            // Currently .webp is not well supported. (This may chnage in future)
-            var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".webp";
-
-            var imageFactory = new ImageFactory(preserveExifData: false);
-            imageFactory.Load(imgPathName)
-                        .Format(new WebPFormat())
-                        .Quality(80)
-                        .Save(streamOutput);
-
-            imageFactory.Dispose();
+            var WebP = new WebP();
+            try
+            {
+                Bitmap bmp = new Bitmap(imgPathName);
+                using (WebP webp = new WebP())
+                    webp.Save(bmp, outFileMapPath, 80);
+            }
+            catch (Exception)
+            {
+                GC.Collect();
+                // attempt to clear all file locks and try again
+                try
+                {
+                    Bitmap bmp = new Bitmap(imgPathName);
+                    using (WebP webp = new WebP())
+                        webp.Save(bmp, outFileMapPath, 80);
+                }
+                catch
+                {
+                    //abandon save. 
+                }
+            }
 
             return outFileMapPath;
         }
@@ -590,34 +590,40 @@ namespace DNNrocketAPI.Components
             }
 
         }
+        public static Bitmap CreateThumbnail(string strFilepath, int intMaxWidth, int intMaxHeight)
+        {
+            return CreateThumbnail(strFilepath, intMaxWidth, intMaxHeight, "");
+        }
         public static Bitmap CreateThumbnail(string strFilepath, int intMaxWidth)
         {
-            return CreateThumbnail(strFilepath, intMaxWidth, 0);
+            return CreateThumbnail(strFilepath, intMaxWidth, 0, "");
         }
-
-        public static Bitmap CreateThumbnail(string strFilepath, int intMaxWidth, int intMaxHeight)
+        public static Bitmap CreateThumbnail(string strFilepath, int intMaxWidth, int intMaxHeight, string imgtype)
         {
             Bitmap newImage = null;
 
             try
             {
-                if (GeneralUtils.IsAbsoluteUrl(strFilepath))
+                Bitmap sourceImage;
+                if (imgtype == "webp")
                 {
-                    System.Net.WebRequest request = System.Net.WebRequest.Create(strFilepath);
-                    System.Net.WebResponse response = request.GetResponse();
-                    using (Stream responseStream = response.GetResponseStream())
-                    {                                               
-                        var sourceImage = LoadBitmapUnlocked(responseStream);
-                        newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
-                        sourceImage.Dispose();
+                    try
+                    {
+                        using (WebP webp = new WebP())
+                            sourceImage = webp.Load(strFilepath);
+                    }
+                    catch (Exception)
+                    {
+                        // assume it's not webp
+                        sourceImage = LoadBitmapUnlocked(strFilepath);
                     }
                 }
                 else
                 {
-                    var sourceImage = LoadBitmapUnlocked(strFilepath);
-                    newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
-                    sourceImage.Dispose();
+                    sourceImage = LoadBitmapUnlocked(strFilepath);
                 }
+                newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
+                sourceImage.Dispose();
             }
             catch (Exception ex)
             {

@@ -106,19 +106,7 @@
               <sourceFileName>handlebars.dll</sourceFileName>
             </assembly>
 
-				<assembly>
-					<path>bin</path>
-					<name>ImageProcessor.dll</name>
-					<sourceFileName>ImageProcessor.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
-					<path>bin</path>
-					<name>ImageProcessor.Plugins.WebP.dll</name>
-					<sourceFileName>ImageProcessor.Plugins.WebP.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
+			<assembly>
 					<path>bin</path>
 					<name>ThoughtWorks.QRCode.dll</name>
 					<sourceFileName>ThoughtWorks.QRCode.dll</sourceFileName>
@@ -407,9 +395,10 @@
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
       <releaseNotes>
-        RocketAppTheme uses the DNNRocket framework
-        Installed as part of the RocketSystem Library
-      </releaseNotes>
+		  RocketAppTheme uses the DNNRocket framework
+		  Installed as part of the RocketSystem Library
+		  NOTE: libwebp_x64.dll for google webp images has an aproblem of being locked on upgrade, so it is installed last. 
+	  </releaseNotes>
 
       <dependencies>
         <dependency type="CoreVersion">09.00.00</dependency>
@@ -424,7 +413,16 @@
               <name>RocketAppThemes.dll</name>
               <sourceFileName>RocketAppThemes.dll</sourceFileName>
             </assembly>
-          </assemblies>
+			  
+			  
+			  <assembly>
+				  <path>bin</path>
+				  <name>libwebp_x64.dll</name>
+				  <sourceFileName>libwebp_x64.dll</sourceFileName>
+				  <version>1.0.2.1</version>
+			  </assembly>
+
+		  </assemblies>
         </component>
 
       </components>

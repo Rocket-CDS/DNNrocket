@@ -231,6 +231,7 @@
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
+    <Compile Include="Components\WebPWrapper.cs" />
     <Compile Include="downloadauthfile.ashx.cs">
       <DependentUpon>downloadauthfile.ashx</DependentUpon>
     </Compile>

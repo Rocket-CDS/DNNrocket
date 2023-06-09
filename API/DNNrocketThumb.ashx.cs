@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
             var w = DNNrocketUtils.RequestQueryStringParam(context, "w");
             var h = DNNrocketUtils.RequestQueryStringParam(context, "h");
             var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
-            var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype");
+            var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype").ToLower();
 
             src = "/" + src.TrimStart('/'); // ensure a valid rel path.
 
@@ -41,39 +41,6 @@ namespace DNNrocketAPI.Components
                 context.Response.Cache.SetLastModifiedFromFileDependencies();
                 context.Response.Cache.SetCacheability(HttpCacheability.Public);
 
-                if (imgtype.ToLower() == "webp")
-                {
-                    try
-                    {
-                        var cacheDir = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache";
-                        var cacheFile = cacheDir + "\\" + GeneralUtils.GetMd5Hash(strCacheKey);
-                        if (File.Exists(src))
-                        {
-                            byte[] bytes;
-                            if (!File.Exists(cacheFile))
-                            {
-                                if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
-                                ImgUtils.CreateThumbOnDisk(src, w + "," + h, cacheFile, true);
-                            }
-                            bytes = System.IO.File.ReadAllBytes(cacheFile);
-
-                            context.Response.ContentType = "image/webp";
-                            context.Response.OutputStream.Write(bytes, 0, bytes.Length);
-                        }
-                        else
-                        {
-                            File.Delete(cacheFile);
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        var outArray = GeneralUtils.StrToByteArray(exc.ToString());
-                        context.Response.BinaryWrite(outArray);
-                    }
-                }
-                else
-                {
-
                     var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
                     //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
                     //The cache holds a link to the locked image file and must be disposed.
@@ -81,7 +48,7 @@ namespace DNNrocketAPI.Components
 
                     if (newImage == null)
                     {
-                        newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
+                        newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
                         CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
                     }
 
@@ -95,6 +62,10 @@ namespace DNNrocketAPI.Components
                         {
                             useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
                             context.Response.ContentType = "image/png";
+                        }
+                        else if (imgtype.ToLower() == "webp")
+                        {
+                            context.Response.ContentType = "image/webp";
                         }
                         else
                         {
@@ -114,8 +85,6 @@ namespace DNNrocketAPI.Components
                             context.Response.BinaryWrite(outArray);
                         }
                     }
-
-                }
             }
         }
 
