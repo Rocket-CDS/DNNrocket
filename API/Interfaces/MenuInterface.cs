@@ -10,7 +10,7 @@ namespace DNNrocketAPI
 {
     public interface IMenuInterface
     {
-        List<PageRecordData> GetMenuItems(int portalId, string cultureCode, string rootref = "");
+        List<PageRecordData> GetMenuItems(int portalId, string cultureCode, string systemKey, string rootref);
         string TokenPrefix();
         int PageId(int portalId, string cultureCode);
     }
