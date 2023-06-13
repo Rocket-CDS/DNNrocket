@@ -771,4 +771,142 @@
   <data name="translation.Text" xml:space="preserve">
     <value>Translation</value>
   </data>
+  <data name="adress.Text" xml:space="preserve">
+    <value>Adress</value>
+  </data>
+  <data name="answer.Text" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="articleTitle.Text" xml:space="preserve">
+    <value>News title</value>
+  </data>
+  <data name="auteur.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="backgroundimage.Text" xml:space="preserve">
+    <value>Background image</value>
+  </data>
+  <data name="category.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="citation.Text" xml:space="preserve">
+    <value>Citation</value>
+  </data>
+  <data name="codegooglemap.Text" xml:space="preserve">
+    <value>Iframe Google Map</value>
+  </data>
+  <data name="companyName.Text" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="contact1.Text" xml:space="preserve">
+    <value>Contact 1</value>
+  </data>
+  <data name="contact2.Text" xml:space="preserve">
+    <value>Contact 2</value>
+  </data>
+  <data name="contactname1.Text" xml:space="preserve">
+    <value>Contact 1 name</value>
+  </data>
+  <data name="contactname2.Text" xml:space="preserve">
+    <value>Contact 2 name</value>
+  </data>
+  <data name="cssClass.Text" xml:space="preserve">
+    <value>CSS Class</value>
+  </data>
+  <data name="email1.Text" xml:space="preserve">
+    <value>Conctact1 email</value>
+  </data>
+  <data name="email2.Text" xml:space="preserve">
+    <value>Contact 2 email</value>
+  </data>
+  <data name="extraInfo.Text" xml:space="preserve">
+    <value>Extra infos</value>
+  </data>
+  <data name="fax.Text" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="heading.Text" xml:space="preserve">
+    <value>Heading</value>
+  </data>
+  <data name="headingalign.Text" xml:space="preserve">
+    <value>Heading Align</value>
+  </data>
+  <data name="headingstyle.Text" xml:space="preserve">
+    <value>Heading Style</value>
+  </data>
+  <data name="hideHeading.Text" xml:space="preserve">
+    <value>Hide Title</value>
+  </data>
+  <data name="hiderow.Text" xml:space="preserve">
+    <value>Hide Row</value>
+  </data>
+  <data name="hideRow.Text1" xml:space="preserve">
+    <value>Hide Row</value>
+  </data>
+  <data name="linktype.Text" xml:space="preserve">
+    <value>Link Type</value>
+  </data>
+  <data name="longitude.Text" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="manuallink.Text" xml:space="preserve">
+    <value>Manual Link</value>
+  </data>
+  <data name="metaSeo.Text" xml:space="preserve">
+    <value>Balise Meta (SEO)</value>
+  </data>
+  <data name="mobile1.Text" xml:space="preserve">
+    <value>Contact 1 mobile</value>
+  </data>
+  <data name="mobile2.Text" xml:space="preserve">
+    <value>Contact 2 mobile</value>
+  </data>
+  <data name="moduletitle.Text" xml:space="preserve">
+    <value>Module Title</value>
+  </data>
+  <data name="openfancy.Text" xml:space="preserve">
+    <value>Open in FancyBox</value>
+  </data>
+  <data name="question.Text" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="redirectlink.Text" xml:space="preserve">
+    <value>Redirect Link</value>
+  </data>
+  <data name="rowtitle.Text" xml:space="preserve">
+    <value>Row Title</value>
+  </data>
+  <data name="svgCode.Text" xml:space="preserve">
+    <value>SVG Code</value>
+  </data>
+  <data name="synopsis.Text" xml:space="preserve">
+    <value>News Synopsis</value>
+  </data>
+  <data name="tel1.Text" xml:space="preserve">
+    <value>Tel. 1</value>
+  </data>
+  <data name="tel2.Text" xml:space="preserve">
+    <value>Tel. 2</value>
+  </data>
+  <data name="title1.Text" xml:space="preserve">
+    <value>Title 1</value>
+  </data>
+  <data name="title2.Text" xml:space="preserve">
+    <value>Title 2</value>
+  </data>
+  <data name="titleline1.Text" xml:space="preserve">
+    <value>Title line 1</value>
+  </data>
+  <data name="titleline2.Text" xml:space="preserve">
+    <value>Title line 2</value>
+  </data>
+  <data name="titleResume.Text" xml:space="preserve">
+    <value>Title &amp; Synopsis</value>
+  </data>
+  <data name="video.Text" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="videoCode.Text" xml:space="preserve">
+    <value>Iframe youtube Video</value>
+  </data>
 </root>
