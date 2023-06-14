@@ -428,6 +428,11 @@ namespace DNNrocketAPI.Components
                 controller.UpdateTab(newTab);
             }
         }
+        public static List<TabUrlInfo> GetTabUrls(int portalId, int tabId)
+        {
+            var controller = new TabController();
+            return controller.GetTabUrls(tabId, portalId);
+        }
 
     }
 }

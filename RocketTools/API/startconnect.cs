@@ -6,6 +6,7 @@ using DNNrocketAPI;
 using DNNrocketAPI.Components;
 using DNNrocketAPI.Interfaces;
 using RocketPortal.Components;
+using RocketTools.Components;
 using Simplisity;
 
 namespace RocketTools.API
@@ -23,28 +24,51 @@ namespace RocketTools.API
         private PortalLimpet _portalData;
         private SessionParams _sessionParams;
         private string _pageRef;
+        private int _portalId;
+        private DNNrocketController _objCtrl;
 
         public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            var strOut = ""; // return nothing if not matching commands.
+            var strOut = ""; 
+            var storeparamCmd = paramCmd;
             var rtnDic = new Dictionary<string, object>();
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
-
-            if (UserUtils.IsSuperUser())
-            {
 
                 switch (paramCmd)
                 {
                     case "rockettools_adminpanel":
                         strOut = AdminPanel();
                         break;
-
-
+                    case "rocketactions_getdisplay":
+                        strOut = MainMenu();
+                        break;                    
                     case "rockettools_login":
                         _userParams.TrackClear(_systemData.SystemKey);
                         strOut = ReloadPage();
                         break;
+
+
+                    //  ========== CLONES ===================
+                    case "rocketclones_getdisplay":
+                        strOut = CloneDetail();
+                        break;
+                    case "rocketclones_getmodules":
+                        strOut = GetCloneSelectModules();
+                        break;
+                    case "rocketclones_getdestination":
+                        strOut = CloneDestination();
+                        break;
+                    case "rocketclones_clone":
+                        SaveModules("clonemodules");
+                        SaveTreeView("clonetreeview");
+                        CloneModules();
+                        strOut = ClonesOK();
+                        break;
+
+
+
+                    //  ========== ROLES ===================
                     case "rocketroles_roles":
                         strOut = RolesAdmin();
                         break;
@@ -61,60 +85,63 @@ namespace RocketTools.API
                         strOut = ApplyRoles();
                         break;
                     case "rocketroles_createdefaultroles":
-                        DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetPortalId());
+                        DNNrocketUtils.CreateDefaultRocketRoles(_portalId);
                         strOut = RolesAdmin();
                         break;
 
 
-                    case "rocketclones_getdisplay":
-                        strOut = CloneAdmin();
+                    //  ========== PL ===================
+                    case "rocketpl_getdisplay":
+                        strOut = PLDetail();
                         break;
-                    case "rocketclones_getmodules":
-                        strOut = GetCloneSelectModules();
+                    case "rocketpl_pageview":
+                        strOut = PageView();
                         break;
-                    case "rocketclones_getdestination":
-                        strOut = CloneDestination();
+                    case "rocketpl_pageedit":
+                        strOut = PageEdit();
                         break;
-                    case "rocketclones_clone":
-                        SaveModules("clonemodules");
-                        SaveTreeView("clonetreeview");
-                        CloneModules();
-                        strOut = ClonesOK();
+                    case "rocketpl_pagesave":
+                        strOut = PageSave();
+                        break;
+                    case "rocketpl_pagedelete":
+                        strOut = PageDelete();
+                        break;
+                    case "rocketpl_savesettings":
+                        strOut = SaveSettings();
+                        break;
+                    case "rocketpl_validateurls":
+                        RocketToolsUtils.ValidateUrls();
+                        strOut = PLDetail();
+                        break;
+                    case "rocketpl_validatemeta":
+                        RocketToolsUtils.ValidateMeta();
+                        strOut = PLDetail();
+                        break;
+                    case "rocketpl_validate":
+                        RocketToolsUtils.ValidateMeta();
+                        RocketToolsUtils.ValidateUrls();
+                        strOut = PLDetail();
+                        break;
+                    case "rocketpl_taburldelete":
+                        DeleteTabUrl();
+                        strOut = PLDetail();
+                        break;
+                    case "rocketpl_addmenuprovider":
+                        strOut = AddMenuProvider();
+                        break;
+                    case "rocketpl_addqueryparams":
+                        strOut = AddQueryParam();
                         break;
 
-                    case "rocketlang_getdisplay":
-                        strOut = LangAdmin();
-                        break;
-                    case "rocketlang_copy":
-                        SaveSystems("languagesystemlist");
-                        CopyLang();
-                        strOut = LangAdmin();
-                        break;
-                    case "rocketlang_deletebackup":
-                        strOut = DeleteBackUp();
-                        break;
-                    case "rocketlang_restorebackup":
-                        strOut = RestoreBackUp();
-                        break;
-                    case "rocketlang_deletebackupall":
-                        strOut = DeleteAllBackUp();
-                        break;                        
 
 
-                    case "rocketactions_getdisplay":
-                        strOut = ActionAdmin();
+
+
+                    default:
+                        strOut = "INVALID CMD";
                         break;
-                    case "rocketactions_validate":
-                        SaveSystems("validatesystemlist");
-                        DoValidation();
-                        strOut = ActionAdmin();
-                        break;
+
                 }
-            }
-            else
-            {
-                strOut = ReloadPage();
-            }
 
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
@@ -123,15 +150,16 @@ namespace RocketTools.API
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-
+            _portalId = PortalUtils.GetPortalId();
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _systemData = new SystemLimpet("tools");
+            _systemData = new SystemLimpet(systemInfo.GetXmlProperty("genxml/systemkey"));
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
+            _objCtrl = new DNNrocketController();
 
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
@@ -158,6 +186,15 @@ namespace RocketTools.API
             return paramCmd;
         }
 
+        #region "General"
+
+        private string MainMenu()
+        {
+            var razorTempl = _appThemeSystem.GetTemplate("MainMenu.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
         private string AdminPanel()
         {
             var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
@@ -175,285 +212,9 @@ namespace RocketTools.API
             return pr.RenderedText;
         }
 
-
-        #region "Language"
-        public String LangAdmin()
+        public SimplisityInfo GetCachedInfo(string pageRef)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("language.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-
-        public void CopyLang()
-        {
-            var info = GetCachedInfo();
-            var copylanguage = _postInfo.GetXmlProperty("genxml/copylanguage");
-            var destinationlanguage = _postInfo.GetXmlProperty("genxml/destinationlanguage");
-            var backup = _postInfo.GetXmlProperty("genxml/checkbox/backup");            
-
-            foreach (var s in info.GetRecordList("languagesystemlist"))
-            {
-                var systemkey = s.GetXmlProperty("genxml/systemkey");
-                if (systemkey != "")
-                {
-                    var systemData = new SystemLimpet(systemkey);
-                    if (systemData.Exists)
-                    {
-                        foreach (var rocketInterface in systemData.GetInterfaceList())
-                        {
-                            if (rocketInterface.Exists && rocketInterface.IsProvider("copylanguage"))
-                            {
-                                var paramInfo = new SimplisityInfo();
-                                paramInfo.SetXmlProperty("genxml/hidden/destinationlanguage", destinationlanguage);
-                                paramInfo.SetXmlProperty("genxml/hidden/copylanguage", copylanguage);
-                                paramInfo.SetXmlProperty("genxml/hidden/backuprootfolder", _rocketInterface.InterfaceKey);
-                                paramInfo.SetXmlProperty("genxml/checkbox/backup", backup);
-                                paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private string DeleteBackUp()
-        {
-            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
-            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey, "*_BackUp.xml");
-            backUpDataList.DeleteBackUpFile(filemappath);
-            return LangAdmin();
-        }
-        private string DeleteAllBackUp()
-        {
-            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey, "*_BackUp.xml");
-            backUpDataList.DeleteAllBackUpFiles();
-            return LangAdmin();
-        }
-
-        private string RestoreBackUp()
-        {
-            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
-            if (File.Exists(filemappath))
-            {
-                var backupData = new BackUpData(filemappath);
-                //backupData.RestoreData();
-                CacheUtils.ClearAllCache();
-                CacheUtilsDNN.ClearAllCache();
-                DNNrocketUtils.ClearAllCache();
-            }
-
-            return LangAdmin();
-        }
-
-        #endregion
-
-        #region "Clones"
-        public String CloneAdmin()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("clones.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-
-        public String GetCloneSelectModules()
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-
-            info.RemoveRecordList("clonemodulelist");
-            var tabid = _postInfo.GetXmlPropertyInt("genxml/fromtabid");
-            info.SetXmlProperty("genxml/fromtabid", _postInfo.GetXmlProperty("genxml/fromtabid"));
-            var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), tabid);
-            var l = DNNrocketUtils.GetTabModuleTitles(tabid);
-            foreach (var m in l)
-            {
-                var sRec = new SimplisityRecord();
-                sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
-                sRec.SetXmlProperty("genxml/moduletitle", pageData.Name + ": " + m.Value);
-                info.AddRecordListItem("clonemodulelist", sRec);
-            }
-            var razorTempl = _appThemeSystem.GetTemplate("clonesmodulesection.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-
-        public String CloneDestination()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("clonesdestination.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-        public void CloneModules()
-        {
-            var info = GetCachedInfo();
-            var fromTabId = info.GetXmlPropertyInt("genxml/fromtabid");
-            foreach (var m in info.GetRecordList("clonemodules"))
-            {
-                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
-                if (moduleid > 0)
-                {
-                    foreach (var t in info.GetRecordList("clonetreeview"))
-                    {
-                        var toTabid = t.GetXmlPropertyInt("genxml/tabid");
-                        DNNrocketUtils.CloneModule(moduleid, fromTabId, toTabid);
-                    }
-                }
-            }
-        }
-
-        public String ClonesOK()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("clonesok.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-
-
-        #endregion
-
-        #region "Roles"
-
-        public String GetRoles()
-        {
-            var info = GetCachedInfo();
-            if (info.GUIDKey == "new") return "reload"; // we have lost the cache and page data, reload and start agian.
-
-            info.RemoveRecordList("rolelist");
-            var l = UserUtils.GetRoles(DNNrocketUtils.GetPortalId());
-            foreach (var m in l)
-            {
-                var sRec = new SimplisityRecord();
-                sRec.SetXmlProperty("genxml/roleid", m.Key.ToString());
-                sRec.SetXmlProperty("genxml/rolename", m.Value);
-                info.AddRecordListItem("rolelist", sRec);
-            }
-            var razorTempl = _appThemeSystem.GetTemplate("roleselectsection.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }        
-        public String GetModules()
-        {
-            var info = GetCachedInfo();
-            if (info.GUIDKey == "new") return "reload"; // we have lost the cache and page data, reload and start agian.
-
-            info.RemoveRecordList("modulelist");
-            foreach (var t in info.GetRecordList("tabtreeview"))
-            {
-                var tabid = t.GetXmlPropertyInt("genxml/tabid");
-                var l = DNNrocketUtils.GetTabModuleTitles(tabid);
-                foreach (var m in l)
-                {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
-                    sRec.SetXmlProperty("genxml/moduletitle", t.GetXmlProperty("genxml/tabname") + ": " +  m.Value);
-                    info.AddRecordListItem("modulelist", sRec);
-                }
-            }
-            var razorTempl = _appThemeSystem.GetTemplate("rolesmodulesection.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-        public String RolesAdmin()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("roles.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-        public String RolesOK()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("rolesok.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-        public string ApplyRoles()
-        {
-            var info = GetCachedInfo();
-            foreach (var m in info.GetRecordList("tabmodules"))
-            {
-                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
-                if (moduleid > 0)
-                {
-                    var nodList1 = _postInfo.XMLDoc.SelectNodes("genxml/rolecheckbox/*");
-                    foreach (XmlNode nod1 in nodList1)
-                    {
-                        var strroleid = nod1.Name.Replace("roleid", "");
-                        if (GeneralUtils.IsNumeric(strroleid))
-                        {
-                            var roleid = Convert.ToInt32(strroleid);
-                            if (roleid > 0)
-                            {
-                                if (nod1.InnerText.ToLower() == "true")
-                                {
-                                    DNNrocketUtils.AddRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
-                                }
-                                else
-                                {
-                                    DNNrocketUtils.RemoveRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return RolesOK();
-        }
-
-        #endregion
-
-        #region "Actions"
-        public String ActionAdmin()
-        {
-            var razorTempl = _appThemeSystem.GetTemplate("actions.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
-        }
-
-        public void DoValidation()
-        {
-            var info = GetCachedInfo();
-
-            foreach (var s in info.GetRecordList("validatesystemlist"))
-            {
-                var systemkey = s.GetXmlProperty("genxml/systemkey");
-                if (systemkey != "")
-                {
-                    var systemData = new SystemLimpet(systemkey);
-                    if (systemData.Exists)
-                    {
-                        foreach (var rocketInterface in systemData.GetInterfaceList())
-                        {
-                            if (rocketInterface.Exists && rocketInterface.IsProvider("validatedata"))
-                            {
-                                var paramInfo = new SimplisityInfo();
-                                paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        #endregion
-
-        #region "general"
-        public SimplisityInfo GetCachedInfo()
-        {
-            var info = (SimplisityInfo)CacheUtils.GetCache(_pageRef);
+            var info = (SimplisityInfo)CacheUtils.GetCache(pageRef);
             if (info == null)
             {
                 info = new SimplisityInfo();
@@ -461,73 +222,9 @@ namespace RocketTools.API
             }
             return info;
         }
-        public void SaveSystems(string listName)
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
-            info.RemoveRecordList(listName);
-            foreach (XmlNode nod in nodList)
-            {
-                if (nod.InnerText.ToLower() == "true")
-                {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/elementid", nod.Name);
-                    sRec.SetXmlProperty("genxml/systemid", nod.Name.Replace("systemid", ""));
-                    info.AddRecordListItem(listName, sRec);
-                }
-            }
-            CacheUtils.SetCache(_pageRef, info);
-        }
-        public void SaveModules(string listName)
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
-            info.RemoveRecordList(listName);
-            foreach (XmlNode nod in nodList)
-            {
-                if (nod.InnerText.ToLower() == "true")
-                {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/elementid", nod.Name);
-                    sRec.SetXmlProperty("genxml/moduleid", nod.Name.Replace("moduleid", ""));
-                    info.AddRecordListItem(listName, sRec);
-                }
-            }
-            CacheUtils.SetCache(_pageRef, info);
-        }
-
-        public void SaveTreeView(string listName)
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/treeview/*/*");
-            info.RemoveRecordList(listName);
-            foreach (XmlNode nod in nodList)
-            {
-                if (nod.InnerText.ToLower() == "true")
-                {
-                    var tabid = nod.Name.Replace("tabid", "");
-                    if (GeneralUtils.IsNumeric(tabid))
-                    {
-                        var sRec = new SimplisityRecord();
-                        sRec.SetXmlProperty("genxml/treeid", nod.Name);
-                        sRec.SetXmlProperty("genxml/tabid", tabid);
-
-                        var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), Convert.ToInt32(tabid));
-                        sRec.SetXmlProperty("genxml/tabname", pageData.Name);
-
-                        info.AddRecordListItem(listName, sRec);
-                    }
-                }
-            }
-            CacheUtils.SetCache(_pageRef, info);
-        }
-
         #endregion
+
+
+
     }
 }

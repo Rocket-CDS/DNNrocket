@@ -430,22 +430,28 @@ namespace DNNrocketAPI.Components
         }
         public static string DefaultPortalAlias(int portalId = -1)
         {
-            if (portalId < 0)
-            {
-                return PortalSettings.Current.DefaultPortalAlias;
-            }
-            else
-            {
-                var ps = GetPortalSettings(portalId);
-                var dpa = ps.DefaultPortalAlias; // not always set, issue when primary not being set.
-                if (dpa == "")
-                {
-                    var l = PortalUtils.GetPortalAliases(portalId);
-                    if (l.Count > 0) dpa = l.First();
-                }
-                return dpa;
-            }
+            return DefaultPortalAlias(portalId, "");
         }
+        public static string DefaultPortalAlias(int portalId, string cultureCode)
+        {
+            var portalalias = PortalSettings.Current.DefaultPortalAlias;
+            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
+            foreach (var pa in padic)
+            {
+                if (pa.Value.PortalID == portalId)
+                {
+                    if (pa.Value.IsPrimary)
+                    {
+                        if (cultureCode == "" || pa.Value.CultureCode == cultureCode)
+                        {
+                            portalalias = pa.Key;
+                        }
+                    }
+                }
+            }
+            return portalalias;
+        }
+
         public static void AddPortalAlias(int portalId, string portalAlias, string cultureCode = "")
         {
             try
@@ -675,7 +681,7 @@ namespace DNNrocketAPI.Components
         public static void AddSysAdminMenu()
         {
             // Add Link in PersonaBar
-            var linkText = "'<li class=\"border server-name\" data-bind=\"visible: ServerName.length > 0\"><label>Rocket CDS</label><a href=\"/sysadmin.aspx\" target=\"_blank\">SysAdmin</a></li>' + ";
+            var linkText = "'<li class=\"border server-name\" data-bind=\"visible: ServerName.length > 0\"><label>Rocket CDS</label><a href=\"/sysadmin.aspx\" target=\"_blank\">SysAdmin</a><br/><a href=\"/tools.aspx\" target=\"_blank\">Tools</a></li>' + ";
             string filename = DNNrocketUtils.MapPath("/DesktopModules/Admin/Dnn.PersonaBar/scripts/serversummary.js");
             var fileOutText = "";
             var lines = File.ReadLines(filename);

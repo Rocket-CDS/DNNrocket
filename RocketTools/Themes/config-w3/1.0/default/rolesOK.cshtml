@@ -1,15 +1,11 @@
-﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using System
 @using System.Linq
 @using System.Xml
 @using Simplisity;
-@using DNNrocketAPI.Components;
-@using RazorEngine.Text;
 
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
-    <div class="w3-panel w3-pale-green">
-        <h1>@ResourceKey("RocketTools.rolesok")</h1>
-    </div>
+<span class="w3-pale-green w3-input">
+    @ResourceKey("View.rolesok")
+</span>

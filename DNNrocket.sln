@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppThemes", "RocketAppTheme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Country", "Country\Country.csproj", "{50555333-D8D2-4CE6-AF95-07756A2BE44C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools", "RocketTools\Tools.csproj", "{C650794E-A80D-4725-BFD0-E419A2C337F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketTools", "RocketTools\RocketTools.csproj", "{C650794E-A80D-4725-BFD0-E419A2C337F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

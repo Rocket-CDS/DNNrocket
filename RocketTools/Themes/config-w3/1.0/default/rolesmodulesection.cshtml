@@ -1,51 +1,56 @@
-﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using System
 @using System.Linq
 @using System.Xml
 @using Simplisity;
-@using DNNrocketAPI.Components;
-@using RazorEngine.Text;
 
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
 }
 
+<div class="w3-row">
+
     <div class="w3-row">
-
-        <div class="w3-row ">
-            <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="modulecheckAll">@ResourceKey("DNNrocket.checkall")</div>
-            <div class="w3-button w3-col m5 w3-blue " id="moduleuncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+        <div class="w3-button w3-left w3-margin-left" id="modulecheckAll">
+            <span class="material-icons">
+                playlist_add_check
+            </span>
         </div>
-
-        <div class="hummingbird-treeview well h-scroll-large">
-
-            <ul id="modulelistdata" class="hummingbird-base">
-
-                @{
-                    foreach (var m in info.GetRecordList("modulelist"))
-                    {
-                        <li>
-                            <label>
-                                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
-                                @m.GetXmlProperty("genxml/moduletitle")
-                            </label>
-                        </li>
-                    }
-                }
-            </ul>
+        <div class="w3-button w3-left" id="moduleuncheckAll">
+            <span class="material-icons">
+                playlist_remove
+            </span>
         </div>
-
-
     </div>
+
+    <div class="hummingbird-treeview well h-scroll-large">
+
+        <ul id="modulelistdata" class="hummingbird-base">
+
+            @{
+                foreach (var m in info.GetRecordList("modulelist"))
+                {
+                    <li>
+                        <label>
+                            <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                            @m.GetXmlProperty("genxml/moduletitle")
+                        </label>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+
+
+</div>
 
 <script>
 
     $(document).ready(function () {
 
+        $('.applyrolesbutton').hide();
         $('.nextbuttonpage').hide();
 
         $("#modulecheckAll").unbind("click");
@@ -53,6 +58,7 @@
             $('.modulecheckbox').prop('checked', true);
             if ($('.rolesdatasection').text() === '') {
                 $('.nextbuttonmodule').show();
+                $('.applyrolesbutton').hide();
             }
         });
         $("#moduleuncheckAll").unbind("click");
@@ -60,6 +66,7 @@
             $('.modulecheckbox').prop('checked', false);
             if ($('.rolesdatasection').text() === '') {
                 $('.nextbuttonmodule').show();
+                $('.applyrolesbutton').hide();
             }
         });
 
@@ -67,6 +74,7 @@
         $(".modulecheckbox").click(function () {
             if ($('.rolesdatasection').text() === '') {
                 $('.nextbuttonmodule').show();
+                $('.applyrolesbutton').hide();
             }
         });
 

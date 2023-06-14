@@ -1,0 +1,35 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketTools;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+}
+
+<div class="w3-row w3-padding">
+    @foreach (var l in enabledlanguages)
+    {
+        var selectedcolor = "";
+        if (Model.SessionParamsData.Get("culturecode1") == l)
+        {
+            selectedcolor = "w3-light-grey";
+        }
+        <div class="w3-button w3-padding-small w3-round @(selectedcolor) changeviewlanguage" language="@(l)" }><img src="/images/Flags/@(l).gif" class="w3-round" /></div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".changeviewlanguage").click(function () {
+            var l = $(this).attr('language');
+            simplisity_setSessionField('culturecode1', l);
+            $('.rocketplpageview').trigger("click");
+            $('.rocketplpageedit').trigger("click");
+        });
+    });
+</script>
+

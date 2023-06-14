@@ -1,0 +1,113 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketTools;
+@using System.Linq;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+}
+
+
+        <div class="w3-container">
+            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <div id="settingsdata" style="padding-top:40px;">
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding">
+                        <label>@ResourceKey("View.debugmode")</label>
+                        @CheckBox(info, "genxml/checkbox/debugmode", "", " class='w3-check' ")
+                    </div>
+                    <div class="w3-half w3-padding">
+                        <div class="w3-button w3-left w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("View.validate") ?" s-cmd="rocketpl_validate" ">
+                            <span class="material-icons">
+                                fact_check
+                            </span>
+                            @ResourceKey("View.validate")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="rocketpl_addmenuprovider" s-return=".a-settingspopup">
+                        @ButtonIcon(ButtonTypes.add)
+                    </div>
+                    <span><b>@ResourceKey("View.providers")</b></span>
+                </div>
+
+                <ul id="menuproviderdata" class="w3-ul">
+                    @{
+                        var lp = 1;
+                    }
+                    @foreach (var mp in info.GetList("menuprovider"))
+                    {
+                        <li class="menuprovider w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                            <div class="w3-display-container w3-padding w3-card">
+                                <div class="w3-row">
+                                    <div class="w3-quarter w3-padding">
+                                        <label>@ResourceKey("View.assembly")</label>
+                                        @TextBox(mp, "genxml/textbox/assembly", " class='w3-input w3-border' ", "", false, lp)
+                                    </div>
+                                    <div class="w3-half w3-padding">half
+                                        <label>@ResourceKey("View.namespaceclass")</label>
+                                        @TextBox(mp, "genxml/textbox/namespaceclass", " class='w3-input w3-border' ", "", false, lp)
+                                    </div>
+                                    <div class="w3-quarter w3-padding">
+                                        <label>@ResourceKey("DNNrocket.systemkey")</label>
+                                        @TextBox(mp, "genxml/textbox/systemkey", " class='w3-input w3-border' ", "", false, lp)
+                                    </div>
+                                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".menuprovider" s-recylebin="menuproviderbin" style="cursor: pointer;">
+                                        @ButtonIcon(ButtonTypes.remove)
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                        lp += 1;
+                    }
+                </ul>
+
+                <div class="w3-row">
+                    <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="rocketpl_addqueryparams" s-return=".a-settingspopup">
+                        @ButtonIcon(ButtonTypes.add)
+                    </div>
+                    <span><b>@ResourceKey("View.queryparams")</b></span>
+                </div>
+
+                <ul id="queryparamsdata" class="w3-ul">
+                    @{
+                        var lp2 = 1;
+                    }
+                    @foreach (var mp in info.GetList("queryparams"))
+                    {
+                        <li class="queryparams w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                            <div class="w3-display-container w3-padding w3-card">
+                                <div class="w3-row">
+                                    <div class="w3-third w3-padding">
+                                        <label>@ResourceKey("View.queryparam")</label>
+                                        @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
+                                    </div>
+                                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">
+                                        @ButtonIcon(ButtonTypes.remove)
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                        lp2 += 1;
+                    }
+                </ul>
+
+            </div>
+            <div class="w3-button w3-right w3-green w3-margin simplisity_click" s-cmd="rocketpl_savesettings" s-list=".menuprovider,.queryparams" s-post="#settingsdata">
+                @ButtonText(ButtonTypes.save)
+            </div>
+
+        </div>

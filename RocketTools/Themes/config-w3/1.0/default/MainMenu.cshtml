@@ -1,0 +1,53 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RazorEngine.Text;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div style="height:100px;" class="w3-display-container">
+    <div class="w3-xxlarge w3-display-middle">
+        <span>Rocket Tools</span>
+    </div>
+</div>
+
+<div style="height:100px;" class="w3-display-container">
+    <div class="w3-display-left">
+        <a class="w3-button" href="/">
+            @ButtonIconText(ButtonTypes.back)
+        </a>
+        <span class="w3-button" onclick="$('.simplisity_loader').show(); window.location.reload(true);">            
+            @ButtonIconText(ButtonTypes.refresh)
+        </span>
+    </div>
+</div>
+
+    <div class="w3-row-padding" style="">
+    <div class="w3-col l2 w3-small-hide ">&nbsp;</div>
+        <div class="w3-col l2 m3">
+            <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rockettools_clonedisplay">
+                <span class="material-icons w3-xxlarge w3-padding">
+                    file_copy
+                </span>
+                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.clone")</span>
+            </div>
+        </div>
+    <div class="w3-col l2 m3">
+            <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rocketroles_roles">
+                <span class="material-icons w3-xxlarge w3-padding">
+                    admin_panel_settings
+                </span>
+                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.roles")</span>
+            </div>
+        </div>
+    <div class="w3-col l2 m3">
+            <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rocketpl_getdisplay">
+                <span class="material-icons w3-xxlarge w3-padding">
+                    subtitles
+                </span>
+                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.pagelocalization")</span>
+            </div>
+        </div>
+    </div>
+

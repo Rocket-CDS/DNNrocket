@@ -1,57 +1,74 @@
-﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using System
-@using System.Linq
 @using System.Xml
 @using Simplisity;
-@using DNNrocketAPI.Components;
-@using RazorEngine.Text;
 
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
-    <div class="w3-row">
-        <div class="w3-col m6 w3-xxlarge">
-            Module Roles
-        </div>
-        <div class="w3-col m6">
-            <div class="w3-button w3-blue w3-right  simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles"  >@ResourceKey("RocketTools.adddefaultroles")</div>
-        </div>
+<div class="w3-row">
+    <div class="w3-col m6 w3-xxlarge">
+        Module Roles
     </div>
-
-<p>@ResourceKey("RocketTools.moduleroles", "", "Help")</p>
-
+    <div class="w3-col m6">
+        <div class="w3-button w3-blue w3-right simplisity_confirmclick" s-confirm="@ResourceKey("View.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles">@ResourceKey("View.adddefaultroles")</div>
+    </div>
+</div>
 
 <div class="w3-row">
 
 
     <div class="w3-third w3-padding tabselect">
-        <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-            <b class="w3-large">@ResourceKey("DNNrocket.pages")</b>
-            <div class="w3-button w3-green w3-right nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
+        <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
+            <b class="w3-large">@ResourceKey("View.pages")</b>
+            <div class="w3-button w3-green w3-right nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">
+                @ResourceKey("View.next")&nbsp;
+                <span class="material-icons">
+                    navigate_next
+                </span>
+            </div>
         </div>
-        <div class="w3-row ">
-            <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
-            <div class="w3-button w3-col m5 w3-blue" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+        <div class="w3-row">
+            <div class="w3-button w3-left w3-margin-left" id="checkAll">
+                <span class="material-icons">
+                    playlist_add_check
+                </span>
+            </div>
+            <div class="w3-button w3-left" id="uncheckAll">
+                <span class="material-icons">
+                    playlist_remove
+                </span>
+            </div>
         </div>
         <div id="treeview2_container" class="hummingbird-treeview well h-scroll-large">
-            @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview2", "", "class='hummingbird-base'")
+            @GetTreeTabList(RocketTools.RocketToolsUtils.GetPortalId(), new List<int>(), "treeview2", "", "class='hummingbird-base'", false)
         </div>
 
     </div>
     <div class="w3-twothird" id="updatesection">
         <div class="w3-half w3-padding">
-            <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-                <b class="w3-large">@ResourceKey("DNNrocket.modules")</b>
-                <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-cmd="rocketroles_getroles" s-return=".rolesdatasection" s-fields='' s-post="#modulelistdata">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
+            <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
+                <b class="w3-large">@ResourceKey("View.modules")</b>
+                <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-after="showapplybutton" s-cmd="rocketroles_getroles" s-return=".rolesdatasection" s-fields='' s-post="#modulelistdata">
+                    @ResourceKey("View.next")&nbsp;
+                    <span class="material-icons">
+                        navigate_next
+                    </span>
+                </div>
             </div>
             <div class="w3-row moduledatasection">
 
             </div>
         </div>
         <div class="w3-half w3-padding">
-            <div class="w3-large w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-                <b>@ResourceKey("DNNrocket.roles")</b>
+            <div class="w3-large w3-panel w3-light-grey w3-padding" style="height:52px;">
+                <b>@ResourceKey("View.roles")</b>
+                <div class="w3-button w3-green w3-right applyrolesbutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("View.applyroles") ?" s-cmd="rocketroles_applyroles" s-return=".returnmsg">
+                    <span class="material-icons">
+                        save
+                    </span>
+                    &nbsp;
+                    @ResourceKey("View.applyroles")
+                </div>
             </div>
             <div class="w3-row rolesdatasection">
 
@@ -61,16 +78,15 @@
 
 </div>
 
-
 <script>
 
     $(document).ready(function () {
 
-        simplisity_setParamField('pageref', CreateGuid());
+        simplisity_setSessionField('pageref', CreateGuid());
 
-        $.fn.hummingbird.defaults.SymbolPrefix = "fas";
-        $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
-        $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
+        $.fn.hummingbird.defaults.SymbolPrefix = "";
+        $.fn.hummingbird.defaults.collapsedSymbol = "downsymbol";
+        $.fn.hummingbird.defaults.expandedSymbol = "upsymbol";
 
         $("#treeview2").hummingbird();
 
@@ -89,11 +105,13 @@
             $('.nextbuttonpage').show();
             $('.moduledatasection').text('');
             $('.rolesdatasection').text('');
+            $('.applyrolesbutton').hide();
         });
         $("#treeview2").on("nodeUnchecked", function () {
             $('.nextbuttonpage').show();
             $('.moduledatasection').text('');
             $('.rolesdatasection').text('');
+            $('.applyrolesbutton').hide();
         });
     });
 
@@ -104,7 +122,9 @@
         }
         return _p8() + _p8(true) + _p8(true) + _p8();
     }
-
+    function showapplybutton() {
+        $('.applyrolesbutton').show();
+    }
 
 </script>
 

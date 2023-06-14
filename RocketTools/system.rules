@@ -21,7 +21,7 @@
           <assembly>RocketTools</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>rockettools_adminpanel</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+          <relpath>/DesktopModules/DNNrocket/RocketTools</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -50,7 +50,7 @@
           <assembly>RocketTools</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>rocketclones_getdisplay</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+          <relpath>/DesktopModules/DNNrocket/RocketTools</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -79,7 +79,7 @@
           <assembly>RocketTools</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>rocketroles_getmodules</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+          <relpath>/DesktopModules/DNNrocket/RocketTools</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -102,13 +102,13 @@
 
       <genxml>
         <textbox>
-          <interfacekey>rocketlang</interfacekey>
+          <interfacekey>rocketpl</interfacekey>
           <namespaceclass>RocketTools.API.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
           <assembly>RocketTools</assembly>
           <interfaceicon></interfaceicon>
-          <defaultcommand>rocketlang_getdisplay</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+          <defaultcommand>rocketpl_getdisplay</defaultcommand>
+          <relpath>/DesktopModules/DNNrocket/RocketTools</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -137,7 +137,7 @@
           <assembly>RocketTools</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>rocketactions_getdisplay</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+          <relpath>/DesktopModules/DNNrocket/RocketTools</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>

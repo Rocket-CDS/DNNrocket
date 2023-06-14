@@ -1,0 +1,80 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketTools;
+@using System.Linq;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+}
+
+<div class="w3-hide rocketplpageview simplisity_click" s-cmd="rocketpl_pageview" s-post=".datapostsection" s-return=".pagedataview"></div>
+<div class="w3-hide rocketplpageedit simplisity_click" s-cmd="rocketpl_pageedit" s-post=".datapostsection" s-return=".pagedataedit"></div>
+
+<div id="pagedatasection">
+
+    <div class="w3-row w3-padding datapostsection">        
+        <div class="w3-button w3-black" onclick="$('.simplisity_loader').show(); window.location.reload(true);">
+            @ButtonIconText(ButtonTypes.back)
+        </div>
+        <div onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-right w3-margin-left">
+            <span class="material-icons">
+                settings
+            </span>
+        </div>
+        <div class="w3-button w3-right w3-green simplisity_click" s-cmd="rocketpl_pagesave" s-post="#pagedatasection" s-after="reloadpagedata" s-return="#savereturn">
+            @ButtonIconText(ButtonTypes.save)
+        </div>
+    </div>
+
+    <div class="w3-row w3-padding datapostsection">
+        <div class="w3-third w3-padding">
+            <h2>@ResourceKey("View.pagelocalization")</h2>
+        </div>
+        <div class="w3-third w3-padding">
+            @TabSelectList(new SimplisityInfo(), "genxml/selectedtabid", " class='w3-input w3-border'  ", false, false, 0, "", true)
+        </div>
+    </div>
+
+    <div id="savereturn" class="w3-hide"></div>
+
+    <div class="w3-row">
+        <div class="w3-half w3-padding pagedataview">
+        </div>
+        <div class="w3-half w3-padding pagedataedit">
+        </div>
+    </div>
+
+</div>
+
+@RenderXml(info)
+
+<div id="id01" class="w3-modal" >
+    <div class="w3-modal-content  a-settingspopup" style="width:60%;">
+        @RenderTemplate("SettingsPopup.cshtml", systemAppTheme, Model)
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#selectedtabid").on("change", function () {
+            $('.rocketplpageview').trigger("click");
+            $('.rocketplpageedit').trigger("click");
+        });
+        $('.rocketplpageview').trigger("click");
+        $('.rocketplpageedit').trigger("click");
+    });
+
+    function reloadpagedata() {
+        $('.rocketplpageview').trigger("click");
+        $('.rocketplpageedit').trigger("click");
+    }
+</script>
+

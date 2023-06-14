@@ -1,21 +1,50 @@
-﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using System
-@using System.Linq
 @using System.Xml
 @using Simplisity;
-@using DNNrocketAPI.Components;
 @using RazorEngine.Text;
+@using System.Xml;
 
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
-<div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
-    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview3", "", "class='hummingbird-base'", true)
+@{
+    var info = (SimplisityInfo)Model.List.First();
+    var selectedModuleId = " where ";
+    foreach (SimplisityInfo m in info.GetList("clonemoduleactive"))
+    {
+        selectedModuleId += " moduleid = " + m.GetXmlProperty("genxml/moduleid") + "  or ";
+    }
+    selectedModuleId = selectedModuleId.Substring(0, selectedModuleId.Length - 3);
+
+    var objCtrl = new DNNrocketAPI.DNNrocketController();
+    var sqlXML = objCtrl.GetSqlxml("SELECT [TabID] FROM {databaseOwner}[{objectQualifier}TabModules] " + selectedModuleId + " FOR XML PATH, ROOT('genxml')");
+    var sXml = new SimplisityRecord();
+    sXml.XMLData = sqlXML;
+    var tabIdList = new List<string>();
+    var nodList = sXml.XMLDoc.SelectNodes("genxml/row");
+    if (nodList != null)
+    {
+        foreach (XmlNode r in nodList)
+        {
+            tabIdList.Add(r.SelectSingleNode("TabID").InnerText);
+        }
+    }
+}
+
+<div class="w3-row">
+    <div class="w3-button w3-left w3-margin-left" id="checkAll">
+        <span class="material-icons">
+            playlist_add_check
+        </span>
+    </div>
+    <div class="w3-button w3-left" id="uncheckAll">
+        <span class="material-icons">
+            playlist_remove
+        </span>
+    </div>
 </div>
-<div class="w3-row ">
-    <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
-    <div class="w3-button w3-col m5 w3-blue" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+<div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
+    @GetTabList(RocketTools.RocketToolsUtils.GetPortalId(), new List<int>(), "checkboxlist", "", "", true)
 </div>
 
 <script>
@@ -24,18 +53,23 @@
 
         $('.rocketclonesbutton').show();
 
-        $.fn.hummingbird.defaults.SymbolPrefix = "fas";
-        $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
-        $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
-
-        $("#treeview3").hummingbird();
-
         $("#checkAll").click(function () {
             $("#treeview3").hummingbird("checkAll");
         });
         $("#uncheckAll").click(function () {
             $("#treeview3").hummingbird("uncheckAll");
         });
+
+    @foreach (var t in tabIdList)
+    {
+        <text>
+        $('#tabid-checkboxlist-@(t)').attr('checked', 'true');
+        </text>
+    }
+        $('#tabid-checkboxlist-@(info.GetXmlProperty("genxml/fromtabid"))').attr("disabled", true);
+
+
+
 
     });
 

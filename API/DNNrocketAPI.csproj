@@ -209,6 +209,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreadCrumb.ascx.cs">
+      <DependentUpon>BreadCrumb.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BreadCrumb.ascx.designer.cs">
+      <DependentUpon>BreadCrumb.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\AppTheme\AppThemeBase.cs" />
     <Compile Include="Components\AppTheme\AppThemeRocketApiLimpet.cs" />
     <Compile Include="Components\AppTheme\AppThemeDNNrocketLimpet.cs" />
@@ -239,6 +246,13 @@
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
     <Compile Include="Interfaces\HandleBarsInterface.cs" />
+    <Compile Include="Meta.ascx.cs">
+      <DependentUpon>Meta.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Meta.ascx.designer.cs">
+      <DependentUpon>Meta.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="render\HandlebarsEngine.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
@@ -399,6 +413,7 @@
     <EmbeddedResource Include="App_LocalResources\login.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BreadCrumb.ascx" />
     <Content Include="CKEditor\ckeditor4.21.0\adapters\jquery.js" />
     <Content Include="CKEditor\ckeditor4.21.0\build-config.js" />
     <Content Include="CKEditor\ckeditor4.21.0\ckeditor.js" />
@@ -1269,6 +1284,9 @@
     <Content Include="images\rocketcds-logo-web.png" />
     <Content Include="images\rocketcds-logo.svg" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
+    <Content Include="Meta.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="SystemView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

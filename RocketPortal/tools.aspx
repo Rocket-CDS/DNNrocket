@@ -9,6 +9,7 @@
     <title>RocketCDS SysAdmin</title>
 
     <script type="text/javascript" src="/Resources/Libraries/jQuery/03_05_01/jquery.js"></script>
+    <script type="text/javascript" src="/Resources/Libraries/jQuery-UI/01_13_02/jquery-ui.min.js"></script>
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js?v=1"></script>
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css">
@@ -22,13 +23,20 @@
 
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
 
+<link rel="stylesheet" href="/DesktopModules/RocketTools/css/hummingbird-treeview.min.css">
+<script src="/DesktopModules/RocketTools/js/hummingbird-treeview.min.js" type="text/javascript"></script>
+
 <style>
-    #editBarContainer { display: none !important }
-    .personalBarContainer { display: none !important }
-    #Body { margin-left: 0px !important }
-    .material-icons { vertical-align: middle; }
-    iframe.editBar-iframe{ display: none !important; }
+    .downsymbol:before { content: '\2193'; }
+
+    .upsymbol:before { content: '\2191'; }
+    .dnnFormInfoAdminErrMssg { display: none; }
+    .material-icons {
+        vertical-align: middle;
+    }
+
 </style>
+
 
 </head>
 <body>
@@ -43,11 +51,11 @@
         <script type="text/javascript">
     
             $(document).ready(function () {
-                $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'dashboard_adminpanel', '{"systemkey":"rocketportal"}', '')
+                $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rockettools_adminpanel', '{"systemkey":"rockettools"}', '')
             });
     
         </script>
-
+    
 </body>
 </html>
 

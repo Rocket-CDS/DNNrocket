@@ -1,0 +1,42 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketTools;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var pageData = (PageRecordData)Model.GetDataObject("pagedata");
+}
+
+<div class="w3-row w3-padding">
+    @foreach (var l in enabledlanguages)
+    {
+        var selectedcolor = "";
+        if (Model.SessionParamsData.Get("culturecode2") == l)
+        {
+            selectedcolor = "w3-light-grey";
+        }
+        <div class="w3-button w3-padding-small w3-round @(selectedcolor) changeeditlanguage" language="@(l)" }><img src="/images/Flags/@(l).gif" class="w3-round" /></div>
+    }
+    <div class="w3-button w3-padding-small w3-round simplisity_confirmclick" s-cmd="rocketpl_pagedelete" s-confirm="@ResourceKey("View.remove") @pageData.Name  (@Model.SessionParamsData.Get("culturecode2")) ?" s-post="#pagedatasection" s-after="reloadpagedata" s-return="#savereturn">
+        <span class="material-icons">
+            cancel_presentation
+        </span>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".changeeditlanguage").click(function () {
+            var l = $(this).attr('language');
+            simplisity_setSessionField('culturecode2', l);
+            $('.rocketplpageview').trigger("click");
+            $('.rocketplpageedit').trigger("click");
+        });
+    });
+</script>
+

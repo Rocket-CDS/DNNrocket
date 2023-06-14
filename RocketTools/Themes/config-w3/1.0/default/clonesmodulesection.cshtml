@@ -1,39 +1,40 @@
-﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using System
 @using System.Linq
 @using System.Xml
 @using Simplisity;
-@using DNNrocketAPI.Components;
-@using RazorEngine.Text;
 
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
 }
 
-    <div class="w3-display-container">
+<div class="w3-display-container">
 
-        <div class="hummingbird-treeview well h-scroll-large">
-            <ul id="modulelistdata" class="hummingbird-base">
+    <div class="hummingbird-treeview well h-scroll-large">
+        <ul id="modulelistdata" class="hummingbird-base">
 
-                @{
-                    foreach (var m in info.GetRecordList("clonemodulelist"))
-                    {
-                        <li>
-                            <label>
-                                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
-                                @m.GetXmlProperty("genxml/moduletitle")
-                            </label>
-                        </li>
-                    }
+            @{
+                foreach (var m in info.GetRecordList("clonemodulelist"))
+                {
+                    <li>
+                                    <label>
+                                        <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                                        <span class="">
+                                            @m.GetXmlProperty("genxml/modulename")
+                                        </span>
+                                        <span class="w3-small">
+                                            @m.GetXmlProperty("genxml/modulepanename")
+                                        </span>
+                                    </label>
+                    </li>
                 }
-            </ul>
-        </div>
-
+            }
+        </ul>
     </div>
+
+</div>
 
 <script>
 
