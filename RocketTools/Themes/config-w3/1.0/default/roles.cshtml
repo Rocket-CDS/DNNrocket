@@ -6,6 +6,16 @@
 @using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div class="w3-row w3-padding datapostsection">        
+    <div class="w3-button w3-black" onclick="$('.simplisity_loader').show(); window.location.reload(true);">
+        @ButtonIconText(ButtonTypes.back)
+    </div>
+    <div class="w3-button simplisity_click" s-cmd="rocketroles_roles">
+        @ButtonIconText(ButtonTypes.refresh)
+    </div>
+</div>
 
 <div class="w3-row">
     <div class="w3-col m6 w3-xxlarge">

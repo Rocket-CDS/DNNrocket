@@ -1,8 +1,20 @@
 ﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
 @using RazorEngine.Text;
+@using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div class="w3-row w3-padding datapostsection">        
+    <div class="w3-button w3-black" onclick="$('.simplisity_loader').show(); window.location.reload(true);">
+        @ButtonIconText(ButtonTypes.back)
+    </div>
+    <div class="w3-button simplisity_click" s-cmd="rocketclones_getdisplay">
+        @ButtonIconText(ButtonTypes.refresh)
+    </div>
+</div>
+
 
 <h1>Clone Modules</h1>
 
