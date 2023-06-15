@@ -239,6 +239,11 @@ namespace RocketTools.API
         public string AddMenuProvider()
         {
             var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            if (info == null)
+            {
+                SaveSettings();
+                info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            }
             if (info != null)
             {
                 info.AddListItem("menuprovider", "<genxml></genxml>");
@@ -249,6 +254,11 @@ namespace RocketTools.API
         public string AddQueryParam()
         {
             var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            if (info == null)
+            {
+                SaveSettings();
+                info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            }
             if (info != null)
             {
                 info.AddListItem("queryparams", "<genxml></genxml>");

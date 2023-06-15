@@ -13,6 +13,7 @@ namespace DNNrocketAPI
         List<PageRecordData> GetMenuItems(int portalId, string cultureCode, string systemKey, string rootref);
         string TokenPrefix();
         int PageId(int portalId, string cultureCode);
+        int ParentId(string rootref);
     }
     public sealed class MenuInterface
     {

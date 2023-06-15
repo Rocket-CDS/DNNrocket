@@ -58,7 +58,7 @@ namespace RocketTools
                         {
                             var tokenPrefix = prov.TokenPrefix();
                             // jump out if we don't have token in nodes
-                            if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper())) == 0)
+                            if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
                             {
                                 return nodes;
                             }
@@ -66,23 +66,17 @@ namespace RocketTools
                             var idxlp = 0;
                             foreach (MenuNode n in nodes)
                             {
-                                if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper())) idx = idxlp;
+                                if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && n.Title.ToLower() == systemkey.ToLower()) idx = idxlp;
                                 idxlp += 1;
                             }
-                            var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper())).ToList();
+                            var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()).ToList();
                             foreach (var n in nods)
                             {
-                                var s = n.Text.Split(':');
-                                var parentcatref = "";
-                                if (s.Count() >= 2) parentcatref = s[1].TrimEnd(']');
-
+                                var parentcatref = n.Keywords;
                                 var pageList = prov.GetMenuItems(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture(), systemkey, parentcatref);
                                 var pageid = prov.PageId(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture());
-
                                 nodes.Remove(n);
-
-                                nodes = ProviderNodes(nodes, pageList, pageid, idx, 0);
-
+                                nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
                             }
                         }
                         else
