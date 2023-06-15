@@ -44,14 +44,17 @@ namespace RocketTools.API
             info.RemoveRecordList("modulelist");
             foreach (var t in info.GetRecordList("tabtreeview"))
             {
-                var tabid = t.GetXmlPropertyInt("genxml/tabid");
-                var l = RocketToolsUtils.GetTabModuleTitles(tabid);
-                foreach (var m in l)
+                if (t.GetXmlPropertyBool("genxml/clone")) // use clone checkbox name
                 {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
-                    sRec.SetXmlProperty("genxml/moduletitle", t.GetXmlProperty("genxml/tabname") + ": " + m.Value);
-                    info.AddRecordListItem("modulelist", sRec);
+                    var tabid = t.GetXmlPropertyInt("genxml/tabid");
+                    var l = RocketToolsUtils.GetTabModuleTitles(tabid);
+                    foreach (var m in l)
+                    {
+                        var sRec = new SimplisityRecord();
+                        sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
+                        sRec.SetXmlProperty("genxml/moduletitle", t.GetXmlProperty("genxml/tabname") + ": " + m.Value);
+                        info.AddRecordListItem("modulelist", sRec);
+                    }
                 }
             }
             var razorTempl = _appThemeSystem.GetTemplate("rolesmodulesection.cshtml");
@@ -76,34 +79,25 @@ namespace RocketTools.API
         public string ApplyRoles()
         {
             var info = GetCachedInfo(_pageRef);
-            foreach (var m in info.GetRecordList("tabmodules"))
+            foreach (var r in info.GetRecordList("rolelist"))
             {
-                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
-                if (moduleid > 0)
+                var roleid = r.GetXmlPropertyInt("genxml/roleid");
+                if (roleid > 0)
                 {
-                    var nodList1 = _postInfo.XMLDoc.SelectNodes("genxml/rolecheckbox/*");
-                    foreach (XmlNode nod1 in nodList1)
+                    foreach (var m in info.GetRecordList("modulelist"))
                     {
-                        var strroleid = nod1.Name.Replace("roleid", "");
-                        if (GeneralUtils.IsNumeric(strroleid))
+                        var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
+                        if (moduleid > 0)
                         {
-                            var roleid = Convert.ToInt32(strroleid);
-                            if (roleid > 0)
-                            {
-                                if (nod1.InnerText.ToLower() == "true")
-                                {
-                                    AddRoleToModule(_portalId, moduleid, roleid);
-                                }
-                                else
-                                {
-                                    RemoveRoleToModule(_portalId, moduleid, roleid);
-                                }
-                            }
+                            if (r.GetXmlPropertyBool("genxml/addrole"))
+                                AddRoleToModule(_portalId, moduleid, roleid);
+                            else
+                                RemoveRoleToModule(_portalId, moduleid, roleid);
                         }
                     }
                 }
             }
-            DNNrocketUtils.RecycleApplicationPool();
+            //DNNrocketUtils.RecycleApplicationPool();
             return RolesOK();
         }
 
@@ -168,28 +162,28 @@ namespace RocketTools.API
 
                 // Check for DEPLOY 
                 // This was added for upgrade on module.  I'm unsure if it's still required.
-                if (!roleexist)
-                {
-                    ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
-                    foreach (PermissionInfo permission in permissions)
-                    {
-                        if (permission.PermissionKey == "DEPLOY")
-                        {
-                            var objPermission = new ModulePermissionInfo(permission)
-                            {
+                //if (!roleexist)
+                //{
+                //    ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
+                //    foreach (PermissionInfo permission in permissions)
+                //    {
+                //        if (permission.PermissionKey == "DEPLOY")
+                //        {
+                //            var objPermission = new ModulePermissionInfo(permission)
+                //            {
 
-                                ModuleID = moduleInfo.DesktopModuleID,
-                                RoleID = role.RoleID,
-                                RoleName = role.RoleName,
-                                AllowAccess = true,
-                                UserID = Null.NullInteger,
-                                DisplayName = Null.NullString
-                            };
-                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
-                            ModuleController.Instance.UpdateModule(moduleInfo);
-                        }
-                    }
-                }
+                //                ModuleID = moduleInfo.DesktopModuleID,
+                //                RoleID = role.RoleID,
+                //                RoleName = role.RoleName,
+                //                AllowAccess = true,
+                //                UserID = Null.NullInteger,
+                //                DisplayName = Null.NullString
+                //            };
+                //            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                //            ModuleController.Instance.UpdateModule(moduleInfo);
+                //        }
+                //    }
+                //}
 
 
             }
@@ -211,7 +205,6 @@ namespace RocketTools.API
                         roleexist = true;
                     }
                 }
-
                 if (roleexist && permissionID > -1)
                 {
                     moduleInfo.ModulePermissions.Remove(permissionID, role.RoleID, Null.NullInteger);

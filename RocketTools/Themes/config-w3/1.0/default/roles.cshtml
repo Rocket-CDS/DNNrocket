@@ -2,6 +2,8 @@
 @using System
 @using System.Xml
 @using Simplisity;
+@using RocketTools.Components;
+@using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
@@ -40,7 +42,7 @@
             </div>
         </div>
         <div id="treeview2_container" class="hummingbird-treeview well h-scroll-large">
-            @GetTreeTabList(RocketTools.RocketToolsUtils.GetPortalId(), new List<int>(), "treeview2", "", "class='hummingbird-base'", false)
+            @GetTreeTabList(PortalUtils.GetPortalId(), new List<int>(), "treeview2", "", "class='hummingbird-base'", false)
         </div>
 
     </div>
@@ -62,7 +64,7 @@
         <div class="w3-half w3-padding">
             <div class="w3-large w3-panel w3-light-grey w3-padding" style="height:52px;">
                 <b>@ResourceKey("View.roles")</b>
-                <div class="w3-button w3-green w3-right applyrolesbutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("View.applyroles") ?" s-cmd="rocketroles_applyroles" s-return=".returnmsg">
+                <div class="w3-button w3-green w3-right applyrolesbutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("View.applyroles") ?" s-cmd="rocketroles_applyroles" s-return=".returnmsg" s-post="#rolelistdata">
                     <span class="material-icons">
                         save
                     </span>

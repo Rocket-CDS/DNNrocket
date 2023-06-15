@@ -6,6 +6,22 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 
-<span class="w3-pale-green w3-input">
-    @ResourceKey("View.rolesok")
-</span>
+
+<div id="id01" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container w3-center " style="">
+        <div class="w3-margin">
+            @ResourceKey("View.rolesok")
+        </div>
+        <div class="w3-green w3-button w3-margin" onclick="window.location.reload();">
+                OK
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#id01").show();
+    });
+</script>

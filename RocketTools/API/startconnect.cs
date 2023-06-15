@@ -77,11 +77,11 @@ namespace RocketTools.API
                         strOut = GetModules();
                         break;
                     case "rocketroles_getroles":
-                        SaveModules("tabmodules");
+                        SaveModules("modulelist");
                         strOut = GetRoles();
                         break;
                     case "rocketroles_applyroles":
-                        SaveModules("tabmodules");
+                        SaveRoles("rolelist");
                         strOut = ApplyRoles();
                         break;
                     case "rocketroles_createdefaultroles":

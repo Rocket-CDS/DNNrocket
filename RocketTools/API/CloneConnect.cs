@@ -107,6 +107,23 @@ namespace RocketTools.API
             }
             CacheUtils.SetCache(_pageRef, info);
         }
+        public void SaveRoles(string listName)
+        {
+            var info = GetCachedInfo(_pageRef);
+            info.GUIDKey = "";  // clear flag on new selection.
+
+            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
+            info.RemoveRecordList(listName);
+            foreach (XmlNode nod in nodList)
+            {
+                var sRec = new SimplisityRecord();
+                sRec.SetXmlProperty("genxml/elementid", nod.Name);
+                sRec.SetXmlProperty("genxml/roleid", nod.Name.Replace("roleid", ""));
+                sRec.SetXmlProperty("genxml/addrole", nod.InnerText.ToLower());                    
+                info.AddRecordListItem(listName, sRec);
+            }
+            CacheUtils.SetCache(_pageRef, info);
+        }
 
         public void SaveTreeView(string listName)
         {
