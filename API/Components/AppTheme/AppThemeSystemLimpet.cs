@@ -12,6 +12,11 @@ using System.Xml;
 namespace DNNrocketAPI.Components
 {
 
+    /// <summary>
+    /// Get system templates
+    /// For portal level create template in: [website root]\Portals\1\RocketThemes\rocketintra\config-w3\1.0\default
+    /// Model level template do not exist for systems.
+    /// </summary>
     public class AppThemeSystemLimpet : AppThemeBase
     {
         public AppThemeSystemLimpet(int portalId, string systemKey) : base(portalId, "/DesktopModules/DNNrocketModules/" + systemKey.Trim('/') + "/Themes/config-w3", "", systemKey)
@@ -23,7 +28,6 @@ namespace DNNrocketAPI.Components
         {
             SystemKey = systemKey;
         }
-
         public string SystemKey { get; set; }
 
 
