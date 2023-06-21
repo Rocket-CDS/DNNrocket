@@ -55,6 +55,12 @@ namespace DNNrocketAPI.Components
                             var sRec = new SimplisityRecord();
                             sRec.XMLData = fileStr2;
 
+                            var gList = sRec.GetRecordList("groupsdata");
+                            foreach (var g in gList)
+                            {
+                                Record.AddRecordListItem("groupsdata", g);
+                            }
+
                             var pList = sRec.GetRecordList("providerdata");
                             foreach (var p in pList)
                             {

@@ -500,26 +500,33 @@ namespace DNNrocketAPI.Components
         {
             // Currently .webp is not well supported. (This may chnage in future)
             if (outFileMapPath == "") outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".webp";
-            var WebP = new WebP();
-            try
+            if (Path.GetExtension(imgPathName.ToLower()) == ".webp")
             {
-                Bitmap bmp = new Bitmap(imgPathName);
-                using (WebP webp = new WebP())
-                    webp.Save(bmp, outFileMapPath, 80);
+                if (imgPathName != outFileMapPath) File.Copy(imgPathName, outFileMapPath);
             }
-            catch (Exception)
+            else
             {
-                GC.Collect();
-                // attempt to clear all file locks and try again
+                var WebP = new WebP();
                 try
                 {
                     Bitmap bmp = new Bitmap(imgPathName);
                     using (WebP webp = new WebP())
                         webp.Save(bmp, outFileMapPath, 80);
                 }
-                catch
+                catch (Exception)
                 {
-                    //abandon save. 
+                    GC.Collect();
+                    // attempt to clear all file locks and try again
+                    try
+                    {
+                        Bitmap bmp = new Bitmap(imgPathName);
+                        using (WebP webp = new WebP())
+                            webp.Save(bmp, outFileMapPath, 80);
+                    }
+                    catch
+                    {
+                        //abandon save. 
+                    }
                 }
             }
 

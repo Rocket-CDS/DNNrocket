@@ -1310,7 +1310,7 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         var ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                        rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                        if (ajaxprov != null) rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
                     {
@@ -1332,7 +1332,7 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         var ajaxprov = EventInterface.GetInstance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                        rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                        if (ajaxprov != null) rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
                     {
