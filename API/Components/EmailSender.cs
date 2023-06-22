@@ -19,9 +19,10 @@ namespace DNNrocketAPI.Components
             if (String.IsNullOrEmpty(EmailData.EmailBody) && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
             {
                 if (EmailData.SystemKey == null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
-                var systemData = SystemSingleton.Instance(EmailData.SystemKey);
-                var razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
-                
+                var razorTempl = "";
+                if (EmailData.AppTheme != null) razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
+                if (EmailData.AppSystemTheme != null) razorTempl = EmailData.AppSystemTheme.GetTemplate(EmailData.RazorTemplateName); // might be a plugin
+
                 // if we have no theme template, look in the system folder.
                 if (razorTempl == "")
                 {
@@ -116,6 +117,7 @@ namespace DNNrocketAPI.Components
         public int PortalId { get; set; }
 
         public AppThemeLimpet AppTheme { get; set; }
+        public AppThemeSystemLimpet AppSystemTheme { get; set; }
 
     }
 
