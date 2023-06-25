@@ -276,6 +276,7 @@ namespace Simplisity
                 case TypeCode.DateTime:
                     if (IsDate(inpData, editlang))
                     {
+                        if (!IsCultureInfo(editlang)) editlang = "en-US";
                         var cultureInfo = new CultureInfo(editlang, true);
                         var dte = Convert.ToDateTime(inpData, cultureInfo);
                         return dte.ToString("s");
@@ -285,7 +286,18 @@ namespace Simplisity
                     return FormatDisableScripting(inpData);
             }
         }
-
+        public static bool IsCultureInfo(string cultureCode)
+        {
+            try
+            {
+                var culture = CultureInfo.GetCultureInfo(cultureCode);
+                return true;
+            }
+            catch (CultureNotFoundException)
+            {
+                return false;
+            }
+        }
         public static string FormatToDisplay(string inpData, string cultureCode, TypeCode dataTyp, string formatCode = "")
         {
             if (String.IsNullOrEmpty(inpData))
@@ -375,8 +387,9 @@ namespace Simplisity
         // IsDate culture Function
         public static bool IsDate(object expression, string cultureCode)
         {
+            if (!IsCultureInfo(cultureCode)) cultureCode = "en-US";
             DateTime rtnD;
-            return DateTime.TryParse(Convert.ToString(expression), CultureInfo.CreateSpecificCulture(cultureCode),
+            return DateTime.TryParse(Convert.ToString(expression), System.Globalization.CultureInfo.CreateSpecificCulture(cultureCode),
                 DateTimeStyles.None, out rtnD);
         }
         /// <summary>
@@ -484,6 +497,16 @@ namespace Simplisity
             Regex rgx = new Regex("[^a-zA-Z0-9 -]");
             var str = rgx.Replace(strIn, "");
             return str.Replace(" ", "");
+        }
+        /// <summary>
+        /// strips out all nonnumeric characters.
+        /// </summary>
+        /// <param name="strIn">Dirty String</param>
+        /// <param name="regexpr"></param>
+        /// <returns>Clean String</returns>
+        public static string Numeric(string strIn)
+        {
+            return Regex.Replace(strIn, "[^0-9]", "");
         }
 
 
