@@ -10,6 +10,8 @@ using Simplisity;
 using DNNrocketAPI.Components;
 using System.Drawing.Printing;
 using System.Reflection;
+using System.Linq;
+using System.Collections;
 
 namespace DNNrocketAPI
 {
@@ -714,6 +716,10 @@ namespace DNNrocketAPI
         {
             return DataProvider.Instance().GetSqlxml(commandText);
         }
+        public string ExecSqlXml(string commandText)
+        {
+            return DataProvider.Instance().GetSqlxml(commandText);
+        }
         public string ExecSql(string commandText)
         {
             return DataProvider.Instance().ExecSql(commandText);
@@ -722,7 +728,27 @@ namespace DNNrocketAPI
         {
             return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().ExecSqlList(commandText));
         }
+        public List<SimplisityRecord> ExecSqlXmlList(string commandText)
+        {
+            var rtn = new List<SimplisityRecord>();
+            var results = ExecSqlXml(commandText);
 
+            var strXml = "<root>" + results.ToString() + "</root>";
+
+            var sRec = new SimplisityRecord();
+            sRec.XMLData = strXml;
+            var nodList = sRec.XMLDoc.SelectNodes("root/*");
+            if (nodList != null)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    var sRec2 = new SimplisityRecord();
+                    sRec2.XMLData = nod.OuterXml;
+                    rtn.Add(sRec2);
+                }
+            }
+            return rtn;
+        }
         #endregion
 
 
