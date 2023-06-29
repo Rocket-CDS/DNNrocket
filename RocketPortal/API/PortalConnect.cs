@@ -18,6 +18,13 @@ namespace RocketPortal.API
                 if (globalData.RootDomain == "") return "Invalid Root Domain.  Update Global Settings.";
                 portalurl = GeneralUtils.UrlFriendly(GeneralUtils.GetGuidKey()) + "." + globalData.RootDomain;
             }
+            else
+            {
+                portalurl = GeneralUtils.UrlFriendly(portalurl);
+                System.Uri uri = new Uri(portalurl);
+                portalurl = uri.Host.ToLower();
+            }
+
             var engineurl = portalurl;
 
             var portalExists = false;
