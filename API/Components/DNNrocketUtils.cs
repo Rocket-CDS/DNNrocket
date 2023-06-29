@@ -897,16 +897,19 @@ namespace DNNrocketAPI.Components
 
         public static void DeleteCookieValue(string name)
         {
-            HttpCookie MyCookie = new HttpCookie(name);
-            MyCookie.Expires = DateTime.Now.AddDays(-10);
-            MyCookie.Value = null;
-            MyCookie.Path = "/";
-            HttpContext.Current.Response.Cookies.Set(MyCookie);
+            if (HttpContext.Current != null)
+            {
+                HttpCookie MyCookie = new HttpCookie(name);
+                MyCookie.Expires = DateTime.Now.AddDays(-10);
+                MyCookie.Value = null;
+                MyCookie.Path = "/";
+                HttpContext.Current.Response.Cookies.Set(MyCookie);
+            }
         }
 
         public static void SetCookieValue(string name, string value)
         {
-            if (value != null)
+            if (value != null && HttpContext.Current != null)
             {
                 HttpCookie MyCookie = new HttpCookie(name);
                 MyCookie.Value = value;
@@ -918,7 +921,7 @@ namespace DNNrocketAPI.Components
 
         public static string GetCookieValue(string name)
         {
-            if (HttpContext.Current.Request.Cookies[name] != null)
+            if (HttpContext.Current != null && HttpContext.Current.Request.Cookies[name] != null)
             {
                 return HttpContext.Current.Request.Cookies[name].Value;
             }
