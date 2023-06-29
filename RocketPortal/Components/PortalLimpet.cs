@@ -77,10 +77,6 @@ namespace RocketPortal.Components
             ReplaceInfoFields(info, "genxml/config/*");
             ReplaceInfoFields(info, "genxml/select/*");
             ReplaceInfoFields(info, "genxml/textbox/*");
-
-            System.Uri uri = new Uri(info.GetXmlProperty("genxml/textbox/engineurl"));
-            Record.SetXmlProperty("genxml/textbox/engineurl", uri.Host);
-
             return Update();
         }
         public string DefaultLanguage()
@@ -288,18 +284,7 @@ namespace RocketPortal.Components
         public SimplisityRecord Record { get; set; }
         public int PortalId { get { return Record.PortalId; } }
         public string Protocol { get { var rtn = Record.GetXmlProperty("genxml/select/protocol"); if (rtn == "") rtn = "https://"; return rtn; } }
-        public string EngineUrl {
-            get
-            {
-                System.Uri uri = new Uri(Record.GetXmlProperty("genxml/textbox/engineurl"));
-                return uri.Host.ToLower();
-            }
-            set 
-            {
-                System.Uri uri = new Uri(value);
-                Record.SetXmlProperty("genxml/textbox/engineurl", uri.Host.ToLower());
-            } 
-        }
+        public string EngineUrl { get { return Record.GetXmlProperty("genxml/textbox/engineurl"); } set { Record.SetXmlProperty("genxml/textbox/engineurl", value); } }
         public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } set { Record.SetXmlProperty("genxml/textbox/name", value); } }
         public string EngineUrlWithProtocol { get { return Protocol + EngineUrl; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
