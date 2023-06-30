@@ -46,6 +46,7 @@ using DotNetNuke.Services.ClientCapability;
 using DNNrocketAPI.Interfaces;
 using DotNetNuke.Web.DDRMenu;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace DNNrocketAPI.Components
 {
@@ -1190,7 +1191,7 @@ namespace DNNrocketAPI.Components
             return systemInfo;
         }
 
-        public static void IncludePageHeaders(string systemKey, Page page, int tabId, bool debugMode = false)
+        public static void IncludePageHeaders(int portalId, string systemKey, Page page, int tabId, bool debugMode = false)
         {
             page.Items.Add("dnnrocket_pageheader", true);
             var cachekey = tabId + ".pageheader.cshtml";
@@ -1205,7 +1206,7 @@ namespace DNNrocketAPI.Components
                     var systemInfo = GetModuleSystemInfo(systemKey, modId, false);
                     if (systemInfo != null)
                     {
-                        var appThemeMod = new AppThemeModule(modId, systemKey);
+                        var appThemeMod = new AppThemeModule(portalId, modId, systemKey);
                         var fileMapPath = appThemeMod.ModuleParams.AppTheme.GetFileMapPath("pageheader.cshtml");
                         if (!fileList.Contains(fileMapPath))
                         {
@@ -1892,6 +1893,10 @@ namespace DNNrocketAPI.Components
             sInfo.SetXmlProperty(sInfo.RootNodeName + "/keepdatetime", keepdatetime.ToString("O"), TypeCode.DateTime);
             objCtrl.Update(sInfo, "DNNrocketTemp");
             return key;
+        }
+        public static string SetTempStorage(SimplisityInfo value, int keephours = 24)
+        {
+            return SaveTempStorage(value.XMLData, keephours);
         }
         public static SimplisityInfo GetTempStorage(string key, bool deleteAfterRead = true)
         {

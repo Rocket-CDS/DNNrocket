@@ -24,6 +24,11 @@ namespace DNNrocketAPI.Components
 
         #region IPortable Members
 
+        public int GetImportTotal()
+        {
+            return 1;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   ExportModule implements the IPortable ExportModule Interface
@@ -58,6 +63,10 @@ namespace DNNrocketAPI.Components
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
+                                systemData.SystemInfo.PortalId = portalId;  // export run on shcheduler,
+
+                                var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
+                                paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
 
                                 var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
                                 if (returnDictionary.ContainsKey("outputhtml")) xmlOut += returnDictionary["outputhtml"];
@@ -86,12 +95,13 @@ namespace DNNrocketAPI.Components
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
             var objModCtrl = new ModuleController();
-            var postInfo = new SimplisityInfo();
-            postInfo.XMLData = content;
 
             var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
             if (objModInfo != null)
             {
+                var postInfo = new SimplisityInfo();
+                postInfo.XMLData = content;
+
                 var portalId = objModInfo.PortalID;
                 var systemKey = postInfo.GetXmlProperty("export/systemkey");
                 var databasetable = postInfo.GetXmlProperty("export/databasetable");
@@ -108,7 +118,12 @@ namespace DNNrocketAPI.Components
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);                                
+                                paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);
+                                systemData.SystemInfo.PortalId = portalId;  // import run on shcheduler,
+
+                                var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
+                                paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
+
                                 var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
                             }
                         }

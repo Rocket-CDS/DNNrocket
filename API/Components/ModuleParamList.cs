@@ -37,7 +37,7 @@ namespace RocketMod.Components
             var l = _objCtrl.GetList(-1, -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, 0, 0, 0, _tableName);
             foreach (var i in l)
             {
-                var m = new ModuleParams(i.ModuleId, systemKey, _useCache, _tableName);
+                var m = new ModuleParams(i.PortalId, i.ModuleId, systemKey, _useCache, _tableName);
                 var tabInfo = DNNrocketUtils.GetTabInfo(m.TabId);
                 if (tabInfo != null)
                 {

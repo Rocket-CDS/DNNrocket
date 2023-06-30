@@ -10,8 +10,9 @@ namespace DNNrocketAPI.Components
         private string _systemKey;
         private Dictionary<string, bool> _modellevelTemplates;
 
-        public AppThemeModule(int moduleId, string systemKey)
+        public AppThemeModule(int portalId, int moduleId, string systemKey)
         {
+            PortalId = portalId;
             ModuleId = moduleId;
             _systemKey = systemKey;
             _modellevelTemplates = new Dictionary<string, bool>();
@@ -20,7 +21,7 @@ namespace DNNrocketAPI.Components
 
         private void InitAppThemeMod() {
 
-            ModuleParams = new ModuleParams(ModuleId, _systemKey);
+            ModuleParams = new ModuleParams(PortalId, ModuleId, _systemKey);
             systemData = SystemSingleton.Instance(_systemKey);
 
             ModuleTemplateFolderMapPath = PortalUtils.HomeDirectoryMapPath(PortalUtils.GetPortalId()).Trim('\\') + "\\DNNrocketThemes";
@@ -149,6 +150,7 @@ namespace DNNrocketAPI.Components
 
         public ModuleParams ModuleParams { get; private set; }
         public SystemLimpet systemData { get; private set; }
+        public int PortalId { get; private set; }
         public int ModuleId { get; private set; }
         public int SystemId { get; private set; }
         public string ModuleTemplateFolderMapPath { get; private set; }

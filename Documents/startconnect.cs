@@ -5,6 +5,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace DNNrocket.Documents
 {
@@ -68,7 +69,7 @@ namespace DNNrocket.Documents
                 }
                 else
                 {
-                    var moduleParams = new ModuleParams(moduleid);
+                    var moduleParams = new ModuleParams(PortalUtils.GetCurrentPortalId(), moduleid, _systemkey);
                     var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
                     var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
 
@@ -88,7 +89,7 @@ namespace DNNrocket.Documents
             var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (moduleId > 0)
             {
-                var modParams = new ModuleParams(moduleId);
+                var modParams = new ModuleParams(PortalUtils.GetCurrentPortalId(), moduleId, _systemkey);
                 if (!Directory.Exists(modParams.DocumentFolderMapPath)) Directory.CreateDirectory(modParams.DocumentFolderMapPath);
                 var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
                 if (fileuploadlist != "")

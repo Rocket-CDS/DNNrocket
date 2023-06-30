@@ -269,9 +269,9 @@ namespace DNNrocketAPI.render
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
         }
-        public IEncodedString RenderImageSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
+        public IEncodedString RenderImageSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)
         {
-            var moduleParams = new ModuleParams(moduleid);
+            var moduleParams = new ModuleParams(portalId, moduleid, systemKey);
             return RenderImageSelect(moduleParams, singleselect, autoreturn);
         }
         public IEncodedString RenderImageSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)
@@ -283,9 +283,9 @@ namespace DNNrocketAPI.render
         {
             return new RawString(DNNrocketUtils.RenderDocumentSelect(systemKey, docFolderRel, singleselect, autoreturn));
         }
-        public IEncodedString RenderDocumentSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
+        public IEncodedString RenderDocumentSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)
         {
-            var moduleParams = new ModuleParams(moduleid);
+            var moduleParams = new ModuleParams(portalId, moduleid, systemKey);
             return RenderDocumentSelect(moduleParams, singleselect, autoreturn);
         }
         public IEncodedString RenderDocumentSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)

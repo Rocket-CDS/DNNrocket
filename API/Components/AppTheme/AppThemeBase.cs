@@ -18,12 +18,6 @@ namespace DNNrocketAPI.Components
         public AppThemeBase()
         {
         }
-
-        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder, string projectName) instead")]
-        public AppThemeBase(string appThemeFolderRel, string versionFolder = "", string projectName = "")
-        {
-            Init(-1, appThemeFolderRel, versionFolder, projectName);
-        }
         public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "", string projectName = "")
         {
             Init(portalid, appThemeFolderRel, versionFolder, projectName);

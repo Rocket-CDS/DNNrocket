@@ -163,7 +163,7 @@ namespace DNNrocket.AppThemes
                             case "rocketapptheme_appthemejson":
                                 strOut = "";
                                 var projectName2 = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
-                                var appThemeList2 = new AppThemeDataList(projectName2, _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
+                                var appThemeList2 = new AppThemeDataList(_portalData.PortalId, projectName2, _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
                                 var addEmpty = _postInfo.GetXmlPropertyBool("genxml/hidden/addempty");
                                 jsonOut = appThemeList2.NameListJson(addEmpty);
                                 break;                                
@@ -501,7 +501,7 @@ namespace DNNrocket.AppThemes
 
         public String GetAppStoreList()
         {
-            var appThemeDataList = new AppThemeDataList(_projectName);
+            var appThemeDataList = new AppThemeDataList(_portalData.PortalId, _projectName);
             var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
             var passSettings = _postInfo.ToDictionary();
 
@@ -511,7 +511,7 @@ namespace DNNrocket.AppThemes
         }
         public String GetEditList()
         {
-            var appThemeDataList = new AppThemeDataList(_projectName);
+            var appThemeDataList = new AppThemeDataList(_portalData.PortalId, _projectName);
             var razorTempl = _appThemeSystem.GetTemplate("EditList.cshtml");
             var passSettings = _postInfo.ToDictionary();
 

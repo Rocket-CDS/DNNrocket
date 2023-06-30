@@ -13,8 +13,9 @@ namespace DNNrocketAPI.Components
     {
         // Backup local Templates froim file system
 
-        public BackUpModuleTemplates(string fileMapPath,int moduleId, string systemKey)
+        public BackUpModuleTemplates(int portalId, string fileMapPath,int moduleId, string systemKey)
         {
+            PortalId = portalId;
             SystemKey = systemKey;
             ModuleId = moduleId;
             FileMapPath = fileMapPath;
@@ -35,7 +36,7 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                var appThemeMod = new AppThemeModule(ModuleId, SystemKey);
+                var appThemeMod = new AppThemeModule(PortalId, ModuleId, SystemKey);
                 backUpXml = appThemeMod.ExportModuleLevelTemplateXml();
             }
             if (!String.IsNullOrEmpty(backUpXml)) LoadTemplateList(backUpXml);
@@ -88,6 +89,7 @@ namespace DNNrocketAPI.Components
         public DateTime BackUpDate { get; set; }
         public string SystemKey { get; set; }
         public int ModuleId { get; set; }
+        public int PortalId { get; set; }
 
     }
 

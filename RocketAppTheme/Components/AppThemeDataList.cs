@@ -16,16 +16,19 @@ namespace Rocket.AppThemes.Components
 
     public class AppThemeDataList
     {
-        public AppThemeDataList(string projectName)
+        private int _portalId;
+        public AppThemeDataList(int portalId, string projectName)
         {
+            _portalId = portalId;
             ProjectName = projectName; // assign first.
             SelectedSystemKey = "";
 
             AssignFolders();
             PopulateAppThemeList();
         }
-        public AppThemeDataList(string projectName, string selectedsystemkey)
+        public AppThemeDataList(int portalId, string projectName, string selectedsystemkey)
         {
+            _portalId = portalId;
             ProjectName = projectName; // assign first.
             SelectedSystemKey = selectedsystemkey;
 
@@ -56,7 +59,7 @@ namespace Rocket.AppThemes.Components
                 var dr = new System.IO.DirectoryInfo(d1);
                 if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
                 {
-                    var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), dr.Name, "", org);
+                    var appTheme = new AppThemeLimpet(_portalId, dr.Name, "", org);
                     if (appTheme.FileNameList.Count > 0) list.Add(appTheme);
                 }
             }

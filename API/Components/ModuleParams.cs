@@ -26,9 +26,11 @@ namespace DNNrocketAPI.Components
         private string _cacheKey;
         private string _tableName;
         private int _moduleid;
+        private int _portalid;
 
-        public ModuleParams(int moduleId, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
+        public ModuleParams(int portalid, int moduleId, string systemKey, bool useCache = true, string tableName = "DNNrocket")
         {
+            _portalid = portalid;
             _moduleParamsRec = new SimplisityRecord();
             _tableName = tableName;
             _moduleid = moduleId;
@@ -47,7 +49,7 @@ namespace DNNrocketAPI.Components
                     if (_moduleParamsRec == null)
                     {
                         _moduleParamsRec = new SimplisityRecord();
-                        _moduleParamsRec.PortalId = -1;
+                        _moduleParamsRec.PortalId = _portalid;
                         _moduleParamsRec.TypeCode = "MODULEPARAMS";
                         _moduleParamsRec.GUIDKey = _cacheKey;
                         _moduleParamsRec.ModuleId = _moduleid;
@@ -57,7 +59,7 @@ namespace DNNrocketAPI.Components
                 }
             }
             DataSourceExternal = false;
-            if (systemKey != "") SystemKey = systemKey;
+            SystemKey = systemKey;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetGuidKey();
             if (ModuleIdDataSource <= 0) ModuleIdDataSource = _moduleid;
@@ -95,7 +97,8 @@ namespace DNNrocketAPI.Components
             AppTheme = (AppThemeLimpet)CacheUtils.GetCache(appThemeCacheKey);
             if (AppTheme == null || AppTheme.AppThemeFolder != appthemefolder)
             {
-                AppTheme = new AppThemeLimpet(appthemefolder, "");
+                var systemData = new SystemLimpet(SystemKey);
+                AppTheme = new AppThemeLimpet(_portalid, systemData, appthemefolder);
                 CacheUtils.SetCache(appThemeCacheKey, AppTheme);
             }
         }

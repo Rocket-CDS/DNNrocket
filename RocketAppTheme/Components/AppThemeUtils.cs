@@ -45,7 +45,7 @@ namespace Rocket.AppThemes.Components
             return appTheme;
         }
 
-        public static AppThemeModule AppThemeModule(int moduleId, string systemKey)
+        public static AppThemeModule AppThemeModule(int portalId, int moduleId, string systemKey)
         {
             var cacheKey = "AppThemeModule" + moduleId + "*" + systemKey;
             var appTheme = (AppThemeModule)CacheUtils.GetCache(cacheKey);
@@ -53,7 +53,7 @@ namespace Rocket.AppThemes.Components
             {
                 if (appTheme == null)
                 {
-                    appTheme = new AppThemeModule(moduleId, systemKey);
+                    appTheme = new AppThemeModule(portalId, moduleId, systemKey);
                     CacheUtils.SetCache(cacheKey, appTheme);
                 }
             }
@@ -105,7 +105,7 @@ namespace Rocket.AppThemes.Components
             return appTheme;
         }
 
-        public static AppThemeDataList AppThemeDataList(string projectName, string systemKey, bool refresh = false)
+        public static AppThemeDataList AppThemeDataList(int portalId, string projectName, string systemKey, bool refresh = false)
         {
             var cKey = "AppThemeDataList*" + systemKey + "-" + projectName;
             var appthemedatalistview = (AppThemeDataList)CacheUtils.GetCache(cKey);
@@ -113,7 +113,7 @@ namespace Rocket.AppThemes.Components
             {
                 if (appthemedatalistview == null || refresh)
                 {
-                    appthemedatalistview = new AppThemeDataList(projectName, systemKey);
+                    appthemedatalistview = new AppThemeDataList(portalId, projectName, systemKey);
                     CacheUtils.SetCache(cKey, appthemedatalistview);
                 }
             }

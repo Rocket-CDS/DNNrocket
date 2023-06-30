@@ -417,4 +417,10 @@
   <data name="editportalappthemes.Text" xml:space="preserve">
     <value>Modifier le portail AppThemes</value>
   </data>
+  <data name="editmodelapptheme.Text" xml:space="preserve">
+    <value>Niveau du module</value>
+  </data>
+  <data name="editportalapptheme.Text" xml:space="preserve">
+    <value>Niveau du portail</value>
+  </data>
 </root>

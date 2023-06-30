@@ -43,7 +43,7 @@ namespace DNNrocketAPI.Components
             {
                 if (UserController.Instance.GetCurrentUserInfo() != null)
                 {
-                    if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
                     {
                         return UserController.Instance.GetCurrentUserInfo().UserID;
                     }
@@ -499,6 +499,7 @@ namespace DNNrocketAPI.Components
         }
         public static bool IsAuthorised()
         {
+            if (PortalSettings.Current == null) return false;
             return IsAuthorised(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
         }
         public static bool IsAuthorised(int portalId, int userId)
