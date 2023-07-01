@@ -909,4 +909,7 @@
   <data name="videoCode.Text" xml:space="preserve">
     <value>Iframe youtube Video</value>
   </data>
+  <data name="editor.Text" xml:space="preserve">
+    <value>Editor</value>
+  </data>
 </root>

@@ -21,6 +21,7 @@
                 <th style="width:32px;"></th>
                 <th>@ResourceKey("DNNrocket.username")</th>
                 <th>@ResourceKey("DNNrocket.email")</th>
+                <th style="width:32px;">@ResourceKey("DNNrocket.manager")</th>
                 <th style="width:32px;">@ResourceKey("DNNrocket.admin")</th>
                 <th style="width:32px;">@ResourceKey("DNNrocket.active")</th>
                 <th style="width:32px;"></th>
@@ -38,6 +39,11 @@
         </td>
         <td style="vertical-align: middle;">
             @userData.Email
+        </td>
+        <td>
+            <span class="material-icons w3-padding w3-text-green">
+                toggle_on
+            </span>
         </td>
         <td>
             @if (UserUtils.IsInRole(portalData.PortalId, userData.UserId, DNNrocketRoles.Administrators))

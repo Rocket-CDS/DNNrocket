@@ -179,7 +179,7 @@ namespace RocketPortal.API
             }
             return GetPortalDetail();
         }
-        private string AddAdminRole()
+        private string AddRole(string role)
         {
             var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalId >= 0)
@@ -187,13 +187,13 @@ namespace RocketPortal.API
                 var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
                 if (userid > 1)
                 {
-                    var roleRec = UserUtils.GetRoleByName(portalId, DNNrocketRoles.Administrators);
+                    var roleRec = UserUtils.GetRoleByName(portalId, role);
                     UserUtils.AddUserRole(portalId, userid, roleRec.GetXmlPropertyInt("genxml/roleid"));
                 }
             }
             return GetPortalDetail();
         }
-        private string RemoveAdminRole()
+        private string RemoveRole(string role)
         {
             var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalId >= 0)
@@ -201,7 +201,7 @@ namespace RocketPortal.API
                 var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
                 if (userid > 1)
                 {
-                    var roleRec = UserUtils.GetRoleByName(portalId, DNNrocketRoles.Administrators);
+                    var roleRec = UserUtils.GetRoleByName(portalId, role);
                     UserUtils.RemoveUserRole(portalId, userid, roleRec.GetXmlPropertyInt("genxml/roleid"));
                 }
             }

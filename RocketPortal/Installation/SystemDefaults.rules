@@ -161,7 +161,24 @@
 		  <cmd>portal_getsystems</cmd>
 		  <action>true</action>
 	  </command>
-	  
+	  <command>
+		  <cmd>portal_removeeditorrole</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_addeditorrole</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_removemanagerrole</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_addmanagerrole</cmd>
+		  <action>true</action>
+	  </command>
+
+
 	  <!-- Legacy -->
 	  <command>
 		  <cmd>dataclients_getsystems</cmd>

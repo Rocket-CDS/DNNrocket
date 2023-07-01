@@ -92,11 +92,23 @@ namespace RocketPortal.API
                 case "portal_createmanager":
                     strOut = CreateManager();
                     break;
+                case "portal_addeditorrole":
+                    strOut = AddRole(DNNrocketRoles.Editor);
+                    break;
+                case "portal_removeeditorrole":
+                    strOut = RemoveRole(DNNrocketRoles.Editor);
+                    break;
+                case "portal_addmanagerrole":
+                    strOut = AddRole(DNNrocketRoles.Manager);
+                    break;
+                case "portal_removemanagerrole":
+                    strOut = RemoveRole(DNNrocketRoles.Manager);
+                    break;                    
                 case "portal_addadminrole":
-                    strOut = AddAdminRole();
+                    strOut = AddRole(DNNrocketRoles.Administrators);
                     break;
                 case "portal_removeadminrole":
-                    strOut = RemoveAdminRole();
+                    strOut = RemoveRole(DNNrocketRoles.Administrators);
                     break;
                 case "portal_unauthuser":
                     strOut = UnAuthoriseUser();
