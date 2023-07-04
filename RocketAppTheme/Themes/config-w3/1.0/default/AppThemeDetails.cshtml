@@ -17,22 +17,6 @@
 <div class="w3-container">
     <div class="w3-bar  w3-padding w3-margin-top">
 
-        @if (sessionParam.Get("returnurl") != "")
-        {
-            <a href="@sessionParam.Get("returnurl")" class="w3-button w3-black" style="text-decoration: none;">@ButtonText(ButtonTypes.back)</a>
-        }
-        else
-        {
-            <span class="w3-button w3-black  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonText(ButtonTypes.back)</span>
-        }
-
-        <!-- **** planned enhancement ****
-        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.create) @ResourceKey("AppThemes.createversion")</span>
-        <span class="w3-button w3-hide" onclick="document.getElementById('copyapptheme').style.display = 'block';">@ButtonText(ButtonTypes.copy)</span>
-        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.remove) @ResourceKey("DNNrocket.uninstall")</span>
-        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.delete) @ResourceKey("AppThemes.deleteversion")</span>
-        -->
-
         <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.export)</a>
 
         @if (sessionParam.ModuleRef != "")
@@ -48,37 +32,15 @@
     </div>
 </div>
 <div class="w3-row">
-    <div class="w3-col m8 w3-padding">
-        @if (sessionParam.ModuleRef != "")
-        {
-        <a href="/sysadmin/rocketapptheme?modref=@sessionParam.Get("moduleref")&appthemefolder=@(appTheme.AppThemeFolder)&appversionfolder=@(appTheme.AppVersionFolder)&project=@(appTheme.ProjectName)&rtn=@sessionParam.Get("returnurlcode")" class="w3-button w3-pale-yellow w3-right" style="text-decoration:none;">
-            <span class="material-icons">
-                movie_edit
-            </span>
-            @ResourceKey("AppThemes.editportalapptheme")
-        </a>
-        }
-        else
-        {
-            <a href="/sysadmin/rocketapptheme?moduleref=@sessionParam.Get("modref")&appthemefolder=@(appTheme.AppThemeFolder)&appversionfolder=@(appTheme.AppVersionFolder)&project=@(appTheme.ProjectName)&rtn=@sessionParam.Get("returnurlcode")" class="w3-button w3-pale-blue w3-right" style="text-decoration:none;">
-            <span class="material-icons">
-                movie_edit
-            </span>
-            @ResourceKey("AppThemes.editmodelapptheme")
-        </a>
-        }
-
-
-    </div>
     @if (sessionParam.ModuleRef != "")
     {
-    <div class="w3-pale-blue w3-col m4 w3-padding w3-border-blue">
+        <div class="w3-pale-blue w3-row w3-center w3-padding w3-border w3-border-blue">
         <span class="w3-xlarge">Module Level&nbsp;<img src="/images/level_module.svg" /></span>
     </div>
     }
     else
     {
-        <div class="w3-pale-yellow w3-col m4 w3-padding w3-border-blue">
+        <div class="w3-pale-yellow w3-row w3-center w3-padding w3-border w3-border-yellow">
             <span class="w3-xlarge">Portal Level&nbsp;<img src="/images/level_portal.svg" /></span>
         </div>
     }

@@ -47,6 +47,9 @@
         <div class="w3-bar-item">
             @DropDownList(new SimplisityInfo(), "genxml/selectedsystem", systemDict, " class='w3-input w3-border' ")
         </div>
+        <div class="w3-bar-item">
+            <div class="w3-button w3-theme-action simplisity_confirmclick" s-cmd="rocketapptheme_downloadallgithub" s-confirm="@ResourceKey("AppThemes.downloadappthemes")" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonText(ButtonTypes.download)</div>
+        </div>
         <input class="w3-bar-item w3-input w3-right w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
     </div>
 
@@ -61,7 +64,7 @@
             </thead>
             @foreach (AppThemeLimpet appTheme in projectThemeList)
             {
-                <tr class="searchdiv simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"appthemefolder":"@(appTheme.AppThemeFolder)","appversionfolder":"@(appTheme.LatestVersionFolder)"}' >
+                <tr class="searchdiv simplisity_click " s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"appthemefolder":"@(appTheme.AppThemeFolder)","appversionfolder":"@(appTheme.LatestVersionFolder)"}'>
                     <td>
                         <div class="w3-tiny">@appTheme.SystemKey</div>
                         <b>@appTheme.Name</b>
@@ -86,11 +89,13 @@
         });
 
         $('#selectedproject').off("change");
-        $('#selectedproject').change(function () {
+        $('#selectedproject').change(function () {            
             simplisity_setSessionField('selectedproject', $('#selectedproject').val());
-            $("#sidebarplaceholder [s-cmd='rocketapptheme_getappstore']").trigger('click');
+            $("#sidebarplaceholder [s-cmd='rocketapptheme_getlist']").trigger('click');
             return false;
         });
+        
+        selectMenu('appstore');
 
     });
 

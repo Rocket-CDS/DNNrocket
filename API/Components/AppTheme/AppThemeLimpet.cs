@@ -57,8 +57,11 @@ namespace DNNrocketAPI.Components
         {
             ProjectName = projectName;
             SystemKey = "";
-            var s = appThemeFolder.Split('.');
-            if (s.Length == 2) SystemKey = s[0];
+            if (appThemeFolder != null)
+            {
+                var s = appThemeFolder.Split('.');
+                if (s.Length == 2) SystemKey = s[0];
+            }
         }
 
         public string SystemKey { get; set; }

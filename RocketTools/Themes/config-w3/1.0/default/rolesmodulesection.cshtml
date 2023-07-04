@@ -25,16 +25,16 @@
         </div>
     </div>
 
-    <div class="hummingbird-treeview well h-scroll-large">
+    <div class="">
 
-        <ul id="modulelistdata" class="hummingbird-base">
+        <ul id="modulelistdata" class="w3-ul">
 
             @{
                 foreach (var m in info.GetRecordList("modulelist"))
                 {
                     <li>
                         <label>
-                            <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                            <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="w3-check modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
                             @m.GetXmlProperty("genxml/moduletitle")
                         </label>
                     </li>

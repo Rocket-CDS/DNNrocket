@@ -7,104 +7,121 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources")
 
+@{
+    var systemGloablData = new SystemGlobalData();
+    var systemData = SystemSingleton.Instance("rocketportal");
+    var sessionParams = Model.SessionParamsData;
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+}
+
+@functions
+{
+    public IEncodedString GetInterfaceLink(SystemLimpet systemData, RocketInterface rinterface, bool submenu)
+    {
+        var rtn = "";
+        if (rinterface.IsOnMenu)
+        {
+            var securityData = new SecurityLimpet(PortalUtils.GetPortalId(), systemData.SystemKey, rinterface, -1, -1);
+            if (securityData.HasSecurityAccess(rinterface.DefaultCommand))
+            {
+                var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/App_LocalResources", "SideMenu." + rinterface.InterfaceKey, "Text", DNNrocketUtils.GetCurrentCulture());
+                if (interfaceName == "")
+                {
+                    interfaceName = rinterface.InterfaceKey;
+                }
+                rtn = "<div class='w3-bar-item w3-button w3-padding-16 sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}' title='" + interfaceName + "'><span class='material-icons'>" + rinterface.InterfaceIcon + "</span></div>";
+            }
+        }
+        return new RawString(rtn);
+    }
+}
+
+<!-- Load CSS in body, not ideal but is easier to implement and reduces 1 API call. -->
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/css/theme.css">
+<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
+
 <div id="a-displaywrapper" class="w3-animate-opacity" style="">
 
-    <!-- Sidebar/Menu -->
-    <div id="sidebarplaceholder"></div>
+    <!-- Menu -->
+    <div id="sidebarplaceholder" class="w3-bar  w3-border-bottom">
+        @{
+            var groupList = systemData.GetGroups();
+            groupList.Add("", ""); // add empty for root level.
+        }
 
-    <!-- Overlay effect when opening sidebar on small screens -->
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+        @foreach (var g in groupList)
+        {
+            var groupref = g.Key;
+            var groupicon = g.Value;
+            var interfacelist = systemData.GetGroupInterfaceList(groupref);
+            if (interfacelist.Count > 0)
+            {
+                if (groupref == "")
+                {
+                    foreach (var r in interfacelist)
+                    {
+                        @GetInterfaceLink(systemData, r, false)
+                    }
+                }
+            }
+        }
 
-    <div class="w3-main" style="margin-left:280px;">
+    </div>
 
-        <!-- Top Bar -->
-        <div id="topbarplaceholder"></div>
+    <div class="w3-main" style="">
 
         <!-- Main -->
-        <div class="" style="padding-top:56px;">
+        <div class="" style="">
             <!-- Content -->
-            <div id="simplisity_startpanel" class="w3-panel simplisity_panel" s-cmd="dashboard_get" s-fields='' style="">
+            <div id="simplisity_startpanel" class="w3-panel simplisity_panel" s-cmd="portal_detail" s-fields='' style="">
                 <div class="simplisity_loader">
                     <span class=" simplisity_loader_inner">
                     </span>
                 </div>
+                Waiting...............
             </div>
         </div>
     </div>
 
 </div>
 
+<div class="w3-bar">
+    <div class="w3-bar-item">
+        <div class="w3-display-container w3-white " style="width:158px;height:40px;">
+            <a href="https://www.rocket-cds.org" class="w3-display-middle" target="_blank">
+                <img src="/DesktopModules/DNNrocket/API/images/rocketcds-logo-web.png" style="height:20px;" />
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
 
     $(document).ready(function () {
 
-        $('#topbarplaceholder').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'gettopbar', '{"systemkey":"rocketportal"}', '')
-        $('#sidebarplaceholder').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'getsidemenu', '{"systemkey":"rocketportal"}', '')
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketportal', debug: false });
-
-        $('#topbarplaceholder').activateSimplisityPanel();
-        $('#sidebarplaceholder').activateSimplisityPanel();
 
         simplisity_setParamField("reload", true);  // This will flag that a reload is done.  The Server side code will get the last command tracked.
         simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
-        simplisity_setParamField("sysadmin", true); // identify sysadmin.aspx
 
     });
 
 </script>
 
-<!-- Load CSS in body, not ideal but is easier to implement and reduces 1 API call. -->
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css">
+<script>
 
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
-
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/css/theme.css">
-<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
-
-<script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
-<script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
-
-<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
-<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
-
-<script src="https://cdn.jsdelivr.net/gh/leedavi/CKEditorBuilds@1.0.0/ckeditorbase1.js"></script>
-
-<script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
-
-<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
-<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
-
-<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<script src="/DesktopModules/DNNrocket/CodeMirror/codemirror.js"></script>
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/CodeMirror/night.css" />
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/CodeMirror/codemirror.css" />
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/javascript/javascript.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/xml/xml.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/css/css.js"></script>
-<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<style>
-    .select2-container .select2-selection--single {
-        box-sizing: border-box;
-        cursor: pointer;
-        display: block;
-        height: 40px;
-        user-select: none;
-        -webkit-user-select: none;
+    function selectMenu(interfacekey) {
+        $('.sidemenubutton').removeClass("w3-theme-l1");
+        $('.sidemenu' + interfacekey).addClass("w3-theme-l1");
     }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        height: 40px;
-        line-height: 40px;
-    }
-</style>
+</script>

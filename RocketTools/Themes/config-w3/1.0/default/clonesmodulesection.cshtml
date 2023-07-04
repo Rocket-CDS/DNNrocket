@@ -12,22 +12,22 @@
 
 <div class="w3-display-container">
 
-    <div class="hummingbird-treeview well h-scroll-large">
-        <ul id="modulelistdata" class="hummingbird-base">
+    <div class="">
+        <ul id="modulelistdata" class="w3-ul">
 
             @{
                 foreach (var m in info.GetRecordList("clonemodulelist"))
                 {
                     <li>
-                                    <label>
-                                        <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
-                                        <span class="">
-                                            @m.GetXmlProperty("genxml/modulename")
-                                        </span>
-                                        <span class="w3-small">
-                                            @m.GetXmlProperty("genxml/modulepanename")
-                                        </span>
-                                    </label>
+                        <label>
+                            <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox w3-check" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                            <span class="">
+                                @m.GetXmlProperty("genxml/modulename")
+                            </span>
+                            <span class="w3-small">
+                                @m.GetXmlProperty("genxml/modulepanename")
+                            </span>
+                        </label>
                     </li>
                 }
             }

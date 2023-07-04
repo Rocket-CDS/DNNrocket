@@ -8,18 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Skins\rocketportal\rocketcms.ascx" />
-    <None Remove="Skins\rocketportal\rocketcms.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Skins\rocketportal\rocketcms.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="Skins\rocketportal\rocketcms.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\DNNrocket\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\..\DNNrocket\Simplisity\Simplisity.csproj" />
   </ItemGroup>

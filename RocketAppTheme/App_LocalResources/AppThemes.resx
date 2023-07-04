@@ -120,6 +120,9 @@
   <data name="addlanguage.Text" xml:space="preserve">
     <value>Add Language</value>
   </data>
+  <data name="admintemplate.Text" xml:space="preserve">
+    <value>Admin Template</value>
+  </data>
   <data name="appstore.Text" xml:space="preserve">
     <value>App Store</value>
   </data>
@@ -422,5 +425,8 @@
   </data>
   <data name="versionmsg.Text" xml:space="preserve">
     <value>Create a new version of this AppTheme.</value>
+  </data>
+  <data name="viewtemplate.Text" xml:space="preserve">
+    <value>View template</value>
   </data>
 </root>

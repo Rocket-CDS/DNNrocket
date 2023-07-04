@@ -44,8 +44,8 @@
         </span>
     </div>
 </div>
-<div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
-    @GetTabList(PortalUtils.GetPortalId(), new List<int>(), "checkboxlist", "", "", true)
+<div id="treeview3_container">
+    @GetTabList(PortalUtils.GetPortalId(), new List<int>(), "checkboxlist", "", " class=' w3-check ' ", true)
 </div>
 
 <script>
@@ -55,22 +55,19 @@
         $('.rocketclonesbutton').show();
 
         $("#checkAll").click(function () {
-            $("#treeview3").hummingbird("checkAll");
+            $("#treeview3_container").find(':checkbox').prop('checked', true);
         });
         $("#uncheckAll").click(function () {
-            $("#treeview3").hummingbird("uncheckAll");
+            $("#treeview3_container").find(':checkbox').prop('checked', false);
         });
 
-    @foreach (var t in tabIdList)
-    {
-        <text>
-        $('#tabid-checkboxlist-@(t)').attr('checked', 'true');
-        </text>
-    }
+        @foreach (var t in tabIdList)
+        {
+            <text>
+                $('#tabid-checkboxlist-@(t)').prop('checked', 'true');
+            </text>
+        }
         $('#tabid-checkboxlist-@(info.GetXmlProperty("genxml/fromtabid"))').attr("disabled", true);
-
-
-
 
     });
 

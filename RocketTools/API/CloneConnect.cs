@@ -14,7 +14,7 @@ namespace RocketTools.API
 
         public string CloneDetail()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("Clones.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("Clones.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
@@ -41,7 +41,7 @@ namespace RocketTools.API
                 info.AddRecordListItem("clonemodulelist", sRec);
             }
             CacheUtils.SetCache(_pageRef, info);
-            var razorTempl = _appThemeSystem.GetTemplate("clonesmodulesection.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("clonesmodulesection.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -58,7 +58,7 @@ namespace RocketTools.API
                 }
             }
             CacheUtils.SetCache(_pageRef, info);
-            var razorTempl = _appThemeSystem.GetTemplate("clonesdestination.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("clonesdestination.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -83,7 +83,7 @@ namespace RocketTools.API
         }
         public String ClonesOK()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("clonesok.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("clonesok.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

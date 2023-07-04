@@ -20,6 +20,7 @@ namespace RocketTools.API
         private SimplisityInfo _paramInfo;
         private UserParams _userParams;
         private AppThemeDNNrocketLimpet _appThemeSystem;
+        private AppThemeDNNrocketLimpet _appThemeTools;
         private Dictionary<string, object> _dataObjects;
         private PortalLimpet _portalData;
         private SessionParams _sessionParams;
@@ -155,6 +156,7 @@ namespace RocketTools.API
             _paramInfo = paramInfo;
             _systemData = new SystemLimpet(systemInfo.GetXmlProperty("genxml/systemkey"));
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
+            _appThemeTools = new AppThemeDNNrocketLimpet("rockettools");
             _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
             _sessionParams = new SessionParams(_paramInfo);
@@ -180,6 +182,7 @@ namespace RocketTools.API
 
             _dataObjects = new Dictionary<string, object>();
             _dataObjects.Add("appthemesystem", _appThemeSystem);
+            _dataObjects.Add("appthemetools", _appThemeTools);
             _dataObjects.Add("portaldata", _portalData);
             _dataObjects.Add("systemdata", _systemData);
 
@@ -190,14 +193,14 @@ namespace RocketTools.API
 
         private string MainMenu()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("MainMenu.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("MainMenu.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         private string AdminPanel()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("AdminPanel.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -206,7 +209,7 @@ namespace RocketTools.API
         {
             // user does not have access, logoff
             UserUtils.SignOut();
-            var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("Reload.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

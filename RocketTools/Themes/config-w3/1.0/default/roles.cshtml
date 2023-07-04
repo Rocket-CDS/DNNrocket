@@ -9,11 +9,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 <div class="w3-row w3-padding datapostsection">        
-    <div class="w3-button w3-black" onclick="$('.simplisity_loader').show(); window.location.reload(true);">
-        @ButtonIconText(ButtonTypes.back)
-    </div>
-    <div class="w3-button simplisity_click" s-cmd="rocketroles_roles">
-        @ButtonIconText(ButtonTypes.refresh)
+    <div class="w3-button simplisity_click" s-cmd="rocketroles_roles" s-return="#toolsmodalcontainer">
+        @ButtonIcon(ButtonTypes.refresh)
     </div>
 </div>
 
@@ -52,7 +49,7 @@
             </div>
         </div>
         <div id="treeview2_container" class="hummingbird-treeview well h-scroll-large">
-            @GetTreeTabList(PortalUtils.GetPortalId(), new List<int>(), "treeview2", "", "class='hummingbird-base'", false)
+            @GetTabList(PortalUtils.GetPortalId(), new List<int>(), "treeview2", "", " class=' w3-check ' ", false)
         </div>
 
     </div>
@@ -96,36 +93,36 @@
 
         simplisity_setSessionField('pageref', CreateGuid());
 
-        $.fn.hummingbird.defaults.SymbolPrefix = "";
-        $.fn.hummingbird.defaults.collapsedSymbol = "downsymbol";
-        $.fn.hummingbird.defaults.expandedSymbol = "upsymbol";
-
-        $("#treeview2").hummingbird();
-
-
         $("#checkAll").click(function () {
-            $("#treeview2").hummingbird("checkAll");
+            $("#treeview2_container").find(':checkbox').prop('checked', true);
+            clickAction(true);
         });
         $("#uncheckAll").click(function () {
-            $("#treeview2").hummingbird("uncheckAll");
-        });
-        $("#collapseAll").click(function () {
-            $("#treeview2").hummingbird("collapseAll");
+            $("#treeview2_container").find(':checkbox').prop('checked', false);
+            clickAction(false);
         });
 
-        $("#treeview2").on("nodeChecked", function () {
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');
-            $('.applyrolesbutton').hide();
-        });
-        $("#treeview2").on("nodeUnchecked", function () {
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');
-            $('.applyrolesbutton').hide();
+        $(".w3-check").on("click", function () {
+            clickAction($(this).prop('checked'))
         });
     });
+
+    function clickAction(checkvalue)
+    {
+        if (checkvalue) {
+            $('.nextbuttonpage').show();
+            $('.moduledatasection').text('');
+            $('.rolesdatasection').text('');
+            $('.applyrolesbutton').hide();
+        }
+        else {
+            $('.nextbuttonpage').show();
+            $('.moduledatasection').text('');
+            $('.rolesdatasection').text('');
+            $('.applyrolesbutton').hide();
+        }
+
+    }
 
     function CreateGuid() {
         function _p8(s) {

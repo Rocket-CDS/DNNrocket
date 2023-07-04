@@ -18,7 +18,7 @@ namespace RocketTools.API
             var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
             if (info == null) info = new SimplisityRecord();
 
-            var razorTempl = _appThemeSystem.GetTemplate("pagelocalization.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("pagelocalization.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
@@ -28,7 +28,7 @@ namespace RocketTools.API
             var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
             if (info == null) info = new SimplisityRecord();
 
-            var razorTempl = _appThemeSystem.GetTemplate("SettingsPopup.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("SettingsPopup.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
@@ -54,7 +54,7 @@ namespace RocketTools.API
                 info.SetXmlProperty("genxml/textbox/pagedescription", pageData.Description);
                 info.SetXmlProperty("genxml/textbox/pageurl", pageData.Url);
             }
-            var razorTempl = _appThemeSystem.GetTemplate("pageview.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("pageview.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
@@ -80,7 +80,7 @@ namespace RocketTools.API
                 info.SetXmlProperty("genxml/textbox/pagedescription", pageData.Description);
                 info.SetXmlProperty("genxml/textbox/pageurl", pageData.Url);
             }
-            var razorTempl = _appThemeSystem.GetTemplate("pageedit.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("pageedit.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;

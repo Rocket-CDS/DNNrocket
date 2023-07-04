@@ -234,26 +234,11 @@ namespace DNNrocketAPI.Components
         {
             LogUtils.LogSystem("UPGRADE START: " + Version);
 
-            PortalUtils.CreateRocketDirectories(0);
-            
-            DNNrocketUtils.CreateDefaultRocketRoles(0);
-                        
-            //var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
-            //if (homeTabId >= 0)
-            //{
-            //    PagesUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
-            //    ModuleUtils.DeleteAllTabModules(homeTabId);
-            //    PagesUtils.RemoveAllUsersPagePermissions(0, homeTabId);
-            //}
-
-            //var cmstabid = PagesUtils.CreatePage(0, "cms");
-            //PagesUtils.AddPagePermissions(0, cmstabid, "");
-            //PagesUtils.RemoveAllUsersPagePermissions(0, cmstabid);
-            //PagesUtils.AddPageSkin(0, cmstabid, "rocketportal", "rocketcms.ascx");
-
-            PortalUtils.Registration(0, 0);
-            PortalUtils.EnablePopups(0, false);
-            PortalUtils.AddSysAdminMenu();
+            foreach (var portalid in PortalUtils.GetAllPortalIds())
+            {
+                PortalUtils.CreateRocketDirectories(portalid);
+                DNNrocketUtils.CreateDefaultRocketRoles(portalid);
+            }
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
 

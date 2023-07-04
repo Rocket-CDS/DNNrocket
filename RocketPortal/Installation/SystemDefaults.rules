@@ -178,27 +178,40 @@
 		  <action>true</action>
 	  </command>
 
+	  
 
 	  <!-- Legacy -->
 	  <command>
 		  <cmd>dataclients_getsystems</cmd>
 		  <action>true</action>
-	  </command>	  
+	  </command>
 
 
-	  <!-- Security for commands in other systems, for the side Menu. -->    
-    <command>
-      <cmd>rocketapptheme_getlist</cmd>
-      <action>true</action>
+	<!-- ========================================================== -->
+	<!-- Security for commands in other systems, for the side Menu. -->
+	<!-- ========================================================== -->
+
+	<!-- RocketTools -->
+	<command>
+		<cmd>rocketactions_getdisplay</cmd>
+		<action>true</action>
+	</command>
+
+	  
+  
+	<!-- AppThemes -->
+	<command>
+        <cmd>rocketapptheme_getlist</cmd>
+        <action>true</action>
     </command>
     <command>
-      <cmd>rocketapptheme_getappstore</cmd>
-      <action>true</action>
+        <cmd>rocketapptheme_getappstore</cmd>
+        <action>true</action>
     </command>
     <command>
-      <cmd>global_globaldetail</cmd>
-      <action>true</action>
-    </command>
+        <cmd>global_globaldetail</cmd>
+        <action>true</action>
+	</command>
 
   </commands>
   

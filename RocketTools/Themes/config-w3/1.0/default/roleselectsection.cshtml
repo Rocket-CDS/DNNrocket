@@ -12,9 +12,9 @@
 
 <div class="w3-row">
 
-    <div id="rolelistdata" class="hummingbird-treeview well h-scroll-large">
+    <div id="rolelistdata" class="">
 
-        <ul class="hummingbird-base">
+        <ul class="w3-ul">
 
             @{
                 foreach (var m in info.GetRecordList("rolelist"))
@@ -29,7 +29,7 @@
 
                         <li>
                             <label>
-                                <input id='moduleid@(m.GetXmlProperty("genxml/roleid"))' @checkedvalue class="rolecheckbox" moduleid='@m.GetXmlProperty("genxml/roleid")' s-xpath="genxml/checkbox/roleid@(m.GetXmlProperty("genxml/roleid"))" s-update="save" type="checkbox">
+                                <input id='moduleid@(m.GetXmlProperty("genxml/roleid"))' @checkedvalue class="w3-check rolecheckbox" moduleid='@m.GetXmlProperty("genxml/roleid")' s-xpath="genxml/checkbox/roleid@(m.GetXmlProperty("genxml/roleid"))" s-update="save" type="checkbox">
                                 @m.GetXmlProperty("genxml/rolename")
                             </label>
                         </li>

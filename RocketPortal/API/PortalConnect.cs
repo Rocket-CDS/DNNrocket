@@ -78,20 +78,7 @@ namespace RocketPortal.API
                 var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
                 if (sysAdminTabId > 0 )
                 {
-                    // Add Tools Page
-                    if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//Tools") == -1)
-                    {
-                        var tabid = PagesUtils.CreatePage(portalId, "Tools", true, false, sysAdminTabId);
-                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
-                        PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
-                    }
-                    // Add AppTheme Page
-                    if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//rocketapptheme") == -1)
-                    {
-                        var tabid = PagesUtils.CreatePage(portalId, "rocketapptheme", true, false, sysAdminTabId);
-                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
-                        PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
-                    }
+                    // add any subpages.
                 }
                 return GetPortalDetail();
             }
@@ -142,7 +129,6 @@ namespace RocketPortal.API
             if (!UserUtils.IsSuperUser()) return "";
             var portalList = new PortalLimpetList(_paramInfo);
             portalList.Validate();
-            PortalUtils.AddSysAdminMenu();
             return GetPortalList();
         }
         private String GetPortalDetail()

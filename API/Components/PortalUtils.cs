@@ -241,6 +241,12 @@ namespace DNNrocketAPI.Components
             var portal = controller.GetPortal(portalId);
             return portal;
         }
+        public static String GetPortalName(int portalId)
+        {
+            var portal = GetPortal(portalId);
+            if (portal == null) return "";
+            return portal.PortalName;
+        }
         /// <summary>
         /// Set portal Registration type.
         /// </summary>
@@ -677,24 +683,6 @@ namespace DNNrocketAPI.Components
                     }
                 }
             }
-        }
-        public static void AddSysAdminMenu()
-        {
-            // Add Link in PersonaBar
-            var linkText = "'<li class=\"border server-name\" data-bind=\"visible: ServerName.length > 0\"><label>Rocket CDS</label><a href=\"/sysadmin.aspx\" target=\"_blank\">SysAdmin</a><br/><a href=\"/tools.aspx\" target=\"_blank\">Tools</a></li>' + ";
-            string filename = DNNrocketUtils.MapPath("/DesktopModules/Admin/Dnn.PersonaBar/scripts/serversummary.js");
-            var fileOutText = "";
-            var lines = File.ReadLines(filename);
-            foreach (var line in lines)
-            {
-                if (line != linkText)
-                {
-                    if (line.Contains("'<li class=\"separator\"></li>'")) fileOutText += linkText + Environment.NewLine;
-                    fileOutText += line + Environment.NewLine;
-                }
-            }
-            FileUtils.SaveFile(filename, fileOutText);
-
         }
         public static void AddSysAdminSystemPage(int portalId, string systemkey)
         {

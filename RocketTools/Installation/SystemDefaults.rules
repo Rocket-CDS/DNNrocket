@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <sqlfilter>
+  </sqlfilter>
+  <sqlorderby>
+  </sqlorderby>
+  <pageslinks>
+  </pageslinks>
+
+  <appthemeprojects>
+  </appthemeprojects>
+  
+  <commands>
+
+	  <command>
+		  <cmd>rockettools_adminpanel</cmd>
+		  <action>true</action>
+	  </command>	  
+	  
+  </commands>
+  
+</root>

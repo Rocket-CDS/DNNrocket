@@ -285,7 +285,7 @@ namespace RocketPortal.Components
         public int PortalId { get { return Record.PortalId; } }
         public string Protocol { get { var rtn = Record.GetXmlProperty("genxml/select/protocol"); if (rtn == "") rtn = "https://"; return rtn; } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/textbox/engineurl"); } set { Record.SetXmlProperty("genxml/textbox/engineurl", value); } }
-        public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } set { Record.SetXmlProperty("genxml/textbox/name", value); } }
+        public string Name { get { return PortalUtils.GetPortalName(PortalId); } }
         public string EngineUrlWithProtocol { get { return Protocol + EngineUrl; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
         public DateTime LastSchedulerTime

@@ -217,14 +217,6 @@
             <skinName>rocketportal</skinName>
             <skinFile>
               <path></path>
-              <name>rocketportal.ascx</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketportal.xml</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
               <name>rockethome.ascx</name>
             </skinFile>
             <skinFile>
@@ -238,14 +230,6 @@
             <skinFile>
               <path></path>
               <name>rocketadmin.xml</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketcms.ascx</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketcms.xml</name>
             </skinFile>
             <skinFile>
               <path></path>
@@ -269,10 +253,6 @@
         <component type="File">
 	        <files>
 		        <basePath>\</basePath>
-		        <file>
-			        <name>sysadmin.aspx</name>
-			        <sourceFileName>sysadmin.aspx</sourceFileName>
-		        </file>
 
 				<file>
 					<name>images/action_bottom.svg</name>

@@ -48,8 +48,8 @@ namespace RocketTools
                     {
                         rtnString += "&nbsp;&nbsp;";
                     }
-                    rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " type='checkbox'>";
-                    rtnString += tInfo.TabName;
+                    rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " " + attributes + " type='checkbox'>";
+                    rtnString += "&nbsp;" + tInfo.TabName;
                     rtnString += "</div>";
                     if (tInfo.HasChildren)
                     {

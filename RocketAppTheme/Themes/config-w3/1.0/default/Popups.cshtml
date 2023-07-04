@@ -57,6 +57,18 @@
     </div>
 </div>
 
+<div id="editmodal" class="w3-modal " style="top:-30px;">
+    <div class="w3-modal-content w3-animate-opacity" style="width:90%;">
+        <header class="w3-container" style="height:38px;">
+            <div class="w3-button w3-display-topright" onclick="$('#editmodal').hide();">
+                &times;
+            </div>
+        </header>
+        <div id="editmodalcontainer" class="w3-container editmodalpopup" style="min-height:480px;"></div>
+    </div>
+</div>
+
+
 <div id="completedmodelmsgreturn" style="display:none;"></div>
 
 <div id="loginformreturn"></div>
@@ -64,8 +76,12 @@
 
 <script>
     $(document).ready(function () {
-
     });
+
+    function showeditpopup() {
+        $('#editmodal').show();
+    }
+
 </script>
 
 

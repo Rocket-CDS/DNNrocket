@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.0.28</version>
+	<version>1.0.29</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>0_DNNrocket</name>
@@ -52,6 +52,11 @@
     <value>\RocketAppTheme\AppThemeBase</value>
     <value>\RocketAppTheme\Themes\*</value>
 
+	<value>\RocketTools</value>
+	<value>\RocketTools\App_LocalResources</value>
+	<value>\RocketTools\Installation</value>
+	<value>\RocketTools\Themes\*</value>
+
   </directory>
   <file include='false'>
   </file>
@@ -63,16 +68,11 @@
 	  <value>\API\Installation\Uninstall.SqlDataProvider</value>
     <value>DNNrocketAPI.dnn</value>
 
-    <value>\RocketPortal\Skins\rocketportal\rocketportal.ascx</value>
-    <value>\RocketPortal\Skins\rocketportal\rocketportal.xml</value>
     <value>\RocketPortal\Skins\rocketportal\rockethome.ascx</value>
     <value>\RocketPortal\Skins\rocketportal\rockethome.xml</value>
     <value>\RocketPortal\Skins\rocketportal\rocketadmin.ascx</value>
     <value>\RocketPortal\Skins\rocketportal\rocketadmin.xml</value>
-    <value>\RocketPortal\Skins\rocketportal\rocketcms.ascx</value>
-    <value>\RocketPortal\Skins\rocketportal\rocketcms.xml</value>
     <value>\RocketPortal\Skins\rocketportal\skin.css</value>
-	<value>\RocketPortal\sysadmin.aspx</value>
 
     <value>\API\images\action_bottom.svg</value>
     <value>\API\images\action_delete.svg</value>
@@ -99,7 +99,6 @@
     <value>\API\images\rocketcds-logo-web.png</value>
     <value>\API\images\rocketcds-logo.svg</value>
 
-
   </file>
 	<assembly>
     <value>\bin\Simplisity.dll</value>
@@ -109,7 +108,9 @@
     <value>\bin\DNNrocketAPI.dll</value>
     <value>\bin\RocketPortal.dll</value>
     <value>\bin\RocketPortal.pdb</value>
-    <value>\bin\RocketAppThemes.dll</value>
+	<value>\bin\RocketTools.dll</value>
+	<value>\bin\RocketTools.pdb</value>
+	<value>\bin\RocketAppThemes.dll</value>
     <value>\bin\RocketAppThemes.pdb</value>
     <value>\API\_external\Newtonsoft.Json.dll</value>
     <value>\API\_external\netstandard.dll</value>

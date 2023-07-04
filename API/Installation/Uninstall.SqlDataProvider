@@ -15,6 +15,13 @@
 /************************************************************/
 
 -------------------------------------------------------------------------------
+--------------                       PERSONABAR                    ------------
+-------------------------------------------------------------------------------
+
+DELETE {databaseOwner}[{objectQualifier}PersonaBarMenu] WHERE Identifier = 'RocketCDS'
+
+
+-------------------------------------------------------------------------------
 --------------                       TABLES                        ------------
 -------------------------------------------------------------------------------
 -- DO NOT REMOVE DNNrocket, just in case we have uninstalled by accident.  leaving the table should not effect performance and can always be removed manually.

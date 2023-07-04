@@ -31,7 +31,7 @@ namespace RocketTools.API
                 sRec.SetXmlProperty("genxml/rolename", m.Value);
                 info.AddRecordListItem("rolelist", sRec);
             }
-            var razorTempl = _appThemeSystem.GetTemplate("roleselectsection.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("roleselectsection.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
@@ -57,21 +57,21 @@ namespace RocketTools.API
                     }
                 }
             }
-            var razorTempl = _appThemeSystem.GetTemplate("rolesmodulesection.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("rolesmodulesection.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public String RolesAdmin()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("roles.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("roles.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
         public String RolesOK()
         {
-            var razorTempl = _appThemeSystem.GetTemplate("rolesok.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("rolesok.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

@@ -32,7 +32,6 @@ namespace DNNrocket.AppThemes
         private SessionParams _sessionParams;
         private PortalLimpet _portalData;
         private string _moduleref;
-        private string _modref;
         private string _projectName;
         private AppThemeProjectLimpet _appThemeProjectData;
         private string _returnUrl;
@@ -201,43 +200,17 @@ namespace DNNrocket.AppThemes
             DNNrocketUtils.SetCurrentCulture(_sessionParams.CultureCode);
             DNNrocketUtils.SetEditCulture(_sessionParams.CultureCodeEdit);
 
-            // The moduleref are passed via the URL, for module level template editing.
-            var requestUrl = _paramInfo.GetXmlProperty("genxml/hidden/requesturl");
-            if (requestUrl != "" && requestUrl.Contains("?"))
-            {
-                Uri requestUri = new Uri(requestUrl);
-                if (HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref") != "")
-                {
-                    _modref = HttpUtility.ParseQueryString(requestUri.Query).Get("modref");
-                    _moduleref = HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref");
-                    if (_moduleref == null) _moduleref = "";
-                    _appThemeFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appthemefolder");
-                    _appVersionFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appversionfolder");
-                    _projectName = HttpUtility.ParseQueryString(requestUri.Query).Get("project");
-                    _returnUrl = HttpUtility.UrlDecode(GeneralUtils.DeCode(HttpUtility.ParseQueryString(requestUri.Query).Get("rtn")));
-                    _returnUrlCode = HttpUtility.ParseQueryString(requestUri.Query).Get("rtn");
-                }
-            }
-            else
-            {
-                _moduleref = "";
-                _modref = "";
-                _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-                _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
-                _projectName = _paramInfo.GetXmlProperty("genxml/remote/selectedproject");
-                if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
-                if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
-                _returnUrl = "";
-                _returnUrlCode = "";
-            }
+            _moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref"); ;
+            _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+            _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
+            if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
+
             _sessionParams.ModuleRef = _moduleref;
-            _sessionParams.Set("returnurl", _returnUrl);
-            _sessionParams.Set("returnurlcode", _returnUrlCode);
-            _sessionParams.Set("modref", _modref);
 
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
 
-            if (paramCmd == "rocketapptheme_getlist" && _appThemeFolder != "")
+            if (paramCmd == "rocketapptheme_getlist" && !String.IsNullOrEmpty(_appThemeFolder))
             {
                 paramCmd = "rocketapptheme_getdetail";
             }

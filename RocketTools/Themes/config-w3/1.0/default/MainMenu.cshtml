@@ -6,46 +6,46 @@
 @AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
 
-<div style="height:100px;" class="w3-display-container">
-    <div class="w3-xxlarge w3-display-middle">
-        <span>Rocket Tools</span>
-    </div>
+<div class="w3-row">
+    <span class="w3-button w3-left" onclick="$('.simplisity_loader').show(); window.location.reload(true);">            
+        @ButtonIcon(ButtonTypes.refresh)
+    </span>
     <span class="w3-small w3-right">PortalId: @PortalUtils.GetCurrentPortalId()</span>
 </div>
 
-<div style="height:100px;" class="w3-display-container">
-    <div class="w3-display-left">
-        <span class="w3-button" onclick="$('.simplisity_loader').show(); window.location.reload(true);">            
-            @ButtonIconText(ButtonTypes.refresh)
-        </span>
+<div class="w3-row w3-padding">
+    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketclones_getdisplay" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
+        @ResourceKey("View.clone")
+    </div>
+    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketroles_roles" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
+         @ResourceKey("View.roles")
+    </div>
+    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketpl_getdisplay" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
+        @ResourceKey("View.pagelocalization")
     </div>
 </div>
 
-    <div class="w3-row-padding" style="">
-    <div class="w3-col l2 w3-small-hide ">&nbsp;</div>
-        <div class="w3-col l2 m3">
-        <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rocketclones_getdisplay">
-                <span class="material-icons w3-xxlarge w3-padding">
-                    file_copy
-                </span>
-                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.clone")</span>
-            </div>
-        </div>
-    <div class="w3-col l2 m3">
-            <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rocketroles_roles">
-                <span class="material-icons w3-xxlarge w3-padding">
-                    admin_panel_settings
-                </span>
-                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.roles")</span>
-            </div>
-        </div>
-    <div class="w3-col l2 m3">
-            <div style="height:100px; cursor:pointer; " class="w3-card w3-display-container w3-margin-bottom w3-round-large w3-hover-light-grey simplisity_click" s-cmd="rocketpl_getdisplay">
-                <span class="material-icons w3-xxlarge w3-padding">
-                    subtitles
-                </span>
-                <span class="w3-display-middle w3-xlarge">@ResourceKey("View.pagelocalization")</span>
-            </div>
-        </div>
-    </div>
 
+<div id="toolsmodal" class="w3-modal " style="top:-30px;">
+    <div class="w3-modal-content w3-animate-opacity" style="width:90%;">
+        <header class="w3-container" style="height:38px;">
+            <div class="w3-button w3-display-topright" onclick="$('#toolsmodal').hide();">
+                &times;
+            </div>
+        </header>
+        <div id="toolsmodalcontainer" class="w3-container toolsmodalpopup" style="min-height:480px;"></div>
+    </div>
+</div>
+
+    
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        selectMenu('rockettools');
+    });
+
+    function showtoolspopup() {
+        $('#toolsmodal').show();
+    }
+
+</script>

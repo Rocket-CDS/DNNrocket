@@ -79,6 +79,7 @@ namespace Simplisity
         }
         public static string DeCode(string codedval)
         {
+            if (codedval == null) return "";
             var strOut = "";
             try
             {
@@ -101,6 +102,7 @@ namespace Simplisity
 
         public static string EnCode(string value)
         {
+            if (value == null) return "";
             var strOut = "";
             var l = value.ToCharArray();
             foreach (var c in l)

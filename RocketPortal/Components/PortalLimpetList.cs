@@ -44,7 +44,6 @@ namespace RocketPortal.Components
             {
                 // We have no portal record for portal/0, create it.
                 var p = new PortalLimpet(0);
-                p.Name = PortalUtils.GetPortalAlias(DNNrocketUtils.GetCurrentCulture());
                 p.Save(new SimplisityInfo());
                 SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, EntityTypeCode, _searchFilter);
             }

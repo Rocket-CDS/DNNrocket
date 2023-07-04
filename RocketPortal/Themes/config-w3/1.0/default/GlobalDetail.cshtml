@@ -29,14 +29,10 @@
 
         <div class="w3-row">
             <div class="w3-half w3-padding">
-                <label><b>@ResourceKey("DNNrocket.name")</b></label>
-                @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
-            </div>
-            <div class="w3-quarter w3-padding">
                 <label><b>@ResourceKey("RP.rootdomain")</b></label>
                 @TextBox(info, "genxml/textbox/rootdomain", " class='w3-input w3-border' autocomplete='off' placeholder='mydomain.com' ")
             </div>
-            <div class="w3-quarter w3-padding">
+            <div class="w3-half w3-padding">
                 <label><b>Logo Razor Template</b></label>
                 @TextBox(info, "genxml/textbox/logotemplate", " class='w3-input w3-border' autocomplete='off' ","Logo.cshtml")
             </div>
@@ -44,14 +40,10 @@
         <div class="w3-row">
             <div class="w3-half w3-padding">
                 <div class="w3-row">
-                    <div class="w3-third">
-                        <label class=""><b>@ResourceKey("RP.imagetype")</b></label>
-                        @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
-                    </div>
-                    <div class="w3-third">
+                    <div class="w3-half">
                         @CheckBox(info, "genxml/checkbox/precompilerazoradmin", " Precompile Razor Admin", "class='w3-check'", true)
                     </div>
-                    <div class="w3-third">
+                    <div class="w3-half">
                         @CheckBox(info, "genxml/checkbox/precompilerazor", " Precompile Razor", "class='w3-check'", true)
                     </div>
                 </div>
@@ -99,36 +91,32 @@
         @if (UserUtils.IsSuperUser())
         {
             <div class="w3-row">
-                <div class="w3-third w3-padding">
+                <div class="w3-half w3-padding">
                     <label>DeepL API URL</label>
                     @TextBox(info, "genxml/textbox/deeplurl", " class='w3-input w3-border' autocomplete='off' ","https://api-free.deepl.com/v2/translate")
                 </div>
-                <div class="w3-third w3-padding">
+                <div class="w3-half w3-padding">
                     <label>DeepL AuthKey</label>
                     @TextBox(info, "genxml/textbox/deeplauthkey", " class='w3-input w3-border' autocomplete='off' ")
-                </div>
-                <div class="w3-third w3-padding">
                 </div>
             </div>
 
 
             <div class="w3-row">
-                <div class="w3-third w3-padding">
+                <div class="w3-half w3-padding">
                     <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#accesscode'))">
                         <b>@ResourceKey("RP.accesscode")</b>&nbsp;<span id="iconaccesscode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
                     <div id="accesscode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(systemGlobalData.AccessCode)</div>
                 </div>
-                <div class="w3-third w3-padding">
+                <div class="w3-half w3-padding">
                     <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#accesspassword'))"><b>@ResourceKey("RP.accesspassword")</b>&nbsp;<span id="iconaccesspassword" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
                     <div id="accesspassword" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(systemGlobalData.AccessPassword)</div>
                 </div>
-                <div class="w3-third w3-padding">
-                    <div style="height:40px;">&nbsp;</div>
+            </div>
+            <div class="w3-row w3-padding">
                     <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RP.resetsecurity","","Confirm")" s-cmd="global_resetaccesscodes">
                         <b>@ResourceKey("RP.resetsecurity")</b>&nbsp;<span>@ButtonIcon(ButtonTypes.reset)</span>
                     </div>
-                </div>
-
             </div>
 
             <div class="w3-row w3-padding">
@@ -136,36 +124,31 @@
                 @TextArea(info, "genxml/textbox/clientcodes", " class='w3-input w3-border action_tageditor' ")
             </div>
 
-            <div id="actionprovider" class="w3-row w3-padding">
-                <div class="w3-row">
-
+            <div id="actionprovider" class="w3-row">
+                <div class="w3-row  w3-padding">
+                    <div class="w3-large"><b>@ResourceKey("RP.actionprovider")</b></div>
                     <div class="w3-row">
-                        <div class="w3-large"><b>@ResourceKey("RP.actionprovider")</b></div>
+                        @ResourceKey("RP.actionprovider", "", "Help")
                     </div>
-
-                    <div class="w3-row">
-                        <div class="w3-row">
-                            @ResourceKey("RP.actionprovider", "", "Help")
+                </div>
+                <div class="w3-row">
+                    <div id="actionproviderdata" class="w3-row">
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RP.assembly")</label>
+                            @TextBox(info, "genxml/actionassembly", "class='w3-input w3-border' ", "")
                         </div>
-                        <div id="actionproviderdata" class="w3-row">
-                            <div class="w3-third w3-padding">
-                                <label>@ResourceKey("RP.assembly")</label>
-                                @TextBox(info, "genxml/actionassembly", "class='w3-input w3-border' ", "")
-                            </div>
-                            <div class="w3-twothird w3-padding">
-                                <label>@ResourceKey("RP.namespaceclass")</label>
-                                @TextBox(info, "genxml/actionnamespaceclass", "class='w3-input w3-border'  ", "")
-                            </div>
-                            <div class="w3-row w3-padding">
-                                <label>Data Params</label>
-                                @TextBox(info, "genxml/actiondata", "class='w3-input w3-border'  ", "")
-                            </div>
+                        <div class="w3-twothird w3-padding">
+                            <label>@ResourceKey("RP.namespaceclass")</label>
+                            @TextBox(info, "genxml/actionnamespaceclass", "class='w3-input w3-border'  ", "")
                         </div>
                         <div class="w3-row w3-padding">
-                            <div class="w3-button w3-green simplisity_confirmclick" s-confirm="Execute ?" s-cmd="portal_actionprovider" s-post="#actionproviderdata" s-return="#completedmodelmsgreturn" s-fields='{"portalid":"@(info.PortalId)"}'>@ButtonText(ButtonTypes.ok)</div>
+                            <label>Data Params</label>
+                            @TextBox(info, "genxml/actiondata", "class='w3-input w3-border'  ", "")
                         </div>
                     </div>
-
+                    <div class="w3-row w3-padding">
+                        <div class="w3-button w3-green simplisity_confirmclick" s-confirm="Execute ?" s-cmd="portal_actionprovider" s-post="#actionproviderdata" s-return="#completedmodelmsgreturn" s-fields='{"portalid":"@(info.PortalId)"}'>@ButtonText(ButtonTypes.ok)</div>
+                    </div>
                 </div>
             </div>
 

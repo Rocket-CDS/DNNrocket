@@ -26,14 +26,7 @@
 
     <div id="a-showsetupbuttons">
         <div id="a-portalbuttons" class="w3-bar">
-            <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
             <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
-            <a href="/sysadmin/rocketapptheme" target="_blank" class="w3-button" style="text-decoration:none;">
-                <span class="material-icons">
-                    movie_edit
-                </span>
-                @ResourceKey("RP.editapptheme")
-            </a>
 
             @if (CacheUtils.GetCache("securitylock", "security") != null)
             {
@@ -64,89 +57,53 @@
     @HiddenField(info, "genxml/config/securitykeyedit")
     @HiddenField(info, "genxml/portaltype")
 
-    <div class="w3-row w3-border-bottom">
-        <div onclick="selectmenu('generaldata');" class="w3-col m3 w3-hover-light-grey w3-center">
-            <div class="a-generaldata mitem w3-bottombar w3-border-black w3-large w3-padding">
-                @ResourceKey("RP.general")
-            </div>
+
+    <div id="generaldata" class="w3-row w3-padding">
+        <div class="w3-half w3-padding">
+            <label class=""><b>@ResourceKey("DNNrocket.colortheme") (Admin)</b></label>
+            @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
         </div>
-        <div onclick="selectmenu('systemdata');" class="w3-col m3 w3-hover-light-grey w3-center">
+
+        @if (UserUtils.IsSuperUser())
+        {
+            <div class="w3-half w3-padding">
+                <label><b>Roles</b></label><br />
+                <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
+                <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                @if (DNNrocketUtils.DefaultRoleExist(portalData.PortalId))
+                {
+                    <span class="w3-text-green">
+                        @ButtonIcon(ButtonTypes.ok)
+                    </span>
+                }
+                else
+                {
+                    <span class="w3-text-red">
+                        @ButtonIcon(ButtonTypes.fail)
+                    </span>
+                }
+            </div>
+        }
+    </div>
+
+
+    <div class="w3-row w3-border-bottom">
+        <div onclick="selectmenu('systemdata');" class="w3-half w3-hover-light-grey w3-center">
             <div class="a-systemdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.systems")
             </div>
         </div>
-        <div onclick="selectmenu('languagesdata');" class="w3-col m3 w3-hover-light-grey w3-center">
-            <div class="a-languagesdata mitem w3-bottombar w3-large w3-padding">
-                @ResourceKey("RP.languages")
-            </div>
-        </div>
-        <div onclick="selectmenu('managerdata');" class="w3-col m3 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('managerdata');" class="w3-half w3-hover-light-grey w3-center">
             <div class="a-managerdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.managers")
             </div>
         </div>
     </div>
 
-    <div id="generaldata" class="w3-row w3-padding">
-            <div class="w3-row w3-padding">
-                <label><b>@ResourceKey("RP.name")</b></label>
-                @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col m2 w3-padding" style="width:120px;">
-                    <label class=""><b>@ResourceKey("RP.protocol")</b></label>
-                    @DropDownList(info, "genxml/select/protocol", "https://,http://", "https://,http://", "class='w3-input w3-border'")
-                </div>
-                <div class="w3-rest w3-padding">
-                    <label><b>@ResourceKey("RP.serviceurl")</b></label>
-                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' " + edittextbox + " autocomplete='off' ")
-                </div>
-            </div>
-
-            <div class="w3-row w3-padding">
-                <label class=""><b>@ResourceKey("DNNrocket.colortheme") (Admin)</b></label>
-                @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
-            </div>
-
-            <div class="w3-row w3-padding">
-                <i>@ResourceKey("RP.securitycode", "", "Help")</i>
-                <br />
-                <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#secretcode'))"><b>@ResourceKey("RP.securitycode")</b>&nbsp;<span id="iconsecretcode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
-            <span class="w3-button w3-padding w3-pale-red simplisity_confirmclick" s-cmd="portal_resetcodes" s-fields='{"portalid":"@portalData.PortalId"}' s-confirm="@ResourceKey("RP.resetwebservicecode","","Confirm")" title="@ResourceKey("RP.resetwebservicecode")">@ButtonIcon(ButtonTypes.refresh)</span>
-                <div id="secretcode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.RemoteBase64Params())</div>
-            </div>
-
-            @if (UserUtils.IsSuperUser())
-            {
-                <div class="w3-row w3-padding">
-                    <label><b>Roles</b></label><br />
-                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
-                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
-                    @if (DNNrocketUtils.DefaultRoleExist(portalData.PortalId))
-                    {
-                        <span class="w3-text-green">
-                            @ButtonIcon(ButtonTypes.ok)
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="w3-text-red">
-                            @ButtonIcon(ButtonTypes.fail)
-                        </span>
-                    }
-                </div>
-            }
-    </div>
-
-    <div id="systemdata" class="w3-row w3-padding" style="display:none;">
+    <div id="systemdata" class="w3-row w3-padding" >
         @RenderTemplate("PortalSystems.cshtml", appThemeSystem, Model, true)
     </div>
 
-
-    <div id="languagesdata" class="w3-row w3-padding" style="display:none;">
-        @RenderTemplate("PortalLanguages.cshtml", appThemeSystem, Model, true)
-    </div>
 
     <div id="managerdata" class="w3-row w3-padding" style="display:none;">
         @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model, true)
@@ -236,7 +193,6 @@
         function selectmenu(selector) {
             if (selector != null && typeof(selector) != 'undefined' && selector != '')
             {
-                $('#generaldata').hide();
                 $('#managerdata').hide();
                 $('#systemdata').hide();
                 $('#languagesdata').hide();
@@ -254,5 +210,10 @@
                 simplisity_setCookieValue("rocketportal_tabselector",selector)	
             }
         }
+
+        $(document).ready(function () {
+            selectMenu('dashboard');
+        });
+
 
     </script>

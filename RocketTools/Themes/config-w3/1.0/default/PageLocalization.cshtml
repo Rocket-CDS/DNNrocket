@@ -10,20 +10,17 @@
 
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
-    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
 }
 
-<div class="w3-hide rocketplpageview simplisity_click" s-cmd="rocketpl_pageview" s-post=".datapostsection" s-return=".pagedataview"></div>
-<div class="w3-hide rocketplpageedit simplisity_click" s-cmd="rocketpl_pageedit" s-post=".datapostsection" s-return=".pagedataedit"></div>
+<div class="w3-hide rocketplpageview simplisity_click" s-cmd="rocketpl_pageview" s-post=".datapostsection" s-return=".pagedataview" s-showloader="false"></div>
+<div class="w3-hide rocketplpageedit simplisity_click" s-cmd="rocketpl_pageedit" s-post=".datapostsection" s-return=".pagedataedit" s-showloader="false"></div>
 
 <div id="pagedatasection">
 
     <div class="w3-row w3-padding datapostsection">        
-        <div class="w3-button w3-black" onclick="$('.simplisity_loader').show(); window.location.reload(true);">
-            @ButtonIconText(ButtonTypes.back)
-        </div>
-        <div class="w3-button simplisity_click" s-cmd="rocketpl_getdisplay">
-            @ButtonIconText(ButtonTypes.refresh)
+        <div class="w3-button simplisity_click" s-cmd="rocketpl_getdisplay" s-return="#toolsmodalcontainer">
+            @ButtonIcon(ButtonTypes.refresh)
         </div>
         <div onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-right w3-margin-left">
             <span class="material-icons">

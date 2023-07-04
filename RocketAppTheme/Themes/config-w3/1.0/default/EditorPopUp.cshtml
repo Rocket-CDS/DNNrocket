@@ -21,21 +21,12 @@
     var backcmd = "rocketapptheme_getdetail";
 }
 
-<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/codemirror.js"></script>
-<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/night.css" />
-<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/codemirror.css" />
-<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/javascript/javascript.js"></script>
-<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/xml/xml.js"></script>
-<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/css/css.js"></script>
-<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
 <div class="w3-row w3-padding">
     <div class="w3-margin-bottom w3-padding">
 
-        <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
-        <div class="w3-button w3-theme-action savebutton simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-return="#editmodalcontainer" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+
+        <div class="w3-button w3-theme-action savebutton simplisity_click" s-before="saveeditordata"  s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
         {
             disableDelete = false;
@@ -55,7 +46,7 @@
         }
         @if (!disableDelete)
         {
-            <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
+            <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?"  s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
         }
         @if (sessionParams.ModuleRef != "")
         {
@@ -77,9 +68,9 @@
 
     <input id="editorsavereturn" type="hidden" value="" />
 
-    <div id="editorwrapper" class="w3-row " style="height:800px;display:none;">
+    <div id="editorwrapper" class="w3-row " style="height:800px;">
 
-        <textarea id="razoreditor">@appTheme.GetTemplate(Model.GetSetting("filename"), sessionParams.ModuleRef)</textarea>
+        <textarea id="razoreditor" style="width:100%;height:700px;" class="w3-large w3-black w3-text-yellow">@appTheme.GetTemplate(Model.GetSetting("filename"), sessionParams.ModuleRef)</textarea>
 
     </div>
 
@@ -87,31 +78,12 @@
 
 <script>
 
-    var myCodeMirror;
+        $(document).ready(function () {
 
-    $(document).ready(function () {
-
-        setTimeout(() => {
-            // pause to allow codemirror.js to load.
-            $('#editorwrapper').show();
-
-            myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
-                mode: '@Model.GetSetting("editormode")',
-                theme: "night"
-            });
-
-            myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-            $('#razoreditor').focus();
-
-
-        }, 500);
-
-
-    });
-
+        });
 
     function saveeditordata() {
-        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
+        $('#editorcodesave').val(simplisity_encode($('#razoreditor').val()));
         $('#saveicon').show();
         $("#saveicon").fadeOut();
     }
