@@ -608,6 +608,7 @@ namespace DNNrocketAPI.Components
             try
             {
                 Bitmap sourceImage;
+                if (imgtype == "") imgtype = Path.GetExtension(strFilepath).Trim('.');
                 if (imgtype == "webp")
                 {
                     try
