@@ -73,12 +73,6 @@
     <Reference Include="Handlebars">
       <HintPath>_external\Handlebars.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor">
-      <HintPath>_external\ImageProcessor.dll</HintPath>
-    </Reference>
-    <Reference Include="ImageProcessor.Plugins.WebP">
-      <HintPath>_external\ImageProcessor.Plugins.WebP.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>_external\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -1291,6 +1285,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include="Themes\config-w3\1.0\css\cyan.css" />
+    <Content Include="Themes\config-w3\1.0\css\dnn-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\black-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />

@@ -27,39 +27,5 @@
     iframe.editBar-iframe{ display: none !important; }
 </style>
 
-    <div id="adminpanel">
-        <div class="simplisity_loader">
-            <span class=" simplisity_loader_inner">
-            </span>
-        </div>
-    </div>
-
-	
-    <script>
-
-        $(document).ready(function () {
-            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', '<%= Server.HtmlEncode(PortalSettings.ActiveTab.TabName.ToLower()) %>_adminpanel', '{"systemkey":"<%= Server.HtmlEncode(PortalSettings.ActiveTab.TabName.ToLower()) %>"}', '')
-        });
-
-    </script>
-
-<div class="w3-container w3-center w3-padding-64">
-
-
-    <div class="w3-third">
-    &nbsp;
-    </div>
-    
-    <div id="ContentPane" class="w3-third w3-center contentPane" runat="server"></div>
-    
-    <div class="w3-third">
-    &nbsp;
-    </div>
-
-</div>
-
-
-
-
-
-
+  
+    <div id="ContentPane" class="contentPane" runat="server"></div>

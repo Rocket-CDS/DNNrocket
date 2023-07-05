@@ -29,7 +29,7 @@
                 {
                     interfaceName = rinterface.InterfaceKey;
                 }
-                rtn = "<div class='w3-bar-item w3-button w3-padding-16 sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}' title='" + interfaceName + "'><span class='material-icons'>" + rinterface.InterfaceIcon + "</span></div>";
+                rtn = "<div class='w3-bar-item w3-btn w3-padding-16 sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}' title='" + interfaceName + "'><span class='material-icons'>" + rinterface.InterfaceIcon + "</span></div>";
             }
         }
         return new RawString(rtn);
@@ -47,7 +47,11 @@
 <script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
 <script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnn-theme.css">
+
+<style>    
+    .w3-button { border-radius: 3px }
+</style>
 
 <div id="a-displaywrapper" class="w3-animate-opacity" style="">
 
