@@ -217,11 +217,11 @@
             <skinName>rocketportal</skinName>
             <skinFile>
               <path></path>
-              <name>rockethome.ascx</name>
+              <name>rocketedit.ascx</name>
             </skinFile>
             <skinFile>
               <path></path>
-              <name>rockethome.xml</name>
+              <name>rocketedit.xml</name>
             </skinFile>
             <skinFile>
               <path></path>

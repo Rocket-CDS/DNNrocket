@@ -179,15 +179,7 @@ namespace DNNrocketAPI.Components
                             var xmlData = FileUtils.ReadFile(configFileName);
                             postInfo.XMLData = xmlData;
 
-                            var roles = new List<string>();
-                            roles.Add(DNNrocketRoles.Administrators);
-                            roles.Add(DNNrocketRoles.Manager);
-                            roles.Add(DNNrocketRoles.Editor);
-                            roles.Add(DNNrocketRoles.ClientEditor);
-                            PortalUtils.AddSysAdminSystemPage(portalId, systemData.SystemKey, roles);
-
                             DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "/DesktopModules/DNNrocket/api", "");
-
                         }
                     }
                     else
@@ -211,7 +203,7 @@ namespace DNNrocketAPI.Components
         {
             if (PortalSettings.Current == null)
             {
-                // don't return a null or cause error by accident.  The calling mathod should test and deal with it.
+                // don't return a null or cause error by accident.  The calling method should test and deal with it.
                 return -1;
             }
             else
@@ -681,41 +673,6 @@ namespace DNNrocketAPI.Components
                     {
                         LogUtils.LogException(ex);
                     }
-                }
-            }
-        }
-        public static void AddSysAdminSystemPage(int portalId, string systemkey)
-        {
-            AddSysAdminSystemPage(portalId, systemkey, null);
-        }
-        public static void AddSysAdminSystemPage(int portalId, string systemkey, List<string> roles = null)
-        {
-            if (roles == null)
-            {
-                roles = new List<string>();
-                roles.Add(DNNrocketRoles.Administrators);
-                roles.Add(DNNrocketRoles.Manager);
-                roles.Add(DNNrocketRoles.Editor);
-                roles.Add(DNNrocketRoles.ClientEditor);
-                roles.Add("Registered Users");
-            }
-            // Create a SysAdmin page, with subpages of each system.
-            if (!PagesUtils.PageExists(portalId, "SysAdmin"))
-            {
-                var tabid = PagesUtils.CreatePage(portalId, "SysAdmin", false, true);
-                PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rockethome.ascx");
-            }
-            var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
-            if (sysAdminTabId > 0)
-            {
-                if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + systemkey) == -1)
-                {
-                    var tabid = PagesUtils.CreatePage(portalId, systemkey, true, false, sysAdminTabId);
-                    foreach (var r in roles)
-                    {
-                        PagesUtils.AddPagePermissions(portalId, tabid, r);
-                    }
-                    PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
                 }
             }
         }

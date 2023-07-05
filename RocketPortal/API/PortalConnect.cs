@@ -69,17 +69,6 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 _portalData.Save(_postInfo);
-                // Create a SysAdmin page, with subpages of each system.
-                if (!PagesUtils.PageExists(portalId, "SysAdmin"))
-                {
-                    var tabid = PagesUtils.CreatePage(portalId, "SysAdmin", false, true);
-                    PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rockethome.ascx");
-                }
-                var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
-                if (sysAdminTabId > 0 )
-                {
-                    // add any subpages.
-                }
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
@@ -292,13 +281,6 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkeyref");
-                var roles = new List<string>();
-                roles.Add(DNNrocketRoles.Administrators);
-                roles.Add(DNNrocketRoles.Manager);
-                roles.Add(DNNrocketRoles.Editor);
-                roles.Add(DNNrocketRoles.ClientEditor);
-                PortalUtils.AddSysAdminSystemPage(portalId, systemKey, roles);
-
                 _portalData = new PortalLimpet(portalId);
                 _portalData.Record.SetXmlProperty("genxml/systems/" + systemKey, "True");
                 _portalData.Update();

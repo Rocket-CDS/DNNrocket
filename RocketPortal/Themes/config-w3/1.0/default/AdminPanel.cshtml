@@ -91,7 +91,7 @@
                     <span class=" simplisity_loader_inner">
                     </span>
                 </div>
-                Waiting...............
+                @ResourceKey("DNNrocket.processing")...............
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
     $(document).ready(function () {
 
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketportal', debug: false });
-
+        $('.simplisity_loader').show();
         simplisity_setParamField("reload", true);  // This will flag that a reload is done.  The Server side code will get the last command tracked.
         simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
 

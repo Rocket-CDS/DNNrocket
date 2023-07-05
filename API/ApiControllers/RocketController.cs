@@ -690,11 +690,7 @@ namespace DNNrocketAPI.ApiControllers
                 paramInfo.SetXmlProperty("genxml/userhostaddress", HttpContext.Current.Request.UserHostAddress);                
                 var logincode = DNNrocketUtils.SaveTempStorage(paramInfo.XMLData, 1);
                 var portalUrl = PortalUtils.DefaultPortalAlias(newportal);
-                // use http, https should be used but a rediect in IIS will solve that. http is easier for testing and there should be no security issue.
-                if (redirectsystemkey != "")
-                    return "http://" + portalUrl + "/sysadmin/" + redirectsystemkey + "?autologin=" + logincode; 
-                else
-                    return "http://" + portalUrl + "?autologin=" + logincode;
+                return "http://" + portalUrl + "?autologin=" + logincode;
             }
             return "";
         }

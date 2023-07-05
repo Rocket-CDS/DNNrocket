@@ -21,7 +21,6 @@
             <tr>
                 <th style="width:32px;"></th>
                 <th style="width:32px;">@ResourceKey("DNNrocket.setup")</th>
-                <th style="width:32px;">@ResourceKey("DNNrocket.admin")</th>
             </tr>
         </thead>
 
@@ -48,25 +47,6 @@
                         <div class="w3-button w3-text-grey">
                             @ButtonIcon(ButtonTypes.setup)
                         </div>
-                    }
-                </td>
-                <td style="vertical-align: middle;">
-                    @if (!PagesUtils.PageExists(portalData.PortalId, systemData.SystemKey, PagesUtils.GetPageByTabPath(portalData.PortalId, "SysAdmin")))
-                    {
-                        <span>&nbsp;</span>
-                    }
-                    else
-                    {
-                        if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
-                        {
-                            <a href="@(portalData.EngineUrlWithProtocol)/SysAdmin/@(systemData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonIcon(ButtonTypes.admin)</a>
-                        }
-                        else
-                        {
-                            <div class="w3-button w3-text-grey">
-                                @ButtonIcon(ButtonTypes.admin)
-                            </div>
-                        }
                     }
                 </td>
             </tr>
