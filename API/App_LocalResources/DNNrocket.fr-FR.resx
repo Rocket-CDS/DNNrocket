@@ -499,7 +499,7 @@
     <value>Pâte</value>
   </data>
   <data name="anchor.Text" xml:space="preserve">
-    <value>Ancrage</value>
+    <value>Ancre</value>
   </data>
   <data name="url.Text" xml:space="preserve">
     <value>URL</value>
@@ -676,13 +676,13 @@
     <value>Clef de sécurité</value>
   </data>
   <data name="imageresize.Text" xml:space="preserve">
-    <value>Redimensionner l'image</value>
+    <value>Chargement de l'image</value>
   </data>
   <data name="invalidcatalog.Text" xml:space="preserve">
-    <value>Catalogue invalide !</value>
+    <value>Catalogue invalide</value>
   </data>
   <data name="cds.Text" xml:space="preserve">
-    <value>CDS !</value>
+    <value>CDS</value>
   </data>
   <data name="website.Text" xml:space="preserve">
     <value>Site internet</value>
@@ -691,7 +691,7 @@
     <value>Service de données</value>
   </data>
   <data name="disabled.Text" xml:space="preserve">
-    <value>Désactivé !</value>
+    <value>Désactivé</value>
   </data>
   <data name="tools.Text" xml:space="preserve">
     <value>Outils</value>
@@ -727,7 +727,7 @@
     <value>Région</value>
   </data>
   <data name="loading.Text" xml:space="preserve">
-    <value>Chargement !</value>
+    <value>Chargement</value>
   </data>
   <data name="imagelimit.Msg" xml:space="preserve">
     <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires. !</value>
@@ -770,5 +770,65 @@
   </data>
   <data name="translation.Text" xml:space="preserve">
     <value>Traduction</value>
+  </data>
+  <data name="moduletitle.Text" xml:space="preserve">
+    <value>En-tête</value>
+  </data>
+  <data name="headingstyle.Text" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="headingalign.Text" xml:space="preserve">
+    <value>Alignement</value>
+  </data>
+  <data name="heading.Text" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="hideheading.Text" xml:space="preserve">
+    <value>Masquer le titre</value>
+  </data>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Texte du lien</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>Aucun,Lien interne,Lien externe</value>
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Lien</value>
+  </data>
+  <data name="cssClass.Text" xml:space="preserve">
+    <value>Classe CSS</value>
+  </data>
+  <data name="hiderow.Text" xml:space="preserve">
+    <value>Masquer l'entrée</value>
+  </data>
+  <data name="thumbnailwidth.Text" xml:space="preserve">
+    <value>Largeur de la vignette</value>
+  </data>
+  <data name="thumbnailheight.Text" xml:space="preserve">
+    <value>Hauteur de la vignette</value>
+  </data>
+  <data name="columns.Text" xml:space="preserve">
+    <value>Colonnes</value>
+  </data>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>,2 colonnes,3 colonnes,4 colonnes,5 colonnes,Multi-colonnes</value>
+  </data>
+  <data name="openfancy.Text" xml:space="preserve">
+    <value>Mode popup</value>
+  </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Description (alt)</value>
+  </data>
+  <data name="forcedownload.Text" xml:space="preserve">
+    <value>Forcer le téléchargement</value>
+  </data>
+  <data name="newspaperlinkrbl.Text" xml:space="preserve">
+    <value>Page du site,URL</value>
+  </data>
+  <data name="manuallink.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>Nouvelle fenêtre</value>
   </data>
 </root>
