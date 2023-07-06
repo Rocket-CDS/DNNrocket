@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,79 +26,79 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -290,6 +290,9 @@
   </data>
   <data name="column.Text" xml:space="preserve">
     <value>Column</value>
+  </data>
+  <data name="columns.Text" xml:space="preserve">
+    <value>Columns</value>
   </data>
   <data name="import.Text" xml:space="preserve">
     <value>Import</value>
@@ -834,13 +837,10 @@
   <data name="headingstyle.Text" xml:space="preserve">
     <value>Heading Style</value>
   </data>
-  <data name="hideHeading.Text" xml:space="preserve">
+  <data name="hideheading.Text" xml:space="preserve">
     <value>Hide Title</value>
   </data>
   <data name="hiderow.Text" xml:space="preserve">
-    <value>Hide Row</value>
-  </data>
-  <data name="hideRow.Text1" xml:space="preserve">
     <value>Hide Row</value>
   </data>
   <data name="linktype.Text" xml:space="preserve">
@@ -850,7 +850,7 @@
     <value>Longitude</value>
   </data>
   <data name="manuallink.Text" xml:space="preserve">
-    <value>Manual Link</value>
+    <value>URL</value>
   </data>
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
@@ -909,10 +909,43 @@
   <data name="videoCode.Text" xml:space="preserve">
     <value>Iframe youtube Video</value>
   </data>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Link title</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>None,Internal link,External link</value>
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="thumbnailwidth.Text" xml:space="preserve">
+    <value>Thumbnail width</value>
+  </data>
+  <data name="thumbnailheight.Text" xml:space="preserve">
+    <value>Thumbnail height</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>None,Internal link,External link</value>
+  </data>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>,2 columns,3 columns,4 columns,5 columns,Multi-columns</value>
+  </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Description (alt)</value>
+  </data>
+  <data name="forcedownload.Text" xml:space="preserve">
+    <value>Force download</value>
+  </data>
+  <data name="newspaperlinkrbl.Text" xml:space="preserve">
+    <value>Page of the website,URL</value>
+  </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>New window</value>
+  </data>
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
   <data name="processing.Text" xml:space="preserve">
-    <value>Processing</value>
+    <value>Processing</value>  
   </data>
 </root>
