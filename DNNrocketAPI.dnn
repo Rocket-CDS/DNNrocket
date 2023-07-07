@@ -211,34 +211,6 @@
 
       <components>
 
-        <component type="Skin">
-          <skinFiles>
-            <basePath>Portals\_default\Skins\rocketportal</basePath>
-            <skinName>rocketportal</skinName>
-            <skinFile>
-              <path></path>
-              <name>rocketedit.ascx</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketedit.xml</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketadmin.ascx</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>rocketadmin.xml</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>skin.css</name>
-            </skinFile>
-          </skinFiles>
-        </component>
-
-
         <component type="Assembly">
           <assemblies>
             <assembly>

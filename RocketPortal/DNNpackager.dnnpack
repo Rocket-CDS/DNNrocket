@@ -25,10 +25,6 @@
   </file>
   <file include='true'>
     <value>\system.rules</value>
-    <value>\Skins\rocketportal\rocketedit.ascx</value>
-    <value>\Skins\rocketportal\rocketedit.xml</value>
-    <value>\Skins\rocketportal\rocketadmin.ascx</value>
-    <value>\Skins\rocketportal\rocketadmin.xml</value>
     <value>\WebsiteBuilds\0_CDS.rules</value>
     <value>\WebsiteBuilds\10_Blank.rules</value>
 	  <value>\WebsiteBuilds\SystemDefaults.rules</value>

@@ -68,12 +68,6 @@
 	  <value>\API\Installation\Uninstall.SqlDataProvider</value>
     <value>DNNrocketAPI.dnn</value>
 
-	  <value>\RocketPortal\Skins\rocketportal\rocketedit.ascx</value>
-	  <value>\RocketPortal\Skins\rocketportal\rocketedit.xml</value>
-	  <value>\RocketPortal\Skins\rocketportal\rocketadmin.ascx</value>
-    <value>\RocketPortal\Skins\rocketportal\rocketadmin.xml</value>
-    <value>\RocketPortal\Skins\rocketportal\skin.css</value>
-
     <value>\API\images\action_bottom.svg</value>
     <value>\API\images\action_delete.svg</value>
     <value>\API\images\action_down.svg</value>
