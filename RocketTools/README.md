@@ -45,7 +45,20 @@ The DDRMenu in DNN can have the the page element changed to add the catalog stru
     Each category menu MUST be linked to a system.  To link systems the systemkey is added to the page title.  
     
 **Define a Root Category for the menu to start on - OPTIONAL**  
-    This is optional and if not defined the entire category will be displayed.  If you need a menu to only show categories below a certain category the add the category REF value in the keywords input field.  
+    This is optional and if not defined the entire category will be displayed.  If you need a menu to only show categories below a certain category then add the category REF value in the keywords input field.  
+
+#### Menu Manipulator for RocketEcommerceAPI and wrapper systems 
+The DDRMenu in DNN can have the the page element changed to add the catalog structure to the menu.  
+
+**Create a Page with the name**   
+    ```
+    [CATDIR]
+    ```
+**Linking the page to a system - MANDATORY**    
+    Each category menu MUST be linked to a system.  Add "rocketecommerceapi" to the page title.  
+    
+**Define a Root Category for the menu to start on - OPTIONAL**  
+    This is optional and if not defined the entire category will be displayed.  If you need a menu to only show categories below a certain category then add the category REF value in the keywords input field.  
 
 ### 2. Setup Meta data control    
 Register the Meta.ascx control in the skin, this will alter the page Meta data, Title, Tag Words and 
