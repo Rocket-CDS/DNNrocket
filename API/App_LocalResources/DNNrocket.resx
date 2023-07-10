@@ -322,7 +322,7 @@
     <value>System Key</value>
   </data>
   <data name="email.Text" xml:space="preserve">
-    <value>Conctact email</value>
+    <value>Email</value>
   </data>
   <data name="certificate.Text" xml:space="preserve">
     <value>Certificate</value>
@@ -803,9 +803,6 @@
   </data>
   <data name="contact.Text" xml:space="preserve">
     <value>Contact</value>
-  </data>
-  <data name="contactname.Text" xml:space="preserve">
-    <value>Contact name</value>
   </data>
   <data name="cssClass.Text" xml:space="preserve">
     <value>CSS Class</value>
