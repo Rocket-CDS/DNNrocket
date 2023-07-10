@@ -291,6 +291,9 @@
   <data name="column.Text" xml:space="preserve">
     <value>Column</value>
   </data>
+  <data name="columns.Text" xml:space="preserve">
+    <value>Columns</value>
+  </data>
   <data name="import.Text" xml:space="preserve">
     <value>Import</value>
   </data>
@@ -523,7 +526,7 @@
     <value>URL</value>
   </data>
   <data name="blank.Text" xml:space="preserve">
-    <value>New Window</value>
+    <value>New window</value>
   </data>
   <data name="externallink.Text" xml:space="preserve">
     <value>External Link</value>
@@ -834,13 +837,10 @@
   <data name="headingstyle.Text" xml:space="preserve">
     <value>Heading Style</value>
   </data>
-  <data name="hideHeading.Text" xml:space="preserve">
+  <data name="hideheading.Text" xml:space="preserve">
     <value>Hide Title</value>
   </data>
   <data name="hiderow.Text" xml:space="preserve">
-    <value>Hide Row</value>
-  </data>
-  <data name="hideRow.Text1" xml:space="preserve">
     <value>Hide Row</value>
   </data>
   <data name="linktype.Text" xml:space="preserve">
@@ -850,7 +850,7 @@
     <value>Longitude</value>
   </data>
   <data name="manuallink.Text" xml:space="preserve">
-    <value>Manual Link</value>
+    <value>URL</value>
   </data>
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
@@ -907,9 +907,54 @@
     <value>Video</value>
   </data>
   <data name="videoCode.Text" xml:space="preserve">
-    <value>Iframe youtube Video</value>
+    <value>Iframe Youtube Video</value>
   </data>
-  <data name="editor.Text" xml:space="preserve">
-    <value>Editor</value>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Link title</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>None,Internal link,External link</value>
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="thumbnailwidth.Text" xml:space="preserve">
+    <value>Thumbnail width</value>
+  </data>
+  <data name="thumbnailheight.Text" xml:space="preserve">
+    <value>Thumbnail height</value>
+  </data>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>,2 columns,3 columns,4 columns,5 columns,Multi-columns</value>
+  </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Description (alt)</value>
+  </data>
+  <data name="forcedownload.Text" xml:space="preserve">
+    <value>Force download</value>
+  </data>
+  <data name="newspaperlinkrbl.Text" xml:space="preserve">
+    <value>Page of the website,URL</value>
+  </data>
+  <data name="detailPage.Text" xml:space="preserve">
+    <value>Detail page</value>
+  </data>
+  <data name="listPage.Text" xml:space="preserve">
+    <value>List Page</value>
+  </data>
+  <data name="zoom.Text" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="mapWidth.Text" xml:space="preserve">
+    <value>Map width</value>
+  </data>
+  <data name="mapHeight.Text" xml:space="preserve">
+    <value>Map height</value>
+  </data>
+  <data name="latitude.Text" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="limit.Text" xml:space="preserve">
+    <value>Limit</value>
   </data>
 </root>
