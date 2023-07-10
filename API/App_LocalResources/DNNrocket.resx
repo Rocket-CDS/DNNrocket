@@ -322,7 +322,7 @@
     <value>System Key</value>
   </data>
   <data name="email.Text" xml:space="preserve">
-    <value>Email</value>
+    <value>Conctact email</value>
   </data>
   <data name="certificate.Text" xml:space="preserve">
     <value>Certificate</value>
@@ -801,26 +801,14 @@
   <data name="companyName.Text" xml:space="preserve">
     <value>Company Name</value>
   </data>
-  <data name="contact1.Text" xml:space="preserve">
-    <value>Contact 1</value>
+  <data name="contact.Text" xml:space="preserve">
+    <value>Contact</value>
   </data>
-  <data name="contact2.Text" xml:space="preserve">
-    <value>Contact 2</value>
-  </data>
-  <data name="contactname1.Text" xml:space="preserve">
-    <value>Contact 1 name</value>
-  </data>
-  <data name="contactname2.Text" xml:space="preserve">
-    <value>Contact 2 name</value>
+  <data name="contactname.Text" xml:space="preserve">
+    <value>Contact name</value>
   </data>
   <data name="cssClass.Text" xml:space="preserve">
     <value>CSS Class</value>
-  </data>
-  <data name="email1.Text" xml:space="preserve">
-    <value>Conctact1 email</value>
-  </data>
-  <data name="email2.Text" xml:space="preserve">
-    <value>Contact 2 email</value>
   </data>
   <data name="extraInfo.Text" xml:space="preserve">
     <value>Extra infos</value>
@@ -855,11 +843,8 @@
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
-  <data name="mobile1.Text" xml:space="preserve">
-    <value>Contact 1 mobile</value>
-  </data>
-  <data name="mobile2.Text" xml:space="preserve">
-    <value>Contact 2 mobile</value>
+  <data name="mobile.Text" xml:space="preserve">
+    <value>Mobile</value>
   </data>
   <data name="moduletitle.Text" xml:space="preserve">
     <value>Module Title</value>

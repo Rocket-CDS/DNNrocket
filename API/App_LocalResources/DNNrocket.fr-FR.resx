@@ -274,7 +274,7 @@
     <value>Modifier</value>
   </data>
   <data name="email.Text" xml:space="preserve">
-    <value>E-mail</value>
+    <value>Email du contact</value>
   </data>
   <data name="enabled.Text" xml:space="preserve">
     <value>Activé</value>
@@ -858,23 +858,11 @@
   <data name="companyName.Text" xml:space="preserve">
     <value>Nom de l'entreprise</value>
   </data>
-  <data name="contact1.Text" xml:space="preserve">
-    <value>Contact 1</value>
+  <data name="contact.Text" xml:space="preserve">
+    <value>Contact</value>
   </data>
-  <data name="contact2.Text" xml:space="preserve">
-    <value>Contact 2</value>
-  </data>
-  <data name="contactname1.Text" xml:space="preserve">
-    <value>Nom du contact 1</value>
-  </data>
-  <data name="contactname2.Text" xml:space="preserve">
-    <value>Nom du contact 2</value>
-  </data>
-  <data name="email1.Text" xml:space="preserve">
-    <value>Email du contact 1</value>
-  </data>
-  <data name="email2.Text" xml:space="preserve">
-    <value>Email du contact 2</value>
+  <data name="contactname.Text" xml:space="preserve">
+    <value>Nom du contact</value>
   </data>
   <data name="extraInfo.Text" xml:space="preserve">
     <value>Informations supplémentaires</value>
@@ -891,11 +879,8 @@
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
-  <data name="mobile1.Text" xml:space="preserve">
-    <value>Mobile du contact 1</value>
-  </data>
-  <data name="mobile2.Text" xml:space="preserve">
-    <value>Mobile du contact 2</value>
+  <data name="mobile.Text" xml:space="preserve">
+    <value>Mobile</value>
   </data>
   <data name="question.Text" xml:space="preserve">
     <value>Question</value>
