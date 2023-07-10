@@ -45,21 +45,6 @@ namespace Rocket.AppThemes.Components
             return appTheme;
         }
 
-        public static AppThemeModule AppThemeModule(int portalId, int moduleId, string systemKey)
-        {
-            var cacheKey = "AppThemeModule" + moduleId + "*" + systemKey;
-            var appTheme = (AppThemeModule)CacheUtils.GetCache(cacheKey);
-            lock (_cacheLock1)
-            {
-                if (appTheme == null)
-                {
-                    appTheme = new AppThemeModule(portalId, moduleId, systemKey);
-                    CacheUtils.SetCache(cacheKey, appTheme);
-                }
-            }
-            return appTheme;
-        }
-
         public static AppThemeSystemLimpet AppThemeSystem(int portalId, string systemKey)
         {
             var cacheKey = "AppThemeSystem" + portalId + "*" + systemKey;

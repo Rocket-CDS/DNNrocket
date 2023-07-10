@@ -254,7 +254,6 @@
     <Compile Include="Components\RemoteParams.cs" />
     <Compile Include="Components\SchedulerUtils.cs" />
     <Compile Include="Components\PluginDataList.cs" />
-    <Compile Include="Components\AppTheme\AppThemeModule.cs" />
     <Compile Include="Components\BackUpData.cs" />
     <Compile Include="Components\BackUpDataList.cs" />
     <Compile Include="Components\CacheFileUtils.cs" />
@@ -264,7 +263,6 @@
     <Compile Include="Components\HttpConnect.cs" />
     <Compile Include="Components\HttpContentExtensions.cs" />
     <Compile Include="Components\LicenseData.cs" />
-    <Compile Include="Components\ModuleParamList.cs" />
     <Compile Include="Components\ModuleParams.cs" />
     <Compile Include="Components\LicenseListData.cs" />
     <Compile Include="Components\OnlineAppThemeIndex.cs" />

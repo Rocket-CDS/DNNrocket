@@ -667,12 +667,44 @@ namespace DNNrocketAPI.Components
         }
         public Dictionary<string, string> GetModuleTemples()
         {
+            // NOTE: I am unsure if this is required or even correct.  [TODO: Investigate if needed]
             var rtnDict = new Dictionary<string, string>();
             foreach (var t in FileNameList)
             {
                 if (t.Key.ToLower().EndsWith(".modt")) rtnDict.Add(t.Key, t.Value);
             }
             return rtnDict;
+        }
+
+        public List<string> ModuleTemplateList(string moduleRef)
+        {
+            var rtn = new List<string>();
+            if (Directory.Exists(PortalFileDirectoryMapPath))
+            {
+                foreach (var f in Directory.GetFiles(PortalFileDirectoryMapPath, "*.*", SearchOption.AllDirectories))
+                {
+                    if (f.Contains(moduleRef))
+                    {
+                        rtn.Add(Path.GetFileName(f));
+                    }
+                }
+            }
+            return rtn;
+        }
+        public List<string> PortalTemplateList()
+        {
+            var rtn = new List<string>();
+            if (Directory.Exists(PortalFileDirectoryMapPath))
+            {
+                foreach (var f in Directory.GetFiles(PortalFileDirectoryMapPath, "*.*", SearchOption.AllDirectories))
+                {
+                    if (!f.Contains("ModuleID"))
+                    {
+                        rtn.Add(Path.GetFileName(f));
+                    }
+                }
+            }
+            return rtn;
         }
 
         #region "properties"

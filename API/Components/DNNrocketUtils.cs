@@ -1191,50 +1191,6 @@ namespace DNNrocketAPI.Components
             return systemInfo;
         }
 
-        public static void IncludePageHeaders(int portalId, string systemKey, Page page, int tabId, bool debugMode = false)
-        {
-            page.Items.Add("dnnrocket_pageheader", true);
-            var cachekey = tabId + ".pageheader.cshtml";
-            string cacheHead = null;
-            cacheHead = (string)CacheFileUtils.GetCache(cachekey);
-            if (String.IsNullOrEmpty(cacheHead))
-            {
-                var fileList = new List<string>();
-                var modulesOnPage = GetAllModulesOnPage(tabId);
-                foreach (var modId in modulesOnPage)
-                {
-                    var systemInfo = GetModuleSystemInfo(systemKey, modId, false);
-                    if (systemInfo != null)
-                    {
-                        var appThemeMod = new AppThemeModule(portalId, modId, systemKey);
-                        var fileMapPath = appThemeMod.ModuleParams.AppTheme.GetFileMapPath("pageheader.cshtml");
-                        if (!fileList.Contains(fileMapPath))
-                        {
-                            fileList.Add(fileMapPath);
-                            var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
-                            if (activePageHeaderTemplate != "")
-                            {
-                                var settings = new Dictionary<string, string>();
-                                var l = new List<object>();
-                                l.Add(appThemeMod);
-                                var nbRazor = new SimplisityRazor(l, settings);
-                                var pr = RenderRazorUtils.RazorProcess(nbRazor, activePageHeaderTemplate, false);
-                                if (pr.IsValid) cacheHead += pr.RenderedText;
-                            }
-                        }
-                    }
-                }
-
-                CacheFileUtils.SetCache(cachekey, cacheHead);
-                PageIncludes.IncludeTextInHeaderAt(page, cacheHead, 1);
-            }
-            else
-            {
-                PageIncludes.IncludeTextInHeaderAt(page, cacheHead, 1);
-            }
-
-        }
-
         public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, RocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();

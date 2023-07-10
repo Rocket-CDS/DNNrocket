@@ -36,10 +36,10 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                var appThemeMod = new AppThemeModule(PortalId, ModuleId, SystemKey);
-                backUpXml = appThemeMod.ExportModuleLevelTemplateXml();
+                //var appThemeMod = new AppThemeModule(PortalId, ModuleId, SystemKey);
+                //backUpXml = appThemeMod.ExportModuleLevelTemplateXml();
             }
-            if (!String.IsNullOrEmpty(backUpXml)) LoadTemplateList(backUpXml);
+            //if (!String.IsNullOrEmpty(backUpXml)) LoadTemplateList(backUpXml);
         }
 
         private void LoadTemplateList(string backUpXml)
