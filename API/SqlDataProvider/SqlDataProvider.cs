@@ -203,10 +203,18 @@ namespace DNNrocketAPI
                 try
                 {
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    XmlReader dr = command.ExecuteXmlReader();
-                    while (dr.Read())
+                    using (XmlReader dr = command.ExecuteXmlReader())
                     {
-                        sb.AppendLine(dr.ReadOuterXml());
+                        dr.MoveToContent();
+                        var doloop = true;
+                        while (doloop)
+                        {
+                            string s = dr.ReadOuterXml();
+                            if (s != "")
+                                sb.AppendLine(s);
+                            else
+                                doloop = false;
+                        }
                     }
                     rtnData = sb.ToString();
                 }
