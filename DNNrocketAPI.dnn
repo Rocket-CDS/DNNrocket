@@ -107,11 +107,17 @@
             </assembly>
 
 			<assembly>
+				<path>bin</path>
+				<name>ThoughtWorks.QRCode.dll</name>
+				<sourceFileName>ThoughtWorks.QRCode.dll</sourceFileName>
+			</assembly>
+
+				<assembly>
 					<path>bin</path>
-					<name>ThoughtWorks.QRCode.dll</name>
-					<sourceFileName>ThoughtWorks.QRCode.dll</sourceFileName>
+					<name>RocketTools.dll</name>
+					<sourceFileName>RocketTools.dll</sourceFileName>
 				</assembly>
-				
+
 			</assemblies>
 				</component>
 

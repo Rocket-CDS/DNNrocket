@@ -7,7 +7,7 @@
 @using System.Linq;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
@@ -25,34 +25,34 @@
 <div class="w3-row w3-padding">
 
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagename")</label>
+        <label>@ResourceKey("RocketTools.pagename")</label>
         @TextBox(info, "genxml/textbox/pagename", " class='w3-input w3-border' ", pageData.Name)
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagetitle")</label>
+        <label>@ResourceKey("RocketTools.pagetitle")</label>
         @TextBox(info, "genxml/textbox/pagetitle", " class='w3-input w3-border' ", pageData.Title)
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagedescription")</label>
+        <label>@ResourceKey("RocketTools.pagedescription")</label>
         @TextArea(info, "genxml/textbox/pagedescription", " rows='5' class='w3-input w3-border' ", pageData.Description)
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagetagwords")</label>
+        <label>@ResourceKey("RocketTools.pagetagwords")</label>
         @TextArea(info, "genxml/textbox/tagwords", " rows='5' class='w3-input w3-border' ", pageData.KeyWords)
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.url")</label>
+        <label>@ResourceKey("RocketTools.url")</label>
         @TextBox(info, "genxml/textbox/pageurl", " class='w3-input w3-border' " + disableedit + " ", pageData.Url)
     </div>
     <div class="w3-row ">
         <div class="w3-third w3-padding">
-            @CheckBox(info, "genxml/checkbox/editpageurl", "&nbsp;" + ResourceKey("View.editpageurl").ToString(), " class='w3-check' ", false)
+            @CheckBox(info, "genxml/checkbox/editpageurl", "&nbsp;" + ResourceKey("RocketTools.editpageurl").ToString(), " class='w3-check' ", false)
         </div>
         <div class="w3-third w3-padding">
-            @CheckBox(info, "genxml/checkbox/disablecanonical", "&nbsp;" + ResourceKey("View.disablecanonical").ToString(), " class='w3-check' ", false)
+            @CheckBox(info, "genxml/checkbox/disablecanonical", "&nbsp;" + ResourceKey("RocketTools.disablecanonical").ToString(), " class='w3-check' ", false)
         </div>
         <div class="w3-third w3-padding">
-            @CheckBox(info, "genxml/checkbox/disablealternate", "&nbsp;" + ResourceKey("View.disablealternate").ToString(), " class='w3-check' ", false)
+            @CheckBox(info, "genxml/checkbox/disablealternate", "&nbsp;" + ResourceKey("RocketTools.disablealternate").ToString(), " class='w3-check' ", false)
         </div>
     </div>
 

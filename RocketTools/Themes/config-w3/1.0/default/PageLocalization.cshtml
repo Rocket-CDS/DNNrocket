@@ -5,7 +5,7 @@
 @using System.Linq;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 @{
@@ -34,7 +34,7 @@
 
     <div class="w3-row w3-padding datapostsection">
         <div class="w3-third w3-padding">
-            <h2>@ResourceKey("View.pagelocalization")</h2>
+            <h2>@ResourceKey("RocketTools.pagelocalization")</h2>
         </div>
         <div class="w3-third w3-padding">
             @TabSelectList(new SimplisityInfo(), "genxml/selectedtabid", " class='w3-input w3-border'  ", false, false, 0, "", true)

@@ -135,6 +135,9 @@
   <data name="clone.Confirm" xml:space="preserve">
     <value>Clone the selected module to ALL the selected pages?</value>
   </data>
+  <data name="clone.Text" xml:space="preserve">
+    <value>Clone</value>
+  </data>
   <data name="clonesok.Text" xml:space="preserve">
     <value>The module has been cloned to the selected pages.</value>
   </data>
@@ -159,17 +162,92 @@
   <data name="destinationlanguage.Text" xml:space="preserve">
     <value>Destination Language</value>
   </data>
+  <data name="disablealternate.Text" xml:space="preserve">
+    <value>Disable Alternate</value>
+  </data>
+  <data name="disablecanonical.Text" xml:space="preserve">
+    <value>Disable Canonical</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="editpageurl.Text" xml:space="preserve">
+    <value>Edit Page URL</value>
+  </data>
+  <data name="language.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="moduleclone.Help" xml:space="preserve">
     <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the clone in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
   </data>
   <data name="moduleroles.Help" xml:space="preserve">
     <value>Module Roles can be added or removed from multiple modules across the entire site.  The EDIT permissions will be activated when the module is updated with a new role.  For more granular control use the standard module interface. </value>
   </data>
+  <data name="modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="namespaceclass.Text" xml:space="preserve">
+    <value>Namespace.Class</value>
+  </data>
+  <data name="next.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="ok.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="pagedescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="pagelocalization.Text" xml:space="preserve">
+    <value>Page Localization</value>
+  </data>
+  <data name="pagename.Text" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="pagetagwords.Text" xml:space="preserve">
+    <value>Tag Words (Optional)</value>
+  </data>
+  <data name="pagetitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
   <data name="permissions.Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="portaladmin.Text" xml:space="preserve">
+    <value>Portal Admin</value>
+  </data>
+  <data name="previous.Text" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="providers.Text" xml:space="preserve">
+    <value>Extra Providers List  (Assembly,Namespace.Class)</value>
+  </data>
+  <data name="queryparams.Text" xml:space="preserve">
+    <value>Query Params for article ID</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycle AppPool</value>
+  </data>
+  <data name="refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="restorebackup.Confirm" xml:space="preserve">
     <value>Restore Backup?  This will OVERWRITE the current data for all languages.</value>
+  </data>
+  <data name="retry.Text" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="return.Text" xml:space="preserve">
+    <value>Return</value>
   </data>
   <data name="rocketactions.Text" xml:space="preserve">
     <value>Actions</value>
@@ -190,10 +268,37 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   <data name="roles.Text" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="roles.Text1" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="roles.Text2" xml:space="preserve">
+    <value>Roles</value>
+  </data>
   <data name="rolesok.Text" xml:space="preserve">
     <value>The Roles has been saved to the modules.</value>
   </data>
+  <data name="save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="sourcelanguage.Text" xml:space="preserve">
+    <value>Source Language</value>
+  </data>
+  <data name="tokenprefix.Text" xml:space="preserve">
+    <value>Page Token Prefix</value>
+  </data>
   <data name="topage.Text" xml:space="preserve">
     <value>Destination Page</value>
+  </data>
+  <data name="uncheckall.Text" xml:space="preserve">
+    <value>Uncheck All</value>
+  </data>
+  <data name="update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Validate</value>
   </data>
 </root>

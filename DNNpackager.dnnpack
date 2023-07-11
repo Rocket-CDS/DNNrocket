@@ -101,11 +101,8 @@
     <value>\bin\DNNrocketCountry.dll</value>
     <value>\bin\DNNrocketAPI.dll</value>
     <value>\bin\RocketPortal.dll</value>
-    <value>\bin\RocketPortal.pdb</value>
 	<value>\bin\RocketTools.dll</value>
-	<value>\bin\RocketTools.pdb</value>
 	<value>\bin\RocketAppThemes.dll</value>
-    <value>\bin\RocketAppThemes.pdb</value>
     <value>\API\_external\Newtonsoft.Json.dll</value>
     <value>\API\_external\netstandard.dll</value>
     <value>\API\_external\RazorEngine.dll</value>

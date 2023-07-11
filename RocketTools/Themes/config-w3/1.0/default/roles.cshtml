@@ -5,7 +5,7 @@
 @using RocketTools.Components;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 <div class="w3-row w3-padding datapostsection">        
@@ -19,7 +19,7 @@
         Module Roles
     </div>
     <div class="w3-col m6">
-        <div class="w3-button w3-blue w3-right simplisity_confirmclick" s-confirm="@ResourceKey("View.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles">@ResourceKey("View.adddefaultroles")</div>
+        <div class="w3-button w3-blue w3-right simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles">@ResourceKey("RocketTools.adddefaultroles")</div>
     </div>
 </div>
 
@@ -28,9 +28,9 @@
 
     <div class="w3-third w3-padding tabselect">
         <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
-            <b class="w3-large">@ResourceKey("View.pages")</b>
+            <b class="w3-large">@ResourceKey("RocketTools.pages")</b>
             <div class="w3-button w3-green w3-right nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">
-                @ResourceKey("View.next")&nbsp;
+                @ResourceKey("RocketTools.next")&nbsp;
                 <span class="material-icons">
                     navigate_next
                 </span>
@@ -56,9 +56,9 @@
     <div class="w3-twothird" id="updatesection">
         <div class="w3-half w3-padding">
             <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
-                <b class="w3-large">@ResourceKey("View.modules")</b>
+                <b class="w3-large">@ResourceKey("RocketTools.modules")</b>
                 <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-after="showapplybutton" s-cmd="rocketroles_getroles" s-return=".rolesdatasection" s-fields='' s-post="#modulelistdata">
-                    @ResourceKey("View.next")&nbsp;
+                    @ResourceKey("RocketTools.next")&nbsp;
                     <span class="material-icons">
                         navigate_next
                     </span>
@@ -70,13 +70,13 @@
         </div>
         <div class="w3-half w3-padding">
             <div class="w3-large w3-panel w3-light-grey w3-padding" style="height:52px;">
-                <b>@ResourceKey("View.roles")</b>
-                <div class="w3-button w3-green w3-right applyrolesbutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("View.applyroles") ?" s-cmd="rocketroles_applyroles" s-return=".returnmsg" s-post="#rolelistdata">
+                <b>@ResourceKey("RocketTools.roles")</b>
+                <div class="w3-button w3-green w3-right applyrolesbutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("RocketTools.applyroles") ?" s-cmd="rocketroles_applyroles" s-return=".returnmsg" s-post="#rolelistdata">
                     <span class="material-icons">
                         save
                     </span>
                     &nbsp;
-                    @ResourceKey("View.applyroles")
+                    @ResourceKey("RocketTools.applyroles")
                 </div>
             </div>
             <div class="w3-row rolesdatasection">

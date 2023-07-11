@@ -3,7 +3,7 @@
 @using RazorEngine.Text;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 <div class="w3-row w3-padding datapostsection">        
@@ -18,16 +18,16 @@
 
     <div class="w3-third w3-padding tabselect">
         <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
-            <b class="w3-large">@ResourceKey("View.page")</b>
+            <b class="w3-large">@ResourceKey("RocketTools.page")</b>
         </div>
         @TabSelectList(new SimplisityInfo(), "genxml/fromtabid", " class=' w3-input w3-border simplisity_change' s-cmd='rocketclones_getmodules' s-return='.moduledatasection' s-post='.tabselect' ", true, false, 0, "", true)
     </div>
     <div class="w3-twothird" id="updatesection">
         <div class="w3-half w3-padding">
             <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
-                <b class="w3-large">@ResourceKey("View.modules")</b>
+                <b class="w3-large">@ResourceKey("RocketTools.modules")</b>
                 <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-cmd="rocketclones_getdestination" s-return=".topagedatasection" s-fields='' s-post="#updatesection">
-                    @ResourceKey("View.next")&nbsp;
+                    @ResourceKey("RocketTools.next")&nbsp;
                     <span class="material-icons">
                         navigate_next
                     </span>
@@ -39,12 +39,12 @@
         </div>
         <div class="w3-half w3-padding">
             <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
-                <b class="w3-large">@ResourceKey("View.topage")</b>
-                <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("View.clone") ?" style="display:none;" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection">
+                <b class="w3-large">@ResourceKey("RocketTools.topage")</b>
+                <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.clone") ?" style="display:none;" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection">
                     <span class="material-icons">
                         save
                     </span>
-                    &nbsp;@ResourceKey("View.clone")
+                    &nbsp;@ResourceKey("RocketTools.clone")
                 </div>
             </div>
             <div class="w3-row topagedatasection">

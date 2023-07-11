@@ -5,7 +5,7 @@
 @using System.Linq;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 @{
@@ -20,15 +20,15 @@
 
                 <div class="w3-row">
                     <div class="w3-half w3-padding">
-                        <label>@ResourceKey("View.debugmode")</label>
+                        <label>@ResourceKey("DNNrocket.debugmode")</label>
                         @CheckBox(info, "genxml/checkbox/debugmode", "", " class='w3-check' ")
                     </div>
                     <div class="w3-half w3-padding">
-                        <div class="w3-button w3-left w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("View.validate") ?" s-cmd="rocketpl_validate" ">
+                        <div class="w3-button w3-left w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.validate") ?" s-cmd="rocketpl_validate" ">
                             <span class="material-icons">
                                 fact_check
                             </span>
-                            @ResourceKey("View.validate")
+                            @ResourceKey("RocketTools.validate")
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="rocketpl_addmenuprovider" s-return=".a-settingspopup">
                         @ButtonIcon(ButtonTypes.add)
                     </div>
-                    <span><b>@ResourceKey("View.providers")</b></span>
+                    <span><b>@ResourceKey("RocketTools.providers")</b></span>
                 </div>
 
                 <ul id="menuproviderdata" class="w3-ul">
@@ -51,11 +51,11 @@
                             <div class="w3-display-container w3-padding w3-card">
                                 <div class="w3-row">
                                     <div class="w3-quarter w3-padding">
-                                        <label>@ResourceKey("View.assembly")</label>
+                                        <label>@ResourceKey("RocketTools.assembly")</label>
                                         @TextBox(mp, "genxml/textbox/assembly", " class='w3-input w3-border' ", "", false, lp)
                                     </div>
                                     <div class="w3-half w3-padding">
-                                        <label>@ResourceKey("View.namespaceclass")</label>
+                                        <label>@ResourceKey("RocketTools.namespaceclass")</label>
                                         @TextBox(mp, "genxml/textbox/namespaceclass", " class='w3-input w3-border' ", "", false, lp)
                                     </div>
                                     <div class="w3-quarter w3-padding">
@@ -77,7 +77,7 @@
                     <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="rocketpl_addqueryparams" s-return=".a-settingspopup">
                         @ButtonIcon(ButtonTypes.add)
                     </div>
-                    <span><b>@ResourceKey("View.queryparams")</b></span>
+                    <span><b>@ResourceKey("RocketTools.queryparams")</b></span>
                 </div>
 
                 <ul id="queryparamsdata" class="w3-ul">
@@ -91,7 +91,7 @@
                             <div class="w3-display-container w3-padding w3-card">
                                 <div class="w3-row">
                                     <div class="w3-third w3-padding">
-                                        <label>@ResourceKey("View.queryparam")</label>
+                                        <label>@ResourceKey("RocketTools.queryparam")</label>
                                         @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
                                     </div>
                                     <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">

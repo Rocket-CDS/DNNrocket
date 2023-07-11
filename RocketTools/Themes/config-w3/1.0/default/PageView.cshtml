@@ -4,7 +4,7 @@
 @using RocketTools;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
@@ -20,23 +20,23 @@
 <div class="w3-row w3-padding">
 
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagename")</label>
+        <label>@ResourceKey("RocketTools.pagename")</label>
         <div class="w3-border w3-light-grey w3-padding " style="height: 40px;">@info.GetXmlProperty("genxml/textbox/pagename")</div>
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagetitle")</label>
+        <label>@ResourceKey("RocketTools.pagetitle")</label>
         <div class="w3-border w3-light-grey w3-padding" style="height:40px;">@info.GetXmlProperty("genxml/textbox/pagetitle")</div>
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagedescription")</label>
+        <label>@ResourceKey("RocketTools.pagedescription")</label>
         <div class="w3-border w3-light-grey w3-padding" style="min-height: 130px;">@BreakOf(info.GetXmlProperty("genxml/textbox/pagedescription"))</div>
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.pagetagwords")</label>
+        <label>@ResourceKey("RocketTools.pagetagwords")</label>
         <div class="w3-border w3-light-grey w3-padding" style="min-height:130px;">@BreakOf(info.GetXmlProperty("genxml/textbox/tagwords"))</div>
     </div>
     <div class="w3-row w3-padding">
-        <label>@ResourceKey("View.url")</label>
+        <label>@ResourceKey("RocketTools.url")</label>
         <div class="w3-border w3-light-grey w3-padding" style="height:40px;">@info.GetXmlProperty("genxml/textbox/pageurl")</div>
     </div>
 

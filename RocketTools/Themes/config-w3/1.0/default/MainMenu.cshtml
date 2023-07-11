@@ -3,7 +3,7 @@
 @using RazorEngine.Text;
 @using DNNrocketAPI.Components;
 
-@AddProcessData("resourcepath", "/DesktopModules/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
 
 <div class="w3-row">
@@ -15,13 +15,13 @@
 
 <div class="w3-row w3-padding">
     <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketclones_getdisplay" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
-        @ResourceKey("View.clone")
+        @ResourceKey("RocketTools.clone")
     </div>
     <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketroles_roles" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
-         @ResourceKey("View.roles")
+         @ResourceKey("RocketTools.roles")
     </div>
     <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketpl_getdisplay" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
-        @ResourceKey("View.pagelocalization")
+        @ResourceKey("RocketTools.pagelocalization")
     </div>
 </div>
 
