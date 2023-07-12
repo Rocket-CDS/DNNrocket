@@ -1,4 +1,5 @@
 ﻿using Simplisity;
+using Simplisity.TemplateEngine;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -41,6 +42,7 @@ namespace DNNrocketAPI.Components
                 PortalId = PortalUtils.GetPortalId();
             else
                 PortalId = portalid;
+            AppThemeFolderPortalMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder;
             PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             PortalFileDirectoryRel = "/" + PortalUtils.DNNrocketThemesDirectoryRel(portalid).TrimEnd('/') + "/" + projectName + "/" + AppThemeFolder + "/" + AppVersionFolder + "/";
             AssignVersionFolders();
@@ -565,14 +567,75 @@ namespace DNNrocketAPI.Components
             }
             return jsonList;
         }
-        public string ExportZipFile()
+        public string ExportZipFile(string prefix = "")
         {
             // Create zip
-            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + AppThemeFolder + ".zip";
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + AppThemeFolder + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
 
             return exportZipMapPath;
+        }
+        public void ImportZipFile(string zipFileMapPath)
+        {
+            if (File.Exists(zipFileMapPath)) // if exists, assume correct AppTheme from GitHub system project
+            {
+                string[] filesTest = System.IO.Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default");
+                if (filesTest.Length == 0)
+                {
+                    var importTemp = PortalUtils.TempDirectoryMapPath() + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
+                    if (Directory.Exists(importTemp)) Directory.Delete(importTemp, true);
+                    ZipFile.ExtractToDirectory(zipFileMapPath, importTemp);
+
+                    // copy missing files 
+                    string[] files = Directory.GetFiles(importTemp, "*.*", SearchOption.AllDirectories);
+
+                    foreach (string file in files)
+                    {
+                        FileInfo f = new FileInfo(file);
+                        var fileMapPath = f.FullName.Replace(importTemp, AppThemeFolderMapPath);
+                        if (!File.Exists(fileMapPath))
+                        {
+                            new FileInfo(fileMapPath).Directory.Create();
+                            File.Move(f.FullName, fileMapPath);
+                        }
+                    }
+                    Directory.Delete(importTemp, true);
+                }
+            }
+        }
+        public string ExportPortalZipFile(string prefix = "")
+        {
+            // Create zip
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + AppThemeFolder + "_portal.zip";
+            if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
+            ZipFile.CreateFromDirectory(AppThemeFolderPortalMapPath, exportZipMapPath);
+
+            return exportZipMapPath;
+        }
+        public void ImportPortalZipFile(string zipFileMapPath, string oldModuleRef = "", string newModuleRef = "")
+        {
+            if (File.Exists(zipFileMapPath))
+            {
+                var importTemp = PortalUtils.TempDirectoryMapPath() + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
+                if (Directory.Exists(importTemp)) Directory.Delete(importTemp, true);
+                ZipFile.ExtractToDirectory(zipFileMapPath, importTemp);
+
+                // copy missing files 
+                string[] files = Directory.GetFiles(importTemp,"*.*", SearchOption.AllDirectories);
+
+                foreach (string file in files)
+                {
+                    FileInfo f = new FileInfo(file);
+                    var fileMapPath = f.FullName.Replace(importTemp, AppThemeFolderPortalMapPath).Replace(oldModuleRef,newModuleRef);
+                    if (!File.Exists(fileMapPath))
+                    {
+                        new FileInfo(fileMapPath).Directory.Create();
+                        File.Move(f.FullName, fileMapPath);
+                    }
+                }
+                Directory.Delete(importTemp, true);
+            }
         }
 
         public void Copy(string destFolderMapPath)
@@ -740,6 +803,7 @@ namespace DNNrocketAPI.Components
         public string DepFolderRel { get; set; }
         public string DepFolderMapPath { get; set; }
         public string PortalFileDirectoryMapPath { get; set; }
+        public string AppThemeFolderPortalMapPath { get; set; }        
         public string PortalFileDirectoryRel { get; set; }
         public int PortalId { get; set; }        
         public bool Exists { get; set; }        
