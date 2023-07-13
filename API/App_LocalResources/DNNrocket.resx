@@ -945,4 +945,7 @@
   <data name="position.Text" xml:space="preserve">
     <value>Center,Top,Bottom</value>
   </data>
+  <data name="description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>
