@@ -274,7 +274,7 @@
     <value>Modifier</value>
   </data>
   <data name="email.Text" xml:space="preserve">
-    <value>Email</value>
+    <value>E-mail</value>
   </data>
   <data name="enabled.Text" xml:space="preserve">
     <value>Activé</value>
@@ -337,7 +337,7 @@
     <value>License</value>
   </data>
   <data name="licenseredirect.Help" xml:space="preserve">
-    <value> Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site</value>
+    <value> Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
   </data>
   <data name="links.Text" xml:space="preserve">
     <value>Liens</value>
@@ -499,7 +499,7 @@
     <value>Pâte</value>
   </data>
   <data name="anchor.Text" xml:space="preserve">
-    <value>Ancre</value>
+    <value>Ancrage</value>
   </data>
   <data name="url.Text" xml:space="preserve">
     <value>URL</value>
@@ -523,25 +523,25 @@
     <value>Justifier</value>
   </data>
   <data name="imageupload.Msg" xml:space="preserve">
-    <value>Utilisez le bouton de téléchargement pour sélectionner des images à partir de votre système de fichiers.</value>
+    <value>Utilisez le bouton de téléchargement pour sélectionner des images à partir de votre système de fichiers. !</value>
   </data>
   <data name="imageupload.Text" xml:space="preserve">
     <value>Chargement d'image</value>
   </data>
   <data name="articleimagelimit.Msg" xml:space="preserve">
-    <value>Le téléchargement de votre image pour cet article a été atteint.  Vous devez mettre à niveau si vous voulez ajouter plus d'images.</value>
+    <value>Le téléchargement de votre image pour cet article a été atteint.  Vous devez mettre à niveau si vous voulez ajouter plus d'images. !</value>
   </data>
   <data name="articleimagelimit.Text" xml:space="preserve">
     <value>Limite d'image</value>
   </data>
   <data name="documentlimit.Msg" xml:space="preserve">
-    <value>Le téléchargement de votre document a été atteint</value>
+    <value>Le téléchargement de votre document a été atteint. !</value>
   </data>
   <data name="documentlimit.Text" xml:space="preserve">
-    <value>Limite de document</value>
+    <value>Limite de document !</value>
   </data>
   <data name="documentupload.Msg" xml:space="preserve">
-    <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.)</value>
+    <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.) !</value>
   </data>
   <data name="documentupload.Text" xml:space="preserve">
     <value>Télécharger le document</value>
@@ -559,13 +559,13 @@
     <value>Isolé</value>
   </data>
   <data name="no.Text" xml:space="preserve">
-    <value>Non</value>
+    <value>Non!</value>
   </data>
   <data name="yes.Text" xml:space="preserve">
-    <value>Oui</value>
+    <value>Oui !</value>
   </data>
   <data name="fail.Text" xml:space="preserve">
-    <value>Échec</value>
+    <value>Échec !</value>
   </data>
   <data name="keywords.Text" xml:space="preserve">
     <value>Mots clé</value>
@@ -583,13 +583,13 @@
     <value>Effacer la température</value>
   </data>
   <data name="recycleapppool.Text" xml:space="preserve">
-    <value>Recycle AppPool</value>
+    <value>Recycle AppPool !</value>
   </data>
   <data name="emailon.Text" xml:space="preserve">
     <value>Envoyer le message</value>
   </data>
   <data name="apidomain.Text" xml:space="preserve">
-    <value>Domaine API</value>
+    <value>Domaine API !</value>
   </data>
   <data name="apiprotocol.Text" xml:space="preserve">
     <value>Protocole</value>
@@ -604,16 +604,16 @@
     <value>Administrateur du portail</value>
   </data>
   <data name="notes.Text" xml:space="preserve">
-    <value>Remarques</value>
+    <value>Remarques !</value>
   </data>
   <data name="services.Text" xml:space="preserve">
     <value>Services</value>
   </data>
   <data name="unlocked.text" xml:space="preserve">
-    <value>Déverrouillé</value>
+    <value>Déverrouillé !</value>
   </data>
   <data name="login.Text" xml:space="preserve">
-    <value>Connectez-vous</value>
+    <value>Connectez-vous!</value>
   </data>
   <data name="colortheme.Text" xml:space="preserve">
     <value>Thème de couleur</value>
@@ -631,16 +631,16 @@
     <value>Confirmer le mot de passe</value>
   </data>
   <data name="danger.Text" xml:space="preserve">
-    <value>Danger</value>
+    <value>Danger !</value>
   </data>
   <data name="warning.Text" xml:space="preserve">
-    <value>Attention</value>
+    <value>Attention!</value>
   </data>
   <data name="general.Text" xml:space="preserve">
-    <value>Général</value>
+    <value>Général !</value>
   </data>
   <data name="accessdenied.Text" xml:space="preserve">
-    <value>Accès refusé</value>
+    <value>Accès refusé !</value>
   </data>
   <data name="savesend.Text" xml:space="preserve">
     <value>Enregistrer et envoyer</value>
@@ -652,7 +652,7 @@
     <value>Nom de données</value>
   </data>
   <data name="manager.Text" xml:space="preserve">
-    <value>Directeur</value>
+    <value>Directeur !</value>
   </data>
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
@@ -664,7 +664,7 @@
     <value>Avancé</value>
   </data>
   <data name="suonly.Text" xml:space="preserve">
-    <value>REMARQUE : Pour la sécurité, seul le SuperUser peut mettre à jour.</value>
+    <value>REMARQUE : Pour la sécurité, seul le SuperUser peut mettre à jour. !</value>
   </data>
   <data name="map.Text" xml:space="preserve">
     <value>Carte</value>
@@ -676,13 +676,13 @@
     <value>Clef de sécurité</value>
   </data>
   <data name="imageresize.Text" xml:space="preserve">
-    <value>Chargement de l'image</value>
+    <value>Redimensionner l'image</value>
   </data>
   <data name="invalidcatalog.Text" xml:space="preserve">
-    <value>Catalogue invalide</value>
+    <value>Catalogue invalide !</value>
   </data>
   <data name="cds.Text" xml:space="preserve">
-    <value>CDS</value>
+    <value>CDS !</value>
   </data>
   <data name="website.Text" xml:space="preserve">
     <value>Site internet</value>
@@ -691,7 +691,7 @@
     <value>Service de données</value>
   </data>
   <data name="disabled.Text" xml:space="preserve">
-    <value>Désactivé</value>
+    <value>Désactivé !</value>
   </data>
   <data name="tools.Text" xml:space="preserve">
     <value>Outils</value>
@@ -727,10 +727,10 @@
     <value>Région</value>
   </data>
   <data name="loading.Text" xml:space="preserve">
-    <value>Chargement</value>
+    <value>Chargement !</value>
   </data>
   <data name="imagelimit.Msg" xml:space="preserve">
-    <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires</value>
+    <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires. !</value>
   </data>
   <data name="imagelimit.Text" xml:space="preserve">
     <value>Limite d'image</value>
@@ -771,65 +771,14 @@
   <data name="translation.Text" xml:space="preserve">
     <value>Traduction</value>
   </data>
-  <data name="moduletitle.Text" xml:space="preserve">
-    <value>En-tête</value>
+  <data name="category.Text" xml:space="preserve">
+    <value>Catégorie</value>
   </data>
-  <data name="headingstyle.Text" xml:space="preserve">
-    <value>Style</value>
+  <data name="companyName.Text" xml:space="preserve">
+    <value>Nom de l'entreprise</value>
   </data>
-  <data name="headingalign.Text" xml:space="preserve">
-    <value>Alignement</value>
-  </data>
-  <data name="heading.Text" xml:space="preserve">
-    <value>Titre</value>
-  </data>
-  <data name="hideheading.Text" xml:space="preserve">
-    <value>Masquer le titre</value>
-  </data>
-  <data name="linktitle.Text" xml:space="preserve">
-    <value>Texte du lien</value>
-  </data>
-  <data name="linkrbl.Text" xml:space="preserve">
-    <value>Aucun,Lien interne,Lien externe</value>
-  </data>
-  <data name="link.Text" xml:space="preserve">
-    <value>Lien</value>
-  </data>
-  <data name="cssClass.Text" xml:space="preserve">
-    <value>Classe CSS</value>
-  </data>
-  <data name="hiderow.Text" xml:space="preserve">
-    <value>Masquer l'entrée</value>
-  </data>
-  <data name="thumbnailwidth.Text" xml:space="preserve">
-    <value>Largeur de la vignette</value>
-  </data>
-  <data name="thumbnailheight.Text" xml:space="preserve">
-    <value>Hauteur de la vignette</value>
-  </data>
-  <data name="columns.Text" xml:space="preserve">
-    <value>Colonnes</value>
-  </data>
-  <data name="columnsddl.Text" xml:space="preserve">
-    <value>,2 colonnes,3 colonnes,4 colonnes,5 colonnes,Multi-colonnes</value>
-  </data>
-  <data name="openfancy.Text" xml:space="preserve">
-    <value>Mode popup</value>
-  </data>
-  <data name="imagealt.Text" xml:space="preserve">
-    <value>Description (alt)</value>
-  </data>
-  <data name="forcedownload.Text" xml:space="preserve">
-    <value>Forcer le téléchargement</value>
-  </data>
-  <data name="newspaperlinkrbl.Text" xml:space="preserve">
-    <value>Page du site,URL</value>
-  </data>
-  <data name="manuallink.Text" xml:space="preserve">
-    <value>URL</value>
-  </data>
-  <data name="titleResume.Text" xml:space="preserve">
-    <value>Titre &amp; Résumé</value>
+  <data name="question.Text" xml:space="preserve">
+    <value>Question</value>
   </data>
   <data name="adress.Text" xml:space="preserve">
     <value>Adresse</value>
@@ -838,7 +787,7 @@
     <value>Réponse</value>
   </data>
   <data name="articleTitle.Text" xml:space="preserve">
-    <value>Titre de l'article</value>
+    <value>Titre de l'actualité</value>
   </data>
   <data name="auteur.Text" xml:space="preserve">
     <value>Auteur</value>
@@ -846,26 +795,56 @@
   <data name="backgroundimage.Text" xml:space="preserve">
     <value>Image de fond</value>
   </data>
-  <data name="category.Text" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
   <data name="citation.Text" xml:space="preserve">
     <value>Citation</value>
   </data>
   <data name="codegooglemap.Text" xml:space="preserve">
-    <value>Code d'affichage de Google Maps</value>
+    <value>Iframe Google Map</value>
   </data>
-  <data name="companyName.Text" xml:space="preserve">
-    <value>Nom de l'entreprise</value>
+  <data name="contact1.Text" xml:space="preserve">
+    <value>Contact 1</value>
   </data>
-  <data name="contact.Text" xml:space="preserve">
-    <value>Contact</value>
+  <data name="contact2.Text" xml:space="preserve">
+    <value>Contact 2</value>
+  </data>
+  <data name="contactname1.Text" xml:space="preserve">
+    <value>Nom du contact 1</value>
+  </data>
+  <data name="contactname2.Text" xml:space="preserve">
+    <value>Nom du contact 2</value>
+  </data>
+  <data name="cssClass.Text" xml:space="preserve">
+    <value>Classe CSS</value>
+  </data>
+  <data name="email1.Text" xml:space="preserve">
+    <value>Conctact1 email</value>
+  </data>
+  <data name="email2.Text" xml:space="preserve">
+    <value>Contact 2 email</value>
   </data>
   <data name="extraInfo.Text" xml:space="preserve">
-    <value>Informations supplémentaires</value>
+    <value>Plus d'infos</value>
   </data>
   <data name="fax.Text" xml:space="preserve">
     <value>Fax</value>
+  </data>
+  <data name="heading.Text" xml:space="preserve">
+    <value>Rubrique</value>
+  </data>
+  <data name="headingalign.Text" xml:space="preserve">
+    <value>Alignement des titres</value>
+  </data>
+  <data name="headingstyle.Text" xml:space="preserve">
+    <value>Style d'en-tête</value>
+  </data>
+  <data name="hideHeading.Text" xml:space="preserve">
+    <value>Cacher le titre</value>
+  </data>
+  <data name="hiderow.Text" xml:space="preserve">
+    <value>Cacher la rangée</value>
+  </data>
+  <data name="hideRow.Text1" xml:space="preserve">
+    <value>Cacher la rangée</value>
   </data>
   <data name="linktype.Text" xml:space="preserve">
     <value>Type de lien</value>
@@ -873,14 +852,23 @@
   <data name="longitude.Text" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="manuallink.Text" xml:space="preserve">
+    <value>Lien manuel</value>
+  </data>
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
-  <data name="mobile.Text" xml:space="preserve">
-    <value>Mobile</value>
+  <data name="mobile1.Text" xml:space="preserve">
+    <value>Contact 1 mobile</value>
   </data>
-  <data name="question.Text" xml:space="preserve">
-    <value>Question</value>
+  <data name="mobile2.Text" xml:space="preserve">
+    <value>Contact 2 mobile</value>
+  </data>
+  <data name="moduletitle.Text" xml:space="preserve">
+    <value>Titre du module</value>
+  </data>
+  <data name="openfancy.Text" xml:space="preserve">
+    <value>Ouvrir dans FancyBox</value>
   </data>
   <data name="redirectlink.Text" xml:space="preserve">
     <value>Lien de redirection</value>
@@ -892,10 +880,10 @@
     <value>Code SVG</value>
   </data>
   <data name="synopsis.Text" xml:space="preserve">
-    <value>Résumé de l'article</value>
+    <value>Synopsis de l'actualité</value>
   </data>
   <data name="tel1.Text" xml:space="preserve">
-    <value>Tél</value>
+    <value>Tél. 1</value>
   </data>
   <data name="tel2.Text" xml:space="preserve">
     <value>Tél. 2</value>
@@ -907,36 +895,45 @@
     <value>Titre 2</value>
   </data>
   <data name="titleline1.Text" xml:space="preserve">
-    <value>Titre ligne 1</value>
+    <value>Ligne de titre 1</value>
   </data>
   <data name="titleline2.Text" xml:space="preserve">
-    <value>Titre ligne 2</value>
+    <value>Titre 2</value>
+  </data>
+  <data name="titleResume.Text" xml:space="preserve">
+    <value>Titre et synopsis</value>
   </data>
   <data name="video.Text" xml:space="preserve">
     <value>Vidéo</value>
   </data>
   <data name="videoCode.Text" xml:space="preserve">
-    <value>Code affichage de la vidéo Youtube</value>
+    <value>Vidéo youtube Iframe</value>
   </data>
-  <data name="detailPage.Text" xml:space="preserve">
-    <value>Page détail de l'article</value>
+  <data name="link.Text" xml:space="preserve">
+    <value>Lien</value>
   </data>
-  <data name="listPage.Text" xml:space="preserve">
-    <value>Page de liste des articles</value>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>Aucun, Interne, Manuel</value>
   </data>
-  <data name="zoom.Text" xml:space="preserve">
-    <value>Zoom</value>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Titre du lien</value>
   </data>
-  <data name="mapWidth.Text" xml:space="preserve">
-    <value>Largeur de la carte</value>
+  <data name="flexlinkrbl.Text" xml:space="preserve">
+    <value>Lien interne, Lien manuel</value>
   </data>
-  <data name="mapHeight.Text" xml:space="preserve">
-    <value>Hauteur de la carte</value>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>1,2,3,4,5,Multi</value>
   </data>
-  <data name="latitude.Text" xml:space="preserve">
-    <value>Latitude</value>
+  <data name="hr.Text" xml:space="preserve">
+    <value>Ligne de séparation</value>
   </data>
-  <data name="limit.Text" xml:space="preserve">
-    <value>Limite</value>
+  <data name="mask.Text" xml:space="preserve">
+    <value>Ajouter un masque</value>
+  </data>
+  <data name="crop.Text" xml:space="preserve">
+    <value>Rogner depuis </value>
+  </data>
+  <data name="position.Text" xml:space="preserve">
+    <value>Centre,Haut,Bas</value>
   </data>
 </root>
