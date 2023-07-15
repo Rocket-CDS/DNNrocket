@@ -567,23 +567,23 @@ namespace DNNrocketAPI.Components
             }
             return jsonList;
         }
-        public string ExportZipFile(string prefix = "")
+        public string ExportZipFile(int portalId, string prefix = "")
         {
             // Create zip
-            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + AppThemeFolder + ".zip";
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + AppThemeFolder + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
 
             return exportZipMapPath;
         }
-        public void ImportZipFile(string zipFileMapPath)
+        public void ImportZipFile(int portalId, string zipFileMapPath)
         {
             if (File.Exists(zipFileMapPath)) // if exists, assume correct AppTheme from GitHub system project
             {
                 string[] filesTest = System.IO.Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default");
                 if (filesTest.Length == 0)
                 {
-                    var importTemp = PortalUtils.TempDirectoryMapPath() + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
+                    var importTemp = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
                     if (Directory.Exists(importTemp)) Directory.Delete(importTemp, true);
                     ZipFile.ExtractToDirectory(zipFileMapPath, importTemp);
 
@@ -604,20 +604,20 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
-        public string ExportPortalZipFile(string prefix = "")
+        public string ExportPortalZipFile(int portalId, string prefix = "")
         {
             // Create zip
-            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + AppThemeFolder + "_portal.zip";
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + AppThemeFolder + "_portal.zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(AppThemeFolderPortalMapPath, exportZipMapPath);
 
             return exportZipMapPath;
         }
-        public void ImportPortalZipFile(string zipFileMapPath, string oldModuleRef = "", string newModuleRef = "")
+        public void ImportPortalZipFile(int portalId, string zipFileMapPath, string oldModuleRef = "", string newModuleRef = "")
         {
             if (File.Exists(zipFileMapPath))
             {
-                var importTemp = PortalUtils.TempDirectoryMapPath() + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
+                var importTemp = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + Path.GetFileNameWithoutExtension(zipFileMapPath);
                 if (Directory.Exists(importTemp)) Directory.Delete(importTemp, true);
                 ZipFile.ExtractToDirectory(zipFileMapPath, importTemp);
 

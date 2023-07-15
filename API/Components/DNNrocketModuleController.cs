@@ -68,8 +68,17 @@ namespace DNNrocketAPI.Components
                                 var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
                                 paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
 
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
-                                if (returnDictionary.ContainsKey("outputhtml")) xmlOut += returnDictionary["outputhtml"];
+                                LogUtils.LogSystem("START EXPORT: " + rocketInterface.DefaultCommand + " moduleId: " + ModuleId);
+                                try
+                                {
+                                    var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                    if (returnDictionary.ContainsKey("outputhtml")) xmlOut += returnDictionary["outputhtml"];
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogUtils.LogException(ex);
+                                }
+                                LogUtils.LogSystem("END EXPORT: " + rocketInterface.DefaultCommand + " moduleId: " + ModuleId);
                             }
                         }
                     }
@@ -95,41 +104,57 @@ namespace DNNrocketAPI.Components
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
             var objModCtrl = new ModuleController();
-
-            var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
-            if (objModInfo != null)
+            if (content.StartsWith("<") && content.EndsWith(">"))
             {
-                var postInfo = new SimplisityInfo();
-                postInfo.XMLData = content;
-
-                var portalId = objModInfo.PortalID;
-                var systemKey = postInfo.GetXmlProperty("export/systemkey");
-                var databasetable = postInfo.GetXmlProperty("export/databasetable");
-
-                var systemData = SystemSingleton.Instance(systemKey);
-                if (systemData.Exists)
+                var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
+                if (objModInfo != null)
                 {
-                    foreach (var rocketInterface in systemData.ProviderList)
+                    var postInfo = new SimplisityInfo();
+                    postInfo.XMLData = content;
+
+                    var portalId = objModInfo.PortalID;
+                    var systemKey = postInfo.GetXmlProperty("export/systemkey");
+                    var databasetable = postInfo.GetXmlProperty("export/databasetable");
+
+                    var systemData = SystemSingleton.Instance(systemKey);
+                    if (systemData.Exists)
                     {
-                        if (rocketInterface.IsProvider("importmodule"))
+                        foreach (var rocketInterface in systemData.ProviderList)
                         {
-                            if (rocketInterface.Exists)
+                            if (rocketInterface.IsProvider("importmodule"))
                             {
-                                var paramInfo = new SimplisityInfo();
-                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
-                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);
-                                systemData.SystemInfo.PortalId = portalId;  // import run on shcheduler,
+                                if (rocketInterface.Exists)
+                                {
+                                    var paramInfo = new SimplisityInfo();
+                                    paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
+                                    paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+                                    paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);
+                                    systemData.SystemInfo.PortalId = portalId;  // import run on shcheduler,
 
-                                var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
-                                paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
+                                    var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
+                                    paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
 
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                    LogUtils.LogSystem("START IMPORT: " + rocketInterface.DefaultCommand + " moduleId: " + moduleId);
+                                    try
+                                    {
+                                        var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogUtils.LogException(ex);
+                                    }
+                                    LogUtils.LogSystem("END IMPORT: " + rocketInterface.DefaultCommand + " moduleId: " + moduleId);
+                                }
                             }
                         }
                     }
                 }
             }
+            else
+            {
+                LogUtils.LogSystem("IMPORT: Invalid content: " + content);
+            }
+
         }
 
         #endregion

@@ -909,4 +909,34 @@
   <data name="videoCode.Text" xml:space="preserve">
     <value>Vidéo youtube Iframe</value>
   </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Lien</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>Aucun, Interne, Manuel</value>
+  </data>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Titre du lien</value>
+  </data>
+  <data name="flexlinkrbl.Text" xml:space="preserve">
+    <value>Lien interne, Lien manuel</value>
+  </data>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>1,2,3,4,5,Multi</value>
+  </data>
+  <data name="hr.Text" xml:space="preserve">
+    <value>Ligne de séparation</value>
+  </data>
+  <data name="mask.Text" xml:space="preserve">
+    <value>Ajouter un masque</value>
+  </data>
+  <data name="crop.Text" xml:space="preserve">
+    <value>Rogner depuis </value>
+  </data>
+  <data name="position.Text" xml:space="preserve">
+    <value>Centre,Haut,Bas</value>
+  </data>
+  <data name="description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

@@ -912,10 +912,40 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
-  <data name="editor.Text" xml:space="preserve">
+  <data name="editor.Text_Duplicate[1]" xml:space="preserve">
     <value>Editor</value>
   </data>
   <data name="processing.Text" xml:space="preserve">
     <value>Processing</value>  
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="linkrbl.Text" xml:space="preserve">
+    <value>None, Internal, Manual</value>
+  </data>
+  <data name="linktitle.Text" xml:space="preserve">
+    <value>Link title</value>
+  </data>
+  <data name="flexlinkrbl.Text" xml:space="preserve">
+    <value>Internal, Manual</value>
+  </data>
+  <data name="columnsddl.Text" xml:space="preserve">
+    <value>1,2,3,4,5,Multi</value>
+  </data>
+  <data name="hr.Text" xml:space="preserve">
+    <value>Separation line</value>
+  </data>
+  <data name="mask.Text" xml:space="preserve">
+    <value>Add Mask</value>
+  </data>
+  <data name="crop.Text" xml:space="preserve">
+    <value>Crop from</value>
+  </data>
+  <data name="position.Text" xml:space="preserve">
+    <value>Center,Top,Bottom</value>
+  </data>
+  <data name="description.Text" xml:space="preserve">
+    <value>Description</value>
   </data>
 </root>
