@@ -506,7 +506,7 @@ namespace DNNrocket.AppThemes
             if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
             var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder, _projectName);
 
-            var exportZipMapPath = appTheme.ExportZipFile();
+            var exportZipMapPath = appTheme.ExportZipFile(_portalData.PortalId);
 
             var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("filenamepath", exportZipMapPath);

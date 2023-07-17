@@ -572,7 +572,7 @@ namespace DNNrocketAPI.Components
             // Create zip
             var exportZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + AppThemeFolder + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
-            ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
+            if (Directory.Exists(AppThemeFolderMapPath)) ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
 
             return exportZipMapPath;
         }
@@ -609,7 +609,7 @@ namespace DNNrocketAPI.Components
             // Create zip
             var exportZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + AppThemeFolder + "_portal.zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
-            ZipFile.CreateFromDirectory(AppThemeFolderPortalMapPath, exportZipMapPath);
+            if (Directory.Exists(AppThemeFolderPortalMapPath)) ZipFile.CreateFromDirectory(AppThemeFolderPortalMapPath, exportZipMapPath);
 
             return exportZipMapPath;
         }
