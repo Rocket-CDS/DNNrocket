@@ -12,6 +12,7 @@
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var appThemeTools = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
     var pageData = (PageRecordData)Model.GetDataObject("pagedata");
     var disableedit = "";
     if (!info.GetXmlPropertyBool("genxml/checkbox/editpageurl"))
@@ -20,7 +21,7 @@
     }
 }
 
-@RenderTemplate("LanguageEdit.cshtml", systemAppTheme, Model, true)
+@RenderTemplate("LanguageEdit.cshtml", appThemeTools, Model, true)
 
 <div class="w3-row w3-padding">
 

@@ -9,10 +9,11 @@
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var appThemeTools = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
     var pageData = (PageRecordData)Model.GetDataObject("pagedata");
 }
 
-@RenderTemplate("LanguageView.cshtml", systemAppTheme, Model, true)
+@RenderTemplate("LanguageView.cshtml", appThemeTools, Model, true)
 
 @if (pageData != null)
 {
