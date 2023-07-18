@@ -63,6 +63,10 @@
 
         simplisity_setSessionField('pageref', CreateGuid());
 
+        $("#fromtabid").on("change", function () {
+            $("#fromtabid").prop("disabled", true);
+        } );
+        
     });
 
     function CreateGuid() {
