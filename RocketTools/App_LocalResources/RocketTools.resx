@@ -132,6 +132,9 @@
   <data name="applyroles.Text" xml:space="preserve">
     <value>Apply EDIT permissions to Roles </value>
   </data>
+  <data name="assembly.Text" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
   <data name="clone.Confirm" xml:space="preserve">
     <value>Clone the selected module to ALL the selected pages?</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="providers.Text" xml:space="preserve">
     <value>Extra Providers List  (Assembly,Namespace.Class)</value>
+  </data>
+  <data name="queryparam.Text" xml:space="preserve">
+    <value>URL parameter key</value>
   </data>
   <data name="queryparams.Text" xml:space="preserve">
     <value>Query Params for article ID</value>
