@@ -47,6 +47,7 @@ namespace DNNrocketAPI.Components
             if (objModInfo != null)
             {
                 var portalId = objModInfo.PortalID;
+                var tabId = objModInfo.TabID;
                 var moduleRef = objModInfo.PortalID + "_ModuleID_" + ModuleId;
                 var moduleSettings = new ModuleBase(objModInfo.PortalID, moduleRef, ModuleId, objModInfo.TabID); ;
                 var systemData = SystemSingleton.Instance(moduleSettings.SystemKey);
@@ -60,6 +61,7 @@ namespace DNNrocketAPI.Components
                             {
                                 var postInfo = new SimplisityInfo();
                                 var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/tabid", tabId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
@@ -113,6 +115,7 @@ namespace DNNrocketAPI.Components
                     postInfo.XMLData = content;
 
                     var portalId = objModInfo.PortalID;
+                    var tabId = objModInfo.TabID;
                     var systemKey = postInfo.GetXmlProperty("export/systemkey");
                     var databasetable = postInfo.GetXmlProperty("export/databasetable");
 
@@ -126,6 +129,7 @@ namespace DNNrocketAPI.Components
                                 if (rocketInterface.Exists)
                                 {
                                     var paramInfo = new SimplisityInfo();
+                                    paramInfo.SetXmlProperty("genxml/hidden/tabid", tabId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);

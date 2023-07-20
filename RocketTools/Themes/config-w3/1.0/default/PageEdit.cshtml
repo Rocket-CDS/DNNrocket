@@ -10,10 +10,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 
 @{
-    var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
     var appThemeTools = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
-    var pageData = (PageRecordData)Model.GetDataObject("pagedata");
+    var info = (SimplisityInfo)Model.GetDataObject("info2");
+    var pageData = (PageRecordData)Model.GetDataObject("pagedata2");
     var disableedit = "";
     if (!info.GetXmlPropertyBool("genxml/checkbox/editpageurl"))
     {
@@ -68,7 +68,7 @@
         @foreach (TabUrlInfo t in tList.OrderBy(o => o.CultureCode).ToList())
         {
             <tr>
-                <th class="simplisity_confirmclick" s-confirm="Delete ?" s-cmd="rocketpl_taburldelete" s-fields='{"tabid":"@t.TabId","seqnum":"@t.SeqNum"}' style="cursor:pointer;width:24px;">
+                <th class="simplisity_confirmclick" s-confirm="Delete ?" s-cmd="rocketpl_taburldelete" s-return="#toolsmodalcontainer" s-fields='{"tabid":"@t.TabId","seqnum":"@t.SeqNum"}' style="cursor:pointer;width:24px;">
                     <span class="material-icons">
                         delete_forever
                     </span>
@@ -79,6 +79,8 @@
             </tr>
         }
     </table>
+
+    @RenderXml(info)
 
 </div>
 

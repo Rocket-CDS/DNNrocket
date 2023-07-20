@@ -37,7 +37,7 @@ namespace RocketTools.API
         {
             var tabid = _postInfo.GetXmlPropertyInt("genxml/selectedtabid");
             var pageData = new PageRecordData(_portalId, Convert.ToInt32(tabid));
-            _dataObjects.Add("pagedata", pageData);
+            _dataObjects.Add("pagedata1", pageData);
             var selectedCulture = _paramInfo.GetXmlProperty("genxml/hidden/culturecode1");
             if (selectedCulture == "")
             {
@@ -57,13 +57,17 @@ namespace RocketTools.API
             var razorTempl = _appThemeTools.GetTemplate("pageview.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
-            return pr.RenderedText;
+ 
+            var rtnview = "<div class=\"w3-half w3-padding pagedataview\">" + pr.RenderedText + "</div>";
+            var rtnedit = "<div class=\"w3-half w3-padding pagedataedit\">" + PageEdit() + "</div>";
+
+            return rtnview + rtnedit;
         }
         public string PageEdit()
         {
             var tabid = _postInfo.GetXmlPropertyInt("genxml/selectedtabid");
             var pageData = new PageRecordData(_portalId, Convert.ToInt32(tabid));
-            _dataObjects.Add("pagedata", pageData);
+            _dataObjects.Add("pagedata2", pageData);
             var selectedCulture = _paramInfo.GetXmlProperty("genxml/hidden/culturecode2");
             if (selectedCulture == "")
             {
@@ -80,8 +84,9 @@ namespace RocketTools.API
                 info.SetXmlProperty("genxml/textbox/pagedescription", pageData.Description);
                 info.SetXmlProperty("genxml/textbox/pageurl", pageData.Url);
             }
+            _dataObjects.Add("info2", new SimplisityInfo(info));
             var razorTempl = _appThemeTools.GetTemplate("pageedit.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, null, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -119,8 +124,10 @@ namespace RocketTools.API
             // Update Meta data for DNN Tab DB, if the meta is empty DNN will not render the meta data.
             var controller = new TabController();
             var newTab = controller.GetTab(tabD.TabId, _portalId);
-            if (newTab.Description == "") newTab.Description = ".";
-            if (newTab.KeyWords == "") newTab.KeyWords = ".";
+            if (newTab.Description == "") newTab.Description = newTab.Title;
+            if (newTab.KeyWords == "") newTab.KeyWords = newTab.Title;
+            if (newTab.Description == "") newTab.Description = "_";
+            if (newTab.KeyWords == "") newTab.KeyWords = "_";
             controller.UpdateTab(newTab);
 
             SaveTabUrls(tabD);

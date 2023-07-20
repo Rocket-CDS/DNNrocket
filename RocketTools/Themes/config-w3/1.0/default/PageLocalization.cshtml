@@ -13,8 +13,7 @@
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
 }
 
-<div class="w3-hide rocketplpageview simplisity_click" s-cmd="rocketpl_pageview" s-post=".datapostsection" s-return=".pagedataview" s-showloader="true"></div>
-<div class="w3-hide rocketplpageedit simplisity_click" s-cmd="rocketpl_pageedit" s-post=".datapostsection" s-return=".pagedataedit" s-showloader="true"></div>
+<div class="w3-hide rocketplpage simplisity_click" s-cmd="rocketpl_page" s-post=".datapostsection" s-return=".pagedata" s-showloader="true"></div>
 
 <div id="pagedatasection">
 
@@ -43,16 +42,11 @@
 
     <div id="savereturn" class="w3-hide"></div>
 
-    <div class="w3-row">
-        <div class="w3-half w3-padding pagedataview">
-        </div>
-        <div class="w3-half w3-padding pagedataedit">
-        </div>
+    <div class="w3-row pagedata">
+        @ResourceKey("DNNrocket.processing").....
     </div>
 
 </div>
-
-@RenderXml(info)
 
 <div id="id01" class="w3-modal" >
     <div class="w3-modal-content  a-settingspopup" style="width:60%;">
@@ -65,15 +59,13 @@
     $(document).ready(function () {
 
         $("#selectedtabid").on("change", function () {
-            $('.rocketplpageview').trigger("click");
-            $('.rocketplpageedit').trigger("click");
+            $('.rocketplpage').trigger("click");
         });
         reloadpagedata();
     });
 
     function reloadpagedata() {
-        $('.rocketplpageview').trigger("click");
-        $('.rocketplpageedit').trigger("click");
+        $('.rocketplpage').trigger("click");
     }
 </script>
 

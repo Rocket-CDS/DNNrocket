@@ -38,6 +38,48 @@ namespace RocketTools
     {
         private int _portalId;
         private string _cultureCode;
+        private string _metatitle = "";
+        private string _metadescription = "";
+        private string _metatagwords = "";
+        private bool _disablealternate = false;
+        private bool _disablecanonical = false;
+
+        protected override void OnLoad(EventArgs e)
+        {
+            try
+            {
+                _portalId = PortalUtils.GetCurrentPortalId();
+                _cultureCode = DNNrocketUtils.GetCurrentCulture();
+
+                var cacheKey = "PL_" + _cultureCode + "_" + PortalSettings.ActiveTab.TabID.ToString("");
+                var dataRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey, _portalId.ToString());
+                if (dataRecord == null)
+                {
+                    var objCtrl = new DNNrocketController();
+                    dataRecord = objCtrl.GetRecordByGuidKey(PortalSettings.Current.PortalId, -1, "PL", cacheKey);
+                }
+                if (dataRecord != null)
+                {
+                    CDefault tp = (CDefault)this.Page;
+                    if (dataRecord.GetXmlProperty("genxml/textbox/pagetitle") != "")
+                        _metatitle = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
+                    tp.Title = _metatitle;
+                    if (dataRecord.GetXmlProperty("genxml/textbox/pagedescription") != "")
+                        _metadescription = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
+                    if (dataRecord.GetXmlProperty("genxml/textbox/tagwords") != "")
+                        _metatagwords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
+
+                    _disablealternate = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablealternate");
+                    _disablecanonical = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablecanonical");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+
+        }
+
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -47,44 +89,26 @@ namespace RocketTools
                 _cultureCode = DNNrocketUtils.GetCurrentCulture();
 
                 DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;
-                var objCtrl = new DNNrocketController();
-                var disablealternate = false;
-                var disablecanonical = false;
-                var dataRecord = objCtrl.GetRecordByGuidKey(PortalSettings.Current.PortalId, -1, "PL", "PL_" + _cultureCode + "_" + PortalSettings.ActiveTab.TabID.ToString(""));
-                if (dataRecord != null)
-                {
-                    if (dataRecord.GetXmlProperty("genxml/textbox/pagetitle") != "")
-                    {
-                        tp.Title = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
-                    }
-                    if (dataRecord.GetXmlProperty("genxml/textbox/pagedescription") != "")
-                    {
-                        tp.MetaDescription = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
-                        tp.Header.Description = tp.MetaDescription;
-                    }
-                    if (dataRecord.GetXmlProperty("genxml/textbox/tagwords") != "")
-                    {
-                        tp.MetaKeywords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
-                        tp.Header.Keywords = tp.MetaKeywords;
-                    }
-                    disablealternate = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablealternate");
-                    disablecanonical = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablecanonical");
-                }
-                var settingRecord = (SimplisityRecord)CacheUtils.GetCache("PLSETTINGS" + _portalId, _portalId.ToString());
-                if (settingRecord == null)
-                {
-                    settingRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
-                    CacheUtils.SetCache("PLSETTINGS" + _portalId, settingRecord, _portalId.ToString());
-                }
+
+                tp.Description = _metadescription;
+                tp.MetaDescription = _metadescription;
+                tp.Header.Description = _metadescription;
+
+                tp.KeyWords = _metatagwords;
+                tp.MetaKeywords = _metatagwords;
+                tp.Header.Keywords = _metatagwords;
 
                 // ********** Add alt url meta for langauges ***********
                 var cachekey = "RocketTools*hreflang*" + PortalSettings.Current.PortalId + "*" + _cultureCode + "*" + PortalSettings.ActiveTab.TabID; // use nodeTablist incase the DDRMenu has a selector.
-                var canonicalurl = "";
+                var canonicalurl = (string)CacheUtils.GetCache(cachekey + "2", _portalId.ToString()); ;
+                var hreflangobj = CacheUtils.GetCache(cachekey, _portalId.ToString());
+
+                if (canonicalurl == null) canonicalurl = "";
                 var hreflangtext = "";
-                var hreflangobj = CacheUtils.GetCache(cachekey);
                 if (hreflangobj != null) hreflangtext = hreflangobj.ToString();
-                if (hreflangtext == "" || true)
+                if (hreflangobj == null)
                 {
+                    var objCtrl = new DNNrocketController();
                     hreflangtext = "";  // clear so we don't produce multiple hreflang with cache.
                     var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
                     foreach (var l in enabledlanguages)
@@ -97,15 +121,16 @@ namespace RocketTools
                             hreflangtext += "<link rel='alternate' href='" + Server.HtmlEncode(Request.Url.Scheme) + "://" + portalalias + pagename + "' hreflang='" + l.Key.ToLower() + "'/>";
                             if (_cultureCode == l.Key)
                             {
-                                canonicalurl = Server.HtmlEncode(Request.Url.Scheme) + "://" + portalalias + pagename;                                
+                                canonicalurl = Server.HtmlEncode(Request.Url.Scheme) + "://" + portalalias + pagename;
                                 //canonicalurltext = "<link rel='canonical' href='" + "/" + portalalias + pagename + "'/>";
                             }
                         }
                     }
-                    CacheUtils.SetCache(cachekey, hreflangtext);
+                    CacheUtils.SetCache(cachekey, hreflangtext, _portalId.ToString());
+                    CacheUtils.SetCache(cachekey + "2", canonicalurl, _portalId.ToString());
                 }
-                if (!String.IsNullOrEmpty(hreflangtext) && !disablealternate) tp.Header.Controls.Add(new LiteralControl(hreflangtext));
-                if (!String.IsNullOrEmpty(canonicalurl) && !disablecanonical) tp.CanonicalLinkUrl = canonicalurl;
+                if (!String.IsNullOrEmpty(hreflangtext) && !_disablealternate) tp.Header.Controls.Add(new LiteralControl(hreflangtext));
+                if (!String.IsNullOrEmpty(canonicalurl) && !_disablecanonical) tp.CanonicalLinkUrl = canonicalurl;
             }
             catch (Exception ex)
             {

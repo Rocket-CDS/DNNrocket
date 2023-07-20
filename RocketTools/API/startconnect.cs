@@ -95,11 +95,8 @@ namespace RocketTools.API
                     case "rocketpl_getdisplay":
                         strOut = PLDetail();
                         break;
-                    case "rocketpl_pageview":
+                    case "rocketpl_page":
                         strOut = PageView();
-                        break;
-                    case "rocketpl_pageedit":
-                        strOut = PageEdit();
                         break;
                     case "rocketpl_pagesave":
                         strOut = PageSave();
