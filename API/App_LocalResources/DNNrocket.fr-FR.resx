@@ -939,4 +939,10 @@
   <data name="description.Text" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="latitude.Text" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="help.Text" xml:space="preserve">
+    <value>Aide</value>
+  </data>
 </root>
