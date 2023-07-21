@@ -97,7 +97,7 @@ namespace DNNrocketAPI.Components
             AppTheme = (AppThemeLimpet)CacheUtils.GetCache(appThemeCacheKey);
             if (AppTheme == null || AppTheme.AppThemeFolder != appthemefolder)
             {
-                var systemData = new SystemLimpet(SystemKey);
+                var systemData = SystemSingleton.Instance(SystemKey);
                 AppTheme = new AppThemeLimpet(_portalid, systemData, appthemefolder);
                 CacheUtils.SetCache(appThemeCacheKey, AppTheme);
             }
