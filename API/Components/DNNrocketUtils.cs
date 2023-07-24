@@ -1642,6 +1642,10 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId, false, null, "", cultureCode, param).ToString();
         }
+        public static string NavigateURL(int tabId, string controlKey, string cultureCode, string[] param)
+        {
+            return Globals.NavigateURL(tabId, false, null, controlKey, cultureCode, param).ToString();
+        }
         public static string UrlFriendly(string textstring)
         {
             return GeneralUtils.UrlFriendly(textstring);

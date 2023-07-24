@@ -143,6 +143,10 @@ namespace DNNrocketAPI.render
             }
             return strOut;
         }
+        public IEncodedString RenderLanguageSelector(string scmd, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
+        {
+            return RenderLanguageSelector(scmd, new Dictionary<string, string>(), appThemeSystem, model);
+        }
 
         public IEncodedString RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {

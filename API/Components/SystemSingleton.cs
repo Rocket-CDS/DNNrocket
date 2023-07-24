@@ -18,18 +18,39 @@ namespace DNNrocketAPI.Components
         private static object _lock = new object();
         public static SystemLimpet Instance(string systemKey)
         {
+            return Instance(systemKey, systemKey);
+        }
+        public static SystemLimpet Instance(string systemKey, string baseSystemKey)
+        {
             lock (_lock)
             {
+                if (baseSystemKey == "") baseSystemKey = systemKey;
                 if ((_instances == null))
                 {
                     _instances = new Dictionary<string, SystemLimpet>();
                 }
-                if (!_instances.ContainsKey(systemKey))
+                if (!_instances.ContainsKey(systemKey + baseSystemKey))
                 {
-                    _instances.Add(systemKey, new SystemLimpet(systemKey));
+                    var systemData = new SystemLimpet(systemKey);
+                    if (baseSystemKey != systemKey)
+                    {
+                        // search for additional plugins in the base system.
+                        // Plugins are only on the base system.
+                        var baseSystemData = new SystemLimpet(baseSystemKey);
+                        foreach (var r in baseSystemData.GetInterfaceList())
+                        {
+                            if (systemData.GetInterface(r.InterfaceKey) == null)
+                            {
+                                LogUtils.LogSystem(" Add base interface: " + r.InterfaceKey);
+                                systemData.Record.AddRecordListItem("interfacedata", r.Info);
+                            }
+                        }
+                    }
+
+                    _instances.Add(systemKey + baseSystemKey, systemData);
                 }
             }
-            return _instances[systemKey];
+            return _instances[systemKey + baseSystemKey];
         }
         #endregion
         public SystemSingleton()

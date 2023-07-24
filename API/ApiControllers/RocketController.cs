@@ -56,11 +56,12 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
             if (systemkey == "" || systemkey == "undefined") systemkey = paramCmd.Split('_')[0];
-
             var paramInfo = BuildParamInfo();
             var postInfo = BuildPostInfo();
+            var basesystemkey = paramInfo.GetXmlProperty("genxml/hidden/basesystemkey");
+ 
 
-            var systemData = SystemSingleton.Instance(systemkey);
+            var systemData = SystemSingleton.Instance(systemkey, basesystemkey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
             TrackCmd(ref paramCmd, systemData, ref rocketInterface, ref paramInfo);
