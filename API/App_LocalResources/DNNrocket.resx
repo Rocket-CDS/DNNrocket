@@ -798,8 +798,8 @@
   <data name="companyName.Text" xml:space="preserve">
     <value>Company Name</value>
   </data>
-  <data name="contact1.Text" xml:space="preserve">
-    <value>Contact 1</value>
+  <data name="contact.Text" xml:space="preserve">
+    <value>Contact</value>
   </data>
   <data name="contact2.Text" xml:space="preserve">
     <value>Contact 2</value>
@@ -855,8 +855,8 @@
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
-  <data name="mobile1.Text" xml:space="preserve">
-    <value>Contact 1 mobile</value>
+  <data name="mobile.Text" xml:space="preserve">
+    <value>Mobile</value>
   </data>
   <data name="mobile2.Text" xml:space="preserve">
     <value>Contact 2 mobile</value>
@@ -953,5 +953,8 @@
   </data>
   <data name="help.Text" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="addcontact.Text" xml:space="preserve">
+    <value>Add a contact</value>
   </data>
 </root>
