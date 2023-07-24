@@ -883,7 +883,7 @@
     <value>Synopsis de l'actualité</value>
   </data>
   <data name="tel1.Text" xml:space="preserve">
-    <value>Tél. 1</value>
+    <value>Tél.</value>
   </data>
   <data name="tel2.Text" xml:space="preserve">
     <value>Tél. 2</value>
