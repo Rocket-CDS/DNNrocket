@@ -488,7 +488,7 @@ namespace DNNrocketAPI.Components
         public static string ConvertWebpToJpg(string imgPathName)
         {
             var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".jpg";
-            byte[] rawWebP = File.ReadAllBytes("test.webp");
+            byte[] rawWebP = File.ReadAllBytes(imgPathName);
             using (WebP webp = new WebP())
             {
                 var bmp = webp.Decode(rawWebP);
@@ -506,7 +506,6 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                var WebP = new WebP();
                 try
                 {
                     Bitmap bmp = new Bitmap(imgPathName);
