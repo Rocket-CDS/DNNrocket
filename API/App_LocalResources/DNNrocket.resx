@@ -883,7 +883,7 @@
     <value>News Synopsis</value>
   </data>
   <data name="tel1.Text" xml:space="preserve">
-    <value>Tel.</value>
+    <value>Tel. 1</value>
   </data>
   <data name="tel2.Text" xml:space="preserve">
     <value>Tel. 2</value>
@@ -956,5 +956,8 @@
   </data>
   <data name="addcontact.Text" xml:space="preserve">
     <value>Add a contact</value>
+  </data>
+  <data name="newspaperlinkrbl.Text" xml:space="preserve">
+    <value>Internal,Manual</value>
   </data>
 </root>
