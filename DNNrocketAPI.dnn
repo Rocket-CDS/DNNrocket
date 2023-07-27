@@ -263,6 +263,15 @@
 					<sourceFileName>rocketcds-logo.svg</sourceFileName>
 				</file>
 
+				<file>
+					<name>\rocketadmin.ascx</name>
+					<sourceFileName>rocketadmin.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>\rocketadmin.xml</name>
+					<sourceFileName>rocketadmin.xml</sourceFileName>
+				</file>
+
 
 			</files>
         </component>
