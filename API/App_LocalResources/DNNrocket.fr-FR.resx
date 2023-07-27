@@ -801,8 +801,8 @@
   <data name="codegooglemap.Text" xml:space="preserve">
     <value>Iframe Google Map</value>
   </data>
-  <data name="contact1.Text" xml:space="preserve">
-    <value>Contact 1</value>
+  <data name="contact.Text" xml:space="preserve">
+    <value>Contact</value>
   </data>
   <data name="contact2.Text" xml:space="preserve">
     <value>Contact 2</value>
@@ -858,8 +858,8 @@
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
-  <data name="mobile1.Text" xml:space="preserve">
-    <value>Contact 1 mobile</value>
+  <data name="mobile.Text" xml:space="preserve">
+    <value>Mobile</value>
   </data>
   <data name="mobile2.Text" xml:space="preserve">
     <value>Contact 2 mobile</value>
@@ -944,5 +944,11 @@
   </data>
   <data name="help.Text" xml:space="preserve">
     <value>Aide</value>
+  </data>
+  <data name="addcontact.Text" xml:space="preserve">
+    <value>Ajouter un contact</value>
+  </data>
+  <data name="newspaperlinkrbl.Text" xml:space="preserve">
+    <value>Interne,Manuel</value>
   </data>
 </root>
