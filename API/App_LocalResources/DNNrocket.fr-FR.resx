@@ -523,7 +523,7 @@
     <value>Justifier</value>
   </data>
   <data name="imageupload.Msg" xml:space="preserve">
-    <value>Utilisez le bouton de téléchargement pour sélectionner des images à partir de votre système de fichiers. !</value>
+    <value>Utilisez le bouton de téléchargement pour sélectionner des images à partir de votre système de fichiers.</value>
   </data>
   <data name="imageupload.Text" xml:space="preserve">
     <value>Chargement d'image</value>
@@ -535,10 +535,10 @@
     <value>Limite d'image</value>
   </data>
   <data name="documentlimit.Msg" xml:space="preserve">
-    <value>Le téléchargement de votre document a été atteint. !</value>
+    <value>Le téléchargement de votre document a été atteint.</value>
   </data>
   <data name="documentlimit.Text" xml:space="preserve">
-    <value>Limite de document !</value>
+    <value>Limite de document</value>
   </data>
   <data name="documentupload.Msg" xml:space="preserve">
     <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.) !</value>
@@ -562,10 +562,10 @@
     <value>Non!</value>
   </data>
   <data name="yes.Text" xml:space="preserve">
-    <value>Oui !</value>
+    <value>Oui</value>
   </data>
   <data name="fail.Text" xml:space="preserve">
-    <value>Échec !</value>
+    <value>Échec</value>
   </data>
   <data name="keywords.Text" xml:space="preserve">
     <value>Mots clé</value>
@@ -583,13 +583,13 @@
     <value>Effacer la température</value>
   </data>
   <data name="recycleapppool.Text" xml:space="preserve">
-    <value>Recycle AppPool !</value>
+    <value>Recycle AppPool</value>
   </data>
   <data name="emailon.Text" xml:space="preserve">
     <value>Envoyer le message</value>
   </data>
   <data name="apidomain.Text" xml:space="preserve">
-    <value>Domaine API !</value>
+    <value>Domaine API</value>
   </data>
   <data name="apiprotocol.Text" xml:space="preserve">
     <value>Protocole</value>
@@ -604,13 +604,13 @@
     <value>Administrateur du portail</value>
   </data>
   <data name="notes.Text" xml:space="preserve">
-    <value>Remarques !</value>
+    <value>Remarques</value>
   </data>
   <data name="services.Text" xml:space="preserve">
     <value>Services</value>
   </data>
   <data name="unlocked.text" xml:space="preserve">
-    <value>Déverrouillé !</value>
+    <value>Déverrouillé</value>
   </data>
   <data name="login.Text" xml:space="preserve">
     <value>Connectez-vous!</value>
@@ -631,16 +631,16 @@
     <value>Confirmer le mot de passe</value>
   </data>
   <data name="danger.Text" xml:space="preserve">
-    <value>Danger !</value>
+    <value>Danger</value>
   </data>
   <data name="warning.Text" xml:space="preserve">
-    <value>Attention!</value>
+    <value>Attention</value>
   </data>
   <data name="general.Text" xml:space="preserve">
-    <value>Général !</value>
+    <value>Général</value>
   </data>
   <data name="accessdenied.Text" xml:space="preserve">
-    <value>Accès refusé !</value>
+    <value>Accès refusé</value>
   </data>
   <data name="savesend.Text" xml:space="preserve">
     <value>Enregistrer et envoyer</value>
@@ -652,7 +652,7 @@
     <value>Nom de données</value>
   </data>
   <data name="manager.Text" xml:space="preserve">
-    <value>Directeur !</value>
+    <value>Directeur</value>
   </data>
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
@@ -664,7 +664,7 @@
     <value>Avancé</value>
   </data>
   <data name="suonly.Text" xml:space="preserve">
-    <value>REMARQUE : Pour la sécurité, seul le SuperUser peut mettre à jour. !</value>
+    <value>REMARQUE : Pour la sécurité, seul le SuperUser peut mettre à jour.</value>
   </data>
   <data name="map.Text" xml:space="preserve">
     <value>Carte</value>
@@ -679,10 +679,10 @@
     <value>Redimensionner l'image</value>
   </data>
   <data name="invalidcatalog.Text" xml:space="preserve">
-    <value>Catalogue invalide !</value>
+    <value>Catalogue invalide</value>
   </data>
   <data name="cds.Text" xml:space="preserve">
-    <value>CDS !</value>
+    <value>CDS</value>
   </data>
   <data name="website.Text" xml:space="preserve">
     <value>Site internet</value>
@@ -691,7 +691,7 @@
     <value>Service de données</value>
   </data>
   <data name="disabled.Text" xml:space="preserve">
-    <value>Désactivé !</value>
+    <value>Désactivé</value>
   </data>
   <data name="tools.Text" xml:space="preserve">
     <value>Outils</value>
@@ -727,10 +727,10 @@
     <value>Région</value>
   </data>
   <data name="loading.Text" xml:space="preserve">
-    <value>Chargement !</value>
+    <value>Chargement</value>
   </data>
   <data name="imagelimit.Msg" xml:space="preserve">
-    <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires. !</value>
+    <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires.</value>
   </data>
   <data name="imagelimit.Text" xml:space="preserve">
     <value>Limite d'image</value>
