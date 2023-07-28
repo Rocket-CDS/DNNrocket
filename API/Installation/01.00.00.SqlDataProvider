@@ -404,7 +404,7 @@ begin
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' cross apply (select top 1 [XrefItemId] from  ' + @TableName + ' as [PREF] where [PREF].ParentItemId = R1.ItemId and [PREF].TypeCode = ''PROPXREF'' ) as [PROPXREF] '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
@@ -671,7 +671,7 @@ begin
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' cross apply (select top 1 [XrefItemId] from  ' + @TableName + ' as [PREF] where [PREF].ParentItemId = R1.ItemId and [PREF].TypeCode = ''PROPXREF'' ) as [PROPXREF] '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
