@@ -23,6 +23,8 @@ using DotNetNuke.Common.Lists;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.UI.Skins;
+using System.Text.RegularExpressions;
 
 namespace DNNrocketAPI.Components
 {
@@ -146,7 +148,90 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Oringal code for CSS removal from 40 fingers.  (https://www.40fingers.net/Products/DNN-Stylehelper)
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="sFileName"></param>
+        public static void RemoveCssFile(Page page, string sFileName)
+        {
+            Control oCSS = page.FindControl("CSS");
 
+            foreach (Control oControl in oCSS.Controls)
+            {
+                switch (oControl.GetType().ToString())
+                {
+                    case "System.Web.UI.HtmlControls.HtmlLink":
+                        {
+                            HtmlLink oLink = (HtmlLink)oControl;
+                            if (CheckStringFound(oLink.Attributes["href"], sFileName))
+                                oLink.Visible = false;
+                            break;
+                        }
+                }
+            }
+
+            // For the control panel CSS
+            Control oHead = page.FindControl("Head");
+            foreach (Control oControl in oHead.Controls)
+            {
+                switch (oControl.GetType().ToString())
+                {
+                    case "System.Web.UI.LiteralControl":
+                        {
+                            LiteralControl oLink = (LiteralControl)oControl;
+                            if (CheckStringFound(oLink.Text, sFileName))
+                                oLink.Visible = false;
+                            break;
+                        }
+                }
+            }
+
+            // For Dnn 6.1+
+            Control oIncludes = page.FindControl("ClientResourceIncludes");
+            if (oIncludes != null)
+            {
+
+                // Get list of child items client resource controls
+                List<string> lstControl2Remove = new List<string>();
+
+
+                int iItems = oIncludes.Controls.Count - 1;
+
+                // Loop though Items reverse
+                for (int i = iItems; i >= 0; i += -1)
+                {
+                    Control oCssControl = oIncludes.Controls[i];
+
+                    // Check if it's a CssInclude
+                    switch (oCssControl.GetType().ToString())
+                    {
+                        case "DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude":
+                            {
+                                DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude oCSSRemove = (DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude)oCssControl;
+                                // Check the path
+                                if (CheckStringFound(oCSSRemove.FilePath, sFileName))
+                                    // Add to the list of controls to remove
+                                    oIncludes.Controls.RemoveAt(i);
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+        private static bool CheckStringFound(string sIn, string sCheck)
+        {
+            try
+            {
+                if (sCheck == "/")
+                    sCheck = "/.*";
+                return Regex.IsMatch(sIn, sCheck, RegexOptions.IgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public static void IncludeCanonicalLink(Page page, string href)
         {
             if (!string.IsNullOrEmpty(href))

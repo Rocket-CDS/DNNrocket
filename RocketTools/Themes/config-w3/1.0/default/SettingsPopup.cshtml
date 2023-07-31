@@ -105,8 +105,40 @@
                     }
                 </ul>
 
+        <div class="w3-row">
+            <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="rocketpl_addremovecss" s-return=".a-settingspopup">
+                @ButtonIcon(ButtonTypes.add)
             </div>
-    <div class="w3-button w3-right w3-green w3-margin simplisity_click" s-cmd="rocketpl_savesettings" s-list=".menuprovider,.queryparams" s-post="#settingsdata" s-return="#toolsmodalcontainer" s-showloader="false">
+            <span><b>@ResourceKey("RocketTools.removecss")</b></span>
+        </div>
+
+        <ul id="removecssdata" class="w3-ul">
+            @{
+                var lp3 = 1;
+            }
+            @foreach (var mp in info.GetList("removecss"))
+            {
+                <li class="removecss w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                    <div class="w3-display-container w3-padding w3-card">
+                        <div class="w3-row">
+                            <div class="w3-col m10 w3-padding">
+                                <label>@ResourceKey("RocketTools.searchpattern")</label>
+                                @TextBox(mp, "genxml/textbox/removecss", " class='w3-input w3-border' ", "", false, lp3)
+                            </div>
+                            <div class="simplisity_removelistitem w3-display-topright" s-removelist=".removecss" s-recylebin="removecssbin" style="cursor: pointer;">
+                                @ButtonIcon(ButtonTypes.remove)
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+                lp3 += 1;
+            }
+        </ul>
+
+            </div>
+    <div class="w3-button w3-right w3-green w3-margin simplisity_click" s-cmd="rocketpl_savesettings" s-list=".menuprovider,.queryparams,.removecss" s-post="#settingsdata" s-return="#toolsmodalcontainer" s-showloader="false">
                 @ButtonText(ButtonTypes.save)
             </div>
 

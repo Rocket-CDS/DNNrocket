@@ -201,11 +201,14 @@
   <data name="page.Text" xml:space="preserve">
     <value>Page</value>
   </data>
+  <data name="pageadmin.Text" xml:space="preserve">
+    <value>Page Admin</value>
+  </data>
   <data name="pagedescription.Text" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="pagelocalization.Text" xml:space="preserve">
-    <value>Page Localization</value>
+    <value>Page (Menu, Localization, Style Helper)</value>
   </data>
   <data name="pagename.Text" xml:space="preserve">
     <value>Page Name</value>
@@ -246,6 +249,9 @@
   <data name="remove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="removecss.Text" xml:space="preserve">
+    <value>Remove CSS</value>
+  </data>
   <data name="restorebackup.Confirm" xml:space="preserve">
     <value>Restore Backup?  This will OVERWRITE the current data for all languages.</value>
   </data>
@@ -285,6 +291,9 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   </data>
   <data name="save.Text" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="searchpattern.Text" xml:space="preserve">
+    <value>Regex Search Pattern (filename)</value>
   </data>
   <data name="sourcelanguage.Text" xml:space="preserve">
     <value>Source Language</value>

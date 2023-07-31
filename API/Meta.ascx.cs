@@ -50,12 +50,12 @@ namespace RocketTools
             {
                 _portalId = PortalUtils.GetCurrentPortalId();
                 _cultureCode = DNNrocketUtils.GetCurrentCulture();
+                var objCtrl = new DNNrocketController();
 
                 var cacheKey = "PL_" + _cultureCode + "_" + PortalSettings.ActiveTab.TabID.ToString("");
                 var dataRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey, _portalId.ToString());
                 if (dataRecord == null)
                 {
-                    var objCtrl = new DNNrocketController();
                     dataRecord = objCtrl.GetRecordByGuidKey(PortalSettings.Current.PortalId, -1, "PL", cacheKey);
                 }
                 if (dataRecord != null)
@@ -71,7 +71,21 @@ namespace RocketTools
 
                     _disablealternate = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablealternate");
                     _disablecanonical = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablecanonical");
+
                 }
+
+                var cacheKey2 = "PLSETTINGS" + _portalId;
+                var plRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey2, _portalId.ToString());
+                if (plRecord == null) plRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+                if (plRecord != null)
+                {
+                    foreach (var cssPattern in plRecord.GetRecordList("removecss"))
+                    {
+                        var sPattern = cssPattern.GetXmlProperty("genxml/textbox/removecss");
+                        if (sPattern != "") PageIncludes.RemoveCssFile(this.Page, sPattern);
+                    }
+                }
+
             }
             catch (Exception ex)
             {

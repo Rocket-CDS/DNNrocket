@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>_external\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>_external\DotNetNuke.dll</HintPath>
     </Reference>

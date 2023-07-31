@@ -273,6 +273,21 @@ namespace RocketTools.API
             }
             return PLSettingsPopup();
         }
+        public string RemoveCSS()
+        {
+            var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            if (info == null)
+            {
+                SaveSettings();
+                info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+            }
+            if (info != null)
+            {
+                info.AddListItem("removecss", "<genxml></genxml>");
+                _objCtrl.Update(info);
+            }
+            return PLSettingsPopup();
+        }
 
     }
 

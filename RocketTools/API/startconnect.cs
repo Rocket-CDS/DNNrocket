@@ -130,12 +130,15 @@ namespace RocketTools.API
                     case "rocketpl_addqueryparams":
                         strOut = AddQueryParam();
                         break;
+                case "rocketpl_addremovecss":
+                    strOut = RemoveCSS();
+                    break;
 
 
 
 
 
-                    default:
+                default:
                         strOut = "INVALID CMD";
                         break;
 
