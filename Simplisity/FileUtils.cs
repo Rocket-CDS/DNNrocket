@@ -169,7 +169,9 @@ namespace Simplisity
             var logfilename = logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".log.resources";
             var lines = new List<string>();
             lines.Add(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage);
-            File.AppendAllLines(logfilename, lines);
+
+            // Turn off write, we are getting some race conditions and I think this slows DNN>
+            //File.AppendAllLines(logfilename, lines);
         }
 
         public static bool CompareAreSame(string fileMapPath1, string fileMapPath2)
