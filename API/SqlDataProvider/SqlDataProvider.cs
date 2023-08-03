@@ -120,7 +120,12 @@ namespace DNNrocketAPI
         #endregion
 
         #region Public Methods
-
+        public override string ReplaceObjectQualifiers(string sqlString)
+        {
+            sqlString = sqlString.Replace("{databaseOwner}", DatabaseOwner);
+            sqlString = sqlString.Replace("{objectQualifier}", ObjectQualifier);
+            return sqlString;
+        }
         public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string tableName = "DNNrocket")
         {
             var rtncount = 0;
@@ -180,6 +185,12 @@ namespace DNNrocketAPI
             return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
         }
         public override IDataReader ExecSqlList(string commandText)
+        {
+            commandText = commandText.Replace("{databaseOwner}", DatabaseOwner);
+            commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
+            return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, commandText);
+        }
+        public override IDataReader ExecSqlStringList(string commandText)
         {
             commandText = commandText.Replace("{databaseOwner}", DatabaseOwner);
             commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);

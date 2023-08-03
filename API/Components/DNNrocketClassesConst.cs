@@ -28,5 +28,9 @@ namespace DNNrocketAPI.Components
         public string Value;
     }
 
+    public class SQLRecord
+    {
+        public string ReturnValue;
+    }
 
 }

@@ -36,11 +36,11 @@ namespace DNNrocketAPI
 		}
 
 
-        #endregion
+		#endregion
 
 
-        #region "Abstract Methods"
-
+		#region "Abstract Methods"
+		public abstract string ReplaceObjectQualifiers(string sqlString);
         public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string tableName = "DNNrocket");
         public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string tableName = "DNNrocket");
         public abstract IDataReader GetInfo(int itemId, string lang = "", string tableName = "DNNrocket");
@@ -54,6 +54,7 @@ namespace DNNrocketAPI
         public abstract int GetUsersCountCMS(int portalId, string sqlSearchFilter = "");
 		public abstract string ExecSql(string commandText);
         public abstract IDataReader ExecSqlList(string commandText);
+        public abstract IDataReader ExecSqlStringList(string commandText);        
         public abstract string GetSqlxml(string commandText);
 
 		#endregion

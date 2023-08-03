@@ -711,7 +711,10 @@ namespace DNNrocketAPI
 
             return info;
         }
-
+        public string ReplaceObjectQualifiers(string sqlString)
+        {
+            return DataProvider.Instance().ReplaceObjectQualifiers(sqlString);
+        }
         public string GetSqlxml(string commandText)
         {
             return DataProvider.Instance().GetSqlxml(commandText);
@@ -723,6 +726,10 @@ namespace DNNrocketAPI
         public string ExecSql(string commandText)
         {
             return DataProvider.Instance().ExecSql(commandText);
+        }
+        public List<SQLRecord> ExecSqlStringList(string commandText)
+        {
+            return CBO.FillCollection<SQLRecord>(DataProvider.Instance().ExecSqlStringList(commandText));
         }
         public List<SimplisityInfo> ExecSqlList(string commandText)
         {
