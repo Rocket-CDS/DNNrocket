@@ -38,7 +38,7 @@
                         {
                             rCol = "w3-text-red";
                         }
-                        <div class="w3-button @(rCol) simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return=".systempopup" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
+                        <div class="w3-button @(rCol) simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return=".systempopup" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey","portalsystems":"true"}'>
                             @ButtonIcon(ButtonTypes.setup)
                         </div>
                     }
