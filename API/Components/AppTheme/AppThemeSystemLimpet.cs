@@ -14,7 +14,7 @@ namespace DNNrocketAPI.Components
 
     /// <summary>
     /// Get system templates
-    /// For portal level create template in: [website root]\Portals\1\RocketThemes\rocketintra\config-w3\1.0\default
+    /// For portal level create template in: [website root]\Portals\[#Portal Folder#]\RocketThemes\[systemkey]\config-w3\1.0\default
     /// Model level template do not exist for systems.
     /// </summary>
     public class AppThemeSystemLimpet : AppThemeBase

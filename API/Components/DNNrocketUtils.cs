@@ -1054,7 +1054,7 @@ namespace DNNrocketAPI.Components
         public static string MapPathReverse(string fullMapPath)
         {
             if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
-            return @"\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
+            return @"/" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
         }
         public static string Email(int portalId = -1)
         {
