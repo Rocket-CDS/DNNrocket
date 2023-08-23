@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.0.28">
+		<package name="RocketSystem" type="Library" version="1.0.30">
 			<friendlyName>RocketSystem</friendlyName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
@@ -124,7 +124,7 @@
       </components>
 		</package>
 
-    <package name="RocketPortal" type="Library" version="1.0.28">
+    <package name="RocketPortal" type="Library" version="1.0.30">
       <friendlyName>RocketPortal</friendlyName>
       <description>RocketPortal</description>
       <iconFile></iconFile>
@@ -279,7 +279,7 @@
 	  </components>
     </package>
 
-    <package name="RocketAppTheme" type="Library" version="1.0.28">
+    <package name="RocketAppTheme" type="Library" version="1.0.30">
       <friendlyName>RocketAppTheme</friendlyName>
       <description>RocketAppTheme</description>
       <iconFile></iconFile>
