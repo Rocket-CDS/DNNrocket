@@ -107,10 +107,7 @@
 	<value>\bin\RocketAppThemes.dll</value>
     <value>\API\_external\Newtonsoft.Json.dll</value>
     <value>\API\_external\netstandard.dll</value>
-    <value>\API\_external\RazorEngine.dll</value>
     <value>\API\_external\System.Drawing.Common.dll</value>
     <value>\API\_external\handlebars.dll</value>
-	<value>\API\_external\ThoughtWorks.QRCode.dll</value>
-	<value>\API\_external\libwebp_x64.dll</value>
 	</assembly>
 </root>

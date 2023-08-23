@@ -11,6 +11,7 @@ using DotNetNuke.Web.DDRMenu;
 using static System.Net.Mime.MediaTypeNames;
 using ThoughtWorks.QRCode.Codec;
 using System.Web.UI.WebControls;
+using RocketWebpUtils;
 
 namespace DNNrocketAPI.Components
 {

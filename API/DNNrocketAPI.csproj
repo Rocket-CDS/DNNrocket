@@ -235,7 +235,6 @@
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
-    <Compile Include="Components\WebPWrapper.cs" />
     <Compile Include="downloadauthfile.ashx.cs">
       <DependentUpon>downloadauthfile.ashx</DependentUpon>
     </Compile>
@@ -1300,6 +1299,10 @@
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RocketWebpUtils\RocketWebpUtils.csproj">
+      <Project>{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}</Project>
+      <Name>RocketWebpUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplisity\Simplisity.csproj">
       <Project>{4547e469-243d-4ce8-95de-755b24d78deb}</Project>
       <Name>Simplisity</Name>

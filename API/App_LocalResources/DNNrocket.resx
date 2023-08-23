@@ -834,13 +834,10 @@
   <data name="headingstyle.Text" xml:space="preserve">
     <value>Heading Style</value>
   </data>
-  <data name="hideHeading.Text" xml:space="preserve">
+  <data name="hideheading.Text" xml:space="preserve">
     <value>Hide Title</value>
   </data>
   <data name="hiderow.Text" xml:space="preserve">
-    <value>Hide Row</value>
-  </data>
-  <data name="hideRow.Text1" xml:space="preserve">
     <value>Hide Row</value>
   </data>
   <data name="linktype.Text" xml:space="preserve">
@@ -900,7 +897,7 @@
   <data name="titleline2.Text" xml:space="preserve">
     <value>Title line 2</value>
   </data>
-  <data name="titleResume.Text" xml:space="preserve">
+  <data name="titleresume.Text" xml:space="preserve">
     <value>Title &amp; Synopsis</value>
   </data>
   <data name="video.Text" xml:space="preserve">
@@ -912,11 +909,8 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
-  <data name="editor.Text_Duplicate[1]" xml:space="preserve">
-    <value>Editor</value>
-  </data>
   <data name="processing.Text" xml:space="preserve">
-    <value>Processing</value>  
+    <value>Processing</value>
   </data>
   <data name="link.Text" xml:space="preserve">
     <value>Link</value>

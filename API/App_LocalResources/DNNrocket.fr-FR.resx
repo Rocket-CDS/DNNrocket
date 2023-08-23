@@ -837,14 +837,11 @@
   <data name="headingstyle.Text" xml:space="preserve">
     <value>Style d'en-tête</value>
   </data>
-  <data name="hideHeading.Text" xml:space="preserve">
+  <data name="hideheading.Text" xml:space="preserve">
     <value>Cacher le titre</value>
   </data>
   <data name="hiderow.Text" xml:space="preserve">
-    <value>Cacher la rangée</value>
-  </data>
-  <data name="hideRow.Text1" xml:space="preserve">
-    <value>Cacher la rangée</value>
+    <value>Cacher l'entrée</value>
   </data>
   <data name="linktype.Text" xml:space="preserve">
     <value>Type de lien</value>
@@ -900,7 +897,7 @@
   <data name="titleline2.Text" xml:space="preserve">
     <value>Titre 2</value>
   </data>
-  <data name="titleResume.Text" xml:space="preserve">
+  <data name="titleresume.Text" xml:space="preserve">
     <value>Titre et synopsis</value>
   </data>
   <data name="video.Text" xml:space="preserve">
