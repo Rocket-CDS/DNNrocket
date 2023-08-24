@@ -406,7 +406,7 @@ namespace DNNrocketAPI.render
         /// <returns></returns>
         public IEncodedString ImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", string imgType = "")
         {
-            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (String.IsNullOrEmpty(url)) url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
             if (imgType != "" && !imgType.StartsWith("&")) imgType = "&imgtype=" + imgType;
 
             if (width > 0 || height > 0)
