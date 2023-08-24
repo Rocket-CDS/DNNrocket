@@ -234,6 +234,9 @@
   <data name="editportalappthemes.Text" xml:space="preserve">
     <value>Edit Portal AppThemes</value>
   </data>
+  <data name="edittemplates.Text" xml:space="preserve">
+    <value>Edit Templates</value>
+  </data>
   <data name="enablesettings.Text" xml:space="preserve">
     <value>Enable Settings</value>
   </data>

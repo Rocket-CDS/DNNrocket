@@ -258,6 +258,14 @@
 					<sourceFileName>rocketadmin.xml</sourceFileName>
 				</file>
 
+				<file>
+					<name>\rocketedit.ascx</name>
+					<sourceFileName>rocketedit.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>\rocketedit.xml</name>
+					<sourceFileName>rocketedit.xml</sourceFileName>
+				</file>
 
 			</files>
         </component>
