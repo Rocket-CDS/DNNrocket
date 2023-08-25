@@ -15,31 +15,34 @@ namespace DNNrocketAPI.Components
     public class DNNrocketThumb : IHttpHandler
     {
 
+        private static object _lock = new object();
         public void ProcessRequest(HttpContext context)
         {
-
-            var w = DNNrocketUtils.RequestQueryStringParam(context, "w");
-            var h = DNNrocketUtils.RequestQueryStringParam(context, "h");
-            var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
-            var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype").ToLower();
-
-            src = "/" + src.TrimStart('/'); // ensure a valid rel path.
-
-            if (h == "") h = "0";
-            if (w == "") w = "0";
-
-            if (GeneralUtils.IsNumeric(w) && GeneralUtils.IsNumeric(h))
+            lock (_lock) // we need to lock to stop race condition when the same image is on the page mulitple times.
             {
-                if (!GeneralUtils.IsAbsoluteUrl(src)) src = HttpContext.Current.Server.MapPath(src);
 
-                var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
+                var w = DNNrocketUtils.RequestQueryStringParam(context, "w");
+                var h = DNNrocketUtils.RequestQueryStringParam(context, "h");
+                var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
+                var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype").ToLower();
 
-                context.Response.Clear();
-                context.Response.ClearHeaders();
-                context.Response.AddFileDependency(src);
-                context.Response.Cache.SetETagFromFileDependencies();
-                context.Response.Cache.SetLastModifiedFromFileDependencies();
-                context.Response.Cache.SetCacheability(HttpCacheability.Public);
+                src = "/" + src.TrimStart('/'); // ensure a valid rel path.
+
+                if (h == "") h = "0";
+                if (w == "") w = "0";
+
+                if (GeneralUtils.IsNumeric(w) && GeneralUtils.IsNumeric(h))
+                {
+                    if (!GeneralUtils.IsAbsoluteUrl(src)) src = HttpContext.Current.Server.MapPath(src);
+
+                    var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
+
+                    context.Response.Clear();
+                    context.Response.ClearHeaders();
+                    context.Response.AddFileDependency(src);
+                    context.Response.Cache.SetETagFromFileDependencies();
+                    context.Response.Cache.SetLastModifiedFromFileDependencies();
+                    context.Response.Cache.SetCacheability(HttpCacheability.Public);
 
                     var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
                     //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
@@ -85,6 +88,7 @@ namespace DNNrocketAPI.Components
                             context.Response.BinaryWrite(outArray);
                         }
                     }
+                }
             }
         }
 

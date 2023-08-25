@@ -171,8 +171,11 @@ namespace RocketPortal.API
                     break;
                 case "portal_getsystems":
                     xmlOut = ActiveSystemXml(); 
-                    break;                    
-
+                    break;
+                case "portal_defaultroles":
+                    DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetCurrentPortalId());
+                    strOut = GetPortalDetail();
+                    break;
             }
 
 

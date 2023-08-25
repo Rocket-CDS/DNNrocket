@@ -68,7 +68,7 @@
         {
             <div class="w3-half w3-padding">
                 <label><b>Roles</b></label><br />
-                <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
+                <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="portal_defaultroles">Create Default Roles</span>
                 <label class="">@ResourceKey("DNNrocket.installed"):</label>
                 @if (DNNrocketUtils.DefaultRoleExist(portalData.PortalId))
                 {

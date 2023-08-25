@@ -398,13 +398,6 @@ namespace DNNrocketAPI.ApiControllers
                             strOut = SystemGlobalDetail(paramInfo);
                         }
                         break;
-                    case "global_defaultroles":
-                        if (UserUtils.IsSuperUser())
-                        {
-                            DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetCurrentPortalId());
-                            strOut = SystemGlobalDetail(paramInfo);
-                        }
-                        break;
                     case "global_installscheduler":
                         if (UserUtils.IsSuperUser())
                         {
