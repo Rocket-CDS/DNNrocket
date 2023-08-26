@@ -282,7 +282,6 @@ namespace RocketPortal.API
             {
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkeyref");
                 _portalData = new PortalLimpet(portalId);
-                _portalData.Record.SetXmlProperty("genxml/systems/" + systemKey, "True");
                 _portalData.Update();
 
                 // Setup pages.
@@ -308,8 +307,6 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkeyref");
-                _portalData.Record.SetXmlProperty("genxml/systems/" + systemKey, "False");
-                _portalData.Update();
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
@@ -320,11 +317,11 @@ namespace RocketPortal.API
             if (portalId >= 0)
             {
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkeyref");
-                var systemFlag = _portalData.Record.GetXmlPropertyBool("genxml/systems/" + systemKey);
-                if (systemFlag)
-                    return RemoveSystem();
-                else
-                    return AddSystem();
+                //var systemFlag = _portalData.Record.GetXmlPropertyBool("genxml/systems/" + systemKey);
+                //if (systemFlag)
+                //    return RemoveSystem();
+                //else
+                //    return AddSystem();
             }
             return "Invalid PortalId";
         }

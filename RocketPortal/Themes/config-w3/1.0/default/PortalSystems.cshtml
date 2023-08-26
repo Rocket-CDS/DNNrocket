@@ -28,30 +28,14 @@
         {
             <tr>
                 <td style="vertical-align: middle;">
-                    @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check simplisity_click' s-cmd='portal_togglesystem' s-fields='{\"portalid\":\"" + portalData.PortalId + "\",\"systemkeyref\":\"" + systemData.SystemKey + "\"}' ")
+                    @systemData.SystemName
                 </td>
                 <td style="vertical-align: middle;">
-                    @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
-                    {
-                        var rCol = "w3-text-green";
-                        if (!info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey + "setup"))
-                        {
-                            rCol = "w3-text-red";
-                        }
-                        <div class="w3-button @(rCol) simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return=".systempopup" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey","portalsystems":"true"}'>
-                            @ButtonIcon(ButtonTypes.setup)
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="w3-button w3-text-grey">
-                            @ButtonIcon(ButtonTypes.setup)
-                        </div>
-                    }
+                    <div class="w3-button simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return=".systempopup" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey","portalsystems":"true"}'>
+                        @ButtonIcon(ButtonTypes.setup)
+                    </div>
                 </td>
             </tr>
-
-
         }
     </table>
 

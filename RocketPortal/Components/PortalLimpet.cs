@@ -217,7 +217,7 @@ namespace RocketPortal.Components
             var l = SystemDataList.GetSystemActiveList();
             foreach (var s in l)
             {
-                if (Record.GetXmlPropertyBool("genxml/systems/" + s.SystemKey)) rtn.Add(s);
+                rtn.Add(s);
             }
             return rtn;
         }
