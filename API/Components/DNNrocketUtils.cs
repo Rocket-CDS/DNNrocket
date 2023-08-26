@@ -1837,10 +1837,10 @@ namespace DNNrocketAPI.Components
 
         #region "Temp Storage"
 
-        public static string SaveTempStorage(string XmlData, int keephours = 24)
+        private static string SaveTempStorage(string XmlData,string key, int keephours = 24)
         {
             if (keephours == 0) keephours = 1;
-            var key = GeneralUtils.GetGuidKey();
+            if (key == "") key = GeneralUtils.GetGuidKey();
             var objCtrl = new DNNrocketController();
             var s = new SimplisityInfo();
             s.XMLData = XmlData;
@@ -1854,16 +1854,33 @@ namespace DNNrocketAPI.Components
             objCtrl.Update(sInfo, "DNNrocketTemp");
             return key;
         }
-        public static string SetTempStorage(SimplisityInfo value, int keephours = 24)
+        public static string SetTempStorage(SimplisityInfo value, string key = "", int keephours = 24)
         {
-            return SaveTempStorage(value.XMLData, keephours);
+            return SaveTempStorage(value.XMLData, key, keephours);
         }
-        public static SimplisityInfo GetTempStorage(string key, bool deleteAfterRead = true)
+        public static SimplisityInfo GetTempStorage(string key, bool deleteAfterRead = false)
         {
             var objCtrl = new DNNrocketController();            
             var rtn = objCtrl.GetByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
             if (deleteAfterRead && rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
             return rtn;
+        }
+        public static string SetTempRecordStorage(SimplisityRecord value, string key = "", int keephours = 24)
+        {
+            return SaveTempStorage(value.XMLData, key, keephours);
+        }
+        public static SimplisityRecord GetTempRecordStorage(string key, bool deleteAfterRead = false)
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = objCtrl.GetRecordByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
+            if (deleteAfterRead && rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
+            return rtn;
+        }
+        public static void DeleteTempStorage(string key)
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = objCtrl.GetByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
+            if (rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
         }
         public static void ClearOldTempStorage()
         {

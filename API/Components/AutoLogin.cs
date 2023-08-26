@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Components
             {
                 LogUtils.LogSystem("logincode: " + logincode);
 
-                var info = DNNrocketUtils.GetTempStorage(logincode);
+                var info = DNNrocketUtils.GetTempStorage(logincode, true);
                 if (info != null)
                 {
                     var username = info.GetXmlProperty("genxml/username");

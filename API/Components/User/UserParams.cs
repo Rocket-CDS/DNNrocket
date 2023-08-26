@@ -15,8 +15,6 @@ namespace DNNrocketAPI.Components
         private const string _entityTypeCode = "UserParams";
         private string _guidKey;
         private bool _useDB;
-        private const string _tableName = "DNNrocketTemp";
-        private DNNrocketController _objCtrl;
 
         public UserParams(int userId)
         {
@@ -28,6 +26,10 @@ namespace DNNrocketAPI.Components
         {
             initUserParams(browserSessionId, false);
         }
+        public UserParams(string browserSessionId, bool useDB)
+        {
+            initUserParams(browserSessionId, useDB);
+        }
         /// <summary>
         /// Setup user session class to keep track of session
         /// </summary>
@@ -35,7 +37,6 @@ namespace DNNrocketAPI.Components
         /// <param name="saveToDB">ONLY save to DB if the UserId is used as a sessionid.  Stop DB filling.</param>
         private void initUserParams(string browserSessionId, bool useDB = false)
         {
-            _objCtrl = new DNNrocketController();
             _useDB = useDB;
             _guidKey = _entityTypeCode + "*" + UserUtils.GetCurrentUserId() + "*" + browserSessionId;
 
@@ -49,7 +50,7 @@ namespace DNNrocketAPI.Components
                 {
                     if (_useDB)
                     {
-                        Record = _objCtrl.GetRecordByGuidKey(-1, -1, _entityTypeCode, _guidKey, UserId.ToString(), _tableName);
+                        Record = DNNrocketUtils.GetTempRecordStorage(_guidKey);
                     }
                     if (Record == null)
                     {
@@ -61,7 +62,6 @@ namespace DNNrocketAPI.Components
                         Record.UserId = UserId;
                     }
                 }
-
                 Save();
             }
         }
@@ -97,7 +97,7 @@ namespace DNNrocketAPI.Components
             {
                 if (_useDB)
                 {
-                    Record.ItemID = _objCtrl.Update(Record, _tableName);
+                    DNNrocketUtils.SetTempRecordStorage(Record);
                 }                                       
                 CacheUtils.SetCache(_guidKey, Record);
             }
@@ -108,7 +108,7 @@ namespace DNNrocketAPI.Components
         }
         public void Delete()
         {
-            if (_useDB && Record != null) _objCtrl.Delete(Record.ItemID);
+            if (_useDB && Record != null) DNNrocketUtils.DeleteTempStorage(Record.GUIDKey);
             ClearCache();
         }
         public void ClearCache()
