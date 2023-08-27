@@ -14,6 +14,7 @@
     {
         cmd = "rocketapptheme_getdetail";
     }
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 }
 
 <div id="a-displaywrapper" class="w3-animate-opacity" style="">
@@ -53,7 +54,7 @@
 <script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
 <script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
 
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
+<link rel="stylesheet" href="@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/" + portalData.ColorAdminTheme)">
 
 <style>
     #editBarContainer { display: none !important }
