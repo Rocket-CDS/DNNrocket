@@ -232,6 +232,7 @@
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\ModuleBase.cs" />
     <Compile Include="Components\AutoLogin.cs" />
+    <Compile Include="Components\RazorCacheProvider.cs" />
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />

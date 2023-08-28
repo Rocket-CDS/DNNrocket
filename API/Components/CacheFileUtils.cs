@@ -129,8 +129,7 @@ namespace DNNrocketAPI.Components
         /// <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
         public static void WriteToBinaryFile<T>(string cacheKey, T objectToWrite, bool append = false)
         {
-            var cacheFile = GetMd5Hash(cacheKey);
-            var filePath = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile;
+            var filePath = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheKey;
 
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
@@ -147,9 +146,7 @@ namespace DNNrocketAPI.Components
         /// <returns>Returns a new instance of the object read from the binary file.</returns>
         public static T ReadFromBinaryFile<T>(string cacheKey)
         {
-            var cacheFile = GetMd5Hash(cacheKey);
-            var filePath = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile;
-
+            var filePath = PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheKey;
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
