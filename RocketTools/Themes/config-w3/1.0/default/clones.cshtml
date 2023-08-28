@@ -5,6 +5,9 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@{
+    var appThemeTools = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
+}
 
 <div class="w3-row w3-padding datapostsection">        
     <div class="w3-button simplisity_click" s-cmd="rocketclones_getdisplay" s-return="#toolsmodalcontainer">
@@ -40,7 +43,7 @@
         <div class="w3-half w3-padding">
             <div class="w3-panel w3-light-grey w3-padding" style="height:52px;">
                 <b class="w3-large">@ResourceKey("RocketTools.topage")</b>
-                <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.clone") ?" style="display:none;" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection">
+                <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.clone") ?" style="display:none;" s-return="#toolsmodalcontainer" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection">
                     <span class="material-icons">
                         save
                     </span>
@@ -54,8 +57,6 @@
     </div>
 
 </div>
-
-
 
 <script>
 
@@ -80,3 +81,9 @@
 
 </script>
 
+@if (Model.GetSettingBool("clonedone"))
+{
+    <div>
+        @RenderTemplate("clonesok.cshtml", appThemeTools, Model)
+    </div>
+}

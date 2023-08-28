@@ -2,13 +2,13 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 
-<div id="id01" class="w3-modal">
+<div id="cloneid01" class="w3-modal">
   <div class="w3-modal-content">
     <div class="w3-container w3-center " style="">
-        <div class="w3-margin">
+        <div class="w3-margin w3-large">
                 @ResourceKey("RocketTools.clonesok")
         </div>
-        <div class="w3-green w3-button w3-margin" onclick="window.location.reload();">
+        <div class="w3-theme w3-button w3-margin" onclick="$('#cloneid01').hide();">
                 OK
         </div>
     </div>
@@ -17,6 +17,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#id01").show();
+        $("#cloneid01").show();
     });
 </script>

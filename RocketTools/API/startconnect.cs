@@ -64,8 +64,8 @@ namespace RocketTools.API
                         SaveModules("clonemodules");
                         SaveTreeView("clonetreeview");
                         CloneModules();
-                        strOut = ClonesOK();
-                        break;
+                        strOut = CloneDetail(true);
+                    break;
 
 
 

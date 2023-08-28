@@ -19,15 +19,30 @@
                 foreach (var m in info.GetRecordList("clonemodulelist"))
                 {
                     <li>
-                        <label>
+                        <div class="w3-row">
+                        <div class="w3-half">
                             <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox w3-check" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
-                            <span class="">
+                            <b>
                                 @m.GetXmlProperty("genxml/modulename")
-                            </span>
-                            <span class="w3-small">
-                                @m.GetXmlProperty("genxml/modulepanename")
-                            </span>
-                        </label>
+                            </b>
+                        </div>
+                        <div class="w3-half">
+                            <div class="w3-tiny">
+                                <div>
+                                    @m.GetXmlProperty("genxml/modulepanename")
+                                </div>
+                                <div>
+                                    @m.GetXmlProperty("genxml/projectname")
+                                </div>
+                                <div>
+                                    @m.GetXmlProperty("genxml/appthemeadminfolder")
+                                </div>
+                                <div>
+                                    @m.GetXmlProperty("genxml/appthemeadminversion")
+                                </div>
+                            </div>
+                        </div>
+                        </div>
                     </li>
                 }
             }

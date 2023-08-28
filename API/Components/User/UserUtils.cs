@@ -384,7 +384,8 @@ namespace DNNrocketAPI.Components
 
         public static string CreateUser(int portalId, string username, string email, string roleName = "")
         {
-            if (portalId >= 0 && username != "" && GeneralUtils.IsEmail(email))
+            //if (portalId >= 0 && username != "" && GeneralUtils.IsEmail(email))
+            if (portalId >= 0 && username != "")
             {
                 UserInfo objUser = null;
 

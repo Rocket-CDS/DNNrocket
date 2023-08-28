@@ -6,16 +6,18 @@ using System.Collections.Generic;
 using System.Xml;
 using RocketTools.Components;
 using DotNetNuke.Entities.Modules;
+using System.Linq;
 
 namespace RocketTools.API
 {
     public partial class StartConnect
     {
 
-        public string CloneDetail()
+        public string CloneDetail(bool clonedone = false)
         {
+            if (clonedone) _passSettings.Add("clonedone","true");
             var razorTempl = _appThemeTools.GetTemplate("Clones.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, null, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -33,11 +35,22 @@ namespace RocketTools.API
             foreach (var m in l)
             {
                 var modInfo = RocketToolsUtils.GetModuleInfo(tabid, m.Key);
+                var moduleSettings = _objCtrl.GetByGuidKey(modInfo.PortalID, m.Key, "MODSETTINGS", modInfo.PortalID + "_ModuleID_" + m.Key);
+
                 var sRec = new SimplisityRecord();
                 sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
                 sRec.SetXmlProperty("genxml/modulename", m.Value);
                 sRec.SetXmlProperty("genxml/pagename", pageData.Name);
                 sRec.SetXmlProperty("genxml/modulepanename", modInfo.PaneName);
+                if (moduleSettings != null)
+                {
+                    sRec.SetXmlProperty("genxml/projectname", moduleSettings.GetXmlProperty("genxml/data/projectname"));
+                    var apptheme = moduleSettings.GetXmlProperty("genxml/data/appthemeadminfolder");
+                    var asplit = apptheme.Split('.');
+                    if (asplit.Count() == 2) apptheme = asplit[1];
+                    sRec.SetXmlProperty("genxml/appthemeadminfolder", apptheme);
+                    sRec.SetXmlProperty("genxml/appthemeadminversion", moduleSettings.GetXmlProperty("genxml/data/appthemeadminversion"));
+                }
                 info.AddRecordListItem("clonemodulelist", sRec);
             }
             CacheUtils.SetCache(_pageRef, info);
@@ -80,13 +93,6 @@ namespace RocketTools.API
                     }
                 }
             }
-        }
-        public String ClonesOK()
-        {
-            var razorTempl = _appThemeTools.GetTemplate("clonesok.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
         }
         public void SaveModules(string listName)
         {

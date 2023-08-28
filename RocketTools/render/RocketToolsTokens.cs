@@ -36,24 +36,27 @@ namespace RocketTools
 
             foreach (TabInfo tInfo in tabList)
             {
-                var parenttestid = tInfo.ParentId;
-                if (parenttestid < 0) parenttestid = 0;
-                if (parentid == parenttestid)
+                if (!tInfo.IsDeleted)
                 {
-                    var checkedvalue = "";
-                    if (selectedTabIdList.Contains(tInfo.TabID)) checkedvalue = "checked";
+                    var parenttestid = tInfo.ParentId;
+                    if (parenttestid < 0) parenttestid = 0;
+                    if (parentid == parenttestid)
+                    {
+                        var checkedvalue = "";
+                        if (selectedTabIdList.Contains(tInfo.TabID)) checkedvalue = "checked";
 
-                    rtnString += "<div>";
-                    for (int i = 0; i < level; i++)
-                    {
-                        rtnString += "&nbsp;&nbsp;";
-                    }
-                    rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " " + attributes + " type='checkbox'>";
-                    rtnString += "&nbsp;" + tInfo.TabName;
-                    rtnString += "</div>";
-                    if (tInfo.HasChildren)
-                    {
-                        rtnString = GetTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList, showAllTabs);
+                        rtnString += "<div>";
+                        for (int i = 0; i < level; i++)
+                        {
+                            rtnString += "&nbsp;&nbsp;";
+                        }
+                        rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " " + attributes + " type='checkbox'>";
+                        rtnString += "&nbsp;" + tInfo.TabName;
+                        rtnString += "</div>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString = GetTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList, showAllTabs);
+                        }
                     }
                 }
             }
