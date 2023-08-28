@@ -32,8 +32,8 @@
 
 <div class="w3-row w3-padding">
 
-    <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
-    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-return="#editmodalcontainer" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-return="#editmodalcontainer" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
     <span class="w3-button w3-padding" onclick="$('#copylanguageselector').show();">
         <span class="material-icons">
             content_copy
@@ -61,7 +61,7 @@
         }
     @if (!disableDelete)
     {
-        <span class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-before="hideresxpopup" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</span>
+        <span class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-before="hideresxpopup" s-return="#editmodalcontainer" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</span>
     }
 
     @if (sessionParams.ModuleRef != "")
