@@ -38,6 +38,7 @@ namespace DNNrocketAPI.Components
 
                     if (!systemData.IsPlugin) // plugins should be triggered by the parent system.
                     {
+                        LogUtils.LogSystem("systemData.SchedulerList - Start " + systemData.SystemKey);
                         foreach (var rocketInterface in systemData.SchedulerList)
                         {
                             if (rocketInterface.IsActive)
@@ -59,14 +60,14 @@ namespace DNNrocketAPI.Components
                                     this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
                                     LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
                                 }
-
+                                LogUtils.LogSystem("InterfaceKey -  " + rocketInterface.InterfaceKey);
                             }
                         }
+                        LogUtils.LogSystem("systemData.SchedulerList - End " + systemData.SystemKey);
                     }
                 }
 
                 LogUtils.LogSystemClear(7);
-                DNNrocketUtils.ClearOldTempStorage();
 
                 this.ScheduleHistoryItem.Succeeded = true;
 

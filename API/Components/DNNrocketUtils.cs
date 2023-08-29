@@ -1842,13 +1842,20 @@ namespace DNNrocketAPI.Components
             if (keephours == 0) keephours = 1;
             if (key == "") key = GeneralUtils.GetGuidKey();
             var objCtrl = new DNNrocketController();
-            var s = new SimplisityInfo();
-            s.XMLData = XmlData;
-            var sInfo = new SimplisityInfo();
-            sInfo.XMLData = XmlData;
-            sInfo.GUIDKey = key;
-            sInfo.TypeCode = "ACTIONRETURN";
-            sInfo.ItemID = -1;
+            var sInfo = objCtrl.GetByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
+            if (sInfo == null)
+            {
+                sInfo = new SimplisityInfo();
+                sInfo.XMLData = XmlData;
+                sInfo.GUIDKey = key;
+                sInfo.TypeCode = "ACTIONRETURN";
+                sInfo.ItemID = -1;
+            }
+            else
+            {
+                sInfo.XMLData = XmlData;
+            }
+
             var keepdatetime = DateTime.Now.AddHours(keephours);
             sInfo.SetXmlProperty(sInfo.RootNodeName + "/keepdatetime", keepdatetime.ToString("O"), TypeCode.DateTime);
             objCtrl.Update(sInfo, "DNNrocketTemp");

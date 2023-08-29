@@ -50,6 +50,7 @@ namespace DNNrocketAPI.Components
                 {
                     if (_useDB)
                     {
+                        DNNrocketUtils.ClearOldTempStorage();
                         Record = DNNrocketUtils.GetTempRecordStorage(_guidKey);
                     }
                     if (Record == null)
@@ -97,8 +98,8 @@ namespace DNNrocketAPI.Components
             {
                 if (_useDB)
                 {
-                    DNNrocketUtils.SetTempRecordStorage(Record);
-                }                                       
+                    DNNrocketUtils.SetTempRecordStorage(Record, _guidKey);
+                }
                 CacheUtils.SetCache(_guidKey, Record);
             }
         }
