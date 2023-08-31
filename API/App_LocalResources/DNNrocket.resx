@@ -814,10 +814,10 @@
     <value>CSS Class</value>
   </data>
   <data name="email1.Text" xml:space="preserve">
-    <value>Conctact1 email</value>
+    <value>Email</value>
   </data>
   <data name="email2.Text" xml:space="preserve">
-    <value>Contact 2 email</value>
+    <value>Email</value>
   </data>
   <data name="extraInfo.Text" xml:space="preserve">
     <value>Extra infos</value>
@@ -847,7 +847,7 @@
     <value>Longitude</value>
   </data>
   <data name="manuallink.Text" xml:space="preserve">
-    <value>Manual Link</value>
+    <value>URL</value>
   </data>
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
@@ -856,13 +856,13 @@
     <value>Mobile</value>
   </data>
   <data name="mobile2.Text" xml:space="preserve">
-    <value>Contact 2 mobile</value>
+    <value>Mobile</value>
   </data>
   <data name="moduletitle.Text" xml:space="preserve">
     <value>Module Title</value>
   </data>
   <data name="openfancy.Text" xml:space="preserve">
-    <value>Open in FancyBox</value>
+    <value>Open in popup</value>
   </data>
   <data name="question.Text" xml:space="preserve">
     <value>Question</value>
@@ -880,7 +880,7 @@
     <value>News Synopsis</value>
   </data>
   <data name="tel1.Text" xml:space="preserve">
-    <value>Tel. 1</value>
+    <value>Tel.</value>
   </data>
   <data name="tel2.Text" xml:space="preserve">
     <value>Tel. 2</value>

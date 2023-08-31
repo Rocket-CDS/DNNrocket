@@ -496,10 +496,10 @@
     <value>Largeur</value>
   </data>
   <data name="paste.Text" xml:space="preserve">
-    <value>Pâte</value>
+    <value>Coller</value>
   </data>
   <data name="anchor.Text" xml:space="preserve">
-    <value>Ancrage</value>
+    <value>Ancre</value>
   </data>
   <data name="url.Text" xml:space="preserve">
     <value>URL</value>
@@ -817,10 +817,10 @@
     <value>Classe CSS</value>
   </data>
   <data name="email1.Text" xml:space="preserve">
-    <value>Conctact1 email</value>
+    <value>E-mail</value>
   </data>
   <data name="email2.Text" xml:space="preserve">
-    <value>Contact 2 email</value>
+    <value>E-mail</value>
   </data>
   <data name="extraInfo.Text" xml:space="preserve">
     <value>Plus d'infos</value>
@@ -850,22 +850,22 @@
     <value>Longitude</value>
   </data>
   <data name="manuallink.Text" xml:space="preserve">
-    <value>Lien manuel</value>
+    <value>URL</value>
   </data>
   <data name="metaSeo.Text" xml:space="preserve">
     <value>Balise Meta (SEO)</value>
   </data>
   <data name="mobile.Text" xml:space="preserve">
-    <value>Mobile</value>
+    <value>Port.</value>
   </data>
   <data name="mobile2.Text" xml:space="preserve">
-    <value>Contact 2 mobile</value>
+    <value>Port.</value>
   </data>
   <data name="moduletitle.Text" xml:space="preserve">
     <value>Titre du module</value>
   </data>
   <data name="openfancy.Text" xml:space="preserve">
-    <value>Ouvrir dans FancyBox</value>
+    <value>Ouvrir dans une popup</value>
   </data>
   <data name="redirectlink.Text" xml:space="preserve">
     <value>Lien de redirection</value>
@@ -880,7 +880,7 @@
     <value>Synopsis de l'actualité</value>
   </data>
   <data name="tel1.Text" xml:space="preserve">
-    <value>Tél. 1</value>
+    <value>Tél.</value>
   </data>
   <data name="tel2.Text" xml:space="preserve">
     <value>Tél. 2</value>
