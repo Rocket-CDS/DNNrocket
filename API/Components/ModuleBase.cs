@@ -31,6 +31,10 @@ namespace DNNrocketAPI.Components
                     Record.GUIDKey = moduleRef;
                     Record.TypeCode = _entityTypeCode;
                 }
+                else
+                {
+                    CacheUtils.SetCache(_cacheKey, Record, ModuleRef);
+                }
             }
             // Outside initial setup, incase of changes in the CMS.
             Record.ModuleId = moduleid;
@@ -45,7 +49,7 @@ namespace DNNrocketAPI.Components
         public int Update()
         {
             Record = _objCtrl.SaveRecord(Record, _tableName);
-            CacheUtils.SetCache(_cacheKey, Record, ModuleRef);
+            CacheUtils.RemoveCache(_cacheKey);
             return Record.ItemID;
         }
         public string GetSetting(string key)

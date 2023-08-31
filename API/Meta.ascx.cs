@@ -82,7 +82,7 @@ namespace RocketTools
                     foreach (var cssPattern in plRecord.GetRecordList("removecss"))
                     {
                         var sPattern = cssPattern.GetXmlProperty("genxml/textbox/removecss");
-                        if (sPattern != "") PageIncludes.RemoveCssFile(this.Page, sPattern);
+                        if (sPattern != "" && !UserUtils.IsAdministrator()) PageIncludes.RemoveCssFile(this.Page, sPattern);
                     }
                 }
 
