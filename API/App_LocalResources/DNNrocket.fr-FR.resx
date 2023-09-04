@@ -910,13 +910,13 @@
     <value>Lien</value>
   </data>
   <data name="linkrbl.Text" xml:space="preserve">
-    <value>Aucun, Interne, Manuel</value>
+    <value>Aucun, Interne, URL</value>
   </data>
   <data name="linktitle.Text" xml:space="preserve">
     <value>Titre du lien</value>
   </data>
   <data name="flexlinkrbl.Text" xml:space="preserve">
-    <value>Lien interne, Lien manuel</value>
+    <value>Lien interne, Lien URL</value>
   </data>
   <data name="columnsddl.Text" xml:space="preserve">
     <value>1,2,3,4,5,Multi</value>
@@ -946,6 +946,6 @@
     <value>Ajouter un contact</value>
   </data>
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
-    <value>Interne,Manuel</value>
+    <value>Lien interne,Lien URL</value>
   </data>
 </root>

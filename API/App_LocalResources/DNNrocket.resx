@@ -916,13 +916,13 @@
     <value>Link</value>
   </data>
   <data name="linkrbl.Text" xml:space="preserve">
-    <value>None, Internal, Manual</value>
+    <value>None, Internal, URL</value>
   </data>
   <data name="linktitle.Text" xml:space="preserve">
     <value>Link title</value>
   </data>
   <data name="flexlinkrbl.Text" xml:space="preserve">
-    <value>Internal, Manual</value>
+    <value>Internal link, URL link</value>
   </data>
   <data name="columnsddl.Text" xml:space="preserve">
     <value>1,2,3,4,5,Multi</value>
@@ -952,15 +952,6 @@
     <value>Add a contact</value>
   </data>
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
-    <value>Internal,Manual</value>
-  </data>
-  <data name="recyclebin.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
-  </data>
-  <data name="restoremsg.Text" xml:space="preserve">
-    <value>Restore data?  (This will overwrite the current data)</value>
-  </data>
-  <data name="restoredonemsg.Text" xml:space="preserve">
-    <value>Restore Completed.</value>
+    <value>Internal link,URL link</value>
   </data>
 </root>
