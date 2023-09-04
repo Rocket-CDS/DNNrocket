@@ -253,12 +253,13 @@ namespace DNNrocketAPI.render
             strOut = pr.RenderedText;
             return new RawString(strOut);
         }
-        public IEncodedString RenderXml(SimplisityInfo info)
+        public IEncodedString RenderXml(SimplisityInfo info, string xmlidx = "")
         {
             var appTheme = new AppThemeDNNrocketLimpet("api");
             var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
             var nbRazor = new SimplisityRazor(info);
             var strOut = "";
+            nbRazor.SetSetting("xmlidx", xmlidx);
             var pr = RenderRazorUtils.RazorProcess(nbRazor, razorTempl, true);
             strOut = pr.RenderedText;
             return new RawString(strOut);
@@ -899,7 +900,7 @@ namespace DNNrocketAPI.render
                 else
                     s = "";
                 var TabName = PagesUtils.GetPageName(mData.Record.GetXmlPropertyInt("genxml/data/tabid"), portalId);
-                var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;[" + mData.ModuleId + "]";
+                var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;[" + mData.AppThemeAdminFolder + "]";
                 strOut += "    <option value='" + mData.ModuleRef + "' " + s + ">" + moduleName + "</span></option>";
                 c += 1;
             }

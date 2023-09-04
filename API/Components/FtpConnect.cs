@@ -73,6 +73,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex) {
                 LogUtils.LogSystem(ex.ToString());
+                LogUtils.LogException(ex);
                 Console.WriteLine(ex.ToString());
             }
             return;

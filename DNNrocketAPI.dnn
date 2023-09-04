@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.0.32">
+		<package name="RocketSystem" type="Library" version="1.0.33">
 			<friendlyName>RocketSystem</friendlyName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
@@ -247,6 +247,10 @@
 				<file>
 					<name>images/rocketcds-logo.svg</name>
 					<sourceFileName>rocketcds-logo.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/recycling.svg</name>
+					<sourceFileName>recycling.svg</sourceFileName>
 				</file>
 
 				<file>

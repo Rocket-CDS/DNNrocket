@@ -954,4 +954,13 @@
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
     <value>Internal,Manual</value>
   </data>
+  <data name="recyclebin.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="restoremsg.Text" xml:space="preserve">
+    <value>Restore data?  (This will overwrite the current data)</value>
+  </data>
+  <data name="restoredonemsg.Text" xml:space="preserve">
+    <value>Restore Completed.</value>
+  </data>
 </root>

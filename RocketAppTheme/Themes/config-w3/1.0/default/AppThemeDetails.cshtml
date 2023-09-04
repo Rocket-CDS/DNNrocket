@@ -17,6 +17,8 @@
 <div class="w3-container">
     <div class="w3-bar  w3-padding w3-margin-top">
 
+        <a class="w3-button w3-black" href="." >@ButtonText(ButtonTypes.back)</a>
+
         <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.export)</a>
 
         @if (sessionParam.ModuleRef != "")
