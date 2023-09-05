@@ -963,4 +963,7 @@
   <data name="restoredonemsg.Text" xml:space="preserve">
     <value>Restore Completed.</value>
   </data>
+  <data name="secureupload.Text" xml:space="preserve">
+    <value>Secure Document Upload</value>
+  </data>
 </root>

@@ -2,6 +2,7 @@
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace DNNrocketAPI.Components
@@ -64,6 +65,26 @@ namespace DNNrocketAPI.Components
             set
             {
                 Info.SetXmlProperty("genxml/textbox/documentname" + FieldId, value);
+            }
+        }
+        public string Extension
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/hidden/fileextension" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/hidden/fileextension" + FieldId, value);
+            }
+        }
+        public string DownloadName
+        {
+            get
+            {
+                var rtn = Path.GetFileNameWithoutExtension(Name) + Extension;
+                return rtn;
             }
         }
         public bool Hidden
