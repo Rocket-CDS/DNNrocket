@@ -176,12 +176,6 @@
   <data name="Razor.DataSourceList" xml:space="preserve">
     <value>@DataSourceList(info, int systemid, "genxml/", string attributes = "", bool allowEmpty = true, bool localized = false)</value>
   </data>
-  <data name="Razor.DocumentEdit" xml:space="preserve">
-    <value>@DocumentEdit(info, string fieldId, string attributes = "", bool localized = true, int row = 0, string listname = "")</value>
-  </data>
-  <data name="Razor.DownloadDocument" xml:space="preserve">
-    <value>@DownloadDocument(int ItemId, int row, string fieldId, string text = "", string attributes = "")</value>
-  </data>
   <data name="Razor.DropDownList" xml:space="preserve">
     <value>@DropDownList(info, "genxml/", Dictionary&lt;string,string&gt; dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display DropDown List with Dictionary data input</comment>

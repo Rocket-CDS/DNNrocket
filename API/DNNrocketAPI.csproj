@@ -236,9 +236,6 @@
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
-    <Compile Include="downloadauthfile.ashx.cs">
-      <DependentUpon>downloadauthfile.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
@@ -358,15 +355,14 @@
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
-    <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
+    <None Include="Documents\FileDownload.md" />
     <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\JQueryValidation.md" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\ModuleTemplate.md" />
     <None Include="Documents\SystemDefaults.md" />
-    <None Include="downloadauthfile.ashx" />
     <None Include="downloadfile.ashx" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
