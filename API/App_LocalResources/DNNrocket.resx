@@ -954,4 +954,7 @@
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
     <value>Internal link,URL link</value>
   </data>
+  <data name="secureupload.Text" xml:space="preserve">
+    <value>Secure Document Upload</value>
+  </data>
 </root>

@@ -283,9 +283,6 @@
     <Compile Include="Components\SystemGlobalData.cs" />
     <Compile Include="Components\PageRecordData.cs" />
     <Compile Include="Components\User\UserParams.cs" />
-    <Compile Include="downloadfile.ashx.cs">
-      <DependentUpon>downloadfile.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Components\DNNrocketClassesConst.cs" />
     <Compile Include="Components\PagesUtils.cs" />
     <Compile Include="Components\FileStatus.cs" />
@@ -363,7 +360,6 @@
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\ModuleTemplate.md" />
     <None Include="Documents\SystemDefaults.md" />
-    <None Include="downloadfile.ashx" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\DNNrocket-Paging.docx" />
