@@ -46,7 +46,13 @@ The simplsity class event of "simplisity_filedownload" creates a URL to download
 ### RocketDirectory
 
 The default server side code in RocketDirectory checks is the user is authorised.  If not, no download is done.  
-This functionlity stops and documents from being referenced by any search engine.
+
+This functionality is controlled by the "secure documents" checkbox in the Admin Settings for the system.  Uploads will be given a secure name that cannot be downloaded by normal html links. (This assumes the IIS default settings for files.)  
+
+This functionlity stops and documents from being referenced by any search engine.  
+*NOTE: The "secure document" must be turned on before upload if you required secure documents.* 
+
+If public downloads are required for the entire site, you can uncheck the "secure documents" checkbox.
 
 You must use a **s-cmd="remote_publicdownload"** to get this functionality.
 
@@ -84,14 +90,17 @@ private Dictionary<string, object> DownloadArticleFile()
     var rtnDic = new Dictionary<string, object>();
     var strId = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/articleid"));
     var articleId = 0;
-    if (GeneralUtils.IsNumeric(strId) && UserUtils.IsAuthorised())
+    if (GeneralUtils.IsNumeric(strId) && (UserUtils.IsAuthorised() || !_dataObject.PortalContent.SecureUpload))
     {
         articleId = Convert.ToInt32(strId);
         var articleData = GetActiveArticle(articleId);
+        articleData.ClearCache(); // reset data to clear cached name.
+        articleData = GetActiveArticle(articleId);
+
         var dockey = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/dockey"));
         var articleDoc = articleData.GetDoc(dockey);
         rtnDic.Add("filenamepath", DNNrocketUtils.MapPath(articleDoc.RelPath));
-        rtnDic.Add("downloadname", articleDoc.Name);
+        rtnDic.Add("downloadname", articleDoc.DownloadName);
     }
     return rtnDic;
 }
