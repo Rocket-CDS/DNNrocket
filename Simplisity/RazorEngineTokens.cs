@@ -358,13 +358,12 @@ namespace Simplisity
 
         #region "extra tokens"
 
-        public IEncodedString EmailOf(SimplisityInfo info, String xpath)
+        public IEncodedString EmailOf(SimplisityInfo info, String xpath, string subject = "", string visibleText = "")
         {
             var strOut = info.GetXmlProperty(xpath);
-            strOut = GeneralUtils.FormatAsMailTo(strOut);
+            strOut = GeneralUtils.FormatAsMailTo(strOut, subject, visibleText);
             return new RawString(strOut);
         }
-
         public IEncodedString HtmlOf(SimplisityInfo info, String xpath)
         {
             var strOut = info.GetXmlProperty(xpath);
