@@ -707,7 +707,7 @@ namespace DNNrocketAPI.Components
         public static Boolean IsClientOnly()
         {
             if (!IsAuthorised()) return false;
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator ) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
             {
                 return true;
             }
@@ -726,7 +726,7 @@ namespace DNNrocketAPI.Components
         public static Boolean IsEditor()
         {
             if (!IsAuthorised()) return false;
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) || 
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator ) || 
                 UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) || 
                 UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) || 
                 UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators))

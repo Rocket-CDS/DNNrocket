@@ -406,63 +406,26 @@ namespace Simplisity
             string[] formats = { "yyyy-MM-dd", "yyyy/MM/dd", "MM-dd-yyyy", "MM/dd/yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "yyyy-MM-d", "yyyy/MM/d", "MM-d-yyyy", "MM/d/yyyy", "d/MM/yyyy", "d-MM-yyyy" };
             return DateTime.TryParseExact(Convert.ToString(expression), formats, System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
         }
-
-
-        public static string FormatAsMailTo(string email)
+        public static string FormatAsMailTo(string email, string subject = "", string visibleText = "")
         {
-            var functionReturnValue = "";
+            if (string.IsNullOrEmpty(email)) return "";
 
-            if (!String.IsNullOrEmpty(email) && !String.IsNullOrEmpty(email.Trim(Convert.ToChar(" "))))
+            var onload = "";
+
+            var dataAttribs = "data-contact='" + Convert.ToBase64String(Encoding.UTF8.GetBytes(email)) + "'";
+            if (string.IsNullOrEmpty(visibleText))
             {
-                if (email.IndexOf(Convert.ToChar("@")) != -1)
-                {
-                    functionReturnValue = "<a href=\"mailto:" + email + "\">" + email + "</a>";
-                }
-                else
-                {
-                    functionReturnValue = email;
-                }
+                onload = $"<img src onerror='this.outerHTML = atob(\"{Convert.ToBase64String(Encoding.UTF8.GetBytes(email))}\")'>"; //nice hack to mimic an onload event
             }
-
-            return CloakText(functionReturnValue);
-
-        }
-
-
-        // obfuscate sensitive data to prevent collection by robots and spiders and crawlers
-        public static string CloakText(string personalInfo)
-        {
-            return CloakText(personalInfo, true);
-        }
-
-        public static string CloakText(string personalInfo, bool addScriptTag)
-        {
-            if (personalInfo != null)
+            var onfocus = "this.href='mailto:'+atob(this.dataset.contact)";
+            if (!string.IsNullOrEmpty(subject))
             {
-                var sb = new StringBuilder();
-                var chars = personalInfo.ToCharArray();
-                foreach (char chr in chars)
-                {
-                    sb.Append(((int)chr).ToString(CultureInfo.InvariantCulture));
-                    sb.Append(',');
-                }
-                if (sb.Length > 0)
-                {
-                    sb.Remove(sb.Length - 1, 1);
-                }
-                if (addScriptTag)
-                {
-                    var sbScript = new StringBuilder();
-                    sbScript.Append("<script type=\"text/javascript\">");
-                    sbScript.Append("document.write(String.fromCharCode(" + sb + "))");
-                    sbScript.Append("</script>");
-                    return sbScript.ToString();
-                }
-                return String.Format("document.write(String.fromCharCode({0}))", sb);
+                dataAttribs = dataAttribs + " data-subj='" + Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)) + "'";
+                onfocus = onfocus + "+'?subject=' + atob(this.dataset.subj || '')";
             }
-            return "";
+            var result = $"<a href='#' {dataAttribs} onfocus=\"{onfocus}\">{visibleText}{onload}</a>";
+            return result;
         }
-
         public static void DeleteSysFile(string filePathName)
         {
             try

@@ -1,13 +1,12 @@
 ﻿# AutoLogin
 
 ### Introduction
-This module allows a user from 1 portal to login automatically to another portal if there user exists on the new portal.  
+This module allows a user from 1 portal to login automatically to another portal if their user exists on the new portal.  
 
-The new portal MUST exist in the same DNN installation.  
+**The "login" portal MUST exist in the same DNN installation.**  
 
 ### Installation
-
-Move assembly "AutoLogin" to bin folder and then add to the web.config in "configuration/modules" of the installation.
+Add to the web.config in "configuration/modules" of the installation.
 
 ```
       <add name="AutoLogin" type="DNNrocketAPI.Components.AutoLogin, DNNrocketAPI" preCondition="managedHandler" />

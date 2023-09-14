@@ -82,7 +82,6 @@ namespace DNNrocketAPI.Components
                     var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
                     if (homeTabId >= 0)
                     {
-                        PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
                         ModuleUtils.DeleteAllTabModules(homeTabId);
                     }
                 }
@@ -129,7 +128,6 @@ namespace DNNrocketAPI.Components
                 var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
                 if (homeTabId >= 0)
                 {
-                    PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
                     ModuleUtils.DeleteAllTabModules(homeTabId);
                 }
             }

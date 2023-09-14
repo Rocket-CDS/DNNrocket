@@ -355,7 +355,6 @@
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\FileDownload.md" />
-    <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\JQueryValidation.md" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\ModuleTemplate.md" />

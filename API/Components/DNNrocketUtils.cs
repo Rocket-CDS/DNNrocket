@@ -506,16 +506,15 @@ namespace DNNrocketAPI.Components
         }
         public static void CreateDefaultRocketRoles(int portalId)
         {
-            CreateRole(portalId, DNNrocketRoles.ClientEditor);
+            CreateRole(portalId, DNNrocketRoles.Collaborator);
             CreateRole(portalId, DNNrocketRoles.Editor);
             CreateRole(portalId, DNNrocketRoles.Manager);
             CreateRole(portalId, DNNrocketRoles.Premium);
             CreateRole(portalId, DNNrocketRoles.Administrators);
-            CreateRole(portalId, DNNrocketRoles.RemoteAdmin);
         }
         public static bool DefaultRoleExist(int portalId)
         {
-            var role = RoleController.Instance.GetRoleByName(portalId, DNNrocketRoles.RemoteAdmin); // use RemoteAdmin, less likely to be created by another module.
+            var role = RoleController.Instance.GetRoleByName(portalId, DNNrocketRoles.Collaborator); // use Collaborator, less likely to be created by another module.
             if (role == null) return false;
             return true;
         }

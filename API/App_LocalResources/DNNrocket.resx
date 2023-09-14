@@ -957,4 +957,10 @@
   <data name="secureupload.Text" xml:space="preserve">
     <value>Secure Document Upload</value>
   </data>
+  <data name="from.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="to.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>
