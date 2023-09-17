@@ -682,7 +682,7 @@ namespace DNNrocketAPI.ApiControllers
                 paramInfo.SetXmlProperty("genxml/username", UserUtils.GetCurrentUserName());
                 paramInfo.SetXmlProperty("genxml/useremail", UserUtils.GetCurrentUserEmail());
                 paramInfo.SetXmlProperty("genxml/userhostaddress", HttpContext.Current.Request.UserHostAddress);                
-                var logincode = DNNrocketUtils.SetTempStorage(paramInfo);
+                var logincode = DNNrocketUtils.SetTempStorage(paramInfo,"",1);
                 var portalUrl = PortalUtils.DefaultPortalAlias(newportal);
                 return "http://" + portalUrl + "?autologin=" + logincode;
             }
