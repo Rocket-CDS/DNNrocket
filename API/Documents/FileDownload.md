@@ -43,27 +43,13 @@ The simplsity class event of "simplisity_filedownload" creates a URL to download
 
 *NOTE: This example is from RocketDirectory and must include "articleid" and "dockey".*
 
-### RocketDirectory
-
-The default server side code in RocketDirectory checks is the user is authorised.  If not, no download is done.  
-
-This functionality is controlled by the "secure documents" checkbox in the Admin Settings for the system.  Uploads will be given a secure name that cannot be downloaded by normal html links. (This assumes the IIS default settings for files.)  
-
-This functionlity stops and documents from being referenced by any search engine.  
-*NOTE: The "secure document" must be turned on before upload if you required secure documents.* 
-
-If public downloads are required for the entire site, you can uncheck the "secure documents" checkbox.
-
-You must use a **s-cmd="remote_publicdownload"** to get this functionality.
-
-If extra security is required then a plugin will need to be created.
-
 ## Important
 To make Simplisity file downloads work, you MUST implement the link within a html element within a “simplisity_panel” class.  
 Activate simplisity by the JS call to “StartUp” or a “single panel”.
 ```
 $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { "systemkey": "rocketdirectoryapi"});
 ```
+
 # Server Side
 Because the s-fields are added to the url as parameters you can therefore access those values on server-side code by using the “genxml/urlparams/***” xpath from the paramInfo SimplsityInfo class.  
 
@@ -83,7 +69,24 @@ rtnDic.Add("downloadname", articleDoc.Name);
 rtnDic.Add("downloadfiledata", "String Data");
 rtnDic.Add("downloadname", articleDoc.Name);
 ```
-### Example
+
+# RocketDirectory
+
+The default server side code in RocketDirectory checks is the user is authorised.  If not, no download is done.  
+
+This functionality is controlled by the "secure documents" checkbox in the Admin Settings for the system.  Uploads will be given a secure name that cannot be downloaded by normal html links. (This assumes the IIS default settings for files.)  
+
+This functionlity stops and documents from being referenced by any search engine.  
+*NOTE: The "secure document" must be turned on before upload if you required secure documents.* 
+
+If public downloads are required for the entire site, you can uncheck the "secure documents" checkbox.
+
+You must use a **s-cmd="remote_publicdownload"** to get this functionality.
+
+If extra security is required then a plugin will need to be created.
+
+
+Example:
 ```
 private Dictionary<string, object> DownloadArticleFile()
 {
@@ -105,4 +108,38 @@ private Dictionary<string, object> DownloadArticleFile()
     return rtnDic;
 }
 ```
+## InterfaceKey
+An interfacekey must also exist in the "system.rules" file.  The interfacekey name must match the command. Usually "remote", for public access with the security being done server side o the download API method.   
 
+Example:
+```
+      <genxml>
+        <textbox>
+          <interfacekey>remote</interfacekey>
+          <namespaceclass>RocketDirectoryAPI.API.StartConnect</namespaceclass>
+          <providernamespaceclass></providernamespaceclass>
+          <assembly>RocketDirectoryAPI</assembly>
+          <interfaceicon></interfaceicon>
+          <defaultcommand></defaultcommand>
+          <relpath>/DesktopModules/DNNrocketModules/RocketDirectoryAPI</relpath>
+        </textbox>
+        <providertype></providertype>
+        <dropdownlist>
+          <group></group>
+        </dropdownlist>
+        <checkbox>
+          <onmenu>false</onmenu>
+          <active>true</active>
+        </checkbox>
+        <radio>
+          <securityrolesadministrators>1</securityrolesadministrators>
+          <securityrolesmanager>1</securityrolesmanager>
+          <securityroleseditor>1</securityroleseditor>
+          <securityrolesclienteditor>1</securityrolesclienteditor>
+          <securityrolesregisteredusers>1</securityrolesregisteredusers>
+          <securityrolessubscribers>1</securityrolessubscribers>
+          <securityrolesall>1</securityrolesall>
+        </radio>
+      </genxml>
+
+```

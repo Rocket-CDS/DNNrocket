@@ -100,7 +100,7 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
-        [Obsolete("Use UploadBase64fileDict() instead")]
+        [Obsolete("Use UploadBase64fileDict() or UploadSecureBase64file() instead")]
         public static List<string> UploadBase64file(string[] filenameList, string[] filebase64List, string docFolderMapPath)
         {
             var rtn = new List<string>();

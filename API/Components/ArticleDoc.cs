@@ -83,7 +83,7 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                var rtn = Path.GetFileNameWithoutExtension(Name) + Extension;
+                var rtn = Path.GetFileNameWithoutExtension(FileUtils.RemoveInvalidFileChars(Name)) + FileUtils.RemoveInvalidFileChars(Extension);
                 return rtn;
             }
         }
