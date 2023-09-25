@@ -529,7 +529,7 @@
     <value>Chargement d'image</value>
   </data>
   <data name="articleimagelimit.Msg" xml:space="preserve">
-    <value>Le téléchargement de votre image pour cet article a été atteint.  Vous devez mettre à niveau si vous voulez ajouter plus d'images. !</value>
+    <value>Le nombre maximum d'images pour cet article a été atteint.</value>
   </data>
   <data name="articleimagelimit.Text" xml:space="preserve">
     <value>Limite d'image</value>
@@ -541,7 +541,7 @@
     <value>Limite de document</value>
   </data>
   <data name="documentupload.Msg" xml:space="preserve">
-    <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.) !</value>
+    <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.)</value>
   </data>
   <data name="documentupload.Text" xml:space="preserve">
     <value>Télécharger le document</value>
@@ -559,7 +559,7 @@
     <value>Isolé</value>
   </data>
   <data name="no.Text" xml:space="preserve">
-    <value>Non!</value>
+    <value>Non</value>
   </data>
   <data name="yes.Text" xml:space="preserve">
     <value>Oui</value>
@@ -613,7 +613,7 @@
     <value>Déverrouillé</value>
   </data>
   <data name="login.Text" xml:space="preserve">
-    <value>Connectez-vous!</value>
+    <value>Connectez-vous</value>
   </data>
   <data name="colortheme.Text" xml:space="preserve">
     <value>Thème de couleur</value>
@@ -946,6 +946,6 @@
     <value>Ajouter un contact</value>
   </data>
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
-    <value>Lien interne,Lien URL</value>
+    <value>Interne,URL</value>
   </data>
 </root>
