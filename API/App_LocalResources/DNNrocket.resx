@@ -916,7 +916,7 @@
     <value>Link</value>
   </data>
   <data name="linkrbl.Text" xml:space="preserve">
-    <value>None, Internal, URL/value>
+    <value>None, Internal, URL</value>
   </data>
   <data name="linktitle.Text" xml:space="preserve">
     <value>Link title</value>
