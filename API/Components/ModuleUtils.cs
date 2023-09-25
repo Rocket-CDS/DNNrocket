@@ -13,6 +13,11 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using System.Collections;
+using DotNetNuke.UI.UserControls;
+using System.Web.Security;
+using System.Reflection;
+using System.Web.UI.WebControls;
+using DotNetNuke.Security.Roles;
 
 namespace DNNrocketAPI.Components
 {
@@ -164,6 +169,38 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
+        public static void AddModuleEditRights(int tabId, int moduleId, string roleName)
+        {
+            //get the current ModuleInfo 
+            ModuleInfo newModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
+            if (newModule != null)
+            {
+                var roleInfo = DNNrocketUtils.GetRoleByName(newModule.PortalID, roleName);
+                if (roleInfo != null)
+                {
+
+                    //add admin edit permission
+                    ModulePermissionInfo modulePermissionInfo2 = new ModulePermissionInfo();
+                    modulePermissionInfo2.ModuleID = moduleId;
+                    modulePermissionInfo2.AllowAccess = true;
+                    //view permission id, 1 = view, 2 = edit
+                    modulePermissionInfo2.PermissionID = 2;
+                    //administrator role id (from Roles table in dnn database)
+                    modulePermissionInfo2.RoleID = roleInfo.RoleID;
+
+                    //add the ModulePermissionInfo to the module
+                    newModule.ModulePermissions.Add(modulePermissionInfo2);
+
+                    //save the permissions
+                    ModulePermissionController.SaveModulePermissions(newModule);
+
+                    //clear the dnn cache (if it is the current module, not a new one)
+                    DotNetNuke.Common.Utilities.DataCache.ClearModuleCache(tabId);
+                    DotNetNuke.Common.Utilities.DataCache.ClearTabsCache(newModule.PortalID);
+                    DotNetNuke.Common.Utilities.DataCache.ClearPortalCache(newModule.PortalID, false);
+                }
+            }
+        }
         public static bool HasModuleEditRights(int tabId, int moduleId)
         {
             try
@@ -227,7 +264,7 @@ namespace DNNrocketAPI.Components
             }
         }
 
-        public static void AddNewModuleToTab(int portalId, int tabId, string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
+        public static int AddNewModuleToTab(int portalId, int tabId, string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
             try
             {
@@ -261,8 +298,9 @@ namespace DNNrocketAPI.Components
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
-                ModuleController.Instance.AddModule(objModule);
+                return ModuleController.Instance.AddModule(objModule);
             }
+            return -1;
         }
 
         public static int GetDesktopModuleId(int portalId, string definitionName)

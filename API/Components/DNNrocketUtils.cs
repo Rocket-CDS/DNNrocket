@@ -539,13 +539,17 @@ namespace DNNrocketAPI.Components
                     objRoleInfo.IsPublic = isPublic;
                     objRoleInfo.AutoAssignment = isAuto;
                     objRoleInfo.Status = RoleStatus.Approved;
-                    RoleController.Instance.AddRole(objRoleInfo);
+                    RoleController.Instance.AddRole(objRoleInfo);                    
                 }
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
             }
+        }
+        public static RoleInfo GetRoleByName(int portalId, string roleName)
+        {
+            return RoleController.Instance.GetRoleByName(portalId, roleName);
         }
         public static void AddRoleToModule(int portalId, int moduleid, int roleid)
         {
