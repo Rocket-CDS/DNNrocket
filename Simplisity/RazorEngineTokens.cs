@@ -395,6 +395,7 @@ namespace Simplisity
         {
             var strOut = System.Web.HttpUtility.HtmlEncode(strIn);
             strOut = strOut.Replace(Environment.NewLine, "<br/>");
+            strOut = strOut.Replace("\n", "<br/>");  // for some reason the textbox returns unix char for newline.  (Maybe convert from json does it).
             strOut = strOut.Replace("\t", "&nbsp;&nbsp;&nbsp;");
             strOut = strOut.Replace("'", "&apos;");
             return new RawString(strOut);
