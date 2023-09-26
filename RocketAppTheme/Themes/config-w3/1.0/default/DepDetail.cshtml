@@ -27,8 +27,8 @@
 
 <div class="w3-row w3-padding">
 
-    <span class="w3-button w3-black  simplisity_click" s-return="#editmodalcontainer" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
-    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-return="#editmodalcontainer" s-cmd="rocketapptheme_savedepdata" s-post="" s-list=".deps" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-button w3-black  simplisity_click" s-return="#editmodalcontainer" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-return="#editmodalcontainer" s-cmd="rocketapptheme_savedepdata" s-post="" s-list=".deps" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
     @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
     {
         disableDelete = false;
@@ -48,7 +48,7 @@
     }
     @if (!disableDelete)
     {
-        <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-return="#editmodalcontainer" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
+        <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-return="#editmodalcontainer" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
     }
 
     @if (sessionParams.ModuleRef != "")
@@ -72,7 +72,7 @@
         <div class="w3-container">
             <div class="w3-display-container ">
 
-                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-return="#editmodalcontainer" s-cmd="rocketapptheme_adddepdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.add)</div>
+                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-return="#editmodalcontainer" s-cmd="rocketapptheme_adddepdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.add)</div>
 
                 <div class="w3-col m8 w3-center">
                     URL

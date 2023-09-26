@@ -24,9 +24,9 @@
 <div class="w3-row w3-padding">
     <div class="w3-margin-bottom w3-padding">
 
-        <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-return="#editmodalcontainer" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+        <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-return="#editmodalcontainer" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
 
-        <div class="w3-button w3-theme-action savebutton simplisity_click" s-before="saveeditordata"  s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-button w3-theme-action savebutton simplisity_click" s-before="saveeditordata" s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
         {
             disableDelete = false;
@@ -46,7 +46,7 @@
         }
         @if (!disableDelete)
         {
-            <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?"  s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
+            <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?"  s-return="#editmodalcontainer" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
         }
         @if (sessionParams.ModuleRef != "")
         {

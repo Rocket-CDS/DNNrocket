@@ -107,7 +107,7 @@
                                     <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
                                         @if (editRazor || templateDict.Key.EndsWith(".hbs"))
                                         {
-                                            <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                            <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         }
                                         &nbsp;
                                         @templateDict.Key
@@ -161,7 +161,7 @@
                                             <div class="w3-display-middle ">
                                                 <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@(appTheme.ImageFolderRel.TrimEnd('/') + "/" + imgDict.Key)&amp;w=80&amp;h=80" class="w3-round w3-hover-opacity">
                                             </div>
-                                            <div class="w3-display-topright simplisity_click" s-cmd="rocketapptheme_deleteimagefile" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@imgDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor: pointer;">
+                                            <div class="w3-display-topright simplisity_click" s-cmd="rocketapptheme_deleteimagefile" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@imgDict.Key","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor: pointer;">
                                                 @ButtonIcon(ButtonTypes.remove)
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                         <span class="w3-right">
@@ -240,7 +240,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                         <span class="w3-right">
@@ -272,7 +272,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                         <span class="w3-right">
@@ -300,7 +300,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_getdepdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_getdepdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                         <span class="w3-right">
