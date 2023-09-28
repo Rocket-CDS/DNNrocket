@@ -1,4 +1,5 @@
-﻿using RazorEngine;
+﻿using DotNetNuke.Web.DDRMenu;
+using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using Simplisity;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DNNrocketAPI.Components
@@ -19,14 +21,13 @@ namespace DNNrocketAPI.Components
 
         #region "render razor"
 
-        /// <summary>
-        /// render a razor template and return status.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="razorTempl"></param>
-        /// <param name="debugMode"></param>
-        /// <returns></returns>
+        [Obsolete("Use RazorProcessData(...) instead")]
         public static RazorProcessResult RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
+        {
+            return RazorProcessData(razorTempl, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+        }
+
+        private static RazorProcessResult RazorProcessRunCompile(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
         {
             var processResult = new RazorProcessResult();
             processResult.StatusCode = "00";
@@ -134,7 +135,7 @@ namespace DNNrocketAPI.Components
         }
 
 
-        [Obsolete("Use RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false) instead")]
+        [Obsolete("Use RazorProcessData(...) instead")]
         public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
         {
             var errorPath = "";
@@ -198,7 +199,7 @@ namespace DNNrocketAPI.Components
         /// <param name="model"></param>
         /// <param name="razorTempl"></param>
         /// <returns></returns>
-        [Obsolete("Use RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false) instead")]
+        [Obsolete("Use RazorProcessData(...) instead")]
         private static string RazorRunCompile(SimplisityRazor model, string razorTempl)
         {
             try
@@ -274,26 +275,29 @@ namespace DNNrocketAPI.Components
 
         #region "Unified RazorProcess"
 
+        public static RazorProcessResult RazorProcessData(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
+        {
+            return RazorProcessData(razorTempl, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+        }
         public static RazorProcessResult RazorProcessData(string razorTemplate, Dictionary<string, object> dataObjects, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             if (razorTemplate != "")
             {
+                if (settings == null) settings = new Dictionary<string, string>();
+                var sRazor = new SimplisityRazor();
+                sRazor.SessionParamsData = sessionParams;
+                sRazor.DataObjects = dataObjects;
+                sRazor.Settings = settings;
+
                 // The replacement INJECT works, but more thought is needed to deal with mismathcing varibles for razor model.
                 // NOTE: This idea was to try and speed up rendering when using multiple razor file.
-                //
-                //razorTemplate = ReplaceInjectTokens(razorTemplate);
-                
-                
-                if (settings == null) settings = new Dictionary<string, string>();
-                var nbRazor = new SimplisityRazor();
-                nbRazor.SessionParamsData = sessionParams;
-                nbRazor.DataObjects = dataObjects;
-                nbRazor.Settings = settings;
-                return RazorProcess(nbRazor, razorTemplate, debugmode);
+                razorTemplate = ReplaceInjectTokens(razorTemplate, sRazor);
+
+                return RazorProcessRunCompile(sRazor, razorTemplate, debugmode);
             }
             return new RazorProcessResult();
         }
-        private static string ReplaceInjectTokens(string templateData)
+        private static string ReplaceInjectTokens(string templateData, SimplisityRazor sRazor)
         {
             if (templateData.Contains("[INJECT:"))
             {
@@ -302,16 +306,24 @@ namespace DNNrocketAPI.Components
                 var tokenList = fr.GetTokenStrings();
                 foreach (var token in tokenList)
                 {
-                    var fileMapPath = DNNrocketUtils.MapPath(token);
-                    if (File.Exists(fileMapPath))
+                    var tokenSplit = token.Split(',');
+                    var datObjectName = tokenSplit[0];
+                    var templateName = tokenSplit[1];
+                    var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
+                    var injectTemplate = appTheme.GetTemplate(templateName);
+                    if (injectTemplate != "")
                     {
-                        string[] lines = File.ReadAllLines(fileMapPath);
-                        var result = lines.SkipWhile(x => x != "<!--START-->")  // skips everything before 
-                      .Skip(1)                           // and <!--START--> itself
-                      .TakeWhile(x => x != "<!--END-->") // and take up to </rs:data>
-                      .ToList();                         // as List<string>
+                        //remove top razor section.  search for '<!--inject-->' or for the  first '<div' and use that as the starting point for the inject template.
+                        var searchStr = "<!--inject-->";
+                        int startIndex = injectTemplate.IndexOf(searchStr);
+                        if (startIndex == -1)
+                            startIndex = injectTemplate.IndexOf("<div");
+                        else
+                            startIndex = startIndex + searchStr.Length;
 
-                       fr.Replace("[INJECT:" + token + "]", String.Concat(result));
+                        var rtn = "";
+                        if (startIndex > -1) rtn = injectTemplate.Substring(startIndex);
+                        fr.Replace("[INJECT:" + token + "]", rtn);
                     }
                 }
                 templateData  = fr.ToString();

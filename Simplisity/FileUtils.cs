@@ -171,7 +171,8 @@ namespace Simplisity
             lines.Add(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage);
 
             // Turn off write, we are getting some race conditions and I think this slows DNN>
-            //File.AppendAllLines(logfilename, lines);
+            // UPDATE: Turned it back on, I could not see a big difference in speed.
+            File.AppendAllLines(logfilename, lines);
         }
 
         public static bool CompareAreSame(string fileMapPath1, string fileMapPath2)

@@ -10,6 +10,8 @@
     var portalData = (PortalLimpet)Model.List.First();
 }
 
+<!--inject-->
+
 <div class="w3-row w3-margin-top">
     <div class="w3-bar">
         <div class="w3-bar-item w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_addmanager" s-fields='{"portalid":"@(portalData.PortalId)"}'>@ButtonIcon(ButtonTypes.add)</div>

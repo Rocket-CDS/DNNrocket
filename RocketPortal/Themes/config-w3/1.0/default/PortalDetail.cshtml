@@ -10,9 +10,11 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
-    var portalData = (PortalLimpet)Model.List.First();
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var info = new SimplisityInfo(portalData.Record);
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var systemDataList = new SystemLimpetList();
+    var systemList = systemDataList.GetSystemActiveList();
 
     var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
     var edittextbox = "disabled";
@@ -21,6 +23,8 @@
         edittextbox = "";
     }
 }
+
+[INJECT:appthemesystem,popups.cshtml]
 
 <div id="portaltab" class=" a-portaldata">
 
@@ -100,20 +104,18 @@
         </div>
     </div>
 
-    <div id="systemdata" class="w3-row w3-padding" >
-        @RenderTemplate("PortalSystems.cshtml", appThemeSystem, Model, true)
+    <div id="systemdata" class="w3-row w3-padding" >       
+        [INJECT:appthemesystem,PortalSystems.cshtml]
     </div>
 
 
     <div id="managerdata" class="w3-row w3-padding" style="display:none;">
-        @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model, true)
+        [INJECT:appthemesystem,PortalUsers.cshtml]
     </div>
 
     <div id="setupdata" class="w3-row w3-padding">
 
     </div>
-
-
 
 </div>
 

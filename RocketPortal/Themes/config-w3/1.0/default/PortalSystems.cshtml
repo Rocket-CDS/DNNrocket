@@ -7,13 +7,13 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
-    var portalData = (PortalLimpet)Model.List.First();
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var info = new SimplisityInfo(portalData.Record);
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemActiveList();
     var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
 }
-
+<!--inject-->
 <div class="w3-row w3-margin-top">
 
     <table class="w3-table w3-bordered ">

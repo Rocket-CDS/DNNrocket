@@ -218,7 +218,9 @@ namespace DNNrocketAPI.render
         public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
         {
             var strOut = "";
-            var pr = RenderRazorUtils.RazorProcess(model, razorTemplate, debugMode);
+            //var pr = RenderRazorUtils.RazorProcess(model, razorTemplate, debugMode);
+            var pr = RenderRazorUtils.RazorProcessData(razorTemplate, model.List.First(), model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+            
             if (pr.StatusCode == "00")
                 strOut = pr.RenderedText;
             else
