@@ -8,11 +8,12 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
 
 @{
-    var appTheme = (AppThemeLimpet)Model.List.First();
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
     var sessionParam = Model.SessionParamsData;
-    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
 }
+
 
 <div class="w3-container">
     <div class="w3-bar  w3-padding w3-margin-top">

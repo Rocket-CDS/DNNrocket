@@ -9,10 +9,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
 
 @{
-    var sessionParams = Model.SessionParamsData;
-    var appThemeList = (AppThemeDataList)Model.List.First();
-    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-    var appThemeProjectData = new AppThemeProjectLimpet();
+    var sessionParam = Model.SessionParamsData;
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
+    var appThemeProjectData = (AppThemeProjectLimpet)Model.GetDataObject("appthemeprojects");
 
     var selectedProject = sessionParams.Get("selectedproject");
     if (selectedProject == "" && appThemeProjectData.ActiveList().Count > 0)
@@ -62,14 +62,14 @@
                     <th>@ResourceKey("AppThemes.lastupdate")</th>
                 </tr>
             </thead>
-            @foreach (AppThemeLimpet appTheme in projectThemeList)
+            @foreach (AppThemeLimpet appTheme2 in projectThemeList)
             {
                 <tr class="searchdiv">
                     <td>
-                        <div class="w3-tiny">@appTheme.SystemKey</div>
-                        <b>@appTheme.Name</b>
+                        <div class="w3-tiny">@appTheme2.SystemKey</div>
+                        <b>@appTheme2.Name</b>
                     </td>
-                    <td>@appTheme.LastUpdated</td>
+                    <td>@appTheme2.LastUpdated</td>
                 </tr>
             }
         </table>

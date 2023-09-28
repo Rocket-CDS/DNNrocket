@@ -277,9 +277,13 @@ namespace DNNrocketAPI.Components
 
         public static RazorProcessResult RazorProcessData(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
         {
-            return RazorProcessData(razorTempl, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+            return RazorProcessData(razorTempl, model.List, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
         }
         public static RazorProcessResult RazorProcessData(string razorTemplate, Dictionary<string, object> dataObjects, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
+        {
+            return RazorProcessData(razorTemplate, null, dataObjects, settings, sessionParams, debugmode);
+        }
+        public static RazorProcessResult RazorProcessData(string razorTemplate, List<object> modelList, Dictionary<string, object> dataObjects, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             if (razorTemplate != "")
             {
@@ -288,6 +292,7 @@ namespace DNNrocketAPI.Components
                 sRazor.SessionParamsData = sessionParams;
                 sRazor.DataObjects = dataObjects;
                 sRazor.Settings = settings;
+                sRazor.List = modelList;
 
                 // The replacement INJECT works, but more thought is needed to deal with mismathcing varibles for razor model.
                 // NOTE: This idea was to try and speed up rendering when using multiple razor file.

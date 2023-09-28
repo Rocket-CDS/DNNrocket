@@ -10,9 +10,9 @@
 
 @{
     var sessionParams = Model.SessionParamsData;
-    var appThemeList = (AppThemeDataList)Model.List.First();
-    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-    var appThemeProjectData = new AppThemeProjectLimpet();
+    var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var appThemeProjectData = (AppThemeProjectLimpet)Model.GetDataObject("appthemeprojects");
+    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
 
     var selectedProject = sessionParams.Get("selectedproject");
     if (selectedProject == "" && appThemeProjectData.ActiveList().Count > 0)
@@ -35,8 +35,6 @@
     }
 
 }
-
-<h1>EditList.cshtml</h1>
 
 @RenderTemplate("Popups.cshtml", systemAppTheme, Model, true)
 

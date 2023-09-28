@@ -11,11 +11,13 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
 
 @{
-    var appTheme = (AppThemeLimpet)Model.List.First();
-    var resxData = (ResxData)Model.DataObjects["resxData"];
-    var disableDelete = true;
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
     var sessionParams = Model.SessionParamsData;
-    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+    var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+
+    var resxData = (ResxData)Model.GetDataObject("resxData");
+    var disableDelete = true;
 
     var flagurl = "";
     if (resxData.CultureCode != "")

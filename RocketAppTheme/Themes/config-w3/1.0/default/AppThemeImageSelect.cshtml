@@ -8,7 +8,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
 
 @{
-    var appTheme = (AppThemeLimpet)Model.List.First();
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
 }
 
 <div id="appthemeimageselect" class="w3-modal">
