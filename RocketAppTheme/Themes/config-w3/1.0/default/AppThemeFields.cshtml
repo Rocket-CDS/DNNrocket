@@ -14,7 +14,11 @@
     var sessionParam = Model.SessionParamsData;
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+}
 
+<!--inject-->
+
+@{
     var dataDic = new Dictionary<string, string>();
     if (appTheme != null)
     {
@@ -173,8 +177,8 @@
                             }
                         </ul>
                     </div>
-
-                    @RenderTemplate("AppThemeImageSelect.cshtml", systemAppTheme, Model, true)
+                    
+                    [INJECT:appthemesystem,AppThemeImageSelect.cshtml]
 
                 </div>
 

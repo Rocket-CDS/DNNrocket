@@ -302,33 +302,47 @@ namespace DNNrocketAPI.Components
             }
             return new RazorProcessResult();
         }
-        private static string ReplaceInjectTokens(string templateData, SimplisityRazor sRazor)
+        private static string ReplaceInjectTokens(string templateData, SimplisityRazor sRazor, List<string> templateList = null)
         {
             if (templateData.Contains("[INJECT:"))
             {
+                if (templateList == null) templateList = new List<string>();
                 FastReplacer fr = new FastReplacer("[INJECT:", "]", false);
                 fr.Append(templateData);
                 var tokenList = fr.GetTokenStrings();
                 foreach (var token in tokenList)
                 {
-                    var tokenSplit = token.Split(',');
-                    var datObjectName = tokenSplit[0];
-                    var templateName = tokenSplit[1];
-                    var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
-                    var injectTemplate = appTheme.GetTemplate(templateName);
-                    if (injectTemplate != "")
+                    if (templateList.Contains(token))
                     {
-                        //remove top razor section.  search for '<!--inject-->' or for the  first '<div' and use that as the starting point for the inject template.
-                        var searchStr = "<!--inject-->";
-                        int startIndex = injectTemplate.IndexOf(searchStr);
-                        if (startIndex == -1)
-                            startIndex = injectTemplate.IndexOf("<div");
-                        else
-                            startIndex = startIndex + searchStr.Length;
+                        return "<div style='color:red;background-color:white'>ERROR: Circular reference to a template. [" + token + "]</div>";
+                    }
+                    else
+                    {
+                        templateList.Add(token);
+                        var tokenSplit = token.Split(',');
+                        var datObjectName = tokenSplit[0];
+                        var templateName = tokenSplit[1];
+                        var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
+                        if (appTheme != null)
+                        {
+                            var injectTemplate = appTheme.GetTemplate(templateName);
+                            if (injectTemplate != "")
+                            {
+                                injectTemplate = ReplaceInjectTokens(injectTemplate, sRazor, templateList);
 
-                        var rtn = "";
-                        if (startIndex > -1) rtn = injectTemplate.Substring(startIndex);
-                        fr.Replace("[INJECT:" + token + "]", rtn);
+                                //remove top razor section.  search for '<!--inject-->' or for the  first '<div' and use that as the starting point for the inject template.
+                                var searchStr = "<!--inject-->";
+                                int startIndex = injectTemplate.IndexOf(searchStr);
+                                if (startIndex == -1)
+                                    startIndex = injectTemplate.IndexOf("<div");
+                                else
+                                    startIndex = startIndex + searchStr.Length;
+
+                                var rtn = "";
+                                if (startIndex > -1) rtn = injectTemplate.Substring(startIndex);
+                                fr.Replace("[INJECT:" + token + "]", rtn);
+                            }
+                        }
                     }
                 }
                 templateData  = fr.ToString();
