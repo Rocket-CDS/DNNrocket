@@ -353,7 +353,7 @@ namespace DNNrocketAPI.Components
                 var nbRazor = new SimplisityRazor(objList, settings);
                 nbRazor.SessionParamsData = sessionParams;
                 nbRazor.DataObjects = dataObjects;
-                return RenderRazorUtils.RazorProcess(nbRazor, razorTemplate, debugmode);
+                return RenderRazorUtils.RazorProcessData(nbRazor, razorTemplate, debugmode);
             }
             return new RazorProcessResult();
         }

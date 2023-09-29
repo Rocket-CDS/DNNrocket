@@ -219,7 +219,9 @@ namespace DNNrocketAPI.render
         {
             var strOut = "";
             //var pr = RenderRazorUtils.RazorProcess(model, razorTemplate, debugMode);
-            var pr = RenderRazorUtils.RazorProcessData(razorTemplate, model.List.First(), model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+            object obj = null;
+            if (model.List != null && model.List.Count > 0) obj = model.List.First();
+            var pr = RenderRazorUtils.RazorProcessData(razorTemplate, obj, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
             
             if (pr.StatusCode == "00")
                 strOut = pr.RenderedText;
