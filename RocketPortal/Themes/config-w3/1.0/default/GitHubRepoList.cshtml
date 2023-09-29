@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
-    var appThemeProjctData = (AppThemeProjectLimpet)Model.List.First();
+    var appThemeProjectData = (AppThemeProjectLimpet)Model.GetDataObject("appthemeprojects");
     var lp3 = 1;
 }
 
@@ -31,7 +31,7 @@
                     <th style="width:64px;"></th>
                 </tr>
             </thead>
-            @foreach (SimplisityRecord r in appThemeProjctData.List)
+            @foreach (SimplisityRecord r in appThemeProjectData.List)
             {
         <tr class="appthemeprojects">
             <td>

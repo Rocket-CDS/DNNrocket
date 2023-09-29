@@ -3,6 +3,7 @@ using Rocket.AppThemes.Components;
 using RocketPortal.Components;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace RocketPortal.API
@@ -14,8 +15,9 @@ namespace RocketPortal.API
         {
             var orgData = new AppThemeProjectLimpet();
             var razorTempl = _appThemeSystem.GetTemplate("GitHubRepoList.cshtml");
+            _dataObjects.Add("appthemeprojects", orgData);
 
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, orgData, null, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
