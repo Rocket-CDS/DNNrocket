@@ -135,12 +135,6 @@ namespace DNNrocket.AppThemes
                                 strOut = DeleteImageFile();
                                 break;
 
-                            case "rocketapptheme_downloadgithub":
-                                var folderExists = false;
-                                AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), PortalUtils.DNNrocketThemesDirectoryMapPath());
-                                if (!folderExists) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
-                                strOut = GetAppStoreList();
-                                break;
 
                             case "rocketapptheme_versionjson":
                                 strOut = "";
@@ -475,7 +469,7 @@ namespace DNNrocket.AppThemes
         public string DownloadAppThemes()
         {
             _dataObject.AppThemeProjects.DownloadGitHubProject(_dataObject.AppTheme.ProjectName);
-            return GetAppStoreList();
+            return GetEditList();
         }
         private Dictionary<string, object> ExportAppTheme()
         {

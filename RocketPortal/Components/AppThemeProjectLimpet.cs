@@ -192,74 +192,66 @@ namespace Rocket.AppThemes.Components
             }
             return rtn;
         }
+
         public void DownloadGitHubProject(string projectName)
         {
+            var githubToken = GitHubToken(projectName);
             var projectThemeUrl = ProjectUrl(projectName);
-            DownloadRepoFromGitHub(projectName, projectThemeUrl.ToLower().Replace(".git","") + "/archive/refs/heads/main.zip", GitHubToken(projectName));
-            CacheUtils.ClearAllCache();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="projectThemeUrl"></param>
-        private void DownloadRepoFromGitHub(string projectName, string projectThemeUrl, string githubToken)
-        {
-            var downloadFolderMapPath = PortalUtils.TempDirectoryMapPath();
-            var zFile = downloadFolderMapPath + "\\main.zip";
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    //client.Headers.Add(HttpRequestHeader.UserAgent, "RocketCDS/1.0.0");
-                    client.Headers.Add("user-agent", "request");
-                    client.Headers.Add(HttpRequestHeader.Accept, "*/*");
-                    client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate, br");
-                    if (githubToken != "") client.Headers.Add(HttpRequestHeader.Authorization, "token " + githubToken);
-                    // [TODO:  THIS DOES NOT WORK WHEN THE REPO IS PRIVATE]
-                    // 7+ hours in C#, no solution.  Only 404 error eveytime.
-                    client.DownloadFile("https://github.com/rocket-cds/" + projectName + "/archive/refs/heads/main.zip", zFile);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-            }
+            projectThemeUrl = projectThemeUrl.ToLower().Replace(".git", "") + "/archive/refs/heads/main.zip";
 
-            // unzip
-            var extractDir = downloadFolderMapPath.TrimEnd('\\') + "\\Temp";
-            if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
-            Directory.CreateDirectory(extractDir);
-            DNNrocketUtils.ExtractZipFolder(downloadFolderMapPath + "\\main.zip", extractDir, true);
-            // check for correct folder and move to AppTheme. (3rd level)
-            foreach (var d in Directory.GetDirectories(extractDir))
+            using (var client = new System.Net.Http.HttpClient())
             {
-                foreach (var d2 in Directory.GetDirectories(d))
+                var zFile = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + projectName + "_main.zip";
+                var credentials = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}:", githubToken);
+                credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(credentials));
+                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", githubToken);
+                var contents = client.GetByteArrayAsync(projectThemeUrl).Result;
+                System.IO.File.WriteAllBytes(zFile, contents);
+
+                // unzip
+                var extractDir = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\TempExtractDir";
+                if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
+                Directory.CreateDirectory(extractDir);
+                DNNrocketUtils.ExtractZipFolder(zFile, extractDir, true);
+                // check for correct folder and move to AppTheme. (3rd level)
+                foreach (var d in Directory.GetDirectories(extractDir))
                 {
-                    string dirName = new DirectoryInfo(d2).Name;
-                    if (dirName != "")
+                    foreach (var d2 in Directory.GetDirectories(d))
                     {
-                        try
+                        string dirName = new DirectoryInfo(d2).Name;
+                        if (dirName != "")
                         {
-                            var rDir = d + "\\" + dirName;
-                            var dest = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName + "\\" + dirName);
-                            var destRoot = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName);
-                            if (!Directory.Exists(destRoot)) Directory.CreateDirectory(destRoot);
-                            if (Directory.Exists(dest)) Directory.Delete(dest, true);
-                            Directory.Move(rDir, dest);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogUtils.LogException(ex);
-                            LogUtils.LogSystem("ERROR: " + ex.ToString());
+                            try
+                            {
+                                var rDir = d + "\\" + dirName;
+                                var dest = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName + "\\" + dirName);
+                                var destRoot = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName);
+                                if (!Directory.Exists(destRoot)) Directory.CreateDirectory(destRoot);
+                                if (Directory.Exists(dest)) Directory.Delete(dest, true);
+                                Directory.Move(rDir, dest);
+                            }
+                            catch (Exception ex)
+                            {
+                                LogUtils.LogException(ex);
+                                LogUtils.LogSystem("ERROR: " + ex.ToString());
+                            }
                         }
                     }
                 }
-            }
-            //delete temp files.
-            if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
-            if (File.Exists(zFile)) File.Delete(zFile);
-        }
 
+                //delete temp files.
+                if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
+                if (File.Exists(zFile))
+                {
+                    File.Delete(zFile);
+                    DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
+                }
+                CacheUtils.ClearAllCache();
+
+            }
+
+        }
 
         public List<SimplisityRecord> List { get { return Record.GetRecordList(_listName); } }
 
