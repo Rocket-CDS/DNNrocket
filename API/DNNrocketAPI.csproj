@@ -358,6 +358,7 @@
     <None Include="Documents\JQueryValidation.md" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\ModuleTemplate.md" />
+    <None Include="Documents\PartialAndSharedTemplates.md" />
     <None Include="Documents\SystemDefaults.md" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
