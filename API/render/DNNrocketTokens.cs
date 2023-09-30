@@ -264,7 +264,7 @@ namespace DNNrocketAPI.render
             var nbRazor = new SimplisityRazor(info);
             var strOut = "";
             nbRazor.SetSetting("xmlidx", xmlidx);
-            var pr = RenderRazorUtils.RazorProcess(nbRazor, razorTempl, true);
+            var pr = RenderRazorUtils.RazorProcessData(nbRazor, razorTempl, true);
             strOut = pr.RenderedText;
             return new RawString(strOut);
         }
