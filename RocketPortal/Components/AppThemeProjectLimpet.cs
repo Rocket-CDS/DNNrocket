@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
@@ -51,6 +52,9 @@ namespace Rocket.AppThemes.Components
                 }
                 Update();
             }
+            var themeRoot = DNNrocketUtils.MapPath(_rocketThemesPath);
+            if (!Directory.Exists(themeRoot)) Directory.CreateDirectory(themeRoot);
+
         }
         public void Delete()
         {
@@ -195,6 +199,8 @@ namespace Rocket.AppThemes.Components
 
         public void DownloadGitHubProject(string projectName)
         {
+            LogUtils.LogSystem("DownloadGitHubProject: " + projectName + " - START");
+
             var githubToken = GitHubToken(projectName);
             var projectThemeUrl = ProjectUrl(projectName);
             projectThemeUrl = projectThemeUrl.ToLower().Replace(".git", "") + "/archive/refs/heads/main.zip";
@@ -208,12 +214,18 @@ namespace Rocket.AppThemes.Components
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", githubToken);
                 var contents = client.GetByteArrayAsync(projectThemeUrl).Result;
                 System.IO.File.WriteAllBytes(zFile, contents);
+                LogUtils.LogSystem("Download: " + zFile);
 
                 // unzip
                 var extractDir = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\TempExtractDir";
                 if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
                 Directory.CreateDirectory(extractDir);
                 DNNrocketUtils.ExtractZipFolder(zFile, extractDir, true);
+
+                //check for project folder.
+                var destRoot = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName);
+                if (!Directory.Exists(destRoot)) Directory.CreateDirectory(destRoot);
+
                 // check for correct folder and move to AppTheme. (3rd level)
                 foreach (var d in Directory.GetDirectories(extractDir))
                 {
@@ -226,10 +238,10 @@ namespace Rocket.AppThemes.Components
                             {
                                 var rDir = d + "\\" + dirName;
                                 var dest = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName + "\\" + dirName);
-                                var destRoot = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName);
-                                if (!Directory.Exists(destRoot)) Directory.CreateDirectory(destRoot);
-                                if (Directory.Exists(dest)) Directory.Delete(dest, true);
+                                if (Directory.Exists(dest)) Directory.CreateDirectory(dest);
+                                Directory.Delete(dest, true);
                                 Directory.Move(rDir, dest);
+                                LogUtils.LogSystem("MOVE: "  + rDir + " --> " + dest);
                             }
                             catch (Exception ex)
                             {
@@ -239,15 +251,17 @@ namespace Rocket.AppThemes.Components
                         }
                     }
                 }
+                LogUtils.LogSystem("DownloadGitHubProject: " + projectName + " - END");
 
                 //delete temp files.
+                CacheUtils.ClearAllCache();
                 if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
                 if (File.Exists(zFile))
                 {
+                    LogUtils.LogSystem("RecycleApplicationPool");
                     File.Delete(zFile);
                     DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
                 }
-                CacheUtils.ClearAllCache();
 
             }
 
