@@ -240,6 +240,10 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId);
         }
+        public static string NavigateURL()
+        {
+            return Globals.NavigateURL();
+        }
         public static string NavigateURL(int tabId, string controlKey = "", string[] param = null)
         {
             if (param == null) param = new string[0];

@@ -117,11 +117,17 @@ namespace DNNrocketAPI.ApiControllers
                 else
                 {
                     paramInfo.AddXmlNode(sRec.XMLData, sRec.RootNodeName, paramInfo.RootNodeName);
-                    paramCmd = sRec.GetXmlProperty("genxml/cmd");
-                    var systemkey = sRec.GetXmlProperty("genxml/systemkey");
-                    var interfacekey = sRec.GetXmlProperty("genxml/interfacekey");
+                    paramCmd = sRec.GetXmlProperty("genxml/data/cmd");
+                    var systemkey = sRec.GetXmlProperty("genxml/data/systemkey");
+                    var interfacekey = sRec.GetXmlProperty("genxml/data/interfacekey");
                     var systemData = SystemSingleton.Instance(systemkey);
                     var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+
+                    foreach (var d in sRec.ToDictionary())
+                    {
+                        paramInfo.SetXmlProperty("genxml/data/" + d.Key, d.Value);
+                    }
+
                     rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
                 }
             }
