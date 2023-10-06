@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 using static DotNetNuke.Common.Globals;
+using DotNetNuke.Abstractions.Portals;
 
 namespace DNNrocketAPI.Components
 {
@@ -436,6 +437,7 @@ namespace DNNrocketAPI.Components
             {
                 if (pa.Value.PortalID == portalId)
                 {
+                    if (String.IsNullOrEmpty(portalalias)) portalalias = pa.Key;
                     if (pa.Value.IsPrimary)
                     {
                         if (cultureCode == "" || pa.Value.CultureCode == cultureCode)
