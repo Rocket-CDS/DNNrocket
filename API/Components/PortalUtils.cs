@@ -44,14 +44,15 @@ namespace DNNrocketAPI.Components
             var portal = GetPortal(portalId);
             PortalController.DeletePortal(portal, "");
         }
-        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal")
+        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal", string cultureCode = "en-US")
         {
             if (userId <= 0) userId = UserUtils.GetCurrentUserId();
             var serverPath = "";
             var childPath = "";
             var keyWords = "";
             var homeDirectory = "";
-            var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
+            //var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
+            var template = new DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), cultureCode);
             var isChild = false;
 
             //Create Portal
