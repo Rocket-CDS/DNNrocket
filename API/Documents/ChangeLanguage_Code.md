@@ -81,6 +81,8 @@ Example...
 - **s-reload="true"** reloads the page, so we see the new language.
 - **s-return="#languagereturn"** returns the data (not relivant) to page area.  This area will usually not exist, it is normally only specified to stop the screen flashing.  
 
+NOTE: s-cmd="changeculture" also exists to change the current langauge.
+
 ## How it works
 
 - When a selector language is clicked a simplisity call to the server is made.  This call returns the cookie with the selected language.  
