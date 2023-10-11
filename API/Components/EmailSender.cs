@@ -30,7 +30,7 @@ namespace DNNrocketAPI.Components
                     razorTempl = appthemeSystem.GetTemplate(EmailData.RazorTemplateName);
                 }
 
-                var pr = RenderRazorUtils.RazorProcess(EmailData.Model, razorTempl, false);
+                var pr = RenderRazorUtils.RazorProcessData(EmailData.Model, razorTempl, false);
                 if (pr.IsValid)
                     EmailData.EmailBody = pr.RenderedText;
                 else
