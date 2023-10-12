@@ -432,22 +432,24 @@ namespace DNNrocketAPI.Components
         }
         public static string DefaultPortalAlias(int portalId, string cultureCode)
         {
-            var portalalias = PortalSettings.Current.DefaultPortalAlias;
+            if (portalId < 0) portalId = GetPortalId();
+            //var portalalias = PortalSettings.Current.DefaultPortalAlias; // legancy, not used in DNN now.
+            var portalalias = "";
             var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
             foreach (var pa in padic)
             {
                 if (pa.Value.PortalID == portalId)
                 {
-                    if (String.IsNullOrEmpty(portalalias)) portalalias = pa.Key;
                     if (pa.Value.IsPrimary)
                     {
-                        if (cultureCode == "" || pa.Value.CultureCode == cultureCode)
+                        if (pa.Value.CultureCode == cultureCode)
                         {
                             portalalias = pa.Key;
                         }
                     }
                 }
             }
+            if (String.IsNullOrEmpty(portalalias)) portalalias = padic.First().Key;
             return portalalias;
         }
 
