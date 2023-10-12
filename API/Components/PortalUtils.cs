@@ -30,6 +30,7 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 using static DotNetNuke.Common.Globals;
 using DotNetNuke.Abstractions.Portals;
+using System.Runtime.Remoting.Messaging;
 
 namespace DNNrocketAPI.Components
 {
@@ -433,23 +434,23 @@ namespace DNNrocketAPI.Components
         public static string DefaultPortalAlias(int portalId, string cultureCode)
         {
             if (portalId < 0) portalId = GetPortalId();
-            //var portalalias = PortalSettings.Current.DefaultPortalAlias; // legancy, not used in DNN now.
             var portalalias = "";
-            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
-            foreach (var pa in padic)
+            var objCtrl = new DNNrocketController();
+            var cmd = "SELECT HTTPAlias, isnull(CultureCode,'') as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE IsPrimary = 1 and portalid = " + portalId + "  for xml raw";
+            var xmlList = objCtrl.ExecSqlXmlList(cmd);
+            if (xmlList.Count > 0)
             {
-                if (pa.Value.PortalID == portalId)
+                foreach(SimplisityRecord x in xmlList)
                 {
-                    if (pa.Value.IsPrimary)
+                    var a = x.GetXmlProperty("row/@HTTPAlias");
+                    var cc = x.GetXmlProperty("row/@CultureCode");
+                    if (cc == cultureCode)
                     {
-                        if (pa.Value.CultureCode == cultureCode)
-                        {
-                            portalalias = pa.Key;
-                        }
+                        portalalias = a;
                     }
                 }
             }
-            if (String.IsNullOrEmpty(portalalias)) portalalias = padic.First().Key;
+            if (String.IsNullOrEmpty(portalalias)) portalalias = PortalSettings.Current.DefaultPortalAlias;
             return portalalias;
         }
 
