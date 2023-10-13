@@ -351,7 +351,7 @@
                         var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
                         foreach (var l in enabledlanguages)
                         {
-                            <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='//@(portalData.EngineUrl)/@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                            <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='//@(portalData.DefaultUrl)/@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
                         }
                     }
                 </div>
@@ -476,7 +476,7 @@
                 <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
 
                 <div class="w3-col m3 w3-center">
-                    <image id="resxflag" src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
+                    <image id="resxflag" src="//@(portalData.DefaultUrl)/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
                     <span id="culturecoderesx"></span>
                 </div>
 
