@@ -125,35 +125,29 @@ namespace RocketPortal.Components
 
         public void Validate()
         {
-            if (EngineUrl == "")
-            {
-                var dpa = PortalUtils.DefaultPortalAlias(PortalId);
-                EngineUrl = dpa;
-            }
-
-            EngineUrl = EngineUrl.ToLower(); // only allow lowercase
         }
         private void UpdatePortalAlias()
         {
-            if (EngineUrl != "")
+            if (DefaultUrl != "")
             {
+                var storeDefaultUrl = DefaultUrl;
                 var cultureList = DNNrocketUtils.GetCultureCodeList(PortalId);
 
                 // delete ALL portal Alias with this Engine URL.  (Overkill, but tracking which to delete is awkward.  It needs to be on url and culture.)
                 var pAlias = PortalUtils.GetPortalAliasesWithCultureCode(_portalId);
                 foreach (var pa in pAlias)
                 {
-                    if (pa.Key.StartsWith(EngineUrl)) PortalUtils.DeletePortalAlias(_portalId, pa.Key);
+                    if (pa.Key.StartsWith(DefaultUrl)) PortalUtils.DeletePortalAlias(_portalId, pa.Key);
                 }
 
                 // Add root domain url
-                PortalUtils.AddPortalAlias(_portalId, EngineUrl, "");
+                PortalUtils.AddPortalAlias(_portalId, storeDefaultUrl, "");
 
                 if (cultureList.Count > 1) // use root domain for only 1 langauge.
                 {
                     foreach (var cultureCode in cultureList)
                     {
-                        PortalUtils.AddPortalAlias(_portalId, EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
+                        PortalUtils.AddPortalAlias(_portalId, storeDefaultUrl + "/" + cultureCode.ToLower(), cultureCode);
                     }
                 }
 
@@ -161,7 +155,7 @@ namespace RocketPortal.Components
                 pAlias = PortalUtils.GetPortalAliasesWithCultureCode(_portalId);
                 foreach (var pa in pAlias)
                 {
-                    if (pa.Key.StartsWith(EngineUrl)) PortalUtils.SetPrimaryPortalAlias(_portalId, pa.Key);
+                    if (pa.Key.StartsWith(storeDefaultUrl)) PortalUtils.SetPrimaryPortalAlias(_portalId, pa.Key);
                 }
             }
         }
@@ -284,9 +278,9 @@ namespace RocketPortal.Components
         public SimplisityRecord Record { get; set; }
         public int PortalId { get { return Record.PortalId; } }
         public string Protocol { get { var rtn = Record.GetXmlProperty("genxml/select/protocol"); if (rtn == "") rtn = "https://"; return rtn; } }
-        public string EngineUrl { get { return Record.GetXmlProperty("genxml/textbox/engineurl"); } set { Record.SetXmlProperty("genxml/textbox/engineurl", value); } }
+        public string DefaultUrl { get { return PortalUtils.DefaultPortalAlias(PortalId); } } 
         public string Name { get { return PortalUtils.GetPortalName(PortalId); } }
-        public string EngineUrlWithProtocol { get { return Protocol + EngineUrl; } }
+        public string EngineUrlWithProtocol { get { return Protocol + DefaultUrl; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
         public DateTime LastSchedulerTime
         {

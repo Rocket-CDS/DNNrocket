@@ -53,7 +53,6 @@ namespace RocketPortal.API
                         buildconfig.XMLData = xmlData;
                         portalData.Record.SetXmlProperty("genxml/portaltype", buildconfig.GetXmlProperty("genxml/type"));
                     }
-                    portalData.EngineUrl = engineurl;
                     portalData.Update();
 
                     PortalUtils.BuildPortal(portalid, portalAdminUserId, buildconfigfile);

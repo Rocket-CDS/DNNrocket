@@ -436,7 +436,7 @@ namespace DNNrocketAPI.Components
             if (portalId < 0) portalId = GetPortalId();
             var portalalias = "";
             var objCtrl = new DNNrocketController();
-            var cmd = "SELECT HTTPAlias, isnull(CultureCode,'') as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE IsPrimary = 1 and portalid = " + portalId + "  for xml raw";
+            var cmd = "SELECT HTTPAlias, isnull(CultureCode,'') as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE portalid = " + portalId + "  for xml raw";
             var xmlList = objCtrl.ExecSqlXmlList(cmd);
             if (xmlList.Count > 0)
             {
