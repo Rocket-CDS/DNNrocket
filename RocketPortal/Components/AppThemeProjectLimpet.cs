@@ -238,7 +238,7 @@ namespace Rocket.AppThemes.Components
                             {
                                 var rDir = d + "\\" + dirName;
                                 var dest = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName + "\\" + dirName);
-                                if (Directory.Exists(dest)) Directory.CreateDirectory(dest);
+                                if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
                                 Directory.Delete(dest, true);
                                 Directory.Move(rDir, dest);
                                 LogUtils.LogSystem("MOVE: "  + rDir + " --> " + dest);
