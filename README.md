@@ -7,10 +7,14 @@
 - System.Drawing.Common.dll, required. .Net core does not support drawing yet.  This must be copied local from the reference properties, so the release build can put it in the install zip.
 
 
-## Create .Net Standard Project
-
-https://github.com/SesameRocket/RocketSystemProjectTemplate
-
+### Create .Net Standard System Project
+https://github.com/Rocket-CDS/RocketSystemProjectTemplate
+### Create .Net Standard Plugin Project
+https://github.com/Rocket-CDS/RocketPluginProjectTemplate
+### Create .Net Standard Wrapper Project
+https://github.com/Rocket-CDS/RocketSystemWrapTemplate
+### Rename Project Templates
+https://github.com/Rocket-CDS/RenameProj
 
 ## Build Installation Package
 
