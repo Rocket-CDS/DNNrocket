@@ -13,6 +13,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using System.IO;
 using DotNetNuke.Services.Journal;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace DNNrocketAPI.Components
 {
@@ -178,44 +179,41 @@ namespace DNNrocketAPI.Components
                 if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
                 {
                     var portalId = moduleInfo.PortalID;
-                    var systemKey = moduleInfo.DesktopModule.ModuleName;
+                    var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod","api");
                     var systemData = SystemSingleton.Instance(systemKey);
                     if (systemData.Exists)
                     {
-                        foreach (var r in systemData.InterfaceList)
+                        foreach (var rocketInterface in systemData.ProviderList)
                         {
-                            var rocketInterface = r.Value;
                             if (rocketInterface.IsProvider("searchindex"))
                             {
                                 if (rocketInterface.Exists)
                                 {
-                                    var returnDictionary = (Dictionary<string, object>)CacheUtils.GetCache("searchindex_module_" + moduleInfo.ModuleID.ToString());
-                                    if (returnDictionary == null)
-                                    {
-                                        var paramInfo = new SimplisityInfo();
-                                        paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
-                                        paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                        // We should return ALL languages into the dictionary
-                                        returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                                        CacheUtils.SetCache("searchindex_module_" + moduleInfo.ModuleID.ToString(), returnDictionary);
-                                    }
+                                    var paramInfo = new SimplisityInfo();
+                                    paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
+                                    paramInfo.SetXmlProperty("genxml/hidden/tabid", moduleInfo.TabID.ToString());
+                                    paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+
+                                    // We should return ALL languages into the dictionary
+                                    var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                                     var description = "";
                                     var body = "";
+                                    var title = "";
                                     var moddate = DateTime.Now;
-                                    var updatesearch = false;
                                     if (returnDictionary.ContainsKey("description")) description = (string)returnDictionary["description"];
                                     if (returnDictionary.ContainsKey("body")) body = (string)returnDictionary["body"];
+                                    if (returnDictionary.ContainsKey("title")) title = (string)returnDictionary["title"];
                                     if (returnDictionary.ContainsKey("modifieddate"))
                                     {
                                         var strDate = returnDictionary["modifieddate"];
                                         if (GeneralUtils.IsDateInvariantCulture(strDate)) moddate = Convert.ToDateTime(strDate);
-                                        updatesearch = true;
                                     }
+                                    if (String.IsNullOrEmpty(title)) title = moduleInfo.ModuleTitle;
                                     var searchDoc = new SearchDocument
                                     {
                                         UniqueKey = moduleInfo.ModuleID.ToString(),
                                         PortalId = moduleInfo.PortalID,
-                                        Title = moduleInfo.ModuleTitle,
+                                        Title = title,
                                         Description = description,
                                         Body = body,
                                         ModifiedTimeUtc = moddate.ToUniversalTime()
@@ -225,8 +223,10 @@ namespace DNNrocketAPI.Components
                                     {
                                         searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
                                     }
-
-                                    searchDocuments.Add(searchDoc);
+                                    if (!String.IsNullOrEmpty(searchDoc.Body))
+                                        searchDocuments.Add(searchDoc);
+                                    else
+                                        searchDocuments.Remove(searchDoc);
                                 }
                             }
                         }

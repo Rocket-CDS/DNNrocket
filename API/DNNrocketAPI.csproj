@@ -353,6 +353,7 @@
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
+    <None Include="Documents\DNNSearch.md" />
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\FileDownload.md" />
     <None Include="Documents\JQueryValidation.md" />

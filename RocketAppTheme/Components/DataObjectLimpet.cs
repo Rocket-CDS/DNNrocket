@@ -31,7 +31,7 @@ namespace Rocket.AppThemes.Components
             if (projectName == "") projectName = appThemeProjectData.DefaultProjectName();
 
             SetDataObject("apptheme", new AppThemeLimpet(portalid, appThemeFolder, appVersionFolder, projectName));
-            SetDataObject("appthemesystem", new AppThemeDNNrocketLimpet(SystemKey));
+            SetDataObject("appthemesystem", new AppThemeDNNrocketLimpet(portalid, SystemKey));
             SetDataObject("systemdata", SystemSingleton.Instance(SystemKey));
 
             SetDataObject("portaldata", new PortalLimpet(portalid));

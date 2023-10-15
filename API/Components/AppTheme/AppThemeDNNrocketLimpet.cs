@@ -14,6 +14,7 @@ namespace DNNrocketAPI.Components
 
     public class AppThemeDNNrocketLimpet : AppThemeBase
     {
+        [Obsolete("Use AppThemeDNNrocketLimpet(int portalId, string systemKey) instead")]
         public AppThemeDNNrocketLimpet(string systemKey) : base(PortalUtils.GetCurrentPortalId(), "/DesktopModules/dnnrocket/" + systemKey.Trim('/') + "/Themes/config-w3", "")
         {
             SystemKey = systemKey;
