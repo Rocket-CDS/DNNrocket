@@ -278,7 +278,6 @@
     <Compile Include="Components\RenderRazorUtils.cs" />
     <Compile Include="Components\StringCompress.cs" />
     <Compile Include="Components\User\UserData.cs" />
-    <Compile Include="Components\User\UserLimpetList.cs" />
     <Compile Include="Components\WebSiteData.cs" />
     <Compile Include="Components\SystemGlobalData.cs" />
     <Compile Include="Components\PageRecordData.cs" />

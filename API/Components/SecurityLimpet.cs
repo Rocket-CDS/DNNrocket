@@ -11,7 +11,7 @@ using System.Xml;
 namespace DNNrocketAPI.Components
 {
     /// <summary>
-    /// The SecurityLimet deal with the security in the RocketEcommerce system.
+    /// The SecurityLimet deal with the security in the system.
     /// It takes information from the system data and the system defaults and decides if the user has security and display access
     /// </summary>
     public class SecurityLimpet

@@ -13,7 +13,7 @@ namespace RocketPortal.Components
         public const string ResourcePath = "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources";
 
         /// <summary>
-        /// Get a resouerce string from a resx file in "/DesktopModules/DNNrocketModules/RocketEcommerce/App_LocalResources" 
+        /// Get a resouerce string from a resx file in "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources" 
         /// </summary>
         /// <param name="resourceKey">[filename].[resourcekey]</param>
         /// <param name="resourceExt">[resource key extention]</param>
