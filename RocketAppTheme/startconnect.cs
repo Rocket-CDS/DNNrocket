@@ -447,6 +447,8 @@ namespace DNNrocket.AppThemes
 
         public String GetAppStoreList()
         {
+            PortalUtils.CreateRocketDirectories(_dataObject.PortalId);
+
             var appThemeDataList = new AppThemeDataList(_dataObject.PortalData.PortalId, _dataObject.AppTheme.ProjectName);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("AppStoreList.cshtml");
             _dataObject.SetDataObject("appthemedatalist", appThemeDataList);
@@ -457,6 +459,8 @@ namespace DNNrocket.AppThemes
         }
         public String GetEditList()
         {
+            PortalUtils.CreateRocketDirectories(_dataObject.PortalId);
+
             var appThemeDataList = new AppThemeDataList(_dataObject.PortalData.PortalId, _dataObject.AppTheme.ProjectName);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("EditList.cshtml");
             _dataObject.SetDataObject("appthemedatalist", appThemeDataList);
