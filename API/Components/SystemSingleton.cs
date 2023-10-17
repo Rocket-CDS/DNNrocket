@@ -41,8 +41,8 @@ namespace DNNrocketAPI.Components
                         {
                             if (systemData.GetInterface(r.InterfaceKey) == null)
                             {
-                                LogUtils.LogSystem(" Add base interface: " + r.InterfaceKey);
-                                systemData.Record.AddRecordListItem("interfacedata", r.Info);
+                                //LogUtils.LogSystem(" Add base interface: " + r.InterfaceKey + " Active: " + r.IsActive);
+                                if (r.IsActive) systemData.Record.AddRecordListItem("interfacedata", r.Info);
                             }
                         }
                     }
