@@ -1,0 +1,278 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetList]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@Lang nvarchar(50) = '',
+@TableName nvarchar(100)
+AS
+begin
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+	SET NOCOUNT ON
+	 
+	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId, textdata
+FROM {databaseOwner}[{objectQualifier}DNNrocket]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	if (CHARINDEX(@idxname, @Filter) > 0 or CHARINDEX(@idxname, @orderby) > 0)
+	begin
+
+		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
+END 
+
+if ((CHARINDEX('CATXREF', @Filter) > 0) or (CHARINDEX('CATXREF', @OrderBy) > 0))
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CATXREF] on [CATXREF].ParentItemId = R1.ItemId and [CATXREF].TypeCode =  ''CATXREF'' '
+end
+if ((CHARINDEX('CASCADE', @Filter) > 0) or (CHARINDEX('CASCADE', @OrderBy) > 0))
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CASCADE] on [CASCADE].ParentItemId = R1.ItemId and [CASCADE].TypeCode =  ''CASCADE'' '
+end
+if ((CHARINDEX('PROPXREF', @Filter) > 0) or (CHARINDEX('PROPXREF', @OrderBy) > 0))
+begin
+	set @JoinIndex = @JoinIndex + ' cross apply (select top 1 [XrefItemId] from  ' + @TableName + ' as [PREF] where [PREF].ParentItemId = R1.ItemId and [PREF].TypeCode = ''PROPXREF'' ) as [PROPXREF] '
+end
+if ((CHARINDEX('ATTRXREF', @Filter) > 0) or (CHARINDEX('ATTRXREF', @OrderBy) > 0))
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [ATTRXREF] on [ATTRXREF].ParentItemId = R1.ItemId and [ATTRXREF].TypeCode =  ''ATTRXREF'' '
+end
+
+
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+
+	 
+	 
+	 DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or R1.PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	if NOT(@Lang = '')
+	begin
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+	set @rtnFields = ' R1.[ItemId] '
+
+	if NOT(@Lang = '')
+	begin
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
+	end
+	if @Lang = ''
+	begin
+		set @rtnFields = @rtnFields + ',R1.[XMLData] '
+		set @rtnFields = @rtnFields + ',R1.[Lang] as [Lang] '	 
+	end
+	
+	set @rtnFields = @rtnFields + ',R1.[PortalId] '
+	set @rtnFields = @rtnFields + ',R1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',R1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',R1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',R1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',R1.[TextData] '
+	set @rtnFields = @rtnFields + ',R1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',R1.[UserId] '
+	set @rtnFields = @rtnFields + ',R1.[SortOrder] '		
+
+	IF (@PageSize > 0)
+	BEGIN
+			-- Do Paging
+		SET @STMT = 'DECLARE @recct int '
+		set @STMT = @STMT + ' SET @recct = ' + Convert(nvarchar(5),@RecordCount) 
+		
+		set @STMT = @STMT + '   DECLARE @lbound int, @ubound int '
+
+		SET @pageNum = ABS(@pageNum)
+		SET @pageSize = ABS(@pageSize)
+		IF @pageNum < 1 SET @pageNum = 1
+		IF @pageSize < 1 SET @pageSize = 1
+
+		set @STMT = @STMT + ' SET @lbound = ' + convert(nvarchar(50),((@pageNum - 1) * @pageSize))
+		set @STMT = @STMT + ' SET @ubound = @lbound + ' + convert(nvarchar(50),(@pageSize + 1))
+		set @STMT = @STMT + ' IF @lbound >= @recct BEGIN '
+		set @STMT = @STMT + '   SET @ubound = @recct + 1 '
+		set @STMT = @STMT + '   SET @lbound = @ubound - (' + convert(nvarchar(50),(@pageSize + 1)) + ') ' -- return the last page of records if no records would be on the specified page '
+		set @STMT = @STMT + ' END '
+		
+		-- Default order by clause
+		if @OrderBy = '' 
+		Begin
+			set @OrderBy = ' ORDER BY R1.ModifiedDate DESC '
+		End
+		
+		set @STMT = @STMT + ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM    (
+								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
+		set @STMT = @STMT + @rtnFields		
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+				IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              
+			
+			set @STMT = @STMT + ' ) AS R1 '
+
+			if NOT(@Lang = '')
+			begin
+				set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+			end
+
+			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
+
+			
+	END ELSE
+	BEGIN
+		-- DO NON-PAGING
+
+		set @STMT = ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+		IF (RIGHT(@TypeCode,1) = '%')
+		BEGIN
+			set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+		END ELSE
+		BEGIN
+			IF (@TypeCode = '')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode != '''' ' + @Filter  
+			END ELSE
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+			END
+		END	                                                              	
+
+		set @STMT = @STMT + ' ' + @OrderBy                                                           	
+
+	END		
+
+
+
+	EXEC sp_executeSQL @STMT                 -- return requested records
+
+end
+GO
