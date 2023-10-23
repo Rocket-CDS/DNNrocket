@@ -48,10 +48,10 @@
 
     <div class="w3-row w3-padding">
         <div class="w3-col m10 w3-xlarge">
-            @if (portalData.EngineUrl != "")
+            @if (portalData.DefaultUrl != "")
             {
                 <a href="@(portalData.EngineUrlWithProtocol)" target="_blank">@ButtonIcon(ButtonTypes.home)</a>
-                <span>&nbsp;@(portalData.EngineUrl)</span>
+                <span>&nbsp;@(portalData.DefaultUrl)</span>
             }
         </div>
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
@@ -132,7 +132,7 @@
             <div class="w3-half">
 
             <div class="w3-xxlarge">@portalData.Name</div>
-            <div class="w3-large">@portalData.EngineUrl</div>
+            <div class="w3-large">@portalData.DefaultUrl</div>
                 <div class="w3-panel w3-red w3-margin">
                     <h2>@ResourceKey("DNNrocket.danger")</h2>
                     <p>@ResourceKey("RP.deleteportal", "", "Msg")</p>

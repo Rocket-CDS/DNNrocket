@@ -14,6 +14,9 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Web.DDRMenu;
+using RazorEngine;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -250,7 +253,12 @@ namespace DNNrocketAPI.Components
             var targetUrl = Globals.NavigateURL(tabId, controlKey, param);
             return targetUrl;
         }
-
+        public static string NavigateURL(int tabId, string language, string controlKey = "", string[] param = null)
+        {
+            if (param == null) param = new string[0];
+            var targetUrl = Globals.NavigateURL(tabId, false, PortalSettings.Current, controlKey, language, param);
+            return targetUrl;
+        }
         public static int GetPageByTabPath(int portalId, string tabPath)
         {
             return TabController.GetTabByTabPath(portalId, tabPath, string.Empty);

@@ -30,6 +30,7 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 using static DotNetNuke.Common.Globals;
 using DotNetNuke.Abstractions.Portals;
+using System.Runtime.Remoting.Messaging;
 
 namespace DNNrocketAPI.Components
 {
@@ -44,14 +45,15 @@ namespace DNNrocketAPI.Components
             var portal = GetPortal(portalId);
             PortalController.DeletePortal(portal, "");
         }
-        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal")
+        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal", string cultureCode = "en-US")
         {
             if (userId <= 0) userId = UserUtils.GetCurrentUserId();
             var serverPath = "";
             var childPath = "";
             var keyWords = "";
             var homeDirectory = "";
-            var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
+            //var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
+            var template = new DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), cultureCode);
             var isChild = false;
 
             //Create Portal
@@ -431,22 +433,24 @@ namespace DNNrocketAPI.Components
         }
         public static string DefaultPortalAlias(int portalId, string cultureCode)
         {
-            var portalalias = PortalSettings.Current.DefaultPortalAlias;
-            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
-            foreach (var pa in padic)
+            if (portalId < 0) portalId = GetPortalId();
+            var portalalias = "";
+            var objCtrl = new DNNrocketController();
+            var cmd = "SELECT HTTPAlias, isnull(CultureCode,'') as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE portalid = " + portalId + "  for xml raw";
+            var xmlList = objCtrl.ExecSqlXmlList(cmd);
+            if (xmlList.Count > 0)
             {
-                if (pa.Value.PortalID == portalId)
+                foreach(SimplisityRecord x in xmlList)
                 {
-                    if (String.IsNullOrEmpty(portalalias)) portalalias = pa.Key;
-                    if (pa.Value.IsPrimary)
+                    var a = x.GetXmlProperty("row/@HTTPAlias");
+                    var cc = x.GetXmlProperty("row/@CultureCode");
+                    if (cc == cultureCode)
                     {
-                        if (cultureCode == "" || pa.Value.CultureCode == cultureCode)
-                        {
-                            portalalias = pa.Key;
-                        }
+                        portalalias = a;
                     }
                 }
             }
+            if (String.IsNullOrEmpty(portalalias)) portalalias = PortalSettings.Current.DefaultPortalAlias;
             return portalalias;
         }
 

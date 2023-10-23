@@ -1,9 +1,9 @@
 ﻿# Partial and Shared Templates
-Templates can be inject within out templates to allow portial and shared templates.  
+Templates can be inject within other templates to allow partial and shared templates.  
 There are 2 methods to do this.  
 
 ## Render Token
-The template is written as a normal templates and then injected into another templat eby using a razor token to compile and include it.  
+The template is written as a normal templates and then injected into another template by using a razor token to compile and include it.  
 
 ```
 public IEncodedString RenderTemplate(string razorTemplateName, AppThemeRocketApiLimpet appThemeSystem, SimplisityRazor model, bool cacheOff = false)
@@ -28,7 +28,7 @@ Example:
 [INJECT:appthemesystem,AppThemeFields.cshtml]
 ```
 Because this method does not require the top section of a razor template (Data definition) it does require a little more thought to get it working.  
-The sub-template is built in the normal way, so intelli-sense work.  But a token is added to the template so only the text AFTER the token in included in the parent template.
+The sub-template is built in the normal way, so intelli-sense work.  But a replacement token is added to the template so only the text AFTER the token is included in the parent template.
 
 The token for spliting the template is case sensitive:
 ```

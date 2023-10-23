@@ -278,7 +278,6 @@
     <Compile Include="Components\RenderRazorUtils.cs" />
     <Compile Include="Components\StringCompress.cs" />
     <Compile Include="Components\User\UserData.cs" />
-    <Compile Include="Components\User\UserLimpetList.cs" />
     <Compile Include="Components\WebSiteData.cs" />
     <Compile Include="Components\SystemGlobalData.cs" />
     <Compile Include="Components\PageRecordData.cs" />
@@ -353,6 +352,7 @@
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
+    <None Include="Documents\DNNSearch.md" />
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\FileDownload.md" />
     <None Include="Documents\JQueryValidation.md" />
@@ -364,6 +364,7 @@
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\DNNrocket-Paging.docx" />
     <None Include="Documents\IndexSystem.docx" />
+    <None Include="Installation\01.01.01.SqlDataProvider" />
     <None Include="Installation\01.00.21.SqlDataProvider" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />

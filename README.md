@@ -1,4 +1,4 @@
-# DNNrocket v1.0+
+# DNNrocket v1.1.0.6
 
 ## Dependencies
 
@@ -7,16 +7,20 @@
 - System.Drawing.Common.dll, required. .Net core does not support drawing yet.  This must be copied local from the reference properties, so the release build can put it in the install zip.
 
 
-## Create .Net Standard Project
-
-https://github.com/SesameRocket/RocketSystemProjectTemplate
-
+### Create .Net Standard System Project
+https://github.com/Rocket-CDS/RocketSystemProjectTemplate
+### Create .Net Standard Plugin Project
+https://github.com/Rocket-CDS/RocketPluginProjectTemplate
+### Create .Net Standard Wrapper Project
+https://github.com/Rocket-CDS/RocketSystemWrapTemplate
+### Rename Project Templates
+https://github.com/Rocket-CDS/RenameProj
 
 ## Build Installation Package
 
 Install and use DNNpackager https://github.com/leedavi/DNNpackager
 
-All assemblies are copied tothe '$(ProjectDir)..\bin\' folder when a project is compiled.  
+All assemblies are copied to the '$(ProjectDir)..\bin\' folder when a project is compiled.  
 When DNNpackager.exe is used to open "..\DNNpackager.dnnpack" in 'release' config, an DNNrocket Insall zip package is created in '\\DNNrocket\\Installation' folder.  
 
 **Right click on the DNNpackager.dnnpack file in VS and select Open With..**
