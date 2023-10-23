@@ -161,7 +161,7 @@ namespace DNNrocketAPI
         /// <param name="itemid"></param>
         public void RebuildIndex(int portalId, int dataItemId, string systemKey, string tableName = "DNNrocket")
         {
-            var systemLinkList = GetList(-1, -1, "SYSTEMLINK", " and [XMLData].value('(genxml/systemkey)[1]','nvarchar(max)') = '" + systemKey + "' " );
+            var systemLinkList = GetList(-1, -1, "SYSTEMLINKIDX", " and [XMLData].value('(genxml/systemkey)[1]','nvarchar(max)') = '" + systemKey + "' " );
             foreach (var systemLinkRec in systemLinkList)
             {
                 var xpath = systemLinkRec.GetXmlProperty("genxml/xpath");
