@@ -7,7 +7,7 @@
 @using Simplisity;
 @using DNNrocketAPI.Components;
 
-@if (UserUtils.IsSuperUser())
+@if (UserUtils.IsEditor())
 {
     var info = (SimplisityInfo)Model.List.First();
 
