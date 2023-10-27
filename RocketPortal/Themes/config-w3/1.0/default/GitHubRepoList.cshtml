@@ -25,7 +25,6 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th></th>
                     <th style="width:64px;">@ResourceKey("DNNrocket.default")</th>
                     <th style="width:64px;">@ResourceKey("DNNrocket.active")</th>
                     <th style="width:64px;"></th>
@@ -36,15 +35,10 @@
         <tr class="appthemeprojects">
             <td>
                 <div class="w3-padding">
-                    @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border githubrepourl' idx='" + lp3 + "' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
-                </div>
-                <div class="w3-padding">
-                    @TextBox(new SimplisityInfo(r), "genxml/textbox/githubusername", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Username...' ", "", false, lp3)
-                </div>
-            </td>
-            <td>
-                <div class="w3-padding">
                     @TextBox(new SimplisityInfo(r), "genxml/textbox/name", "class='w3-input w3-border' maxlength='250'  placeholder='" + ResourceKey("DNNrocket.name") + "...' ", "", false, lp3)
+                </div>
+                <div class="w3-padding">
+                    @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border githubrepourl' idx='" + lp3 + "' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
                 </div>
                 <div class="w3-padding">
                 @TextBox(new SimplisityInfo(r), "genxml/textbox/githubtoken", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Token...' ", "", false, lp3)
