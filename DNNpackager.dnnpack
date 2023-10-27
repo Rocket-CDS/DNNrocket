@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.1.1</version>
+	<version>1.2.0</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>0_DNNrocket</name>
@@ -65,6 +65,7 @@
     <!-- These files will be NOT in the Resource.zip, they will be on the root of the install zip -->
     <value>\API\Installation\01.00.00.SqlDataProvider</value>
 	  <value>\API\Installation\01.00.21.SqlDataProvider</value>
+	  <value>\API\Installation\01.01.01.SqlDataProvider</value>
 	  <value>\API\Installation\Uninstall.SqlDataProvider</value>
     <value>DNNrocketAPI.dnn</value>
 
