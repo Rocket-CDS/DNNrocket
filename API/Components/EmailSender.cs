@@ -18,7 +18,8 @@ namespace DNNrocketAPI.Components
         {
             if (String.IsNullOrEmpty(EmailData.EmailBody) && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
             {
-                if (EmailData.SystemKey == null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
+                if (EmailData.SystemKey == null  && EmailData.AppTheme != null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
+                if (EmailData.SystemKey == null && EmailData.AppSystemTheme != null) EmailData.SystemKey = EmailData.AppSystemTheme.SystemKey;
                 var razorTempl = "";
                 if (EmailData.AppTheme != null) razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
                 if (EmailData.AppSystemTheme != null) razorTempl = EmailData.AppSystemTheme.GetTemplate(EmailData.RazorTemplateName); // might be a plugin
