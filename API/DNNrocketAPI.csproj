@@ -376,7 +376,6 @@
     <None Include="Themes\config-w3\1.0\default\CreateAccountInject.cshtml" />
     <None Include="Themes\config-w3\1.0\default\XmlModelDisplay.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterInject.cshtml" />
-    <None Include="Themes\config-w3\1.0\default\Paging.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\MenuOut.cshtml" />
