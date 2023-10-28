@@ -972,4 +972,7 @@
   <data name="to.Text" xml:space="preserve">
     <value>To</value>
   </data>
+  <data name="forcedownload.Text" xml:space="preserve">
+    <value>Download on Click</value>
+  </data>
 </root>
