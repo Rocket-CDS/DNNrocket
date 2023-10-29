@@ -16,6 +16,7 @@ Options can also be passed. {systemkey: 'dnnrocket',activatepanel: true, overlay
 ```
 $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });
 ```
+Each panel can be ativated individually if required.
 ```
 $('#mycontainer').activateSimplisityPanel();
 ```
