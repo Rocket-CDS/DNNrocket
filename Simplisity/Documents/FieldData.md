@@ -8,7 +8,8 @@ Hidden fields are created by simplisity on page load, these are to keep track of
 $(document).ready(function () {
 $(document).simplisityStartUp('/My API call url', { systemkey: 'amylisbusiness'});
 });
-```  
+```
+<br/>
 
 ##### ```simplisity_loader```
 >This is a an element with a class which will be displayed when a call to the server is made. By default this is "overlayclass: 'w3-overlay'" but this call can be overwritten on the "simplisity_startup" function. If required it can be used with JQuery or JS.
@@ -16,6 +17,8 @@ $(document).simplisityStartUp('/My API call url', { systemkey: 'amylisbusiness'}
 ```
 $('#simplisity_loader').show();  
 ```  
+<br/>
+
 
 ##### ```simplisity_fileuploadlist```
 >This field keeps a list of the fields which need to be uploaded. They are then passed and processed server side.
@@ -27,6 +30,8 @@ This field will also save the "activevalue" paramater. The "activevalue" is the 
 ```
 paramInfo.GetXmlProperty("genxml/hidden/activevalue")
 ```  
+<br/>
+
 
 ##### ```simplisity_searchfields```
 >List of the search fields and data that needs to be passed to server side for a search operation. These are passed in the "paramjson" form fields.
