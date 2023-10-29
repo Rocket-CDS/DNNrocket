@@ -26,6 +26,6 @@ Most operations for Simplisity are setup by applying a class or id onto a html e
 ##### ```simplisity_fileupload	```
 >Identifies a file upload. This class should be on the input field with type='file'
 ##### ```simplisity_filedownload	```
->Identifies a download file link. This class should be on the <a> element and should have the "s-fields" and "s-cmd" attributes.
+>Identifies a download file link. This class should be on the 'a' element and should have the "s-fields" and "s-cmd" attributes.
 ##### ```simplisity_fadeout	```
 >Any element with this event will fade out in 2 seconds, after the return from the server. Often used to display messages after a save and then fade them out.
