@@ -14,10 +14,10 @@ Simplisity has some general functions which can be used.
 >Set Cookie
 
 ##### ```simplisity_setParamField(fieldkey, fieldvalue)```
->Sets a value to the "###### simplisity_params" field, to be passed to the server.
+>Sets a value to the "simplisity_params" field, to be passed to the server.
 
 ##### ```simplisity_getParamField(fieldkey)```
->Gets a value from the "###### simplisity_params" field
+>Gets a value from the "simplisity_params" field
 
 ##### ```simplisity_getField(sfields, fieldkey)```
 >Gets a value from the sfield json passed to it.
