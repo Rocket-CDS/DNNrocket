@@ -75,6 +75,7 @@ s-xpath
 '/(\.|\/)(gif|jpe?g|png|pdf)$/i'
 ```
 
+
 ##### ```s-maxfilesize```  
 >Used to limit file size on upload. This is used only on the "simplisity_fileupload" class element. If not specified the default is used. 5000000  
 
@@ -83,6 +84,7 @@ s-xpath
 ```
 {listkey:['1','2','3'],listvalue:['1','2','3']}
 ```
+
 
 ##### ```s-index```  
 >This is an attribute which is automatically added to elements in a list, so Simplisity can identify them.  
@@ -101,6 +103,7 @@ s-xpath
 ```
 $('.myselectionclass').attr('s-stop','stop')
 ```
+
 
 ##### ```s-xpath```  
 >Sets the xpath for data in the XML. This is usually only used if you have a html input which saves data back to the server.  
