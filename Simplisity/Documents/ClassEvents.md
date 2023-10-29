@@ -1,12 +1,12 @@
 ﻿# Class Events
 Most operations for Simplisity are setup by applying a class or id onto a html element. Simplisity uses these class or id as instructions on what needs to be done.  
 
-## Element Id
+### Element Id
 
 ##### ```simplisity_startpanel```
 >Identifies a html START container to use as a simplisity panel. This will be the default panel and activated when "simplisityStartUp" is called. This must be the ID of the element.  
 
-## Class Name
+### Class Name
 ##### ```simplisity_panel```
 >Identifies a html container to use as a simplisity panel. This will be activated when "simplisityStartUp" is called.
 ##### ```simplisity_click```
