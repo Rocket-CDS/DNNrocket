@@ -975,4 +975,7 @@
   <data name="forcedownload.Text" xml:space="preserve">
     <value>Download on Click</value>
   </data>
+  <data name="columns.Text" xml:space="preserve">
+    <value>Columns</value>
+  </data>
 </root>
