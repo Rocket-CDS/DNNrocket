@@ -51,7 +51,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/documentpath" + FieldId, value);
+                Info.SetXmlProperty("genxml/hidden/documentpath" + FieldId, "/" + value.TrimStart('/'));
             }
         }
         public string Name

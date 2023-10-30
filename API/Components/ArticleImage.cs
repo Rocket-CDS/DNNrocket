@@ -54,7 +54,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/imagepath" + FieldId, value);
+                Info.SetXmlProperty("genxml/hidden/imagepath" + FieldId, "/" + value.TrimStart('/'));
             }
         }
         public string RelPathWebp
