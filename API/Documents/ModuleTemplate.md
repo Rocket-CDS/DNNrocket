@@ -1,4 +1,4 @@
-﻿# ModuleTemplate
+﻿# ModuleTemplate  (modt)
 
 A ModuleTemplate is part of an Apptheme.  It defines what templates and commands that can be used on a Module.
 
@@ -10,14 +10,14 @@ The file contains meta data that is used by the system, there is no UI in the ap
 <genxml>
 	<moduletemplates list="true">
 		<genxml>
-			<file><![CDATA[view.cshtml]]></file>
-			<name><![CDATA[List View]]></name>
-			<cmd><![CDATA[list]]></cmd>
+			<file>view.cshtml></file>
+			<name>List View></name>
+			<cmd>list></cmd>
 		</genxml>
 		<genxml>
-			<file><![CDATA[hozcatmenu2lvl.cshtml]]></file>
-			<name><![CDATA[Horizontal Category Menu (2 levels)]]></name>
-			<cmd><![CDATA[catmenu]]></cmd>			
+			<file>hozcatmenu2lvl.cshtml></file>
+			<name>Horizontal Category Menu (2 levels)></name>
+			<cmd>catmenu></cmd>			
 		</genxml>
 	</moduletemplates>
 </genxml>
