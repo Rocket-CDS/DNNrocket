@@ -37,10 +37,10 @@ namespace DNNrocketAPI.Components
                 string rtn;
                 if (LinkType == 1)
                 {
-                    var internallink = Info.GetXmlPropertyInt("genxml/select/linkinternallink" + FieldId);
-                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/linkinternallink" + FieldId);
-                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/select/linkinternallink");
-                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/linkinternallink");
+                    var internallink = Info.GetXmlPropertyInt("genxml/select/internallink" + FieldId);
+                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/internallink" + FieldId);
+                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/select/internallink");
+                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/internallink");
                     rtn = PagesUtils.GetPageURL(internallink);
                 }
                 else
@@ -107,8 +107,6 @@ namespace DNNrocketAPI.Components
             {
                 var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hide" + FieldId);
                 if (Info.GetXmlProperty("genxml/checkbox/hide" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hide" + FieldId);
-                if (Info.GetXmlProperty("genxml/lang/genxml/checkbox/hide" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/checkbox/hide");
-                if (Info.GetXmlProperty("genxml/checkbox/hide") == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hide");
                 return rtn;
             }
             set

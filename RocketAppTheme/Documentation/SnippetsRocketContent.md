@@ -19,6 +19,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 @AssigDataModel(Model)
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
+<!-- require Key for saving -->
 @RowKey(rowData)
 
 <div id="heading" class='w3-row w3-margin-top sectionname'>
@@ -53,6 +54,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 @AssigDataModel(Model)
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
+<!-- require Key for saving -->
 @RowKey(rowData)
 
 <div id="heading" class='w3-row w3-margin-top sectionname'>
@@ -61,6 +63,16 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
     @TextBox(rowData, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0)
     </div>
 </div>
+```
+### View.cshtml - Template Header.
+```
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+
 ```
 ## Images
 ### Admin
@@ -134,13 +146,16 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 ## Links
 ### Admin
+**Single Link**
 ```
 [INJECT:appthemesystem,ArticleLink.cshtml]
 ```
+**Multiple Links**
 ```
 [INJECT:appthemesystem,ArticleLinks.cshtml]
 ```
 ### View
 ```
+[INJECT:appthemesystem,ArticleLinksView.cshtml]
 ```
 
