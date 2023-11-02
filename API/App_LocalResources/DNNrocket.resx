@@ -987,4 +987,7 @@
   <data name="rowlimit.Text" xml:space="preserve">
     <value>Row Limit</value>
   </data>
+  <data name="ecomode.Text" xml:space="preserve">
+    <value>ECO Mode</value>
+  </data>
 </root>

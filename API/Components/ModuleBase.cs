@@ -100,6 +100,14 @@ namespace DNNrocketAPI.Components
         public string Name { get { return _record.GetXmlProperty("genxml/settings/name"); } set { _record.SetXmlProperty("genxml/settings/name", value); } }
         public string SystemKey { get { return _record.GetXmlProperty("genxml/systemkey"); } set { _record.SetXmlProperty("genxml/systemkey", value); } }
         public bool IsSatellite { get { if (_record.GUIDKey == _record.GetXmlProperty("genxml/settings/dataref") || _record.GetXmlProperty("genxml/settings/dataref") == "") return false; else return true; } }
+        /// <summary>
+        /// Gets or sets a value indicating whether ECOMode is activated for the module. 
+        /// The module settings should have a value with the xpath of "genxml/settings/ecomode", default is true.
+        /// </summary>
+        public bool ECOMode { get {
+                if (_record.GetXmlProperty("genxml/settings/ecomode") == "") return true;
+                return _record.GetXmlPropertyBool("genxml/settings/ecomode"); 
+            } set { _record.SetXmlProperty("genxml/settings/ecomode", value.ToString()); } }
         #endregion
 
     }

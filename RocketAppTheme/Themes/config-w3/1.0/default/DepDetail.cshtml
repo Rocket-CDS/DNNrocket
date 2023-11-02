@@ -92,8 +92,11 @@
                                 <div class="w3-col m1 w3-padding " style="width:120px">
                                     @DropDownList(info, "genxml/ctrltype", "css,js", "CSS,JS", " class='w3-input w3-border '  ", "", false, lp)
                                 </div>
-                                <div class="w3-col m10  w3-padding ">
+                                <div class="w3-col m9  w3-padding ">
                                     @TextBox(info, "genxml/url", " class='w3-input w3-border ' autocomplete='off' ", "", false, lp)
+                                </div>
+                                <div class="w3-col m1  w3-padding ">
+                                    @CheckBox(info, "genxml/ecofriendly", "&nbsp;ECO", " class='w3-check ' ", true, false, lp)
                                 </div>
                                 <div class="w3-col m1 " style="width:64px">
                                     &nbsp;

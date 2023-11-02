@@ -75,7 +75,12 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
     //NOTE: xPath for module settings must use "genxml/settings/*"
 }
 ```
-### View.cshtml - Template Header.
+**Checkbox for ECOMode:  This enables or disables ECOMode at module level**  
+By default ECOMode is always on.  And the property "moduleData.ECOMode" can be used to test for it in the templates.
+```
+@CheckBox(info, "genxml/settings/ecomode", "&nbsp;" + ResourceKey("DNNrocket.ecomode").ToString(), " class='w3-check' ", true)
+```
+### View.cshtml - Template Row Loop.
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI.Components;
@@ -84,7 +89,14 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
 
+@foreach (var articleRowData in articleData.GetRows()) 
+{
+
+}
+
+
 ```
+
 ### CKEditor4 - Shared Inject
 ```
 [INJECT:appthemesystem,CKEditor4.cshtml]
@@ -116,7 +128,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 @{
     var articleImage = articleRowData.GetImage(0);
 }
-<img src="@ImageUrl(articleImage.RelPath,200,200)" />
+<img src="@ImageUrl(articleImage.RelPathWebp,200,200)" />
 ```
 **Single Image - webp**
 ```
@@ -131,7 +143,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 {
     if (articleImage.RelPath != "")
     {
-        <img src="@ImageUrl(articleImage.RelPath, articleImage.Width, articleImage.Height)" alt="@(articleImage.Alt)" />
+        <img src="@ImageUrl(articleImage.RelPathWebp, articleImage.Width, articleImage.Height)" alt="@(articleImage.Alt)" />
     }
 }
 
@@ -149,7 +161,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 ### View
 ```
-@foreach (ArticleDoc documentData in rowDetail.GetDocs())
+@foreach (ArticleDoc documentData in articleRowData.GetDocs())
 {
     if (!documentData.Hidden)
     {
