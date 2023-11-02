@@ -6,7 +6,7 @@ These snippets and examples give help for building AppThemes.
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssigDataModel(Model)
-@AddProcessDataResx(appThemeView, true)
+@AddProcessDataResx(appThemeAdmin, true)
 <!--inject-->
 
 [INJECT:appthemeadmin,AdminRow.cshtml]
@@ -17,7 +17,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssigDataModel(Model)
-@AddProcessDataResx(appThemeView, true)
+@AddProcessDataResx(appThemeAdmin, true)
 <!--inject-->
 <!-- require Key for saving -->
 @RowKey(rowData)
@@ -34,7 +34,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssigDataModel(Model)
-@AddProcessDataResx(appThemeView, true)
+@AddProcessDataResx(appThemeAdmin, true)
 <!--inject-->
 
 <div class="w3-row">
@@ -52,7 +52,7 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssigDataModel(Model)
-@AddProcessDataResx(appThemeView, true)
+@AddProcessDataResx(appThemeAdmin, true)
 <!--inject-->
 <!-- require Key for saving -->
 @RowKey(rowData)
@@ -64,6 +64,17 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
     </div>
 </div>
 ```
+### ThemeSettings.cshtml - Settings Header.
+```
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeAdmin, true)
+<!--inject-->
+@{
+    var info = moduleDataInfo;
+    //NOTE: xPath for module settings must use "genxml/settings/*"
+}
+```
 ### View.cshtml - Template Header.
 ```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
@@ -73,6 +84,10 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
 
+```
+### CKEditor4 - Shared Inject
+```
+[INJECT:appthemesystem,CKEditor4.cshtml]
 ```
 ## Images
 ### Admin
@@ -156,6 +171,12 @@ Injected by token: **[INJECT:appthemeadmin,AdminRow.cshtml]**
 ```
 ### View
 ```
-[INJECT:appthemesystem,ArticleLinksView.cshtml]
+@foreach (var linkData in articleRowData.Getlinks())
+{    
+    if (!linkData.Hidden)
+    {
+        <a href="@(linkData.Url)" target="@(linkData.Target)">@linkData.Name</a>
+    }
+}
 ```
 
