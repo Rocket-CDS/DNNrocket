@@ -16,15 +16,15 @@ Example:
 	<deps list="true">
 		<genxml>
 			<ctrltype><![CDATA[js]]></ctrltype>
-			<url><![CDATA[{jquery}]]></url>
+			<url>{jquery}</url>
 		</genxml>
 		<genxml>
 			<ctrltype><![CDATA[css]]></ctrltype>
-			<url><![CDATA[/DesktopModules/DNNrocket/css/w3.css]]></url>
+			<url>/DesktopModules/DNNrocket/css/w3.css</url>
 		</genxml>
 		<genxml>
 			<ctrltype><![CDATA[css]]></ctrltype>
-			<url><![CDATA[{domainurl}{appthemefolder}/css/HtmlContent.css]]></url>
+			<url>{domainurl}{appthemefolder}/css/HtmlContent.css></url>
 		</genxml>
 	</deps>
 </genxml>
