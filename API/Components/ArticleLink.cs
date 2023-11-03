@@ -114,5 +114,18 @@ namespace DNNrocketAPI.Components
                 Info.SetXmlProperty("genxml/checkbox/hide" + FieldId, value.ToString());
             }
         }
+        public bool IsDisabled
+        {
+            get
+            {
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/disabled" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/disabled" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/disabled" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/checkbox/disabled" + FieldId, value.ToString());
+            }
+        }
     }
 }
