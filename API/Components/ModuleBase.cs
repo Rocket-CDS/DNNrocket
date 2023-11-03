@@ -68,7 +68,7 @@ namespace DNNrocketAPI.Components
         }
         public void SetSetting(string key, string value)
         {
-            _record.SetXmlPropertyInt("genxml/settings/" + key, value);
+            _record.SetXmlProperty("genxml/settings/" + key, value);
         }
         #region "properties"
 

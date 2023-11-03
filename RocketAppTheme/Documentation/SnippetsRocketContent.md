@@ -130,13 +130,6 @@ By default ECOMode is always on.  And the property "moduleData.ECOMode" can be u
 }
 <img src="@ImageUrl(articleImage.RelPathWebp,200,200)" />
 ```
-**Single Image - webp**
-```
-@{
-    var articleImage = articleRowData.GetImage(0);
-}
-<img src="@ImageUrl(articleImage.RelPathWebp,200,200,"","webp")" />
-```
 **Multiple Images**
 ```
 @foreach (ArticleImage articleImage in articleRowData.GetImages())
