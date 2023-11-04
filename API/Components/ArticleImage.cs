@@ -60,6 +60,7 @@ namespace DNNrocketAPI.Components
         public string RelPathWebp
         {
             get {
+                if (RelPath == "") return "";
                 var extlen = Path.GetExtension(RelPath).Length;
                 return RelPath.Substring(0, RelPath.Length - extlen) + ".webp";
             }

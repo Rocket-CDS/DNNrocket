@@ -320,8 +320,8 @@ namespace DNNrocketAPI.Components
                     {
                         templateList.Add(token);
                         var tokenSplit = token.Split(',');
-                        var datObjectName = tokenSplit[0];
-                        var templateName = tokenSplit[1];
+                        var datObjectName = tokenSplit[0].Trim();
+                        var templateName = tokenSplit[1].Trim();
                         var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
                         if (appTheme != null)
                         {
