@@ -15,16 +15,19 @@ Example:
 <genxml>
 	<deps list="true">
 		<genxml>
-			<ctrltype><![CDATA[js]]></ctrltype>
+			<ctrltype>js></ctrltype>
 			<url>{jquery}</url>
+			<ecofriendly>true</ecofriendly>
 		</genxml>
 		<genxml>
-			<ctrltype><![CDATA[css]]></ctrltype>
+			<ctrltype>css></ctrltype>
 			<url>/DesktopModules/DNNrocket/css/w3.css</url>
+			<ecofriendly>true</ecofriendly>
 		</genxml>
 		<genxml>
-			<ctrltype><![CDATA[css]]></ctrltype>
+			<ctrltype>css</ctrltype>
 			<url>{domainurl}{appthemefolder}/css/HtmlContent.css></url>
+			<ecofriendly>true</ecofriendly>
 		</genxml>
 	</deps>
 </genxml>
