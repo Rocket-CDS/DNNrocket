@@ -64,13 +64,13 @@ The DDRMenu in DNN can have the the page element changed to add the catalog stru
 Register the Meta.ascx control in the skin, this will alter the page Meta data, Title, Tag Words and 
 Description.  It should be added after the default DNN "~/Admin/Skins/Meta.ascx" skin control.
 ```
-<%@ Register TagPrefix="rocket" TagName="ROCKETTOOLSMETA" Src="~/DesktopModules/RocketTools/Meta.ascx" %>
+<%@ Register TagPrefix="rocket" TagName="ROCKETTOOLSMETA" Src="~/DesktopModules/API/Meta.ascx" %>
 <rocket:ROCKETTOOLSMETA runat="server" ID="ROCKETTOOLSMETA1" />
 ```
 ### 3. Setup BreadCrumb control (if required)**    
-The breadcrumb control is optional, if you don’t require a breadcrumb control this operation can be 
+The breadcrumb control is optional, if you donâ€™t require a breadcrumb control this operation can be 
 skipped.
 ```
-<%@ Register TagPrefix="rocket" TagName="ROCKETTOOLSBC" Src="~/DesktopModules/RocketTools/BreadCrumb.ascx" %>
+<%@ Register TagPrefix="rocket" TagName="ROCKETTOOLSBC" Src="~/DesktopModules/API/BreadCrumb.ascx" %>
 <rocket:ROCKETTOOLSBC runat="server" ID="ROCKETTOOLSBC1" />
 ```
