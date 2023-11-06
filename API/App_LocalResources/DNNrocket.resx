@@ -990,4 +990,7 @@
   <data name="ecomode.Text" xml:space="preserve">
     <value>ECO Mode</value>
   </data>
+  <data name="notfound.Text" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
 </root>
