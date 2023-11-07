@@ -497,6 +497,31 @@ namespace DNNrocketAPI.Components
             }
             return outFileMapPath;
         }
+        public static bool ContainsTransparent(string MapPath)
+        {
+            if (File.Exists(MapPath))
+            {
+                try
+                {
+                    Bitmap image = new Bitmap(MapPath);
+                    for (int y = 0; y < image.Height; ++y)
+                    {
+                        for (int x = 0; x < image.Width; ++x)
+                        {
+                            if (image.GetPixel(x, y).A != 255)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
         public static string ConvertToWebp(string imgPathName, string outFileMapPath = "")
         {
             // Currently .webp is not well supported. (This may chnage in future)
@@ -613,8 +638,35 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
-                        using (WebP webp = new WebP())
-                            sourceImage = webp.Load(strFilepath);
+                        // Check if it's png, transparent img not yet supported in webp.
+                        var metaRecord = new SimplisityRecord();
+                        var metaXml = CacheFileUtils.GetCache(strFilepath);
+                        if (String.IsNullOrEmpty(metaXml))
+                        {
+                            var pngMapPath = strFilepath.Substring(0, strFilepath.Length - 5) + ".png";
+                            if (File.Exists(pngMapPath))
+                            {
+                                metaRecord.SetXmlProperty("genxml/originalmappath", pngMapPath);
+                                metaRecord.SetXmlProperty("genxml/istransparent", ImgUtils.ContainsTransparent(pngMapPath).ToString());
+                            }
+                            metaXml = metaRecord.ToXmlItem();
+                            CacheFileUtils.SetCache(strFilepath, metaXml);
+                        }
+                        else
+                        {
+                            metaRecord.FromXmlItem(metaXml);
+                        }
+                        if (metaRecord.GetXmlPropertyBool("genxml/istransparent"))
+                        {
+                            sourceImage = LoadBitmapUnlocked(metaRecord.GetXmlProperty("genxml/originalmappath")); // does not support transparent images.
+                        }
+                        else
+                        {
+                            // Process as Webp
+                            using (WebP webp = new WebP())
+                                sourceImage = webp.Load(strFilepath);
+                        }
+
                     }
                     catch (Exception)
                     {

@@ -25,6 +25,7 @@ namespace DNNrocketAPI.Components
                 var cacheFile = GetMd5Hash(cacheKey);
                 var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
+                CacheUtils.SetCache(cacheKey, cacheDataStr);
                 return cacheDataStr;
             }
             return cacheData;

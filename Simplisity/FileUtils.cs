@@ -42,6 +42,21 @@ namespace Simplisity
             }
         }
 
+        public static byte[] ReadFileAsByteArray(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath)) return null;
+                byte[] array = File.ReadAllBytes(filePath);
+                return array;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return null;
+            }
+        }
+
         public static string ReadFile(string filePath)
         {
             StreamReader reader = null;

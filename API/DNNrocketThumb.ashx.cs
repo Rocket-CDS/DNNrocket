@@ -45,6 +45,9 @@ namespace DNNrocketAPI.Components
                     context.Response.Cache.SetCacheability(HttpCacheability.Public);
 
                     var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
+                    var imgTypeCache = (string)CacheUtils.GetCache(strCacheKey + "imgType", "DNNrocketThumb");
+                    if (!String.IsNullOrEmpty(imgTypeCache)) imgtype = imgTypeCache;
+
                     //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
                     //The cache holds a link to the locked image file and must be disposed.
                     //use: ClearThumbnailLock()
@@ -55,11 +58,23 @@ namespace DNNrocketAPI.Components
                         CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
                     }
 
+                    // check for transparency. (Workaround for not supporting transparent webp)
+                    if (imgtype.ToLower() == "webp")
+                    { 
+                        var metaRecord = new SimplisityRecord();
+                        var metaXml = CacheFileUtils.GetCache(src);
+                        if (!String.IsNullOrEmpty(metaXml))
+                        {
+                            metaRecord.FromXmlItem(metaXml);
+                            if (metaRecord.GetXmlPropertyBool("genxml/istransparent")) imgtype = "png";
+                        }
+                        CacheUtils.SetCache(strCacheKey + "imgType", imgtype, "DNNrocketThumb");                        
+                    }
+
                     if ((newImage != null))
                     {
                         ImageCodecInfo useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
 
-                        // due to issues on some servers not outputing the png format correctly from the thumbnailer.
                         // this thumbnailer will always output jpg, unless specifically told to do a png format.
                         if (imgtype.ToLower() == "png")
                         {
