@@ -697,7 +697,7 @@
     <value>Data Service</value>
   </data>
   <data name="disabled.Text" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Disactivate</value>
   </data>
   <data name="tools.Text" xml:space="preserve">
     <value>Tools</value>
@@ -751,7 +751,7 @@
     <value>Disable Cache</value>
   </data>
   <data name="disableheader.Text" xml:space="preserve">
-    <value>Disable Header</value>
+    <value>Disactivate Header</value>
   </data>
   <data name="enablecache.Text" xml:space="preserve">
     <value>Enable Cache</value>

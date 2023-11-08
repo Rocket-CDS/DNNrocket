@@ -18,6 +18,7 @@ namespace DNNrocketAPI.Components
                 var linkkey = GeneralUtils.GetUniqueString();
                 Info.SetXmlProperty("genxml/hidden/linkkey", linkkey);
             }
+            if (Url == "") IsDisabled = true;
         }
 
         public SimplisityInfo Info { get; private set; }
@@ -41,6 +42,7 @@ namespace DNNrocketAPI.Components
                     if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/internallink" + FieldId);
                     if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/select/internallink");
                     if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/internallink");
+                    if (internallink == 0) return "";
                     rtn = PagesUtils.GetPageURL(internallink);
                 }
                 else
@@ -48,7 +50,7 @@ namespace DNNrocketAPI.Components
                     rtn = Info.GetXmlProperty("genxml/textbox/externallink" + FieldId);
                     if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
                 }
-                if (Anchor != "") rtn += "#" + Anchor;
+                if (Anchor != "" && rtn != "") rtn += "#" + Anchor;
                 return rtn;
             }
         }
@@ -114,18 +116,6 @@ namespace DNNrocketAPI.Components
                 Info.SetXmlProperty("genxml/checkbox/hide" + FieldId, value.ToString());
             }
         }
-        public bool IsDisabled
-        {
-            get
-            {
-                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/disabled" + FieldId);
-                if (Info.GetXmlProperty("genxml/checkbox/disabled" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/disabled" + FieldId);
-                return rtn;
-            }
-            set
-            {
-                Info.SetXmlProperty("genxml/checkbox/disabled" + FieldId, value.ToString());
-            }
-        }
+        public bool IsDisabled { get; set; }
     }
 }

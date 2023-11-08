@@ -12,6 +12,7 @@ using System.Drawing.Printing;
 using System.Reflection;
 using System.Linq;
 using System.Collections;
+using System.Runtime.Serialization;
 
 namespace DNNrocketAPI
 {
@@ -228,15 +229,9 @@ namespace DNNrocketAPI
             {
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
-
-            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1, tableName));
-            if (l.Count >= 1)
-            {
-                SimplisityInfo nbi = l[0];
-                if (lang != "" && nbi.Lang != lang) return null; // GetByType will return invalid langauge if langaugue record does not exists, so test for it.
-                return l[0];
-            }
-            return null;
+            var r = GetRecordByType(portalId, moduleId, entityTypeCode, selUserId, lang, tableName);
+            if (r == null) return null;
+            return GetInfo(r.ItemID, lang, tableName);
         }
         public SimplisityRecord GetRecordByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "", string tableName = "DNNrocket")
         {
