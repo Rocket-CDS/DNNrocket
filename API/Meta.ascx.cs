@@ -51,6 +51,7 @@ namespace RocketTools
                 _portalId = PortalUtils.GetCurrentPortalId();
                 _cultureCode = DNNrocketUtils.GetCurrentCulture();
                 var objCtrl = new DNNrocketController();
+                var paramidList = new Dictionary<string, string>();
 
                 var cacheKey2 = "PLSETTINGS" + _portalId;
                 var plRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey2, _portalId.ToString());
@@ -58,7 +59,7 @@ namespace RocketTools
                 if (plRecord != null)
                 {
                     var cacheKeyQueryparams = "PLSETTINGSqueryparams" + _portalId;
-                    var paramidList = (Dictionary<string, string>)CacheUtils.GetCache(cacheKeyQueryparams, _portalId.ToString());
+                    paramidList = (Dictionary<string, string>)CacheUtils.GetCache(cacheKeyQueryparams, _portalId.ToString());
                     if (paramidList == null)
                     {
                         paramidList = new Dictionary<string, string>();
