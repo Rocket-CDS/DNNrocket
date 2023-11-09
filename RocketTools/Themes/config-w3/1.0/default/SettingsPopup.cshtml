@@ -94,6 +94,10 @@
                                         <label>@ResourceKey("RocketTools.queryparam")</label>
                                         @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
                                     </div>
+                                    <div class="w3-third w3-padding">
+                                        <label>@ResourceKey("DNNrocket.system")</label>
+                                       @DropDownList(mp,"genxml/select/tablename","rocketdirectoryapi,rocketecommerceapi", "Directory,Ecommerce"," class='w3-input w3-border' ","",false,lp2)
+                                    </div>
                                     <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">
                                         @ButtonIcon(ButtonTypes.remove)
                                     </div>
