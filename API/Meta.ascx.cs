@@ -55,17 +55,19 @@ namespace RocketTools
                 var cacheKey2 = "PLSETTINGS" + _portalId;
                 var plRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey2, _portalId.ToString());
                 if (plRecord == null) plRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
-
-                var cacheKeyQueryparams = "PLSETTINGSqueryparams" + _portalId;
-                var paramidList = (Dictionary<string, string>)CacheUtils.GetCache(cacheKeyQueryparams, _portalId.ToString());
-                if (paramidList == null)
+                if (plRecord != null)
                 {
-                    paramidList = new Dictionary<string, string>();
-                    foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
+                    var cacheKeyQueryparams = "PLSETTINGSqueryparams" + _portalId;
+                    var paramidList = (Dictionary<string, string>)CacheUtils.GetCache(cacheKeyQueryparams, _portalId.ToString());
+                    if (paramidList == null)
                     {
-                        paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), mp.GetXmlProperty("genxml/select/tablename"));
+                        paramidList = new Dictionary<string, string>();
+                        foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
+                        {
+                            paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), mp.GetXmlProperty("genxml/select/tablename"));
+                        }
+                        CacheUtils.SetCache(cacheKeyQueryparams, paramidList, _portalId.ToString());
                     }
-                    CacheUtils.SetCache(cacheKeyQueryparams, paramidList, _portalId.ToString());
                 }
 
 
