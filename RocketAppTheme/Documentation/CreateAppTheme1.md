@@ -41,9 +41,6 @@ Create a "Default" sub-folder
 ```plaintext
 /DesktopModules/RocketThemes/AppThemes-W3-CSS/rocketcontentapi.example1/1.0/default
 ```
-
-#### _**Step 2 -  Default Razor Templates**_
-
 There are a number of razor templates required for an AppTheme.    
 The AppTheme included both Admin templates and the view (website display) templates.  Standard names are structures are required.
 
