@@ -28,80 +28,71 @@ namespace DNNrocketAPI.Components
 
                 src = "/" + src.TrimStart('/'); // ensure a valid rel path.
 
-                if (h == "") h = "0";
-                if (w == "") w = "0";
+                if (!GeneralUtils.IsNumeric(h)) h = "0";
+                if (!GeneralUtils.IsNumeric(w)) w = "0";
 
-                if (GeneralUtils.IsNumeric(w) && GeneralUtils.IsNumeric(h))
+                if (!GeneralUtils.IsAbsoluteUrl(src)) src = HttpContext.Current.Server.MapPath(src);
+
+                var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
+
+                context.Response.Clear();
+                context.Response.ClearHeaders();
+                context.Response.AddFileDependency(src);
+                context.Response.Cache.SetETagFromFileDependencies();
+                context.Response.Cache.SetLastModifiedFromFileDependencies();
+                context.Response.Cache.SetCacheability(HttpCacheability.Public);
+
+                var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
+                var cacheimgtype = (string)CacheUtils.GetCache(strCacheKey + "imgtype", "DNNrocketThumb");
+                if (!String.IsNullOrEmpty(cacheimgtype)) imgtype = cacheimgtype;
+
+                //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
+                //The cache holds a link to the locked image file and must be disposed.
+                //use: ClearThumbnailLock()
+
+                if (newImage == null)
                 {
-                    if (!GeneralUtils.IsAbsoluteUrl(src)) src = HttpContext.Current.Server.MapPath(src);
-
-                    var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
-
-                    context.Response.Clear();
-                    context.Response.ClearHeaders();
-                    context.Response.AddFileDependency(src);
-                    context.Response.Cache.SetETagFromFileDependencies();
-                    context.Response.Cache.SetLastModifiedFromFileDependencies();
-                    context.Response.Cache.SetCacheability(HttpCacheability.Public);
-
-                    var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
-                    var imgTypeCache = (string)CacheUtils.GetCache(strCacheKey + "imgType", "DNNrocketThumb");
-                    if (!String.IsNullOrEmpty(imgTypeCache)) imgtype = imgTypeCache;
-
-                    //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
-                    //The cache holds a link to the locked image file and must be disposed.
-                    //use: ClearThumbnailLock()
-
-                    if (newImage == null)
+                    // Resize does not support trnasparency in webp, workaround to output png.
+                    var rtnImgMapPath = ImgUtils.ThumbMapPath(src);
+                    if (src != rtnImgMapPath)
                     {
-                        newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
-                        CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
+                        src = rtnImgMapPath;
+                        imgtype = Path.GetExtension(src).Trim('.');
+                        CacheUtils.SetCache(strCacheKey + "imgtype", imgtype, "DNNrocketThumb");
+                    }
+                    newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
+                    CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
+                }
+
+                if (newImage != null)
+                {
+                    if (imgtype == "") imgtype = Path.GetExtension(src).Trim('.');
+                    ImageCodecInfo useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
+                    if (imgtype.ToLower() == "png")
+                    {
+                        useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
+                        context.Response.ContentType = "image/png";
+                    }
+                    else if (imgtype.ToLower() == "webp")
+                    {
+                        context.Response.ContentType = "image/webp";
+                    }
+                    else
+                    {
+                        context.Response.ContentType = "image/jpeg";
                     }
 
-                    // check for transparency. (Workaround for not supporting transparent webp)
-                    if (imgtype.ToLower() == "webp")
-                    { 
-                        var metaRecord = new SimplisityRecord();
-                        var metaXml = CacheFileUtils.GetCache(src);
-                        if (!String.IsNullOrEmpty(metaXml))
-                        {
-                            metaRecord.FromXmlItem(metaXml);
-                            if (metaRecord.GetXmlPropertyBool("genxml/istransparent")) imgtype = "png";
-                        }
-                        CacheUtils.SetCache(strCacheKey + "imgType", imgtype, "DNNrocketThumb");                        
-                    }
+                    var encoderParameters = new EncoderParameters(1);
+                    encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 85L);
 
-                    if ((newImage != null))
+                    try
                     {
-                        ImageCodecInfo useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
-
-                        // this thumbnailer will always output jpg, unless specifically told to do a png format.
-                        if (imgtype.ToLower() == "png")
-                        {
-                            useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
-                            context.Response.ContentType = "image/png";
-                        }
-                        else if (imgtype.ToLower() == "webp")
-                        {
-                            context.Response.ContentType = "image/webp";
-                        }
-                        else
-                        {
-                            context.Response.ContentType = "image/jpeg";
-                        }
-
-                        var encoderParameters = new EncoderParameters(1);
-                        encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 85L);
-
-                        try
-                        {
-                            newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
-                        }
-                        catch (Exception exc)
-                        {
-                            var outArray = GeneralUtils.StrToByteArray(exc.ToString());
-                            context.Response.BinaryWrite(outArray);
-                        }
+                        newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
+                    }
+                    catch (Exception exc)
+                    {
+                        var outArray = GeneralUtils.StrToByteArray(exc.ToString());
+                        context.Response.BinaryWrite(outArray);
                     }
                 }
             }
