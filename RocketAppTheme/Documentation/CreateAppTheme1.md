@@ -19,7 +19,7 @@ It has a number of references to the bin folder of DNN, you need to copy the way
 In the RocketCDS installation you need to create a named folder for your AppTheme.  System level Rocket AppThemes are always created in 
 
 ```plaintext
-/DesktopModules/RocketThemes/#AppThemeProjectName#/#systemkey#.#AppThemeName#
+/DesktopModules/RocketThemes/#AppThemeProjectName#/#systemkey#.#AppThemeName#/#version#
 ```
 
 For this example we will use the default "AppThemes-W3-CSS" AppTheme Project folder. (You may find this example already setup in AppThemes-W3-CSS)

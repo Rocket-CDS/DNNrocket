@@ -147,7 +147,6 @@ namespace DNNrocketAPI.Components
                 SyncSystemLevel("js");
                 SyncSystemLevel("resx");
                 SyncSystemLevel("dep");
-                SyncSystemLevel("modt");
 
                 if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
                 foreach (string newPath in Directory.GetFiles(ImageFolderMapPath, "*.*", SearchOption.TopDirectoryOnly))
@@ -163,7 +162,6 @@ namespace DNNrocketAPI.Components
                 SyncPortalLevel("js");
                 SyncPortalLevel("resx");
                 SyncPortalLevel("dep");
-                SyncPortalLevel("modt");
             }
         }
         private void CreateVersionFolders(double dblVersionFolder)
@@ -728,15 +726,10 @@ namespace DNNrocketAPI.Components
             }
             return rtnDict;
         }
+        [Obsolete("The .modt file data is now included in the .dep file.")]
         public Dictionary<string, string> GetModuleTemples()
         {
-            // NOTE: I am unsure if this is required or even correct.  [TODO: Investigate if needed]
-            var rtnDict = new Dictionary<string, string>();
-            foreach (var t in FileNameList)
-            {
-                if (t.Key.ToLower().EndsWith(".modt")) rtnDict.Add(t.Key, t.Value);
-            }
-            return rtnDict;
+            return GetTemplatesDep();
         }
 
         public List<string> ModuleTemplateList(string moduleRef)
