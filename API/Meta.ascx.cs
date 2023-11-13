@@ -43,7 +43,7 @@ namespace RocketTools
         private string _metatitle = "";
         private string _metadescription = "";
         private string _metatagwords = "";
-        private string _canonicalurl = "";
+        private string _articleTable = "";
         private int _articleDefaultTabId = 0;
         private bool _disablealternate = false;
         private bool _disablecanonical = false;
@@ -94,8 +94,9 @@ namespace RocketTools
                         var strParam = Request.QueryString[paramDict.Key];
                         if (GeneralUtils.IsNumeric(strParam))
                         {
+                            _articleTable = paramDict.Value;
                             articleid = Convert.ToInt32(strParam);
-                            var dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), paramDict.Value);
+                            var dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
                             if (dataRecordTemp != null)
                             {
                                 if (dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
@@ -140,10 +141,10 @@ namespace RocketTools
                 CDefault tp = (CDefault)this.Page;
 
                 // ********** Add alt url meta for langauges ***********
-                var cachekey = "RocketTools*hreflang*" + PortalSettings.Current.PortalId + "*" + _cultureCode + "*" + PortalSettings.ActiveTab.TabID + "*" + articleid; // use nodeTablist incase the DDRMenu has a selector.
+                var cachekey = "RocketTools*hreflang*" + PortalSettings.Current.PortalId + "*" + _cultureCode + "*" + PortalSettings.ActiveTab.TabID + "*" + articleid; // use nodeTablist incase the DDRMenu has a selector.                
                 var hreflangobj = CacheUtils.GetCache(cachekey, _portalId.ToString());
-
-                _canonicalurl = "";
+                var canonicalurl = (string)CacheUtils.GetCache(cachekey + "2", _portalId.ToString());
+                if (canonicalurl == null) canonicalurl = "";
                 var hreflangtext = "";
                 if (hreflangobj != null) hreflangtext = hreflangobj.ToString();
                 if (hreflangobj == null)
@@ -152,30 +153,35 @@ namespace RocketTools
                     var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
                     foreach (var l in enabledlanguages)
                     {
-                        var paDataRecord = objCtrl.GetRecordByGuidKey(PortalSettings.Current.PortalId, -1, "PL", "PL_" + l.Key + "_" + PortalSettings.ActiveTab.TabID.ToString(""));
-                        if (paDataRecord != null)
+                        if (articleMeta)
                         {
-                            var pagename = paDataRecord.GetXmlProperty("genxml/textbox/pageurl").TrimEnd('/');
-                            if (articleMeta)
+                            var seotitle = "";
+                            var dataRecordTemp = objCtrl.GetInfo(articleid, l.Key, _articleTable);
+                            if (dataRecordTemp != null)
                             {
-                                var seotitle = DNNrocketUtils.UrlFriendly(_metatitle);
-                                string[] urlparams = { "articleid", articleid.ToString(), seotitle };
-                                hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
-                                if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
-                                if (_cultureCode == l.Key) _canonicalurl = PagesUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
+                                if (dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
+                                    seotitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
+                                if (seotitle == "") seotitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
                             }
-                            else
-                            {
-                                hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", null) + "' hreflang='" + l.Key.ToLower() + "'/>";
-                                if (_cultureCode == l.Key) _canonicalurl = PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
-                            }
+                            seotitle = DNNrocketUtils.UrlFriendly(seotitle);
+                            string[] urlparams = { "articleid", articleid.ToString(), seotitle };
+                            hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
+                            if (_cultureCode == l.Key) canonicalurl = PagesUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
+                        }
+                        else
+                        {
+                            hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", null) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            if (_cultureCode == l.Key) canonicalurl = PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
                         }
                     }
                     CacheUtils.SetCache(cachekey, hreflangtext, _portalId.ToString());
+                    CacheUtils.SetCache(cachekey + "2", canonicalurl, _portalId.ToString());
                 }
                 if (!String.IsNullOrEmpty(hreflangtext) && !_disablealternate) tp.Header.Controls.Add(new LiteralControl(hreflangtext));
 
                 tp.CanonicalLinkUrl = ""; // remove so we dont; display anything from invalid module values.
+
                 if (_metatitle != "") tp.Title = _metatitle;
                 if (_metadescription != "") tp.Description = _metadescription;
                 if (_metadescription != "") tp.MetaDescription = _metadescription;
@@ -183,7 +189,7 @@ namespace RocketTools
                 if (_metatagwords != "") tp.KeyWords = _metatagwords;
                 if (_metatagwords != "") tp.MetaKeywords = _metatagwords;
                 if (_metatagwords != "") tp.Header.Keywords = _metatagwords;
-                if (_canonicalurl != "" && !_disablecanonical) tp.CanonicalLinkUrl = _canonicalurl;
+                if (!String.IsNullOrEmpty(canonicalurl) && !_disablecanonical) tp.CanonicalLinkUrl = canonicalurl;
 
                 if (plRecord != null)
                 {
