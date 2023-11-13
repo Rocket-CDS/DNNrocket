@@ -100,7 +100,7 @@ namespace DNNrocketAPI.Components
             {
                 if (Info.GetXmlPropertyBool("genxml/checkbox/blank" + FieldId)) return "_blank";
                 if (Info.GetXmlPropertyBool("genxml/checkbox/blank")) return "_blank";
-                return "";
+                return "_self";
             }
         }
         public bool Hidden

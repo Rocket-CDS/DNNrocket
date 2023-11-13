@@ -23,27 +23,3 @@ In the RocketCDS installation you need to create a named folder for your AppThem
 ```
 
 For this example we will use the default "AppThemes-W3-CSS" AppTheme Project folder. (You may find this example already setup in AppThemes-W3-CSS)
-
-**Create a Folders**
-
-```plaintext
-/DesktopModules/RocketThemes/AppThemes-W3-CSS/rocketcontentapi.example1
-```
-
-And create version sub-folder.
-
-```plaintext
-/DesktopModules/RocketThemes/AppThemes-W3-CSS/rocketcontentapi.example1/1.0
-```
-
-Create a "Default" sub-folder
-
-```plaintext
-/DesktopModules/RocketThemes/AppThemes-W3-CSS/rocketcontentapi.example1/1.0/default
-```
-There are a number of razor templates required for an AppTheme.    
-The AppTheme included both Admin templates and the view (website display) templates.  Standard names and structures are required.
-
-NOTE: All admin templates use the w3.css framework, which is automatically added to the page by the rocketcontentapi system.  
-[https://www.w3schools.com/w3css/](https://www.w3schools.com/w3css/)  
-
