@@ -2,31 +2,6 @@
 
 Simplisty uses element attributes to do the required processing and to pass/return data to the server side API.  
 
->s-cmdurl  
-s-cmd  
-s-fields  
-s-itemid  
-s-post  
-s-list  
-s-return  
-s-append  
-s-before  
-s-after  
-s-hideloader  
-s-recylebin  
-s-removelist  
-s-confirm  
-s-regexpr  
-s-maxfilesize  
-s-dropdownlist  
-s-index  
-s-update  
-s-datatype  
-s-reload  
-s-stop  
-s-xpath  
-
-
 ##### ```s-cmdurl```  
 >Server side API url. This is saved to a cookie when used. If you are using "simplisityStartUp" then this should be defined in there, however from a module which is not using simplisity panels you may need to define this on the element. It MUST be defined or any ajax calls will not work and may simply result is a reload of the page.
 
