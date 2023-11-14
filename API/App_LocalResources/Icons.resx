@@ -353,4 +353,9 @@ settings
 translate
 &lt;/span&gt;</value>
   </data>
+  <data name="link.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+link
+&lt;/span&gt;</value>
+  </data>
 </root>
