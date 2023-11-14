@@ -13,6 +13,9 @@ And has different sections.  Not all sections are required for some AppThemes or
 Dependancies are CSS or JS files that are required for the theme to function.  The dependancy system stops duplicate CSS and JS files being injected.  
 Dependancies ONLY work on the Front View of the website.  For Admin View use "AdminFirstHeader.cshtml" or "AdminLastHeader.cshtml" templates.
 
+### ECO Mode
+ECO Mode is a module level flag setting that stops the dependancy system from injecting any dependancies with "ecofriendly" set to false.  
+
 **Tokens**  
 
 \{domainurl} = Protocol and domain URL of RocketAPI.  
