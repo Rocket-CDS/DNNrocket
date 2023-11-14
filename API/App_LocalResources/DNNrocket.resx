@@ -993,4 +993,10 @@
   <data name="notfound.Text" xml:space="preserve">
     <value>Not Found</value>
   </data>
+  <data name="all.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
 </root>
