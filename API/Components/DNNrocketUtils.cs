@@ -1611,6 +1611,10 @@ namespace DNNrocketAPI.Components
         #endregion
 
 
+        public static string NavigateURL()
+        {
+            return Globals.NavigateURL().ToString();
+        }
         public static string NavigateURL(int tabId)
         {
             return Globals.NavigateURL(tabId).ToString();
