@@ -12,40 +12,40 @@ Example from RocketIntra...
 ```
 <genxml>
 	<hidden>
-		<systemkey><![CDATA[rocketintra]]></systemkey>
+		<systemkey>rocketintra</systemkey>
 	</hidden>
-	<defaultplugin><![CDATA[rocketintramenu]]></defaultplugin>
+	<defaultplugin>rocketintramenu</defaultplugin>
 	<textbox>
 		<htmllogo>
-			<![CDATA[<div class='w3-blue w3-center w3-padding'  style="height:48px;">
+			<div class='w3-blue w3-center w3-padding'  style="height:48px;">
 <span class="material-icons">
 restaurant_menu
 </span>
 Menu
-</div>]]>
+</div>
 		</htmllogo>
 	</textbox>
-	<active><![CDATA[true]]></active>
-	<emailon><![CDATA[false]]></emailon>
-	<debugmode><![CDATA[false]]></debugmode>
+	<active>true</active>
+	<emailon>false</emailon>
+	<debugmode>false</debugmode>
 	<checkbox>
-		<active><![CDATA[true]]></active>
+		<active>true</active>
 	</checkbox>
 	<plugins list="true">
 		<genxml>
 			<hidden>
-				<pluginkey><![CDATA[dashboard]]></pluginkey>
+				<pluginkey>dashboard</pluginkey>
 			</hidden>
 			<checkbox>
-				<active><![CDATA[false]]></active>
+				<active>false</active>
 			</checkbox>
 		</genxml>
 		<genxml>
 			<hidden>
-				<pluginkey><![CDATA[rocketintramenu]]></pluginkey>
+				<pluginkey>rocketintramenu</pluginkey>
 			</hidden>
 			<checkbox>
-				<active><![CDATA[true]]></active>
+				<active>true</active>
 			</checkbox>
 		</genxml>
 	</plugins>

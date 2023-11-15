@@ -377,8 +377,36 @@ namespace Simplisity
         }
         public IEncodedString DateOf(SimplisityInfo info, String xpath, String cultureCode, String format = "d")
         {
-            var eventdate = info.GetXmlPropertyDate(xpath);
-            return new RawString(eventdate.ToString(format, new CultureInfo(cultureCode)));
+            return DateOf(info, xpath, false, cultureCode, format);
+        }
+        public IEncodedString DateOf(SimplisityInfo info, String xpath, bool displayEmpty, String cultureCode, String format = "d")
+        {
+            if (!displayEmpty)
+            {
+                if (info.GetXmlProperty(xpath) != "")
+                    return new RawString(info.GetXmlPropertyDate(xpath).ToString(format, new CultureInfo(cultureCode)));
+                else
+                    return new RawString("");
+            }
+            return new RawString(info.GetXmlPropertyDate(xpath).ToString(format, new CultureInfo(cultureCode)));
+        }
+        /// <summary>
+        /// Succinct shortens your text to a specified size, and then dots to the end.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="showdots">if set to <c>true</c> [showdots].</param>
+        /// <returns></returns>
+        public IEncodedString Succinct(string value, int size, bool showdots = true)
+        {
+            var x = size;
+            if (value.Length < size)
+            {
+                x = value.Length;
+            }
+            var rtn = value.Substring(0, x);
+            if (showdots && value != "") rtn += "...";
+            return new RawString(rtn);
         }
         public IEncodedString BreakOf(SimplisityInfo info, String xpath)
         {
