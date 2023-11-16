@@ -842,8 +842,16 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut);
         }
-
-
+        /// <summary>
+        /// Creates a checkbox for ECOMode in the settings of a module.
+        /// </summary>
+        /// <param name="rowData">The row data.</param>
+        /// <param name="defaultValue">Default Value</param>
+        /// <returns></returns>
+        public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)
+        {
+            return CheckBox(rowData, "genxml/settings/ecomode", "&nbsp;" + ResourceKey("DNNrocket.ecomode").ToString(), "class='w3-check' ", defaultValue, false, 0);
+        }
 
     }
 
