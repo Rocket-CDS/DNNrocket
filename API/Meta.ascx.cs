@@ -165,14 +165,14 @@ namespace RocketTools
                             }
                             seotitle = DNNrocketUtils.UrlFriendly(seotitle);
                             string[] urlparams = { "articleid", articleid.ToString(), seotitle };
-                            hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
                             if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
-                            if (_cultureCode == l.Key) canonicalurl = PagesUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
+                            if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
                         }
                         else
                         {
-                            hreflangtext += "<link rel='alternate' href='" + PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", null) + "' hreflang='" + l.Key.ToLower() + "'/>";
-                            if (_cultureCode == l.Key) canonicalurl = PagesUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
+                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", null) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
                         }
                     }
                     CacheUtils.SetCache(cachekey, hreflangtext, _portalId.ToString());

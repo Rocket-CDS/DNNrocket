@@ -586,7 +586,7 @@ namespace DNNrocketAPI.render
             {
                 extraparams = new string[] { };
             }
-            var strOut = DotNetNuke.Common.Globals.NavigateURL(tabid, false, portalSettings,"",cultureCode, extraparams);
+            var strOut = DNNrocketUtils.NavigateURL(tabid, false, portalSettings,"",cultureCode, extraparams);
             return new RawString(strOut);
         }
         [Obsolete("Use TabSelectListOnTabId(...) instead")]
@@ -629,7 +629,7 @@ namespace DNNrocketAPI.render
             if (t.Any())
             {
                 var tabid = t.First();
-                strOut = Globals.NavigateURL(tabid);
+                strOut = DNNrocketUtils.NavigateURL(tabid);
             }
 
             return new RawString(strOut);
@@ -642,7 +642,7 @@ namespace DNNrocketAPI.render
             if (t.Any())
             {
                 var tabid = t.First();
-                strOut = Globals.NavigateURL(tabid);
+                strOut = DNNrocketUtils.NavigateURL(tabid);
             }
             return new RawString(strOut);
         }
@@ -653,7 +653,7 @@ namespace DNNrocketAPI.render
 
             var tabid = info.GetXmlPropertyInt(xpath);
             if (tabid == 0) return new RawString("");
-            var url = PagesUtils.NavigateURL(tabid, "", paramData);
+            var url = DNNrocketUtils.NavigateURL(tabid, "", paramData);
 
             return GetLinkURL(url, openInNewWindow, text, attributes);
         }

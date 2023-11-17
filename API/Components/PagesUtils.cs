@@ -18,6 +18,7 @@ using DotNetNuke.Web.DDRMenu;
 using RazorEngine;
 using System.Web.UI.WebControls;
 using Simplisity;
+using DotNetNuke.Abstractions.Portals;
 
 namespace DNNrocketAPI.Components
 {
@@ -243,22 +244,6 @@ namespace DNNrocketAPI.Components
         public static string GetPageURL(int tabId)
         {
             return DNNrocketUtils.NavigateURL(tabId);
-        }
-        public static string NavigateURL()
-        {
-            return DNNrocketUtils.NavigateURL();
-        }
-        public static string NavigateURL(int tabId, string controlKey = "", string[] param = null)
-        {
-            return DNNrocketUtils.NavigateURL(tabId, controlKey, param);
-        }
-        public static string NavigateURL(int tabId, string language, string controlKey = "", string[] param = null)
-        {
-            return DNNrocketUtils.NavigateURL(tabId, controlKey, language, param);
-        }
-        public static string NavigateURL(int tabId, Dictionary<string, string> dictParams, string seoname)
-        {
-            return DNNrocketUtils.NavigateURL(tabId,dictParams,seoname);
         }
         public static int GetPageByTabPath(int portalId, string tabPath)
         {

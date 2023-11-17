@@ -56,7 +56,8 @@ namespace DNNrocketAPI.Components
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {
-                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+                string[] urlparams = { "status", "404" };
+                response.Redirect(DNNrocketUtils.NavigateURL(portalSetting.ErrorPage404, "", "", urlparams));
             }
             else
             {
@@ -1610,7 +1611,7 @@ namespace DNNrocketAPI.Components
 
         #endregion
 
-
+        #region "NavigateURL"
         public static string NavigateURL()
         {
             return Globals.NavigateURL().ToString();
@@ -1653,6 +1654,15 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId, false, null, controlKey, cultureCode, param).ToString();
         }
+        public static string NavigateURL(int tabId, PortalSettings portalSettings, string controlKey, string cultureCode, string[] param)
+        {
+            return Globals.NavigateURL(tabId, false, portalSettings, controlKey, cultureCode, param).ToString();
+        }
+        public static string NavigateURL(int tabId, bool isSuperTab, PortalSettings portalSettings, string controlKey, string cultureCode, string[] param)
+        {
+            return Globals.NavigateURL(tabId, isSuperTab, portalSettings, controlKey, cultureCode, param).ToString();
+        }
+        #endregion
         public static string UrlFriendly(string textstring)
         {
             return GeneralUtils.UrlFriendly(textstring);
