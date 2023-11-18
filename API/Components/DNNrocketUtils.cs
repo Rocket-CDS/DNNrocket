@@ -1648,11 +1648,11 @@ namespace DNNrocketAPI.Components
         }
         public static string NavigateURL(int tabId, string cultureCode, string[] param)
         {
-            return Globals.NavigateURL(tabId, false, null, "", cultureCode, param).ToString();
+            return Globals.NavigateURL(tabId, false, PortalSettings.Current, "", cultureCode, param).ToString();
         }
         public static string NavigateURL(int tabId, string controlKey, string cultureCode, string[] param)
         {
-            return Globals.NavigateURL(tabId, false, null, controlKey, cultureCode, param).ToString();
+            return Globals.NavigateURL(tabId, false, PortalSettings.Current, controlKey, cultureCode, param).ToString();
         }
         public static string NavigateURL(int tabId, PortalSettings portalSettings, string controlKey, string cultureCode, string[] param)
         {

@@ -218,6 +218,7 @@
     <Compile Include="Components\AppTheme\AppThemeDNNrocketLimpet.cs" />
     <Compile Include="Components\AppTheme\AppThemeSystemLimpet.cs" />
     <Compile Include="Components\AppTheme\AppThemeLimpet.cs" />
+    <Compile Include="Components\ArticleReview.cs" />
     <Compile Include="Components\ArticleLink.cs" />
     <Compile Include="Components\ArticleDoc.cs" />
     <Compile Include="Components\ArticleImage.cs" />

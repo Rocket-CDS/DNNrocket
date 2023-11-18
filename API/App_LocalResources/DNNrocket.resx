@@ -999,4 +999,13 @@
   <data name="categories.Text" xml:space="preserve">
     <value>Categories</value>
   </data>
+  <data name="review.Text" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="reviews.Text" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="reviewcount.Text" xml:space="preserve">
+    <value>Review Count</value>
+  </data>
 </root>
