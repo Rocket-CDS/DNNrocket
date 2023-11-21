@@ -47,6 +47,7 @@ using DNNrocketAPI.Interfaces;
 using DotNetNuke.Web.DDRMenu;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using static DotNetNuke.Security.PortalSecurity;
 
 namespace DNNrocketAPI.Components
 {
@@ -1729,12 +1730,6 @@ namespace DNNrocketAPI.Components
             else
                 return text.Substring(0, maxCharacters) + trailingText;
         }
-        public static string RemoveScriptInjection(string inStr)
-        {
-            inStr = inStr.Replace("script", "");
-            return inStr;
-        }
-
         private static string lockobjectUpdateSqlIndex = "lockit";
         public static void UpdateSqlIndex(SimplisityRecord idx)
         {
@@ -1851,7 +1846,6 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
-
         #region "Temp Storage"
 
         private static string SaveTempStorage(string XmlData,string key, int keephours = 24)

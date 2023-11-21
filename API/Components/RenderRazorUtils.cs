@@ -21,12 +21,6 @@ namespace DNNrocketAPI.Components
 
         #region "render razor"
 
-        [Obsolete("Use RazorProcessData(...) instead")]
-        public static RazorProcessResult RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
-        {
-            return RazorProcessData(razorTempl, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
-        }
-
         private static RazorProcessResult RazorProcessRunCompile(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
         {
             var processResult = new RazorProcessResult();
@@ -57,13 +51,15 @@ namespace DNNrocketAPI.Components
 
                 Engine.Razor =  RazorEngineSingleton.Instance;
 
-                var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
-                if (israzorCached == null || (string)israzorCached != razorTempl)
+                var israzorCached = DNNrocketUtils.GetCache(hashCacheKey);
+                if (israzorCached == null) 
                 {
                     try
                     {
+                        //LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
                         processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        CacheUtils.SetCache(razorTempl, razorTempl);
+                        DNNrocketUtils.SetCache(hashCacheKey, "True");
+                        //LogUtils.LogSystem("END - RunCompile: " + hashCacheKey);
                     }
                     catch (Exception ex)
                     {
@@ -78,15 +74,19 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
+                        //LogUtils.LogSystem("START - Run: " + hashCacheKey);
                         processResult.RenderedText = Engine.Razor.Run(hashCacheKey, null, model);
+                        //LogUtils.LogSystem("END - Run: " + hashCacheKey);
                     }
                     catch (Exception)
                     {
                         // try again with compile, the template cache may have got removed.
                         try
                         {
+                            //LogUtils.LogSystem("START - RunCompile2: " + hashCacheKey);
                             processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                            CacheUtils.SetCache(razorTempl, razorTempl);
+                            DNNrocketUtils.SetCache(hashCacheKey, "True");
+                            //LogUtils.LogSystem("END - RunCompile2: " + hashCacheKey);
                         }
                         catch (Exception ex1)
                         {
@@ -134,6 +134,13 @@ namespace DNNrocketAPI.Components
             }
         }
 
+
+        #region "Obsolete Razor method"
+        [Obsolete("Use RazorProcessData(...) instead")]
+        public static RazorProcessResult RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
+        {
+            return RazorProcessData(razorTempl, model.DataObjects, model.Settings, model.SessionParamsData, debugMode);
+        }
 
         [Obsolete("Use RazorProcessData(...) instead")]
         public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
@@ -213,8 +220,6 @@ namespace DNNrocketAPI.Components
                 return "ERROR in RazorRunCompile : " + ex.ToString();
             }
         }
-
-        #region "Obsolete Razor method"
         [Obsolete("Use RazorProcessData(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false) instead")]
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, object> dataObjects, SessionParams sessionParams = null, Dictionary<string, string> settings = null, bool cacheOff = false)
         {

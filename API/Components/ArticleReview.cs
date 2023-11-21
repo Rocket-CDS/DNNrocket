@@ -17,7 +17,7 @@ namespace DNNrocketAPI.Components
             {
                 var linkkey = GeneralUtils.GetUniqueString();
                 Info.SetXmlProperty("genxml/hidden/reviewkey", linkkey);
-                ReviewDate = DateTime.Now;
+                ReviewDate = DateTime.Now.AddYears(-1000);
             }
         }
 
@@ -41,6 +41,10 @@ namespace DNNrocketAPI.Components
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name");
                 return rtn;
             }
+            set
+            {
+                Info.SetXmlProperty("genxml/textbox/name" + FieldId, value);
+            }
         }
         public string Comment
         {
@@ -49,6 +53,10 @@ namespace DNNrocketAPI.Components
                 var rtn = Info.GetXmlProperty("genxml/textbox/comment" + FieldId);
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/comment");
                 return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/textbox/comment" + FieldId, value);
             }
         }
         public bool Hidden
@@ -65,5 +73,7 @@ namespace DNNrocketAPI.Components
             }
         }
         public DateTime ReviewDate { get { return Info.GetXmlPropertyDate("genxml/textbox/reviewdate"); } set { Info.SetXmlProperty("genxml/textbox/reviewdate", value.ToString("O"), TypeCode.DateTime); } }
+        public int UserId { get { return Info.GetXmlPropertyInt("genxml/data/userid"); } set { Info.SetXmlProperty("genxml/data/userid", value.ToString()); } }
+        public int Rating { get { return Info.GetXmlPropertyInt("genxml/select/stars" + FieldId); } set { Info.SetXmlProperty("genxml/select/stars" + FieldId, value.ToString()); } }
     }
 }

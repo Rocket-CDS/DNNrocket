@@ -1,17 +1,19 @@
-﻿using System;
+﻿using DotNetNuke.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using static DotNetNuke.Security.PortalSecurity;
 
 namespace DNNrocketAPI.Components
 {
     public static class SecurityInput
     {
         private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
-
+        private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
         private static readonly Regex[] RxListStrings = new[]
         {
             new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
@@ -58,6 +60,7 @@ namespace DNNrocketAPI.Components
         };
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
+        private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 
         /// -----------------------------------------------------------------------------
@@ -149,8 +152,15 @@ namespace DNNrocketAPI.Components
             }
             return isSQLInjection;
         }
-
-
+        public static string PreventSQLInjection(string strSQL)
+        {
+            // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
+            return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
+        }
+        public static string NoProfanity(string inputText)
+        {
+            return PortalSecurity.Instance.InputFilter(inputText, FilterFlag.NoProfanity);
+        }
 
     }
 }
