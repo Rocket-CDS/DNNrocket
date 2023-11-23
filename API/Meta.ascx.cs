@@ -32,6 +32,10 @@ using DNNrocketAPI;
 using System.Web.UI;
 using System.Xml.Linq;
 using System.Security.Cryptography.Xml;
+using System.Web.UI.HtmlControls;
+using Newtonsoft.Json.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using System.Security.Policy;
 
 namespace RocketTools
 {
@@ -47,7 +51,7 @@ namespace RocketTools
         private int _articleDefaultTabId = 0;
         private bool _disablealternate = false;
         private bool _disablecanonical = false;
-
+        private SimplisityInfo _dataRecordTemp;
         protected override void OnLoad(EventArgs e)
         {
             try
@@ -85,6 +89,7 @@ namespace RocketTools
                 }
                 // check for paramid
                 var articleMeta = false;
+                var metaList = new List<HtmlMeta>();
                 var articleid = 0;
                 foreach (var paramDict in paramidList)
                 {
@@ -96,22 +101,33 @@ namespace RocketTools
                         {
                             _articleTable = paramDict.Value;
                             articleid = Convert.ToInt32(strParam);
-                            var dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
-                            if (dataRecordTemp != null)
+                            _dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
+                            if (_dataRecordTemp != null)
                             {
-                                if (dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
-                                    _metatitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
-                                if (_metatitle == "") _metatitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
+                                    _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
+                                if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
 
-                                if (dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
-                                    _metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
-                                if (_metadescription == "") _metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
+                                    _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+                                if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
 
-                                if (dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
-                                    _metatagwords = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
+                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
+                                    _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
 
-                                if (dataRecordTemp.GetXmlProperty("genxml/data/articledefaulttabId") != "")
-                                    _articleDefaultTabId = dataRecordTemp.GetXmlPropertyInt("genxml/data/articledefaulttabId");
+                                var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, _dataRecordTemp.GetXmlProperty("genxml/systemkey"), _articleTable);
+                                _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
+                                if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
+
+                                string[] urlparams = { "articleid", articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
+                                var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
+
+                                metaList.Add(BuildMeta("", "og:type", "article"));
+                                metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
+                                metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
+                                metaList.Add(BuildMeta("", "og:url", ogurl));
+                                var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
+                                if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
 
                                 articleMeta = true;
                             }
@@ -166,7 +182,6 @@ namespace RocketTools
                             seotitle = DNNrocketUtils.UrlFriendly(seotitle);
                             string[] urlparams = { "articleid", articleid.ToString(), seotitle };
                             hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
-                            if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
                             if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
                         }
                         else
@@ -191,6 +206,11 @@ namespace RocketTools
                 if (_metatagwords != "") tp.Header.Keywords = _metatagwords;
                 if (!String.IsNullOrEmpty(canonicalurl) && !_disablecanonical) tp.CanonicalLinkUrl = canonicalurl;
 
+                foreach (var meta in metaList)
+                {
+                    tp.Header.Controls.Add(meta);
+                }
+
                 if (plRecord != null)
                 {
                     foreach (var cssPattern in plRecord.GetRecordList("removecss"))
@@ -208,6 +228,14 @@ namespace RocketTools
 
         }
 
+        private HtmlMeta BuildMeta(string name, string property, string content)
+        {
+            HtmlMeta meta = new HtmlMeta();
+            meta.Name = name;
+            if (!String.IsNullOrEmpty(property)) meta.Attributes.Add("property", property);
+            meta.Content = content;
+            return meta;
+        }
     }
 
 }

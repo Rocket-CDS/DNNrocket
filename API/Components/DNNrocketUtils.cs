@@ -1846,6 +1846,24 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        public static SimplisityRecord GetPortalContentRecByRefId(int portalId, string systemKey, string tableName)
+        {
+            var entityTypeCode = "PortalSettingsRef_" + systemKey + portalId;
+            var rtn = (SimplisityRecord)CacheUtils.GetCache(entityTypeCode);
+            if (rtn == null)
+            {
+                var objCtrl = new DNNrocketController();
+                var refRec = objCtrl.GetRecordByType(portalId, -1, entityTypeCode, "", "", tableName);
+                if (refRec != null)
+                {
+                    rtn = objCtrl.GetRecord(refRec.ParentItemId, tableName);
+                    CacheUtils.SetCache(entityTypeCode, rtn);
+                }
+                if (rtn == null) rtn = new SimplisityRecord();
+            }
+            return rtn;
+        }
+
         #region "Temp Storage"
 
         private static string SaveTempStorage(string XmlData,string key, int keephours = 24)
