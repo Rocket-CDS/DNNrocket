@@ -66,6 +66,7 @@ namespace DNNrocketAPI.Components
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
+                                paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
                                 systemData.SystemInfo.PortalId = portalId;  // export run on shcheduler,
 
                                 var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
@@ -134,6 +135,7 @@ namespace DNNrocketAPI.Components
                                     paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);
+                                    paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemKey);
                                     systemData.SystemInfo.PortalId = portalId;  // import run on shcheduler,
 
                                     var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
