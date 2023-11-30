@@ -1011,4 +1011,7 @@
   <data name="imagealt.Text" xml:space="preserve">
     <value>Alt text</value>
   </data>
+  <data name="open.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
 </root>
