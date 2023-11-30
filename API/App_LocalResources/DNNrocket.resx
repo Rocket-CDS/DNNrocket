@@ -1008,4 +1008,7 @@
   <data name="reviewcount.Text" xml:space="preserve">
     <value>Review Count</value>
   </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Alt text</value>
+  </data>
 </root>

@@ -948,4 +948,7 @@
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
     <value>Interne,URL</value>
   </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Texte alternatif</value>
+  </data>
 </root>
