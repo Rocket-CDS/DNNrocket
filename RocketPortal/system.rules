@@ -136,7 +136,7 @@
           <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
           <assembly>RocketAppThemes</assembly>
-          <interfaceicon>newspaper</interfaceicon>
+          <interfaceicon>settings_system_daydream</interfaceicon>
           <defaultcommand>rocketapptheme_getlist</defaultcommand>
 			<relpath>/Desktopmodules/DNNrocket/RocketAppThemes/</relpath>
 		</textbox>
@@ -165,7 +165,7 @@
           <namespaceclass>RocketPortal.API.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
           <assembly>RocketPortal</assembly>
-          <interfaceicon>settings_system_daydream</interfaceicon>
+          <interfaceicon>storage</interfaceicon>
           <defaultcommand>appthemeprojects_list</defaultcommand>
           <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
         </textbox>
