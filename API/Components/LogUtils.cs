@@ -15,9 +15,13 @@ namespace DNNrocketAPI.Components
         //  --------------------- System Log for sceduler or non-portal specific log ------------------------------
         public static void LogSystem(string message)
         {
-            var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, "system", message);
+            var globalSettings = new SystemGlobalData();
+            if (globalSettings.Log)
+            {
+                var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
+                if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+                FileUtils.AppendToLog(mappath, "system", message);
+            }
         }
         public static void LogSystemClear(int daysToKeep)
         {
@@ -46,30 +50,15 @@ namespace DNNrocketAPI.Components
         /// Used to log any actions that we may need to refer to later.  To prove what has happen.
         /// </summary>
         /// <param name="message"></param>
+        [Obsolete("Use LogSystemClear(int daysToKeep) instead")]
         public static void LogTracking(string message, string systemkey)
         {
-            if (systemkey == "") systemkey = "systemapi";
-            var dolog = false;
-            var systemData = SystemSingleton.Instance(systemkey);
-            if (systemData.Exists && systemData.LogTracking) dolog = true;
-            if (dolog)
-            {
-                var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
-                if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-                FileUtils.AppendToLog(mappath, systemkey, message);
-                LogSystem(systemkey + " - portalid:" + PortalUtils.GetCurrentPortalId() + "_" + message);
-            }
-
+            LogSystem(systemkey + " - portalid:" + PortalUtils.GetCurrentPortalId() + " - " + message);
         }
+        [Obsolete("Use LogClear() instead")]
         public static void LogTrackingClear(int portalid, int daysToKeep)
         {
-            var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath(portalid).TrimEnd('\\') + "\\logs";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (FileInfo file in di.GetFiles())
-            {
-                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
-            }
+            LogSystemClear(daysToKeep);
         }
         /// <summary>
         /// Places an exception onto the DNN audit log.
@@ -82,28 +71,5 @@ namespace DNNrocketAPI.Components
             Exceptions.LogException(exc);
             return exc.ToString();
         }
-
-        //  --------------------- Private utils ------------------------------
-        private static void Log(string message, string folderName)
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, "debug", message);
-        }
-        private static void LogClear(string folderName, int daysToKeep)
-        {
-            LogClear(PortalUtils.GetCurrentPortalId(), folderName, daysToKeep);
-        }
-        private static void LogClear(int portalId, string folderName, int daysToKeep)
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath(portalId).TrimEnd('\\') + "\\" + folderName;
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (FileInfo file in di.GetFiles())
-            {
-                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
-            }
-        }
-
     }
 }

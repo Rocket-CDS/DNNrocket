@@ -733,10 +733,12 @@ namespace DNNrocketAPI.Components
         }
         public static TabInfo GetTabInfo(int portalid, int tabid, bool ignoreCache = false)
         {
+            if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, portalid, ignoreCache);
         }
         public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
         {
+            if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
 

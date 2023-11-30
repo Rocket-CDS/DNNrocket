@@ -24,14 +24,17 @@ namespace DNNrocketAPI.render
     {
         public IEncodedString AddProcessDataResx(AppThemeLimpet appTheme, bool includeAPIresx = false)
         {
-            var resxPortalPath = appTheme.PortalFileDirectoryRel.TrimEnd('/') + "/resx/";
-            AddProcessData("resourcepath", resxPortalPath);
-            var resxSysPath = appTheme.AppThemeVersionFolderRel.TrimEnd('/') + "/resx/";
-            AddProcessData("resourcepath", resxSysPath);
-            if (includeAPIresx)
+            if (appTheme != null)
             {
-                var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
-                AddProcessData("resourcepath", apiResx);
+                var resxPortalPath = appTheme.PortalFileDirectoryRel.TrimEnd('/') + "/resx/";
+                AddProcessData("resourcepath", resxPortalPath);
+                var resxSysPath = appTheme.AppThemeVersionFolderRel.TrimEnd('/') + "/resx/";
+                AddProcessData("resourcepath", resxSysPath);
+                if (includeAPIresx)
+                {
+                    var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
+                    AddProcessData("resourcepath", apiResx);
+                }
             }
             return new RawString(""); //return nothing
         }

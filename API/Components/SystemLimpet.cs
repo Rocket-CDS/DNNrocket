@@ -254,12 +254,7 @@ namespace DNNrocketAPI.Components
         public bool Active
         {
             get { return Record.GetXmlPropertyBool("genxml/active"); }
-        }        
-        public bool LogTracking
-        {
-            get { return Record.GetXmlPropertyBool("genxml/logtracking"); }
-        }
-        
+        }              
         public string DatabaseTable
         {
             get

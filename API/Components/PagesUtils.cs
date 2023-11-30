@@ -32,12 +32,9 @@ namespace DNNrocketAPI.Components
                 //save data
 
                 // update tab url table.
-                if (pageUrl != "")
+                if (pageUrl != "" & tabId > 0)
                 {
                     var objTabs = new TabController();
-
-
-
 
                     if (!pageUrl.StartsWith("/")) pageUrl = "/" + pageUrl;
                     var tabInfo = objTabs.GetTab(tabId, portalId);
@@ -96,6 +93,8 @@ namespace DNNrocketAPI.Components
 
         public static Dictionary<int, string> GetParentPageNames(int portalId, int tabId, Dictionary<int, string> dictPages)
         {
+            if (tabId <= 0) return dictPages;
+
             var objTabs = new TabController();
             var tabInfo = objTabs.GetTab(tabId, portalId);
             if (tabInfo != null)
@@ -112,6 +111,8 @@ namespace DNNrocketAPI.Components
 
         public static Dictionary<int, string> GetChildrenPageName(int portalId, int tabId, Dictionary<int, string> childDict)
         {
+            if (tabId <= 0) return childDict;
+
             var tabCollection = TabController.Instance.GetTabsByPortal(portalId).WithParentId(tabId);
             foreach (var tabInfo2 in tabCollection)
             {
@@ -121,13 +122,12 @@ namespace DNNrocketAPI.Components
             return childDict;
         }
 
-
-
-
         private static void ValidateTabUrls(int tabId, string pageUrl)
         {
             try
             {
+                if (tabId > 0)
+                {
                     //save data
 
                     // remove the 200 status with no language, DNN will use this as the default if we don't
@@ -138,8 +138,7 @@ namespace DNNrocketAPI.Components
 
                     // resequence taburl records
                     ResequanceTabUrls(tabId);
-
-
+                }
             }
             catch (Exception ex)
             {
@@ -243,6 +242,7 @@ namespace DNNrocketAPI.Components
 
         public static string GetPageURL(int tabId)
         {
+            if (tabId <= 0) return "";
             return DNNrocketUtils.NavigateURL(tabId);
         }
         public static int GetPageByTabPath(int portalId, string tabPath)
@@ -266,6 +266,7 @@ namespace DNNrocketAPI.Components
         }
         public static string GetPageName(int tabId, int portalId)
         {
+            if (tabId <= 0) return "";
             var controller = new TabController();
             var tab = controller.GetTab(tabId, portalId);
             if (tab == null)
@@ -306,102 +307,114 @@ namespace DNNrocketAPI.Components
         }
         public static void AddPagePermissions(int portalId, int pageId, string roleName)
         {
-            TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
-            if (newTab != null)
+            if (pageId > 0)
             {
-                TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-                var roleid = -1;
-                if (roleName != "")
+                TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
+                if (newTab != null)
                 {
-                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                    if (role != null) roleid = role.RoleID;
-                }
-                //Add permission to the page so that all users can view it
-                foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
-                {
-                    if (p.PermissionKey == "VIEW")
+                    TabPermissionCollection newPermissions = newTab.TabPermissions;
+
+                    var roleid = -1;
+                    if (roleName != "")
                     {
-                        var objPermission = new TabPermissionInfo(p);
-                        objPermission.TabID = pageId;
-                        objPermission.RoleID = roleid;
-                        objPermission.RoleName = roleName;
-                        objPermission.AllowAccess = true;
-                        //objPermission.UserID = ??;
-                        objPermission.DisplayName = roleName;
-
-                        bool canAdd = !newTab.TabPermissions.Cast<TabPermissionInfo>()
-                  .Any(tp => tp.TabID == objPermission.TabID
-                             && tp.PermissionID == objPermission.PermissionID
-                             && tp.RoleID == objPermission.RoleID
-                             && tp.UserID == objPermission.UserID);
-
-                        if (canAdd) newTab.TabPermissions.Add(objPermission);
+                        var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        if (role != null) roleid = role.RoleID;
                     }
-                }
+                    //Add permission to the page so that all users can view it
+                    foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                    {
+                        if (p.PermissionKey == "VIEW")
+                        {
+                            var objPermission = new TabPermissionInfo(p);
+                            objPermission.TabID = pageId;
+                            objPermission.RoleID = roleid;
+                            objPermission.RoleName = roleName;
+                            objPermission.AllowAccess = true;
+                            //objPermission.UserID = ??;
+                            objPermission.DisplayName = roleName;
 
-                TabController.Instance.UpdateTab(newTab);
-                TabController.Instance.ClearCache(portalId);
+                            bool canAdd = !newTab.TabPermissions.Cast<TabPermissionInfo>()
+                      .Any(tp => tp.TabID == objPermission.TabID
+                                 && tp.PermissionID == objPermission.PermissionID
+                                 && tp.RoleID == objPermission.RoleID
+                                 && tp.UserID == objPermission.UserID);
+
+                            if (canAdd) newTab.TabPermissions.Add(objPermission);
+                        }
+                    }
+
+                    TabController.Instance.UpdateTab(newTab);
+                    TabController.Instance.ClearCache(portalId);
+                }
             }
         }
         public static void RemovePagePermissions(int portalId, int pageId, string roleName)
         {
-            TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
-            if (newTab != null)
+            if (pageId > 0)
             {
-                TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-                var roleid = int.Parse(Globals.glbRoleAllUsers);
-                if (roleName != "")
+                TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
+                if (newTab != null)
                 {
-                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                    if (role != null)
-                    {
-                        roleid = role.RoleID;
-                        LogUtils.LogSystem("RoleId to Remove: " + roleid);
-                        foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
-                        {
-                            if (p.PermissionKey == "VIEW")
-                            {
-                                var tabPub = new TabPublishingController();
+                    TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-                                var existPermission = GetAlreadyPermission(newTab, "VIEW", roleid);
-                                if (existPermission != null)
+                    var roleid = int.Parse(Globals.glbRoleAllUsers);
+                    if (roleName != "")
+                    {
+                        var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        if (role != null)
+                        {
+                            roleid = role.RoleID;
+                            LogUtils.LogSystem("RoleId to Remove: " + roleid);
+                            foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                            {
+                                if (p.PermissionKey == "VIEW")
                                 {
-                                    LogUtils.LogSystem("Remove: " + roleid);
-                                    newTab.TabPermissions.Remove(existPermission);
+                                    var tabPub = new TabPublishingController();
+
+                                    var existPermission = GetAlreadyPermission(newTab, "VIEW", roleid);
+                                    if (existPermission != null)
+                                    {
+                                        LogUtils.LogSystem("Remove: " + roleid);
+                                        newTab.TabPermissions.Remove(existPermission);
+                                    }
                                 }
                             }
+                            TabController.Instance.UpdateTab(newTab);
+                            TabController.Instance.ClearCache(portalId);
                         }
-                        TabController.Instance.UpdateTab(newTab);
-                        TabController.Instance.ClearCache(portalId);
                     }
                 }
             }
         }
         public static void RemoveAllUsersPagePermissions(int portalId, int pageId)
         {
-            TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
-            if (newTab != null)
+            if (pageId > 0)
             {
-                TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-                var roleid = int.Parse(Globals.glbRoleAllUsers);
-                foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
+                if (newTab != null)
                 {
-                    if (p.PermissionKey == "VIEW")
-                    {
-                        var tabPub = new TabPublishingController();
+                    TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-                        var existPermission = GetAlreadyPermission(newTab, "VIEW", roleid);
-                        if (existPermission != null)
+                    var roleid = int.Parse(Globals.glbRoleAllUsers);
+                    foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                    {
+                        if (p.PermissionKey == "VIEW")
                         {
-                            newTab.TabPermissions.Remove(existPermission);
+                            var tabPub = new TabPublishingController();
+
+                            var existPermission = GetAlreadyPermission(newTab, "VIEW", roleid);
+                            if (existPermission != null)
+                            {
+                                newTab.TabPermissions.Remove(existPermission);
+                            }
                         }
                     }
+                    TabController.Instance.UpdateTab(newTab);
+                    TabController.Instance.ClearCache(portalId);
                 }
-                TabController.Instance.UpdateTab(newTab);
-                TabController.Instance.ClearCache(portalId);
             }
         }
 
@@ -417,13 +430,16 @@ namespace DNNrocketAPI.Components
 
         public static void AddPageSkin(int portalId, int pageId, string skinFolderName, string skinNameAscx)
         {
-            var skinSrc = "[G]skins/" + skinFolderName + "/" + skinNameAscx;
-            var controller = new TabController();
-            var newTab = controller.GetTab(pageId, portalId);
-            if (newTab.SkinSrc != skinSrc)
+            if (pageId > 0)
             {
-                newTab.SkinSrc = skinSrc;
-                controller.UpdateTab(newTab);
+                var skinSrc = "[G]skins/" + skinFolderName + "/" + skinNameAscx;
+                var controller = new TabController();
+                var newTab = controller.GetTab(pageId, portalId);
+                if (newTab.SkinSrc != skinSrc)
+                {
+                    newTab.SkinSrc = skinSrc;
+                    controller.UpdateTab(newTab);
+                }
             }
         }
         public static List<TabUrlInfo> GetTabUrls(int portalId, int tabId)
