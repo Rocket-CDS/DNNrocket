@@ -58,6 +58,9 @@
     <Reference Include="DotNetNuke.Abstractions">
       <HintPath>_external\DotNetNuke.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <HintPath>_external\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Web">
       <HintPath>_external\DotNetNuke.Web.dll</HintPath>
     </Reference>

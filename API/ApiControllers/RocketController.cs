@@ -51,6 +51,7 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             var paramCmd = context.Request.QueryString["cmd"];
+            LogUtils.LogSystem("START - Action paramCmd: " + paramCmd);
 
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
@@ -81,6 +82,9 @@ namespace DNNrocketAPI.ApiControllers
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             // Access-Control-Allow-Origin must be setup of IIS, to allow iframes.  The header cannot be added more than once.
+
+            LogUtils.LogSystem("END - Action paramCmd: " + paramCmd);
+
             return rtn;
         }
         /// <summary>
@@ -100,6 +104,7 @@ namespace DNNrocketAPI.ApiControllers
             var paramCmd = "";
             if (context.Request.QueryString.AllKeys.Contains("k")) key = context.Request.QueryString["k"];
             if (context.Request.QueryString.AllKeys.Contains("cmd")) paramCmd = context.Request.QueryString["cmd"];
+            LogUtils.LogSystem("START - ActionContent paramCmd: " + paramCmd);
 
             if (paramCmd == "" && key == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
 
@@ -145,6 +150,8 @@ namespace DNNrocketAPI.ApiControllers
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            LogUtils.LogSystem("END - ActionContent paramCmd: " + paramCmd);
+
             return rtn;
         }
         private SimplisityInfo BuildPostInfo()

@@ -17,6 +17,8 @@ namespace DNNrocketAPI.Components
         {
             try
             {
+                LogUtils.LogSystem("START - Schedule");
+
                 var gloablSettings = new SystemGlobalData();
                 if (gloablSettings.PreCompileRazor)
                 {
@@ -67,9 +69,11 @@ namespace DNNrocketAPI.Components
                     }
                 }
 
-                LogUtils.LogSystemClear(7);
+                LogUtils.LogSystemClear(gloablSettings.MaxLogFiles);
 
                 this.ScheduleHistoryItem.Succeeded = true;
+
+                LogUtils.LogSystem("END - Schedule");
 
             }
             catch (Exception Ex)

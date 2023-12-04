@@ -36,7 +36,9 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
+                        LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
                         processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
+                        LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
                     }
                     catch (Exception ex)
                     {
@@ -56,10 +58,10 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
-                        //LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
+                        LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
                         processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
                         DNNrocketUtils.SetCache(hashCacheKey, "True");
-                        //LogUtils.LogSystem("END - RunCompile: " + hashCacheKey);
+                        LogUtils.LogSystem("END - RunCompile: " + hashCacheKey);
                     }
                     catch (Exception ex)
                     {
@@ -74,9 +76,9 @@ namespace DNNrocketAPI.Components
                 {
                     try
                     {
-                        //LogUtils.LogSystem("START - Run: " + hashCacheKey);
+                        LogUtils.LogSystem("START - Run: " + hashCacheKey);
                         processResult.RenderedText = Engine.Razor.Run(hashCacheKey, null, model);
-                        //LogUtils.LogSystem("END - Run: " + hashCacheKey);
+                        LogUtils.LogSystem("END - Run: " + hashCacheKey);
                     }
                     catch (Exception)
                     {

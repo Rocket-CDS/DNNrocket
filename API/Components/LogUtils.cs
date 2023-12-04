@@ -1,4 +1,6 @@
-﻿using DotNetNuke.Services.Exceptions;
+﻿using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Services.Exceptions;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -18,19 +20,23 @@ namespace DNNrocketAPI.Components
             var globalSettings = new SystemGlobalData();
             if (globalSettings.Log)
             {
-                var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
-                if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-                FileUtils.AppendToLog(mappath, "system", message);
+                ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+                tracelLogger.Info($"ROCKET: " + message);
             }
         }
         public static void LogSystemClear(int daysToKeep)
         {
-            var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (FileInfo file in di.GetFiles())
+            if (daysToKeep > 0)
             {
-                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep * -1)) file.Delete();
+                LogUtils.LogSystem("LogSystemClear: Keep " + daysToKeep + " days");
+
+                var mappath = DNNrocketUtils.MapPath("Portals/_default/Logs");
+                if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+                DirectoryInfo di = new DirectoryInfo(mappath);
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    if (file.CreationTime < DateTime.Now.AddDays(daysToKeep * -1)) file.Delete();
+                }
             }
         }
 
@@ -50,12 +56,12 @@ namespace DNNrocketAPI.Components
         /// Used to log any actions that we may need to refer to later.  To prove what has happen.
         /// </summary>
         /// <param name="message"></param>
-        [Obsolete("Use LogSystemClear(int daysToKeep) instead")]
+        [Obsolete("Use LogSystem() instead")]
         public static void LogTracking(string message, string systemkey)
         {
             LogSystem(systemkey + " - portalid:" + PortalUtils.GetCurrentPortalId() + " - " + message);
         }
-        [Obsolete("Use LogClear() instead")]
+        [Obsolete("Use LogSystemClear() instead")]
         public static void LogTrackingClear(int portalid, int daysToKeep)
         {
             LogSystemClear(daysToKeep);

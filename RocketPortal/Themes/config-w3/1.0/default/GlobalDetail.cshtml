@@ -88,11 +88,15 @@
             </div>
         </div>
         <div classs="w3-row ">
-            <div class="w3-row w3-padding">
+            <div class="w3-half w3-padding">
                 @CheckBox(info, "genxml/checkbox/log", " Activate Logging", "class='w3-check'", true)
                 <div class="w3-row w3-tiny">
-                    <i>Logging is found in "/Portals/_default/RocketLogs" of the installation.</i>
+                    <i>Found in "/Portals/_default/Logs"</i>
                 </div>
+            </div>
+            <div class="w3-half w3-padding">
+                <label>Maximum Log Days</label>
+                @TextBox(info, "genxml/textbox/maxlogfiles", " class='w3-input w3-border' autocomplete='off' ","30",false,0,"","number")
             </div>
         </div>
 
