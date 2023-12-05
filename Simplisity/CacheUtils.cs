@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Simplisity
 {
-    public class CacheUtils
+    internal class CacheUtils
     {
 
         #region "cache"

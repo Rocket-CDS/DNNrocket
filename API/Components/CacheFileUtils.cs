@@ -17,45 +17,60 @@ namespace DNNrocketAPI.Components
 
         #region "cache"
 
-        public static string GetCache(string cacheKey)
+        public static string GetCache(string cacheKey, string groupid = "")
         {
-            var cacheData = (string)CacheUtils.GetCache(cacheKey);
+            var cacheData = (string)CacheUtils.GetCache(cacheKey, groupid);
             if (cacheData == null)
             {
-                var cacheFile = GetMd5Hash(cacheKey);
-                var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
+                var groupKey = "_" + groupid;
+                var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
+                var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
-                CacheUtils.SetCache(cacheKey, cacheDataStr);
+                CacheUtils.SetCache(cacheKey, cacheDataStr, groupid);
                 return cacheDataStr;
             }
             return cacheData;
         }
-
-        public static void SetCache(string cacheKey, string objObject)
+        public static void SetCache(string cacheKey, string objObject, string groupid = "")
         {
+            if (objObject != null) CacheUtils.SetCache(cacheKey, objObject, groupid);
             if (!String.IsNullOrEmpty(objObject))
             {
-                CacheUtils.SetCache(cacheKey, objObject);
-
+                var groupKey = "_" + groupid;
+                var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
                 if (!Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
                     Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache");
                 }
-                var cacheFile = GetMd5Hash(cacheKey);
-                FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile, objObject);
+                FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey, objObject);
             }
         }
 
-        public static void RemoveCache(string cacheKey)
+        public static void RemoveCache(string cacheKey, string groupid = "")
         {
-            CacheUtils.RemoveCache(cacheKey);
-            var cacheFile = GetMd5Hash(cacheKey);
+            CacheUtils.RemoveCache(cacheKey, groupid);
 
-            if (File.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile))
+            var groupKey = "_" + groupid;
+            var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
+
+            if (File.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey))
             {
-                File.Delete(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
+                File.Delete(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey);
             }
         }
+        public static void ClearAllCache(string groupid = "")
+        {
+            var groupKey = "_" + groupid;
+            foreach (var cahceFileName in Directory.GetFiles(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache","*" + groupKey))
+            {
+                if (cahceFileName.EndsWith(groupKey))
+                {
+                    File.Delete(cahceFileName);
+                }
+            }
+            CacheUtils.ClearAllCache(groupid);
+    }
+
         public static void ClearFileCacheAllPortals()
         {
             try
@@ -69,7 +84,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                LogUtils.LogSystem("ERROR : " + ex.Message);
             }
         }
 
@@ -82,7 +97,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                LogUtils.LogSystem("ERROR : " + ex.Message);
             }
         }
 
@@ -97,7 +112,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                LogUtils.LogSystem("ERROR : " + ex.Message);
             }
         }
 

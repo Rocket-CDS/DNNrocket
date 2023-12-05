@@ -633,7 +633,7 @@ namespace DNNrocketAPI.Components
         /// <returns></returns>
         public static string ThumbMapPath(string sourceFileMapPath)
         {
-            var rtn = CacheFileUtils.GetCache(sourceFileMapPath + "ContainsTransparentMapPath");
+            var rtn = CacheFileUtils.GetCache(sourceFileMapPath + "ContainsTransparentMapPath", "trans_png");
             if (!String.IsNullOrEmpty(rtn)) return rtn;
 
             if (Path.GetExtension(sourceFileMapPath).ToLower() == ".webp")
@@ -642,8 +642,12 @@ namespace DNNrocketAPI.Components
                 if (ImgUtils.ContainsTransparent(pngMapPath))
                 {
                     sourceFileMapPath = pngMapPath;
+                    CacheFileUtils.SetCache(sourceFileMapPath + "ContainsTransparentMapPath", sourceFileMapPath, "trans_png"); // cache file, to persist across restart.
                 }
-                CacheFileUtils.SetCache(sourceFileMapPath + "ContainsTransparentMapPath", sourceFileMapPath);
+                else
+                {
+                    CacheUtils.SetCache(sourceFileMapPath + "ContainsTransparentMapPath", sourceFileMapPath, "trans_png"); // cache memory, no need to check again.
+                }
             }
             return sourceFileMapPath;
         }
@@ -678,8 +682,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                // invalid bitmap file
-                //LogUtils.LogException(ex);
+                LogUtils.LogSystem("ERROR - invalid bitmap file: " + ex.Message);
             }
             return newImage;
 

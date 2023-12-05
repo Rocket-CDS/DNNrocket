@@ -226,6 +226,7 @@
     <Compile Include="Components\ArticleDoc.cs" />
     <Compile Include="Components\ArticleImage.cs" />
     <Compile Include="Components\BackUpModuleTemplates.cs" />
+    <Compile Include="Components\CacheUtils.cs" />
     <Compile Include="Components\CacheUtilsDNN.cs" />
     <Compile Include="Components\CurrencyData.cs" />
     <Compile Include="Components\CurrencyUtils.cs" />
