@@ -22,8 +22,8 @@ namespace DNNrocketAPI.Components
             var cacheData = (string)CacheUtils.GetCache(cacheKey, groupid);
             if (cacheData == null)
             {
-                var groupKey = "_" + groupid;
-                var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
+                var groupKey = groupid + "_";
+                var cacheGroupKey = groupKey + GetMd5Hash(cacheKey);
                 var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
                 CacheUtils.SetCache(cacheKey, cacheDataStr, groupid);
@@ -36,8 +36,8 @@ namespace DNNrocketAPI.Components
             if (objObject != null) CacheUtils.SetCache(cacheKey, objObject, groupid);
             if (!String.IsNullOrEmpty(objObject))
             {
-                var groupKey = "_" + groupid;
-                var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
+                var groupKey = groupid + "_";
+                var cacheGroupKey = groupKey + GetMd5Hash(cacheKey);
                 if (!Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
                     Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache");
@@ -50,9 +50,8 @@ namespace DNNrocketAPI.Components
         {
             CacheUtils.RemoveCache(cacheKey, groupid);
 
-            var groupKey = "_" + groupid;
-            var cacheGroupKey = GetMd5Hash(cacheKey) + groupKey;
-
+            var groupKey = groupid + "_";
+            var cacheGroupKey = groupKey + GetMd5Hash(cacheKey);
             if (File.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey))
             {
                 File.Delete(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheGroupKey);
@@ -60,10 +59,10 @@ namespace DNNrocketAPI.Components
         }
         public static void ClearAllCache(string groupid = "")
         {
-            var groupKey = "_" + groupid;
-            foreach (var cahceFileName in Directory.GetFiles(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache","*" + groupKey))
+            var groupKey = groupid + "_";
+            foreach (var cahceFileName in Directory.GetFiles(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache", groupKey + "*"))
             {
-                if (cahceFileName.EndsWith(groupKey))
+                if (cahceFileName.StartsWith(groupKey))
                 {
                     File.Delete(cahceFileName);
                 }
