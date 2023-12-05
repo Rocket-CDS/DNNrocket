@@ -289,7 +289,7 @@ namespace DNNrocket.AppThemes
         {
             // clear all cache for aptheme
             CacheUtils.ClearAllCache();
-            CacheFileUtils.ClearAllCache();
+            CacheFileUtils.ClearFileCacheAllPortals();
             DNNrocketUtils.ClearPortalCache();
             CacheUtils.ClearAllCache();
         }
@@ -399,7 +399,7 @@ namespace DNNrocket.AppThemes
                 resxData.AddField(r.GetXmlProperty("genxml/key"), r.GetXmlProperty("genxml/value"));
             }
             _dataObject.AppTheme.SaveResx(fname, resxData, moduleref);
-            CacheFileUtils.ClearAllCache();
+            CacheFileUtils.ClearAllCache(_dataObject.PortalId);
             return GetResxDetail();
         }
 
@@ -429,7 +429,7 @@ namespace DNNrocket.AppThemes
             var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
             _dataObject.AppTheme.SaveDep(fname, _postInfo, moduleref);
             _dataObject.AppTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _dataObject.AppTheme.AppThemeFolder, _dataObject.AppTheme.AppVersionFolder, _dataObject.AppTheme.ProjectName);
-            CacheFileUtils.ClearAllCache();
+            CacheFileUtils.ClearAllCache(_dataObject.PortalId);
             return GetDepDetail();
         }
 
@@ -549,7 +549,7 @@ namespace DNNrocket.AppThemes
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
             var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
             _dataObject.AppTheme.SaveEditor(filename, editorcode, moduleref);
-            CacheFileUtils.ClearAllCache();
+            CacheFileUtils.ClearAllCache(_dataObject.PortalId);
             _dataObject.AppTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _dataObject.AppTheme.AppThemeFolder, _dataObject.AppTheme.AppVersionFolder, _dataObject.AppTheme.ProjectName);
             return GetEditorDetail();
         }
