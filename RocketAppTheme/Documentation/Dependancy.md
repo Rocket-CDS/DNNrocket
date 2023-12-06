@@ -113,6 +113,65 @@ Setting the show node to "False" will hide the option.
 	</genxml>
 </adminpanelinterfacekeys>
 ```
+### QueryParams
+With the directory system you may have a list and detail structure.  
+The detail should contain SEO data in the header.  The SEO data is read by using a URL parameter, this paramater is defined in the dependacies file.  Saving the directory settings will also update the Page data so the Meta.ascx can capture the detail data with an ItemId.  
+```
+<queryparams list="true">
+	<genxml>
+		<queryparam>articleid</queryparam>
+		<tablename>rocketdirectoryapi</tablename>
+	</genxml>
+</queryparams>
+```
+queryparam = The URL param that will be looked for.  The value of which is used to read records form the Database.  
+tablename = The name of the table that will be used.  Usually "rocketdirectoryapi" or "rocketecommerceapi".
+
+The data record must have some default field names that will be used for SEO.  
+
+metatitle = "genxml/lang/genxml/textbox/seotitle" or "genxml/lang/genxml/textbox/articlename"  
+metadescription = "genxml/lang/genxml/textbox/seodescription" or "genxml/lang/genxml/textbox/articlesummary"  
+metatagwords = "genxml/lang/genxml/textbox/seokeyword"  
+
+It will also look for the first image called "imagepatharticleimage".
+
+These field names are he default names used in the Shared Templates.  If you are not using the shared templates you must use the same names to make the SEO header work.  
+
+```
+_articleTable = paramDict.Value;
+articleid = Convert.ToInt32(strParam);
+_dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
+if (_dataRecordTemp != null)
+{
+    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
+        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
+    if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+
+    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
+        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+    if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+
+    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
+        _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
+
+    var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, _dataRecordTemp.GetXmlProperty("genxml/systemkey"), _articleTable);
+    _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
+    if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
+
+    string[] urlparams = { "articleid", articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
+    var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
+
+    metaList.Add(BuildMeta("", "og:type", "article"));
+    metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
+    metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
+    metaList.Add(BuildMeta("", "og:url", ogurl));
+    var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
+    if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
+
+    articleMeta = true;
+}
+```
+
 
 ## Example of a full dependancy file
 
@@ -170,6 +229,12 @@ Setting the show node to "False" will hide the option.
 			<show>true</show>
 		</genxml>
 	</adminpanelinterfacekeys>
+	<queryparams list="true">
+		<genxml>
+			<queryparam>articleid</queryparam>
+			<tablename>rocketdirectoryapi</tablename>
+		</genxml>
+	</queryparams>
 </genxml>
 
 
