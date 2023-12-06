@@ -113,7 +113,7 @@ Setting the show node to "False" will hide the option.
 	</genxml>
 </adminpanelinterfacekeys>
 ```
-### QueryParams
+## QueryParams
 With the directory system you may have a list and detail structure.  
 The detail should contain SEO data in the header.  The SEO data is read by using a URL parameter, this paramater is defined in the dependacies file.  Saving the directory settings will also update the Page data so the Meta.ascx can capture the detail data with an ItemId.  
 ```
