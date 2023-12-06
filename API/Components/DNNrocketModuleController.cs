@@ -231,6 +231,7 @@ namespace DNNrocketAPI.Components
                                     {
                                         searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
                                     }
+
                                     if (!String.IsNullOrEmpty(searchDoc.Body))
                                         searchDocuments.Add(searchDoc);
                                     else
@@ -254,8 +255,11 @@ namespace DNNrocketAPI.Components
                 {
                     foreach (var t in ts)
                     {
-                        tags.Add(t.Name);
-                        tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
+                        if (!tags.Contains(t.Name))
+                        {
+                            tags.Add(t.Name);
+                            tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
+                        }
                     }
                 }
                 return tags;
