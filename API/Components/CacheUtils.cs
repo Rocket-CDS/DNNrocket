@@ -63,7 +63,7 @@ namespace DNNrocketAPI.Components
             CacheUtilsDNN.RemoveCache(cacheGroupKey);
 
             var groupCacheKeys = (List<string>)CacheUtilsDNN.GetCache(groupKey);
-            if (groupCacheKeys == null)
+            if (groupCacheKeys != null)
             {
                 if (groupCacheKeys.Contains(cacheGroupKey))
                 {
