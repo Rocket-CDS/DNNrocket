@@ -61,10 +61,13 @@ namespace DNNrocketAPI.Components
         {
             if (groupid != "")
             {
-                var groupKey = groupid + "_";
-                foreach (var cahceFileName in Directory.GetFiles(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache", groupKey + "*"))
+                if (Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
-                    File.Delete(cahceFileName);
+                    var groupKey = groupid + "_";
+                    foreach (var cahceFileName in Directory.GetFiles(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache", groupKey + "*"))
+                    {
+                        File.Delete(cahceFileName);
+                    }
                 }
                 CacheUtils.ClearAllCache(groupid);
             }

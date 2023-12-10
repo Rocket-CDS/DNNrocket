@@ -23,7 +23,9 @@ namespace DNNrocketAPI.Components
         private RocketInterface _rocketInterface;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
         private string _defaultFileRelPath;
+        private string _defaultWrapperFileRelPath;
         private SimplisityInfo _info;
+        private SystemLimpet _systemData;
         private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
         
         private static readonly Regex[] RxListStrings = new[]
@@ -76,26 +78,10 @@ namespace DNNrocketAPI.Components
         {
             try
             {
-                // Check for Wrapper System for systemdefaults/comands.
-                if (wrapperSystemKey != "")
-                {
-                    _systemKey = wrapperSystemKey;
-                    SystemData = SystemSingleton.Instance(_systemKey);
-                    _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
-                    if (!File.Exists(DNNrocketUtils.MapPath(_defaultFileRelPath)))
-                    {
-                        _systemKey = systemKey;
-                        SystemData = SystemSingleton.Instance(_systemKey);
-                    }
-                }
-                else
-                {
-                    _systemKey = systemKey;
-                    SystemData = SystemSingleton.Instance(_systemKey);
-                }
-                _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                _systemKey = systemKey;
+                _systemData = SystemSingleton.Instance(_systemKey);
+                _defaultFileRelPath = _systemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                 var filenamepath = DNNrocketUtils.MapPath(_defaultFileRelPath);
-
 
                 PortalId = portalId;
 
@@ -104,7 +90,7 @@ namespace DNNrocketAPI.Components
                 _tabid = tabid;
                 _rocketInterface = rocketInterface;
                 ValidateUser();
-                _info = (SimplisityInfo)CacheUtils.GetCache(_defaultFileRelPath);
+                _info = (SimplisityInfo)CacheUtils.GetCache(_defaultFileRelPath + _defaultWrapperFileRelPath);
                 if (_info == null)
                 {
                     var xmlString = FileUtils.ReadFile(filenamepath);
@@ -112,7 +98,7 @@ namespace DNNrocketAPI.Components
                     _info.XMLData = xmlString;
 
                     // check for plugin commands
-                    var pluginList = SystemData.GetInterfaceList();
+                    var pluginList = _systemData.GetInterfaceList();
                     foreach (var p in pluginList)
                     {
                         var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
@@ -133,8 +119,32 @@ namespace DNNrocketAPI.Components
                         }
 
                     }
+                    // check for systemwrapper commands
+                    if (wrapperSystemKey != "")
+                    {
+                        _defaultWrapperFileRelPath = "";
+                        if (wrapperSystemKey != "")
+                        {
+                            var systemWrapperData = SystemSingleton.Instance(wrapperSystemKey);
+                            _defaultWrapperFileRelPath = systemWrapperData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                            if (_defaultWrapperFileRelPath != "" && File.Exists(DNNrocketUtils.MapPath(_defaultWrapperFileRelPath)))
+                            {
+                                var xmlStringWrapper = FileUtils.ReadFile(DNNrocketUtils.MapPath(_defaultWrapperFileRelPath));
+                                var wrapperinfo = new SimplisityInfo();
+                                wrapperinfo.XMLData = xmlStringWrapper;
+                                var cmdNodeList3 = wrapperinfo.XMLDoc.SelectNodes("root/commands");
+                                if (cmdNodeList3 != null)
+                                {
+                                    foreach (XmlNode nod in cmdNodeList3)
+                                    {
+                                        _info.AddXmlNode(nod.OuterXml, "command", "root/commands");
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-                    CacheUtils.SetCache(_defaultFileRelPath, _info);
+                    CacheUtils.SetCache(_defaultFileRelPath + _defaultWrapperFileRelPath, _info);
                }
                 _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtils.GetCache(_systemKey + "Security" + _userId);
                 if (_commandSecurity == null)
@@ -155,8 +165,6 @@ namespace DNNrocketAPI.Components
         }
 
         public SimplisityInfo Info { get { return _info; } }
-        public SystemLimpet SystemData { get; set; }
-
         /// <summary>
         /// Checks security access for the user. logs any security errors in the debug file.
         /// </summary>
@@ -174,7 +182,7 @@ namespace DNNrocketAPI.Components
                     return loginCommand;
                 else
                 {
-                    LogUtils.LogTracking("INVALID CMD: " + paramCmd, SystemData.SystemKey);
+                    LogUtils.LogSystem("INVALID: " + _systemData.SystemKey + " CMD: " + paramCmd);
                     return "";
                 }
             }

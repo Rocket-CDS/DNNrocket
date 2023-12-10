@@ -239,6 +239,14 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        public List<SimplisityRecord> GetSqlIndexList()
+        {
+            return Record.GetRecordList("sqlindex");
+        }
+        public SimplisityRecord GetSqlIndex(string sqlindexRef)
+        {
+            return Record.GetRecordListItem("sqlindex", "genxml/ref", sqlindexRef);
+        }
         public string SystemKey { get; set; }
         public string SystemName
         {
