@@ -86,7 +86,6 @@ if (returnDictionaryAfterEvent.ContainsKey("outputhtml")) strOut = (string)retur
 if (returnDictionaryAfterEvent.ContainsKey("outputjson")) jsonReturn = returnDictionaryAfterEvent["outputjson"];
 if (returnDictionaryAfterEvent.ContainsKey("outputxml")) xmlReturn = returnDictionaryAfterEvent["outputxml"];
 ```
-The return dictionary can return 3 types of output.  If any are created by the Event provider they will overwrite the API call data.  
 NOTE: A return dictionary does not need to return any data if no output needs to be chnaged.
 
 In the below example, the database is changed and a new return "outputhtml" is returned by the API.

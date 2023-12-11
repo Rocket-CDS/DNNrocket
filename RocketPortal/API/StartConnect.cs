@@ -195,11 +195,14 @@ namespace RocketPortal.API
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
+            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
+
             _postInfo = postInfo;
             _paramInfo = paramInfo;
             _systemData = SystemSingleton.Instance("rocketportal");
             _rocketInterface = new RocketInterface(interfaceInfo);
-            _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
+            _appThemeSystem = new AppThemeDNNrocketLimpet(portalid, _systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
             _globalData = new SystemGlobalData();
@@ -217,8 +220,6 @@ namespace RocketPortal.API
 
             _passSettings = new Dictionary<string, string>();
 
-            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
-            if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
             _portalData = new PortalLimpet(portalid);
 
             // SECURITY --------------------------------

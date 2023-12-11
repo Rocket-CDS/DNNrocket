@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Components
                 }
 
                 var systemDataList = new SystemLimpetList();
-                foreach (var systemData in systemDataList.GetSystemList())
+                foreach (var systemData in systemDataList.GetSystemActiveList())
                 {
                     if (gloablSettings.PreCompileRazorAdmin)
                     {

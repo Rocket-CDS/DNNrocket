@@ -261,7 +261,7 @@ namespace DNNrocketAPI.Components
         }
         public bool Active
         {
-            get { return Record.GetXmlPropertyBool("genxml/active"); }
+            get { if (Record.GetXmlProperty("genxml/active") == "") return true; else return Record.GetXmlPropertyBool("genxml/active"); }
         }              
         public string DatabaseTable
         {

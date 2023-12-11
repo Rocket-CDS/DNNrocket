@@ -462,7 +462,6 @@ namespace DNNrocketAPI.ApiControllers
             if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
             // command action
-            var remoteCache = "false";
             var statusCode = "00";
             var errorMsg = "";
             if (rocketInterface.Exists)
@@ -486,14 +485,8 @@ namespace DNNrocketAPI.ApiControllers
                     if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
                     DownloadStringAsFile((string)returnDictionary["downloadfiledata"], downloadname);
                 }
-                if (returnDictionary.ContainsKey("outputjson"))
-                {
-                    jsonReturn = returnDictionary["outputjson"];
-                }
-                if (returnDictionary.ContainsKey("outputxml"))
-                {
-                    xmlReturn = returnDictionary["outputxml"];
-                }
+                if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
+                if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
 
                 if (returnDictionary.ContainsKey("razor-statuscode")) statusCode = returnDictionary["razor-statuscode"].ToString();
                 if (returnDictionary.ContainsKey("razor-errormsg")) errorMsg = returnDictionary["razor-errormsg"].ToString();
@@ -510,11 +503,16 @@ namespace DNNrocketAPI.ApiControllers
 
             HttpResponseMessage resp = null;
 
-            //[TODO: Kept for legacy systems, to be removed in future.  All remote formatted data is now returned as headers, only text is in the response body.]
-            //-------------------------------------------------
-            if (jsonReturn != null) resp = this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
-            if (xmlReturn != null) resp = this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
-            //-------------------------------------------------
+            if (jsonReturn != null)
+            {
+                resp = this.Request.CreateResponse(HttpStatusCode.OK);
+                resp.Content = new StringContent(jsonReturn.ToString(), System.Text.Encoding.UTF8, "application/json");
+            }
+            if (xmlReturn != null)
+            {
+                resp = this.Request.CreateResponse(HttpStatusCode.OK);
+                resp.Content = new StringContent(xmlReturn.ToString(), System.Text.Encoding.UTF8, "application/xml");
+            }
 
             if (resp == null) resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
 
