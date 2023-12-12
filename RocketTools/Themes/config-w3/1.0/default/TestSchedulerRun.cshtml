@@ -1,0 +1,49 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@{
+    var doWork = new SchedulerDoWork();
+    var globalData = new SystemGlobalData();
+    var postInfo = (SimplisityInfo)Model.GetDataObject("postinfo");
+    if (postInfo.GetXmlProperty("genxml/datetimerun") != "")
+    {
+        var runDate = postInfo.GetXmlPropertyDate("genxml/datetimerun");
+
+        // Add ro rerun list
+        var reRunList = (List<string>)CacheUtils.GetTestingCache("reRunList");
+        if (reRunList == null)
+        {
+            reRunList = new List<string>();
+        }
+        reRunList.Add(postInfo.GetXmlProperty("genxml/datetimerun"));
+        CacheUtils.SetTestingCache("reRunList", reRunList);
+
+        CacheUtils.DateTimeNowSet(runDate);
+        //doWork.DoWork();    
+    }
+}
+
+<div class="w3-row">
+
+    @if (postInfo.GetXmlProperty("genxml/datetimerun") != "")
+    {
+        <div class="w3-row w3-xxlarge w3-text-green">
+            Scheduler Activated
+        </div>
+        <div>
+            Test DateTime: @(CacheUtils.DateTimeNow().ToString("O"))
+        </div>
+    }
+    else
+    {
+        <div class="w3-row w3-xxlarge w3-text-red">
+            Invalid Run Date
+        </div>
+    }
+
+
+</div>

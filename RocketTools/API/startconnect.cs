@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Xml;
 using DNNrocketAPI;
 using DNNrocketAPI.Components;
@@ -210,6 +211,8 @@ namespace RocketTools.API
         }
         private string Test()
         {
+            _dataObjects.Add("postinfo", _postInfo);
+            _dataObjects.Add("paraminfo", _paramInfo);
             var template = _paramInfo.GetXmlProperty("genxml/hidden/template");
             var razorTempl = _appThemeTools.GetTemplate(template);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);

@@ -1,0 +1,41 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@{
+    var globalData = new SystemGlobalData();
+}
+
+<div id="postdatasection" class="w3-row">
+
+    <div class="w3-quarter w3-padding">
+        <label>Scheduler DateTime to Run</label>
+        @TextBox(new SimplisityInfo(),"genxml/datetimerun"," class='w3-input w3-border' style='width:180px;' ","",false,0,"","datetime-local")
+    </div>
+    <div class="w3-quarter w3-padding">
+        <br />
+        <div class="w3-button w3-block w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-post="#postdatasection" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testschedulerrun.cshtml"}'>
+            Scheduler Run Test
+        </div>
+    </div>
+
+</div>
+<br/>
+    <div class="w3-row">
+    @{
+        var reRunList = (List<string>)CacheUtils.GetTestingCache("reRunList");
+        if (reRunList != null)
+        {
+            foreach (var d in reRunList)
+            {
+                <div class="w3-button w3-padding w3-theme-l3" onclick="$('#datetimerun').val('@(d)');">@d</div>
+            }
+        }
+
+    }
+    </div>
+
+<div class="w3-button w3-margin-top w3-padding w3-theme-l2 simplisity_click" s-cmd="rocketapi_clearallcache" s-reload="true">Clear Dates</div>

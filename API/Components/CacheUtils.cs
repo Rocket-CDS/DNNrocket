@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
@@ -78,7 +79,31 @@ namespace DNNrocketAPI.Components
             {
                 if (groupid == "")
                 {
+                    // we want to keep "testing" group cache
+                    var testingObjs = new Dictionary<string, object>();
+                    var testing = (List<string>)DNNrocketUtils.GetCache("_testing"); 
+                    if (testing != null)
+                    {
+                        foreach (var k in testing)
+                        {
+                            var obj = DNNrocketUtils.GetCache(k);
+                            testingObjs.Add(k, obj);
+                        }
+                    }
+
                     DNNrocketUtils.ClearAllCache();
+
+                    // rebuild "testing" group cache
+                    var groupCacheKeys = new List<string>();
+                    foreach (var o in testingObjs)
+                    {
+                        DNNrocketUtils.SetCache(o.Key, o.Value);
+                        if (!groupCacheKeys.Contains(o.Key))
+                        {
+                            groupCacheKeys.Add(o.Key);
+                            DNNrocketUtils.SetCache("_testing", groupCacheKeys);
+                        }
+                    }
                 }
                 else
                 {
@@ -113,6 +138,34 @@ namespace DNNrocketAPI.Components
         }
 
         #endregion
+
+        #region "testing cache"
+        public static DateTime DateTimeNow()
+        {
+            var rtn = CacheUtils.GetCache("systemdate", "testing");
+            if (rtn == null) return DateTime.Now;
+            return (DateTime)rtn;
+        }
+        public static void DateTimeNowSet(DateTime value)
+        {
+            SetCache("systemdate", value, "testing");
+        }
+        public static void DateTimeNowRemove()
+        {
+            RemoveCache("systemdate", "testing");
+        }
+        public static void SetTestingCache(string key, object obj)
+        {
+            SetCache(key, obj, "testing");
+        }
+        public static object GetTestingCache(string key)
+        {
+            return GetCache(key, "testing");
+        }
+        public static void ClearTestingCache()
+        {
+            ClearAllCache("testing");
+        }
 
         public static Dictionary<string, List<string>> TestCache()
         {
@@ -270,5 +323,6 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        #endregion
     }
 }

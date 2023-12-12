@@ -32,8 +32,23 @@
 <h1>Validation Tests</h1>
 
 <div class="w3-row w3-padding">
-    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testcache.cshtml"}'>
-        Cache Test
+
+    <div class="w3-third w3-padding">
+        <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_confirmclick" s-confirm="Validate Portal?" s-cmd="portal_validate">
+            <span class="material-icons">
+                verified
+            </span>&nbsp;Validate Portal
+        </div>
+    </div>
+    <div class="w3-third w3-padding">
+        <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testcache.cshtml"}'>
+            Cache Test
+        </div>
+    </div>
+    <div class="w3-third w3-padding">
+        <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testscheduler.cshtml"}'>
+            Scheduler Run Test
+        </div>
     </div>
 </div>
 

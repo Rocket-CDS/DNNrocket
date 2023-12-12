@@ -18,29 +18,62 @@ namespace DNNrocketAPI.Components
             try
             {
                 LogUtils.LogSystem("START - Schedule");
-
                 var gloablSettings = new SystemGlobalData();
-                if (gloablSettings.PreCompileRazor)
-                {
-                    LogUtils.LogSystem("Precompile Razor - Start");
-                    var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
-                    RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
-                    LogUtils.LogSystem("Precompile Razor - End");
-                }
+                //if (gloablSettings.PreCompileRazor)
+                //{
+                //    LogUtils.LogSystem("Precompile Razor - Start");
+                //    var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
+                //    RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
+                //    LogUtils.LogSystem("Precompile Razor - End");
+                //}
 
+                var doWork = new SchedulerDoWork();
+                doWork.DoWork();
+
+                //if (gloablSettings.PreCompileRazorAdmin)
+                //{
+                //    var systemDataList = new SystemLimpetList();
+                //    foreach (var systemData in systemDataList.GetSystemActiveList())
+                //    {
+                //        LogUtils.LogSystem("Precompile Razor Admin - Start " + systemData.SystemKey);
+                //        RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
+                //        LogUtils.LogSystem("Precompile Razor Admin - End " + systemData.SystemKey);
+                //    }
+                //}
+
+                this.ScheduleHistoryItem.Succeeded = true;
+                LogUtils.LogSystemClear(gloablSettings.MaxLogFiles);
+                LogUtils.LogSystem("END - Schedule");
+            }
+            catch (Exception Ex)
+            {
+                //--intimate the schedule mechanism to write log note in schedule history
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
+                this.Errored(ref Ex);
+
+                LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
+            }
+        }
+
+
+    }
+
+    public class SchedulerDoWork
+    {
+        public SchedulerDoWork()
+        {
+        }
+        public void DoWork()
+        {
+            try
+            {
                 var systemDataList = new SystemLimpetList();
                 foreach (var systemData in systemDataList.GetSystemActiveList())
                 {
-                    if (gloablSettings.PreCompileRazorAdmin)
-                    {
-                        LogUtils.LogSystem("Precompile Razor Admin - Start " + systemData.SystemKey);
-                        RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
-                        LogUtils.LogSystem("Precompile Razor Admin - End " + systemData.SystemKey);
-                    }
-
                     if (!systemData.IsPlugin) // plugins should be triggered by the parent system.
                     {
-                        LogUtils.LogSystem("systemData.SchedulerList - Start " + systemData.SystemKey);
+                        LogUtils.LogSystem("START: " + systemData.SystemKey);
                         foreach (var rocketInterface in systemData.SchedulerList)
                         {
                             if (rocketInterface.IsActive)
@@ -58,35 +91,22 @@ namespace DNNrocketAPI.Components
                                 }
                                 catch (Exception Ex)
                                 {
-                                    // report individual fail for scheduler, but continue other scheduler events
-                                    this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
+                                    LogUtils.LogException(Ex);
                                     LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
                                 }
                                 LogUtils.LogSystem("InterfaceKey -  " + rocketInterface.InterfaceKey);
                             }
                         }
-                        LogUtils.LogSystem("systemData.SchedulerList - End " + systemData.SystemKey);
+                        LogUtils.LogSystem("END: " + systemData.SystemKey);
                     }
                 }
-
-                LogUtils.LogSystemClear(gloablSettings.MaxLogFiles);
-
-                this.ScheduleHistoryItem.Succeeded = true;
-
-                LogUtils.LogSystem("END - Schedule");
-
             }
             catch (Exception Ex)
             {
-                //--intimate the schedule mechanism to write log note in schedule history
-                this.ScheduleHistoryItem.Succeeded = false;
-                this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
-                this.Errored(ref Ex);
-
-                LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
+                LogUtils.LogException(Ex);
+                LogUtils.LogSystem("Scheduler DoWork Failed. Error:" + Ex.ToString());
             }
         }
-
 
     }
 
