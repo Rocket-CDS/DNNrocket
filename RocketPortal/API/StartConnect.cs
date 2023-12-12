@@ -195,11 +195,12 @@ namespace RocketPortal.API
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
+            _postInfo = postInfo;
+            _paramInfo = paramInfo;
+
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
 
-            _postInfo = postInfo;
-            _paramInfo = paramInfo;
             _systemData = SystemSingleton.Instance("rocketportal");
             _rocketInterface = new RocketInterface(interfaceInfo);
             _appThemeSystem = new AppThemeDNNrocketLimpet(portalid, _systemData.SystemKey);

@@ -1,0 +1,28 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@{
+    var testLists = CacheUtils.TestCache();
+    var listOK = testLists["OK"];
+    var listFail = testLists["FAIL"];
+}
+
+<div class="w3-row">
+
+    <div class="w3-text-red w3-xxlarge">FAIL: @(listFail.Count)</div>
+    @foreach (var m in listFail)
+    {
+        <div>@m</div>
+    }
+
+    <div class="w3-text-green w3-xxlarge">OK: @(listOK.Count)</div>
+    @foreach (var m in listOK)
+    {
+       <div>@m</div>
+    }
+
+</div>

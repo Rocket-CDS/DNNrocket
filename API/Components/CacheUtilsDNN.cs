@@ -7,17 +7,20 @@ using System.Text;
 
 namespace DNNrocketAPI.Components
 {
+    [Obsolete("CacheUtilsDNN is deprecated, please use CacheUtils instead.")]
     public class CacheUtilsDNN
     {
 
         #region "cache "
 
 
+        [Obsolete("CacheUtilsDNN is deprecated, please use CacheUtils instead.")]
         public static object GetCache(string cacheKey)
         {
             cacheKey = GetMd5Hash(cacheKey);
             return DNNrocketUtils.GetCache(cacheKey);
         }
+        [Obsolete("CacheUtilsDNN is deprecated, please use CacheUtils instead.")]
         public static void SetCache(string cacheKey, object objObject)
         {
             if (objObject != null)
@@ -27,12 +30,13 @@ namespace DNNrocketAPI.Components
                 DNNrocketUtils.SetCache(cacheKey, objObject);
             }
         }
+        [Obsolete("CacheUtilsDNN is deprecated, please use CacheUtils instead.")]
         public static void RemoveCache(string cacheKey)
         {
             cacheKey = GetMd5Hash(cacheKey);
             DNNrocketUtils.RemoveCache(cacheKey);
         }
-
+        [Obsolete("CacheUtilsDNN is deprecated, please use CacheUtils instead.")]
         public static void ClearAllCache()
         {
             try
@@ -44,7 +48,6 @@ namespace DNNrocketAPI.Components
                 var msg = ex.Message;
             }
         }
-
         private static string GetMd5Hash(string input)
         {
             if (input.Length < 200) return input;  // Only use MD5 if we have a large key. It throws stackoverflow from scheudler. + I'm unsure about the collisions that can happen.

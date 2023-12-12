@@ -15,8 +15,12 @@
 	  <command>
 		  <cmd>rockettools_adminpanel</cmd>
 		  <action>true</action>
-	  </command>	  
-	  
+	  </command>
+	  <command>
+		  <cmd>rockettools_testing</cmd>
+		  <action>true</action>
+	  </command>
+
   </commands>
   
 </root>

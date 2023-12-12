@@ -41,6 +41,9 @@ namespace RocketTools.API
                     case "rockettools_adminpanel":
                         strOut = AdminPanel();
                         break;
+                    case "rockettools_testing":
+                        strOut = Test();
+                        break;                    
                     case "rocketactions_getdisplay":
                         strOut = MainMenu();
                         break;                    
@@ -201,6 +204,14 @@ namespace RocketTools.API
         private string AdminPanel()
         {
             var razorTempl = _appThemeTools.GetTemplate("AdminPanel.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        private string Test()
+        {
+            var template = _paramInfo.GetXmlProperty("genxml/hidden/template");
+            var razorTempl = _appThemeTools.GetTemplate(template);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

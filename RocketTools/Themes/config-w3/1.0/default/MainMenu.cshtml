@@ -6,6 +6,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
 
+@{
+    var appThemeTools = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemetools");
+}
+
 <div class="w3-row">
     <span class="w3-button w3-left" onclick="$('.simplisity_loader').show(); window.location.reload(true);">            
         @ButtonIcon(ButtonTypes.refresh)
@@ -25,6 +29,13 @@
     </div>
 </div>
 
+<h1>Validation Tests</h1>
+
+<div class="w3-row w3-padding">
+    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testcache.cshtml"}'>
+        Cache Test
+    </div>
+</div>
 
 <div id="toolsmodal" class="w3-modal " style="top:-30px;">
     <div class="w3-modal-content w3-animate-opacity" style="width:90%;">
