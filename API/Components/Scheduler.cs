@@ -27,6 +27,9 @@ namespace DNNrocketAPI.Components
                 //    LogUtils.LogSystem("Precompile Razor - End");
                 //}
 
+                // Clear testing cache for real Scheduler processing
+                CacheUtils.ClearTestingCache();
+
                 var doWork = new SchedulerDoWork();
                 doWork.DoWork();
 
