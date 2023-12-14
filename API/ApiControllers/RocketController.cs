@@ -505,13 +505,23 @@ namespace DNNrocketAPI.ApiControllers
 
             if (jsonReturn != null)
             {
-                resp = this.Request.CreateResponse(HttpStatusCode.OK);
-                resp.Content = new StringContent(jsonReturn.ToString(), System.Text.Encoding.UTF8, "application/json");
+                if (jsonReturn.GetType() != typeof(string))
+                    resp = this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
+                else
+                {
+                    resp = this.Request.CreateResponse(HttpStatusCode.OK);
+                    resp.Content = new StringContent(jsonReturn.ToString(), System.Text.Encoding.UTF8, "application/json");
+                }
             }
             if (xmlReturn != null)
             {
-                resp = this.Request.CreateResponse(HttpStatusCode.OK);
-                resp.Content = new StringContent(xmlReturn.ToString(), System.Text.Encoding.UTF8, "application/xml");
+                if (xmlReturn.GetType() != typeof(string))
+                    resp = this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
+                else
+                {
+                    resp = this.Request.CreateResponse(HttpStatusCode.OK);
+                    resp.Content = new StringContent(xmlReturn.ToString(), System.Text.Encoding.UTF8, "application/xml");
+                }
             }
 
             if (resp == null) resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
