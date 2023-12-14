@@ -56,62 +56,35 @@ namespace RocketTools.Components
 
             return rtnList;
         }
+        [Obsolete("use ModuleUtils. ")]
         public static Dictionary<int, string> GetTabModuleTitles(int tabid, bool getDeleted = false)
         {
-            var rtnDic = new Dictionary<int, string>();
-            var l = ModuleController.Instance.GetTabModules(tabid);
-            foreach (var m in l)
-            {
-                if (getDeleted)
-                {
-                    rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
-                }
-                else
-                {
-                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
-                }
-            }
-            return rtnDic;
+            return ModuleUtils.GetTabModuleTitles(tabid, getDeleted);
         }
+        [Obsolete("use ModuleUtils. ")]
         public static void UpdateModuleTitle(int tabid, int moduleid, string title)
         {
-            var modInfo = GetModuleInfo(tabid, moduleid);
-            if (modInfo != null)
-            {
-                modInfo.ModuleTitle = title;
-                ModuleController.Instance.UpdateModule(modInfo);
-            }
+            ModuleUtils.UpdateModuleTitle(tabid, moduleid, title);
         }
-        private static ModuleInfo GetModuleInfo(int moduleId)
-        {
-            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
-            var objMInfo = objMCtrl.GetModule(moduleId);
-            return objMInfo;
-        }
+        [Obsolete("use ModuleUtils. ")]
         public static bool ModuleIsDeleted(int tabid, int moduleid)
         {
-            var modInfo = GetModuleInfo(tabid, moduleid);
-            if (modInfo != null)
-            {
-                return modInfo.IsDeleted;
-            }
-            return true;
+            return ModuleUtils.ModuleIsDeleted(tabid, moduleid);
         }
+        [Obsolete("use ModuleUtils. ")]
         public static bool ModuleExists(int tabid, int moduleid)
         {
-            var modInfo = GetModuleInfo(tabid, moduleid);
-            if (modInfo == null) return false;
-            return true;
+            return ModuleUtils.ModuleExists(tabid, moduleid);
         }
+        [Obsolete("use ModuleUtils. ")]
         public static int GetModuleTabId(Guid uniqueId)
         {
-            var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
-            if (mod != null) return mod.TabID;
-            return -1;
+            return ModuleUtils.GetModuleTabId(uniqueId);
         }
+        [Obsolete("use ModuleUtils. ")]
         public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
         {
-            return ModuleController.Instance.GetModule(moduleid, tabid, false);
+            return ModuleUtils.GetModuleInfo(tabid, moduleid);
         }
         public static void ValidateMeta()
         {

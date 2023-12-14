@@ -18,6 +18,7 @@ using System.Web.Security;
 using System.Reflection;
 using System.Web.UI.WebControls;
 using DotNetNuke.Security.Roles;
+using System.Collections.Generic;
 
 namespace DNNrocketAPI.Components
 {
@@ -308,6 +309,63 @@ namespace DNNrocketAPI.Components
             var m = DesktopModuleController.GetDesktopModuleByModuleName(definitionName, portalId);
             if (m != null) return m.DesktopModuleID;
             return -1;
+        }
+        public static Dictionary<int, string> GetTabModuleTitles(int tabid, bool getDeleted = false)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = ModuleController.Instance.GetTabModules(tabid);
+            foreach (var m in l)
+            {
+                if (getDeleted)
+                {
+                    rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+                else
+                {
+                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+            }
+            return rtnDic;
+        }
+        public static void UpdateModuleTitle(int tabid, int moduleid, string title)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo != null)
+            {
+                modInfo.ModuleTitle = title;
+                ModuleController.Instance.UpdateModule(modInfo);
+            }
+        }
+        private static ModuleInfo GetModuleInfo(int moduleId)
+        {
+            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
+            var objMInfo = objMCtrl.GetModule(moduleId);
+            return objMInfo;
+        }
+        public static bool ModuleIsDeleted(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo != null)
+            {
+                return modInfo.IsDeleted;
+            }
+            return true;
+        }
+        public static bool ModuleExists(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo == null) return false;
+            return true;
+        }
+        public static int GetModuleTabId(Guid uniqueId)
+        {
+            var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
+            if (mod != null) return mod.TabID;
+            return -1;
+        }
+        public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
+        {
+            return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
 
     }
