@@ -633,7 +633,7 @@ namespace DNNrocketAPI.Components
         /// <returns></returns>
         public static string ThumbMapPath(string sourceFileMapPath)
         {
-            var rtn = CacheFileUtils.GetCache(sourceFileMapPath + "ContainsTransparentMapPath", "trans_png");
+            var rtn = CacheFileUtils.GetCache(PortalUtils.GetCurrentPortalId(), sourceFileMapPath + "ContainsTransparentMapPath", "trans_png");
             if (!String.IsNullOrEmpty(rtn)) return rtn;
 
             if (Path.GetExtension(sourceFileMapPath).ToLower() == ".webp")
@@ -642,7 +642,7 @@ namespace DNNrocketAPI.Components
                 if (ImgUtils.ContainsTransparent(pngMapPath))
                 {
                     sourceFileMapPath = pngMapPath;
-                    CacheFileUtils.SetCache(sourceFileMapPath + "ContainsTransparentMapPath", sourceFileMapPath, "trans_png"); // cache file, to persist across restart.
+                    CacheFileUtils.SetCache(PortalUtils.GetCurrentPortalId(), sourceFileMapPath + "ContainsTransparentMapPath", sourceFileMapPath, "trans_png"); // cache file, to persist across restart.
                 }
                 else
                 {

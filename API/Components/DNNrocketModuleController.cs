@@ -14,6 +14,8 @@ using System.IO;
 using DotNetNuke.Services.Journal;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DotNetNuke.Services.Search.Internals;
+using System.Security.Policy;
 
 namespace DNNrocketAPI.Components
 {
@@ -174,72 +176,96 @@ namespace DNNrocketAPI.Components
 
             if (moduleInfo != null)
             {
-                var lastContentModifiedOnDate = moduleInfo.LastContentModifiedOnDate;
-                if (lastContentModifiedOnDate == null) lastContentModifiedOnDate = DateTime.Now;
-
-                // "lastContentModifiedOnDate" is the date when content was updated and is updated by using DNNrocketUtils.SynchronizeModule(_moduleid); on Content save.
-                if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
+                try
                 {
-                    var portalId = moduleInfo.PortalID;
-                    var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod","api");
-                    var systemData = SystemSingleton.Instance(systemKey);
-                    if (!systemData.Exists) // legacy naming convension
-                    {                        
-                        systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "");
-                        systemData = SystemSingleton.Instance(systemKey);
-                    }
 
-                    if (systemData.Exists)
+                    var lastContentModifiedOnDate = moduleInfo.LastContentModifiedOnDate;
+                    LogUtils.LogSystem("[DEBUG:GetModifiedSearchDocuments] - ModuleId: " + moduleInfo.ModuleID + " lastContentModifiedOnDate: " + moduleInfo.LastContentModifiedOnDate.ToString("O") + "  beginDateUtc: " + beginDateUtc.ToString("O"));
+
+                    // "lastContentModifiedOnDate" is the date when content was updated and is updated by using DNNrocketUtils.SynchronizeModule(_moduleid); on Content save.
+                    if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
                     {
-                        foreach (var rocketInterface in systemData.ProviderList)
+                        var portalId = moduleInfo.PortalID;
+                        var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "api");
+                        var systemData = SystemSingleton.Instance(systemKey);
+                        if (!systemData.Exists) // legacy naming convension
                         {
-                            if (rocketInterface.IsProvider("searchindex"))
+                            systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "");
+                            systemData = SystemSingleton.Instance(systemKey);
+                        }
+
+                        if (systemData.Exists)
+                        {
+                            foreach (var rocketInterface in systemData.ProviderList)
                             {
-                                if (rocketInterface.Exists)
+                                if (rocketInterface.IsProvider("searchindex"))
                                 {
-                                    var paramInfo = new SimplisityInfo();
-                                    paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
-                                    paramInfo.SetXmlProperty("genxml/hidden/tabid", moduleInfo.TabID.ToString());
-                                    paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-
-                                    // We should return ALL languages into the dictionary
-                                    var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                                    var description = "";
-                                    var body = "";
-                                    var title = "";
-                                    var moddate = DateTime.Now;
-                                    if (returnDictionary.ContainsKey("description")) description = (string)returnDictionary["description"];
-                                    if (returnDictionary.ContainsKey("body")) body = (string)returnDictionary["body"];
-                                    if (returnDictionary.ContainsKey("title")) title = (string)returnDictionary["title"];
-                                    if (returnDictionary.ContainsKey("modifieddate"))
+                                    if (rocketInterface.Exists)
                                     {
-                                        var strDate = returnDictionary["modifieddate"];
-                                        if (GeneralUtils.IsDateInvariantCulture(strDate)) moddate = Convert.ToDateTime(strDate);
+                                        var paramInfo = new SimplisityInfo();
+                                        paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
+                                        paramInfo.SetXmlProperty("genxml/hidden/tabid", moduleInfo.TabID.ToString());
+                                        paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+
+                                        // We should return ALL languages into the dictionary
+                                        var returnDictionary2 = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                        if (returnDictionary2.ContainsKey("searchindex") && returnDictionary2["searchindex"] != null)
+                                        {
+                                            var returnList = (List<Dictionary<string, object>>)returnDictionary2["searchindex"];
+                                            foreach (var idxDict in returnList)
+                                            {
+                                                var description = "";
+                                                var body = "";
+                                                var title = "";
+                                                var url = "";
+                                                var queryString = "";
+                                                var moddate = DateTime.Now;
+                                                var uniqueKey = moduleInfo.ModuleID.ToString();
+                                                if (idxDict.ContainsKey("uniquekey")) uniqueKey = (string)idxDict["uniquekey"];
+                                                if (string.IsNullOrEmpty(uniqueKey)) uniqueKey = moduleInfo.ModuleID.ToString();
+                                                if (idxDict.ContainsKey("description")) description = HtmlUtils.Shorten(HtmlUtils.Clean((string)idxDict["description"], false), 150, "...");
+                                                if (idxDict.ContainsKey("body")) body = HtmlUtils.Shorten(HtmlUtils.Clean((string)idxDict["body"], false), 500, "...");
+                                                if (idxDict.ContainsKey("title")) title = (string)idxDict["title"];
+                                                if (idxDict.ContainsKey("url")) url = (string)idxDict["url"];
+                                                if (idxDict.ContainsKey("querystring")) queryString = (string)idxDict["querystring"];
+                                                if (idxDict.ContainsKey("modifieddate"))
+                                                {
+                                                    var strDate = idxDict["modifieddate"];
+                                                    if (GeneralUtils.IsDateInvariantCulture(strDate)) moddate = Convert.ToDateTime(strDate);
+                                                }
+                                                if (String.IsNullOrEmpty(title)) title = moduleInfo.ModuleTitle;
+                                                var searchDoc = new SearchDocument
+                                                {
+                                                    UniqueKey = uniqueKey,
+                                                    PortalId = moduleInfo.PortalID,
+                                                    Title = title,
+                                                    Description = description,
+                                                    Body = body,
+                                                    Url = url,
+                                                    QueryString = queryString,
+                                                    ModifiedTimeUtc = moddate.ToUniversalTime()
+                                                };
+
+                                                if (moduleInfo.Terms != null && moduleInfo.Terms.Count > 0)
+                                                {
+                                                    searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
+                                                }
+
+                                                if (idxDict.ContainsKey("removesearchrecord") && (string)idxDict["removesearchrecord"] == "true")
+                                                    InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
+                                                else
+                                                    searchDocuments.Add(searchDoc);
+                                            }
+                                        }
                                     }
-                                    if (String.IsNullOrEmpty(title)) title = moduleInfo.ModuleTitle;
-                                    var searchDoc = new SearchDocument
-                                    {
-                                        UniqueKey = moduleInfo.ModuleID.ToString(),
-                                        PortalId = moduleInfo.PortalID,
-                                        Title = title,
-                                        Description = description,
-                                        Body = body,
-                                        ModifiedTimeUtc = moddate.ToUniversalTime()
-                                    };
-
-                                    if (moduleInfo.Terms != null && moduleInfo.Terms.Count > 0)
-                                    {
-                                        searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
-                                    }
-
-                                    if (!String.IsNullOrEmpty(searchDoc.Body))
-                                        searchDocuments.Add(searchDoc);
-                                    else
-                                        searchDocuments.Remove(searchDoc);
                                 }
                             }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    LogUtils.LogException(ex);
                 }
             }
             return searchDocuments;

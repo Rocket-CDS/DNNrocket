@@ -171,7 +171,39 @@ if (_dataRecordTemp != null)
     articleMeta = true;
 }
 ```
+## DNN search 
+RocketContent can use the dependacy file to define what field data should be included in the DNN search.  
+*NOTE: Other Rocket systems like RocketDirectory have deifned fields for the search and therefore does not use this section*
+### Dependacy File Section (example)
+```
+<searchindex list="true">
+	<genxml>
+		<searchtitle>genxml/lang/genxml/textbox/title</searchtitle>
+		<searchdescription>genxml/lang/genxml/textbox/richtext</searchdescription>
+		<searchbody>genxml/lang/genxml/textbox/richtext</searchbody>
+	</genxml>
+</searchindex>
+```
+The dependacy section only has 1 entry, a CSV list can be used to concatinate multile fields.
+### AdminRow.cshtml (example)
+```
+    <div class="w3-row-padding w3-section">
+        <div class="w3-row-padding">
+            <label>@ResourceKey("DNNrocket.heading")</label>&nbsp;@EditFlag(sessionParams)
+            @TextBox(info, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0)
+        </div>
+    </div>
 
+    <div id="html" class='w3-row sectionname' style="display:none">
+        <div class='w3-col m12 w3-padding'>
+            @EditFlag(sessionParams)
+            <div class='w3-col m12'>
+                @CKEditor4(info, "genxml/lang/genxml/textbox/richtext", true)
+            </div>
+            <div class='w3-col' style='width:0px;height:600px;'></div>
+        </div>
+    </div>
+```
 
 ## Example of a full dependancy file
 
@@ -235,6 +267,13 @@ if (_dataRecordTemp != null)
 			<tablename>rocketdirectoryapi</tablename>
 		</genxml>
 	</queryparams>
+	<searchindex list="true">
+		<genxml>
+			<searchtitle>genxml/lang/genxml/textbox/title</searchtitle>
+			<searchdescription>genxml/lang/genxml/textbox/richtext</searchdescription>
+			<searchbody>genxml/lang/genxml/textbox/richtext</searchbody>
+		</genxml>
+	</searchindex>
 </genxml>
 
 

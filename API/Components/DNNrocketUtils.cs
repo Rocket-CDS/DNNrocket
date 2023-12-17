@@ -48,6 +48,8 @@ using DotNetNuke.Web.DDRMenu;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using static DotNetNuke.Security.PortalSecurity;
+using DotNetNuke.Services.Search.Internals;
+using DotNetNuke.Services.Search.Entities;
 
 namespace DNNrocketAPI.Components
 {
@@ -1864,6 +1866,15 @@ namespace DNNrocketAPI.Components
                 if (rtn == null) rtn = new SimplisityRecord();
             }
             return rtn;
+        }
+        public static void DeleteSearchDocument(int portalId, string uniqueKey)
+        {
+            var searchDoc = new SearchDocument
+            {
+                UniqueKey = uniqueKey,
+                PortalId = portalId
+            };
+            InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
         }
 
         #region "Temp Storage"

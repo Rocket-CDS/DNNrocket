@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
@@ -242,6 +243,20 @@ namespace DNNrocketAPI.Components
                 }
             }
             return null;
+        }
+        public SimplisityRecord GetSeachIndexFieldNames(string moduleref = "")
+        {
+            var depList = GetTemplatesDep();
+            foreach (var depfile in depList)
+            {
+                var dep = GetDep(depfile.Key, moduleref);
+                if (dep != null)
+                {
+                    var searchIdxList = dep.GetRecordList("searchindex");
+                    if (searchIdxList != null) return searchIdxList.First();
+                }
+            }
+            return new SimplisityRecord();
         }
         public SimplisityRecord GetDep(string templateFileName, string moduleref = "")
         {
