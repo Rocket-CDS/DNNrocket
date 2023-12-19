@@ -1867,11 +1867,11 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
-        public static void DeleteSearchDocument(int portalId, string uniqueKey)
+        public static void DeleteSearchDocument(int portalId, string queryString)
         {
             var searchDoc = new SearchDocument
             {
-                UniqueKey = uniqueKey,
+                QueryString = queryString,
                 PortalId = portalId
             };
             InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
