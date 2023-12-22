@@ -116,6 +116,7 @@ namespace RocketTools
                                     _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
 
                                 var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, _dataRecordTemp.GetXmlProperty("genxml/systemkey"), _articleTable);
+                                if (portalContentRec == null) portalContentRec = new SimplisityRecord();
                                 _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
                                 if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
 

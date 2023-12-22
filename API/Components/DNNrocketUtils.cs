@@ -1857,13 +1857,12 @@ namespace DNNrocketAPI.Components
             if (rtn == null)
             {
                 var objCtrl = new DNNrocketController();
-                var refRec = objCtrl.GetRecordByType(portalId, -1, entityTypeCode, "", "", tableName);
+                var refRec = objCtrl.GetRecordByGuidKey(portalId, -1, entityTypeCode, entityTypeCode, "", tableName);
                 if (refRec != null)
                 {
                     rtn = objCtrl.GetRecord(refRec.ParentItemId, tableName);
                     CacheUtils.SetCache(entityTypeCode, rtn);
                 }
-                if (rtn == null) rtn = new SimplisityRecord();
             }
             return rtn;
         }
