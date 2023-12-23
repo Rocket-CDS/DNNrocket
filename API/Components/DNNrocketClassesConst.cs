@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,13 @@ namespace DNNrocketAPI.Components
     public class SQLRecord
     {
         public string ReturnValue;
+    }
+    public class QueryParamsData
+    {
+        public string queryparam { get; set; }
+        public string tablename { get; set; }
+        public string systemkey { get; set; }
+        public string queryparamvalue { get; set; }
     }
 
 }

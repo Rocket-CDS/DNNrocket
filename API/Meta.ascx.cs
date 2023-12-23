@@ -56,41 +56,33 @@ namespace RocketTools
         {
             try
             {
+                var is404 = false;
                 _portalId = PortalUtils.GetCurrentPortalId();
                 _cultureCode = DNNrocketUtils.GetCurrentCulture();
 
+                // Read Data
                 var objCtrl = new DNNrocketController();
-                var paramidList = new Dictionary<string, string>();
-
                 var cacheKey2 = "PLSETTINGS" + _portalId;
                 var plRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey2, _portalId.ToString());
-                if (plRecord == null) plRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
-                if (plRecord != null)
+                if (plRecord == null)
                 {
-                    var cacheKeyQueryparams = "PLSETTINGSqueryparams" + _portalId;
-                    paramidList = (Dictionary<string, string>)CacheUtils.GetCache(cacheKeyQueryparams, _portalId.ToString());
-                    if (paramidList == null)
-                    {
-                        paramidList = new Dictionary<string, string>();
-                        foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
-                        {
-                            paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), mp.GetXmlProperty("genxml/select/tablename"));
-                        }
-                        CacheUtils.SetCache(cacheKeyQueryparams, paramidList, _portalId.ToString());
-                    }
+                    plRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
+                    CacheUtils.SetCache(cacheKey2, plRecord, _portalId.ToString());
                 }
-
-
                 var cacheKey = "PL_" + _cultureCode + "_" + PortalSettings.ActiveTab.TabID.ToString("");
                 var dataRecord = (SimplisityRecord)CacheUtils.GetCache(cacheKey, _portalId.ToString());
                 if (dataRecord == null)
                 {
-                    dataRecord = objCtrl.GetRecordByGuidKey(PortalSettings.Current.PortalId, -1, "PL", cacheKey);
+                    dataRecord = objCtrl.GetRecordByGuidKey(_portalId, -1, "PL", cacheKey);
+                    CacheUtils.SetCache(cacheKey, dataRecord, _portalId.ToString());
                 }
+
                 // check for paramid
+                var paramidList = DNNrocketUtils.GetQueryKeys(_portalId);
                 var articleMeta = false;
                 var metaList = new List<HtmlMeta>();
                 var articleid = 0;
+                var articleParamKey = "";
                 foreach (var paramDict in paramidList)
                 {
                     var paramKey = Request.QueryString[paramDict.Key];
@@ -99,8 +91,16 @@ namespace RocketTools
                         var strParam = Request.QueryString[paramDict.Key];
                         if (GeneralUtils.IsNumeric(strParam))
                         {
-                            _articleTable = paramDict.Value;
-                            articleid = Convert.ToInt32(strParam);
+                            _articleTable = paramDict.Value.tablename;
+                            try
+                            {
+                                articleid = Convert.ToInt32(strParam);
+                            }
+                            catch (Exception ex)
+                            {
+                                Exceptions.ProcessModuleLoadException(this, ex);
+                                DNNrocketUtils.Handle404Exception(this.Response, PortalSettings.Current);
+                            }
                             _dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
                             if (_dataRecordTemp != null)
                             {
@@ -115,7 +115,7 @@ namespace RocketTools
                                 if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
                                     _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
 
-                                var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, _dataRecordTemp.GetXmlProperty("genxml/systemkey"), _articleTable);
+                                var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, paramDict.Value.systemkey, _articleTable);
                                 if (portalContentRec == null) portalContentRec = new SimplisityRecord();
                                 _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
                                 if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
@@ -128,9 +128,21 @@ namespace RocketTools
                                 metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
                                 metaList.Add(BuildMeta("", "og:url", ogurl));
                                 var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
+                                if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
                                 if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
 
+                                articleParamKey = paramDict.Key;
                                 articleMeta = true;
+
+                                // if the systemkey for the articleid do not match we throw a 404. (PRD for RocketEcomemrce)
+                                if (!_dataRecordTemp.TypeCode.StartsWith(paramDict.Value.systemkey) && _dataRecordTemp.TypeCode != "PRD") is404 = true;
+
+                                break;
+                            }
+                            else
+                            {
+                                // record does not exist, throw a 404.
+                                is404 = true;
                             }
                         }
                     }
@@ -152,7 +164,6 @@ namespace RocketTools
                     _disablealternate = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablealternate");
                     _disablecanonical = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablecanonical");
 
-                    CacheUtils.SetCache(cacheKey, dataRecord, _portalId.ToString());
                 }
 
                 CDefault tp = (CDefault)this.Page;
@@ -170,7 +181,7 @@ namespace RocketTools
                     var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
                     foreach (var l in enabledlanguages)
                     {
-                        if (articleMeta)
+                        if (articleMeta && articleParamKey != "")
                         {
                             var seotitle = "";
                             var dataRecordTemp = objCtrl.GetInfo(articleid, l.Key, _articleTable);
@@ -181,13 +192,14 @@ namespace RocketTools
                                 if (seotitle == "") seotitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
                             }
                             seotitle = DNNrocketUtils.UrlFriendly(seotitle);
-                            string[] urlparams = { "articleid", articleid.ToString(), seotitle };
-                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
+
+                            string[] urlparams = { articleParamKey, articleid.ToString(), seotitle };
+                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, "", l.Key, urlparams) + "' hreflang='" + l.Key.ToLower() + "'/>";
                             if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, "", urlparams);
                         }
                         else
                         {
-                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, l.Key, "", null) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, "", l.Key, null) + "' hreflang='" + l.Key.ToLower() + "'/>";
                             if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
                         }
                     }
@@ -220,6 +232,8 @@ namespace RocketTools
                         if (sPattern != "" && !UserUtils.IsAdministrator()) PageIncludes.RemoveCssFile(this.Page, sPattern);
                     }
                 }
+
+                if (is404) DNNrocketUtils.Handle404Exception(this.Response, PortalSettings.Current);
 
             }
             catch (Exception ex)

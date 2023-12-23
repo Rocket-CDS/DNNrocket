@@ -1875,6 +1875,36 @@ namespace DNNrocketAPI.Components
             };
             InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
         }
+        public static Dictionary<string, QueryParamsData> GetQueryKeys(int portalId)
+        {
+            var cacheKeyQueryparams = "PLSETTINGSqueryparams" + portalId;
+            var paramidList = (Dictionary<string, QueryParamsData>)CacheUtils.GetCache(cacheKeyQueryparams, "portalid" + portalId);
+            if (paramidList == null)
+            {
+                paramidList = new Dictionary<string, QueryParamsData>();
+                var objCtrl = new DNNrocketController();
+                var plRecord = objCtrl.GetRecordByGuidKey(portalId, -1, "PLSETTINGS", "PLSETTINGS");
+                if (plRecord != null)
+                {
+                    foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
+                    {
+                        if (!paramidList.ContainsKey(mp.GetXmlProperty("genxml/textbox/queryparam")))
+                        {
+                            var queryParamsData = new QueryParamsData();
+                            queryParamsData.queryparam = mp.GetXmlProperty("genxml/textbox/queryparam");
+                            queryParamsData.tablename = mp.GetXmlProperty("genxml/select/tablename");
+                            queryParamsData.systemkey = mp.GetXmlProperty("genxml/textbox/systemkey");
+                            queryParamsData.queryparamvalue = "";
+                            paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), queryParamsData);                            
+                        }
+                    }
+                    CacheUtils.SetCache(cacheKeyQueryparams, paramidList, "portalid" + portalId);
+                }
+            }
+            return paramidList;
+        }
+
+
 
         #region "Temp Storage"
 

@@ -115,17 +115,25 @@ Setting the show node to "False" will hide the option.
 ```
 ## QueryParams
 With the directory system you may have a list and detail structure.  
-The detail should contain SEO data in the header.  The SEO data is read by using a URL parameter, this paramater is defined in the dependacies file.  Saving the directory settings will also update the Page data so the Meta.ascx can capture the detail data with an ItemId.  
+
+### Format
 ```
 <queryparams list="true">
 	<genxml>
 		<queryparam>articleid</queryparam>
 		<tablename>rocketdirectoryapi</tablename>
+		<systemkey>rocketnewsapi</systemkey>
 	</genxml>
 </queryparams>
 ```
-queryparam = The URL param that will be looked for.  The value of which is used to read records form the Database.  
-tablename = The name of the table that will be used.  Usually "rocketdirectoryapi" or "rocketecommerceapi".
+*queryparam = The URL param that will be looked for.  The value of which is used to read records form the Database.*  
+*tablename = The name of the table that will be used.  Usually "rocketdirectoryapi" or "rocketecommerceapi".*  
+*systemkey = The systemkey for the queryparam.*
+
+The QueryParams do 2 important actions when the detail page needs to be seen.  **SEO** and **Activation of the Detail Display**.  
+
+### SEO
+The detail should contain SEO data in the header.  The SEO data is read by using a URL parameter, this paramater is defined in the dependacies file.  Saving the directory settings will also update the Page data so the Meta.ascx can capture the detail data with an ItemId.  
 
 The data record must have some default field names that will be used for SEO.  
 
@@ -133,44 +141,17 @@ metatitle = "genxml/lang/genxml/textbox/seotitle" or "genxml/lang/genxml/textbox
 metadescription = "genxml/lang/genxml/textbox/seodescription" or "genxml/lang/genxml/textbox/articlesummary"  
 metatagwords = "genxml/lang/genxml/textbox/seokeyword"  
 
-It will also look for the first image called "imagepatharticleimage".
+*NOTE: Keywords are no longer used by search engines and do not have to be included.*
 
-These field names are he default names used in the Shared Templates.  If you are not using the shared templates you must use the same names to make the SEO header work.  
+It will also look for the first image called "imagepatharticleimage" or "imagepathproductimage".
 
-```
-_articleTable = paramDict.Value;
-articleid = Convert.ToInt32(strParam);
-_dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
-if (_dataRecordTemp != null)
-{
-    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
-        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
-    if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+These field names are the default names used in the Shared Templates.  If you are not using the shared templates you must use the same names to make the SEO header work.  
 
-    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
-        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
-    if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+### Ativation of the detail display
+The detail page is displayed in a module by using the itemid in the URL.  The name of the query param for the itemid is defined in the dependacy file.   
+The systemkey is also defined, so that only modules using the deifned systemkey are activated for detail.  
+In some situation multiple systems/module may want to display the detail.  This can be done but it will affect the SEO, only the first detail SEO will be added to the page.  
 
-    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
-        _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
-
-    var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, _dataRecordTemp.GetXmlProperty("genxml/systemkey"), _articleTable);
-    _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
-    if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
-
-    string[] urlparams = { "articleid", articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
-    var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
-
-    metaList.Add(BuildMeta("", "og:type", "article"));
-    metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
-    metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
-    metaList.Add(BuildMeta("", "og:url", ogurl));
-    var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
-    if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
-
-    articleMeta = true;
-}
-```
 ## DNN search 
 RocketContent can use the dependacy file to define what field data should be included in the DNN search.  
 *NOTE: Other Rocket systems like RocketDirectory have deifned fields for the search and therefore does not use this section*

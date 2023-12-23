@@ -1014,4 +1014,7 @@
   <data name="open.Text" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="itemlimit.Text" xml:space="preserve">
+    <value>Item Limit</value>
+  </data>
 </root>
