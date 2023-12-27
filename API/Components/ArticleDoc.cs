@@ -62,6 +62,7 @@ namespace DNNrocketAPI.Components
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name" + FieldId);
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/name");
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                if (rtn == "") rtn = Path.GetFileNameWithoutExtension(FileUtils.RemoveInvalidFileChars(FileName));
                 return rtn;
             }
             set
@@ -73,25 +74,26 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/documentname" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/documentname");
+                var rtn = FileUtils.RemoveInvalidFileChars(Info.GetXmlProperty("genxml/textbox/documentname" + FieldId));
+                if (rtn == "") rtn = FileUtils.RemoveInvalidFileChars(Info.GetXmlProperty("genxml/textbox/documentname"));
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/documentname" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/documentname" + FieldId, FileUtils.RemoveInvalidFileChars(value));
             }
         }
         public string Extension
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/hidden/fileextension" + FieldId);
+                var rtn = FileUtils.RemoveInvalidFileChars(Info.GetXmlProperty("genxml/hidden/fileextension" + FieldId));
+                if (rtn == "") rtn = Path.GetExtension(FileName);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/fileextension" + FieldId, value);
+                Info.SetXmlProperty("genxml/hidden/fileextension" + FieldId, FileUtils.RemoveInvalidFileChars(value));
             }
         }
         public string DownloadName

@@ -44,7 +44,8 @@ namespace DNNrocketAPI.Components
                     var fname = GeneralUtils.DeCode(ncode);
                     if (!ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
                     {
-                        var docFileMapPath = docFolderMapPath.TrimEnd('/') + "/" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey());
+                        if (!Directory.Exists(docFolderMapPath)) Directory.CreateDirectory(docFolderMapPath);
+                        var docFileMapPath = docFolderMapPath.TrimEnd('/') + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey());
                         var docFriendlyName = GeneralUtils.RemoveDiacritics(Path.GetFileNameWithoutExtension(fname)) + Path.GetExtension(fname);
                         var fbase64 = filebase64List[lp];
                         fbase64 = fbase64.Split(',')[1];
