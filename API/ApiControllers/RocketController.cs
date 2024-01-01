@@ -678,7 +678,6 @@ namespace DNNrocketAPI.ApiControllers
         {
             CacheFileUtils.ClearFileCacheAllPortals();
             CacheUtils.ClearAllCache();
-            CacheUtils.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
             return "OK";
         }

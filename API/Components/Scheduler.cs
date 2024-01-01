@@ -76,7 +76,7 @@ namespace DNNrocketAPI.Components
                 {
                     if (!systemData.IsPlugin) // plugins should be triggered by the parent system.
                     {
-                        LogUtils.LogSystem("START: " + systemData.SystemKey);
+                        LogUtils.LogSystem("SchedulerDoWork - START: " + systemData.SystemKey);
                         foreach (var rocketInterface in systemData.SchedulerList)
                         {
                             if (rocketInterface.IsActive)
@@ -89,6 +89,7 @@ namespace DNNrocketAPI.Components
                                     {
                                         ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                                         CacheUtils.SetCache(cacheKey, ajaxprov);
+                                        LogUtils.LogSystem("Scheduler Create Instance: " + cacheKey);
                                     }
                                     ajaxprov.DoWork();
                                 }
@@ -100,7 +101,7 @@ namespace DNNrocketAPI.Components
                                 LogUtils.LogSystem("InterfaceKey -  " + rocketInterface.InterfaceKey);
                             }
                         }
-                        LogUtils.LogSystem("END: " + systemData.SystemKey);
+                        LogUtils.LogSystem("SchedulerDoWork - END: " + systemData.SystemKey);
                     }
                 }
             }

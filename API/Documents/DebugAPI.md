@@ -26,6 +26,7 @@ LogUtils.LogSystem("ERROR GetGroupCache(string groupid) : " + ex.Message);
 Output messages are output to the log4net log file.  
 **The Logging must be activated in the Global settings of RocketCDS**  
 Usually this file is set to only output errors, to view rocket log you must set the "log4net/root/level" setting to "INFO" or "ALL".  
+**DotNetNuke.log4net.config** on the root of the DNN installation.
 ```
 <?xml version="1.0" encoding="utf-8" ?>
 <log4net>
