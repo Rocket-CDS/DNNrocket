@@ -77,8 +77,11 @@ namespace DNNrocketAPI.Components
                             processResult.ErrorMsg = ex.ToString();
                             LogUtils.LogSystem(ex.ToString());
                             LogUtils.LogException(ex);
-                        }
+                            LogUtils.LogSystem("------------------------- ERROR - START ---------------------------------------- ");
+                            LogUtils.LogSystem(razorTempl);
+                            LogUtils.LogSystem("------------------------- ERROR - END ---------------------------------------- ");
                     }
+                }
                     else
                     {
                         try
