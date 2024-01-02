@@ -262,13 +262,16 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString RenderXml(SimplisityInfo info, string xmlidx = "")
         {
-            var appTheme = new AppThemeDNNrocketLimpet("api");
-            var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
-            var nbRazor = new SimplisityRazor(info);
             var strOut = "";
-            nbRazor.SetSetting("xmlidx", xmlidx);
-            var pr = RenderRazorUtils.RazorProcessData(nbRazor, razorTempl, true);
-            strOut = pr.RenderedText;
+            if (info != null)
+            {
+                var appTheme = new AppThemeDNNrocketLimpet(info.PortalId, "api");
+                var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
+                var nbRazor = new SimplisityRazor(info);
+                nbRazor.SetSetting("xmlidx", xmlidx);
+                var pr = RenderRazorUtils.RazorProcessData(nbRazor, razorTempl, true);
+                strOut = pr.RenderedText;
+            }
             return new RawString(strOut);
         }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]
