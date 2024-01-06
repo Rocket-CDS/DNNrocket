@@ -238,7 +238,7 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", string defaultValue = "", string labelattributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", string defaultValue = "", string labelattributes = "", bool localized = false, int row = 0, string listname = "", string inputclass = "")
         {
             var datatext = "";
             var datavalue = "";
@@ -247,9 +247,9 @@ namespace Simplisity
                 datatext += d.Value.Replace(",", ".") + ",";
                 datavalue += d.Key.Replace(",", ".") + ",";
             }
-            return RadioButtonList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, labelattributes, localized, row, listname);
+            return RadioButtonList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, labelattributes, localized, row, listname, inputclass);
         }
-        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", string defaultValue = "",string labelattributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", string defaultValue = "",string labelattributes = "", bool localized = false, int row = 0, string listname = "", string inputclass = "")
         {
             if (info == null) info = new SimplisityInfo();
             var strOut = "";
@@ -275,7 +275,7 @@ namespace Simplisity
                         s = "checked='checked'";
                     else
                         s = "";
-                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' s-xpath='" + xpath + "' " + upd + " name='" + id + "radio' type='radio' value='" + v + "'  " + s + "/><label " + labelattributes + " for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label>";
+                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' class='" + inputclass + "' s-xpath='" + xpath + "' " + upd + " name='" + id + "radio' type='radio' value='" + v + "'  " + s + "/><label " + labelattributes + " for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label>";
                     c += 1;
                 }
                 strOut += "</div>";
@@ -405,7 +405,7 @@ namespace Simplisity
                 x = value.Length;
             }
             var rtn = value.Substring(0, x);
-            if (showdots && value != "") rtn += "...";
+            if (showdots && value.Length > size) rtn += "...";
             return new RawString(rtn);
         }
         public IEncodedString BreakOf(SimplisityInfo info, String xpath)
