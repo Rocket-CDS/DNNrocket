@@ -120,7 +120,8 @@ namespace RocketTools
                                 _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
                                 if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
 
-                                string[] urlparams = { "articleid", articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
+                                articleParamKey = paramDict.Key;
+                                string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };                                
                                 var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
 
                                 metaList.Add(BuildMeta("", "og:type", "article"));
@@ -131,7 +132,6 @@ namespace RocketTools
                                 if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
                                 if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
 
-                                articleParamKey = paramDict.Key;
                                 articleMeta = true;
 
                                 // if the systemkey for the articleid do not match we throw a 404. (PRD for RocketEcomemrce)
