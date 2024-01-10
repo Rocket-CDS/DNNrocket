@@ -14,7 +14,7 @@ Names, Page Bread Crumb, Page Title, Page Tag Words and Page Description.
 
 Alteration of the skin is required. There are 3 things that need to be done.
 
-### 1. Specify the NodeManipulator in the DDRMenu**  
+### 1. Specify the NodeManipulator in the DDRMenu  
 In the skin all DDRMenu controls should specify the RocketTools node manipulator.  This will alter the page names for localization and will also call any noe manpulator providers that have been specified in the page localization settings.
 
 ```
