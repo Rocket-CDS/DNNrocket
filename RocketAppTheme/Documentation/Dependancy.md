@@ -69,6 +69,16 @@ file = File name of the template.
 name = Friendly name.  
 cmd = The data command that will be used.  
 
+### cmd values RocketDirectory
+listdetail = Display detai or list by using "articleid" param.  (default)  
+list = Same as listdetail. (Deprecated)  
+listonly = list data only   
+detailonly = article data only  
+catmenu = Category Data  
+satellite = List data without populating it.  The call for dasta should be made in the razor template.  
+
+
+
 ## Admin Panel Interfaces
 
 An AppTheme for "rocketdirectoryapi" system (or a wrapper system) can select which options are available in the Admin Panel of the system.  
