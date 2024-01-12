@@ -104,26 +104,27 @@ namespace RocketTools
             foreach (var pg in queryPl)
             {
                 var m = new MenuNode();
-                var n2 = BuildMenuNode(pg, pageid, null);
-
+                var rootParent = new MenuNode();
+                if (nodes.Count > 0) rootParent = nodes[0].Parent;
+                var n2 = BuildMenuNode(pg, pageid, null, rootParent);
 
                 var queryPl3 = from pl in pageList where pl.ParentPageId == pg.PageId select pl;
                 var childrenNodes = new List<MenuNode>();
                 foreach (var pg3 in queryPl3)
                 {
-                    var n3 = BuildMenuNode(pg3, pageid, n2);
+                    var n3 = BuildMenuNode(pg3, pageid, n2, null);
 
                     var queryPl4 = from pl in pageList where pl.ParentPageId == pg3.PageId select pl;
                     var childrenNodes4 = new List<MenuNode>();
                     foreach (var pg4 in queryPl4)
                     {
-                        var n4 = BuildMenuNode(pg4, pageid, n3);
+                        var n4 = BuildMenuNode(pg4, pageid, n3, null);
 
                         var queryPl5 = from pl in pageList where pl.ParentPageId == pg4.PageId select pl;
                         var childrenNodes5 = new List<MenuNode>();
                         foreach (var pg5 in queryPl5)
                         {
-                            var n5 = BuildMenuNode(pg5, pageid, n4);
+                            var n5 = BuildMenuNode(pg5, pageid, n4, null);
                             childrenNodes5.Add(n5);
                         }
 
@@ -142,7 +143,7 @@ namespace RocketTools
             }
             return nodes;
         }
-        private MenuNode BuildMenuNode(PageRecordData pg, int pageid, MenuNode parentNode)
+        private MenuNode BuildMenuNode(PageRecordData pg, int pageid, MenuNode parentNode, MenuNode rootParent)
         {
             var n2 = new MenuNode();
             n2.TabId = pageid;
@@ -160,6 +161,8 @@ namespace RocketTools
                 parentNode.Children.Add(n2);
                 n2.Parent = parentNode;
             }
+            if (rootParent != null) n2.Parent = rootParent;
+
             return n2;
 
         }
