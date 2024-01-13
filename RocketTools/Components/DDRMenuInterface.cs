@@ -28,8 +28,9 @@ namespace RocketTools
 
             var cachekey = "RocketTools*" + portalSettings.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + nodeTabList; // use nodeTablist incase the DDRMenu has a selector.
             List<MenuNode> rtnnodes = null;
-            
-            rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
+
+            //[TODO:Enable cache] ********* IMPORTANT **************
+            //rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
 
             var debugMode = false;
             if (settingRecord != null)
@@ -41,8 +42,6 @@ namespace RocketTools
                 return rtnnodes;
             }
 
-            nodes = BuildNodes(nodes, portalSettings);
-
             if (settingRecord != null)
             {
                 var menuproviders = settingRecord.GetRecordList("menuprovider");
@@ -53,7 +52,7 @@ namespace RocketTools
                     var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
                     if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
                     {
-                        var prov = MenuInterface.GetInstance(assembly,namespaceclass);
+                        var prov = MenuInterface.GetInstance(assembly, namespaceclass);
                         if (prov != null)
                         {
                             var tokenPrefix = prov.TokenPrefix();
@@ -86,6 +85,9 @@ namespace RocketTools
                     }
                 }
             }
+
+
+            nodes = BuildNodes(nodes, portalSettings);
 
             // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
             CacheUtils.SetCache(cachekey, nodes);
@@ -147,7 +149,7 @@ namespace RocketTools
         {
             var n2 = new MenuNode();
             n2.TabId = pageid;
-            n2.Text = pg.Name;
+            n2.Text = pg.Name + "[CAT]"; // flag for category, removed by BuildNodes().
             n2.Url = pg.Url;
             n2.Keywords = pg.KeyWords;
             n2.Title = pg.Title;
@@ -174,13 +176,21 @@ namespace RocketTools
             {
                 if (n.Depth == depth)
                 {
-                    var dataRecord = _objCtrl.GetRecordByGuidKey(portalSettings.PortalId, -1, "PL", "PL_" + DNNrocketUtils.GetCurrentCulture() + "_" + n.TabId.ToString(""));
-                    if (dataRecord != null)
+                    if (n.Text.Contains("[CAT]"))
                     {
-                        n.Text = dataRecord.GetXmlProperty("genxml/textbox/pagename");
-                        n.Keywords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
-                        n.Title = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
-                        n.Description = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
+                        // Injected by Category Build, remove the flag.
+                        n.Text = n.Text.Replace("[CAT]", "");
+                    }
+                    else
+                    {
+                        var dataRecord = _objCtrl.GetRecordByGuidKey(portalSettings.PortalId, -1, "PL", "PL_" + DNNrocketUtils.GetCurrentCulture() + "_" + n.TabId.ToString(""));
+                        if (dataRecord != null)
+                        {
+                            n.Text = dataRecord.GetXmlProperty("genxml/textbox/pagename");
+                            n.Keywords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
+                            n.Title = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
+                            n.Description = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
+                        }
                     }
                     if (n.Children.Count > 0) BuildNodes(n.Children, portalSettings, depth + 1);
                 }
