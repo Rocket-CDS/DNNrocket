@@ -29,8 +29,7 @@ namespace RocketTools
             var cachekey = "RocketTools*" + portalSettings.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + nodeTabList; // use nodeTablist incase the DDRMenu has a selector.
             List<MenuNode> rtnnodes = null;
 
-            //[TODO:Enable cache] ********* IMPORTANT **************
-            //rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
+            rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
 
             var debugMode = false;
             if (settingRecord != null)
