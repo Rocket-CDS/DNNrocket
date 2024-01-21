@@ -1904,8 +1904,43 @@ namespace DNNrocketAPI.Components
             return paramidList;
         }
 
+        public static void DeleteOldFiles(string folderPath, uint maximumAgeInDays, params string[] filesToExclude)
+        {
+            DateTime minimumDate = DateTime.Now.AddDays(-maximumAgeInDays);
 
+            var filesToDelete = Directory.EnumerateFiles(folderPath).Where(x => !IsExcluded(x, filesToExclude));
 
+            foreach (var eligibleFileToDelete in filesToDelete)
+            {
+                DeleteFileIfOlderThan(eligibleFileToDelete, minimumDate);
+            }
+        }
+        private static bool IsExcluded(string item, string[] exclusions)
+        {
+            return exclusions.Contains(item, StringComparer.CurrentCultureIgnoreCase);
+        }
+        public static void DeleteFileIfOlderThan(string path, DateTime date)
+        {
+            var RetriesOnError = 3;
+            var DelayOnRetry = 1000;
+            for (int i = 0; i < RetriesOnError; ++i)
+            {
+                try
+                {
+                    var file = new System.IO.FileInfo(path);
+                    if (file.CreationTime < date)
+                        file.Delete();
+                }
+                catch (IOException)
+                {
+                    System.Threading.Thread.Sleep(DelayOnRetry);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    System.Threading.Thread.Sleep(DelayOnRetry);
+                }
+            }
+        }
         #region "Temp Storage"
 
         private static string SaveTempStorage(string XmlData,string key, int keephours = 24)

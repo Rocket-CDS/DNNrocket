@@ -79,10 +79,23 @@ namespace RocketTools
 
                 // check for paramid
                 var paramidList = DNNrocketUtils.GetQueryKeys(_portalId);
+                if (paramidList.Count > 1 && paramidList.ContainsKey("catid"))
+                {
+                    // move the catid to the last param, so it's only taken if only the catid is in the URL.
+                    var paramidList2 = new Dictionary<string, QueryParamsData>();
+                    foreach (var p in paramidList)
+                    {
+                        if (p.Key != "catid") paramidList2.Add(p.Key, p.Value);
+                    }
+                    paramidList2.Add("catid", paramidList["catid"]);
+                    paramidList = paramidList2;
+                }
+
                 var articleMeta = false;
                 var metaList = new List<HtmlMeta>();
                 var articleid = 0;
                 var articleParamKey = "";
+                var foundArticle = false;
                 foreach (var paramDict in paramidList)
                 {
                     var paramKey = Request.QueryString[paramDict.Key];
@@ -91,65 +104,77 @@ namespace RocketTools
                         var strParam = Request.QueryString[paramDict.Key];
                         if (GeneralUtils.IsNumeric(strParam))
                         {
-                            _articleTable = paramDict.Value.tablename;
-                            try
+                            if (!foundArticle) // we can have only 1 article in the SEO, take the first found.  (catid is moved ot last position inthe list.)
                             {
-                                articleid = Convert.ToInt32(strParam);
-                            }
-                            catch (Exception ex)
-                            {
-                                Exceptions.ProcessModuleLoadException(this, ex);
-                                DNNrocketUtils.Handle404Exception(this.Response, PortalSettings.Current);
-                            }
-                            _dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
-                            if (_dataRecordTemp != null)
-                            {
-                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
-                                    _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
-                                if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
 
-                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
-                                    _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
-                                if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+                                _articleTable = paramDict.Value.tablename;
+                                try
+                                {
+                                    articleid = Convert.ToInt32(strParam);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Exceptions.ProcessModuleLoadException(this, ex);
+                                    DNNrocketUtils.Handle404Exception(this.Response, PortalSettings.Current);
+                                }
+                                _dataRecordTemp = objCtrl.GetInfo(articleid, DNNrocketUtils.GetCurrentCulture(), _articleTable);
+                                if (_dataRecordTemp != null)
+                                {
+                                    foundArticle = true;
 
-                                if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
-                                    _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
+                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
+                                        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
+                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name") != "")
+                                        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                                    if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
 
-                                var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, paramDict.Value.systemkey, _articleTable);
-                                if (portalContentRec == null) portalContentRec = new SimplisityRecord();
-                                _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
-                                if (_articleDefaultTabId == 0) _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
+                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
+                                        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary") != "")
+                                        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+                                    if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
 
-                                articleParamKey = paramDict.Key;
-                                string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };                                
-                                var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
+                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
+                                        _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
 
-                                metaList.Add(BuildMeta("", "og:type", "article"));
-                                metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
-                                metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
-                                metaList.Add(BuildMeta("", "og:url", ogurl));
-                                var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
-                                if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
-                                if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
+                                    var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, paramDict.Value.systemkey, _articleTable);
+                                    if (portalContentRec == null) portalContentRec = new SimplisityRecord();
+                                    _articleDefaultTabId = portalContentRec.GetXmlPropertyInt("genxml/detailpage");
+                                    if (_articleDefaultTabId == 0 || paramDict.Key != "catid") _articleDefaultTabId = PortalSettings.ActiveTab.TabID;
 
-                                articleMeta = true;
+                                    if (paramDict.Key != "catid")
+                                    {
+                                        articleParamKey = paramDict.Key;
+                                        string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
+                                        var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
 
-                                // if the systemkey for the articleid do not match we throw a 404. (PRD for RocketEcomemrce)
-                                if (!_dataRecordTemp.TypeCode.StartsWith(paramDict.Value.systemkey) && _dataRecordTemp.TypeCode != "PRD") is404 = true;
+                                        metaList.Add(BuildMeta("", "og:type", "article"));
+                                        metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
+                                        metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
+                                        metaList.Add(BuildMeta("", "og:url", ogurl));
+                                        var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
+                                        if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
+                                        if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
 
-                                break;
-                            }
-                            else
-                            {
-                                // record does not exist, throw a 404.
-                                is404 = true;
+                                        articleMeta = true;
+                                    }
+
+                                    // if the systemkey for the articleid do not match we throw a 404. (PRD and CAT for RocketEcomemrce)
+                                    if (!_dataRecordTemp.TypeCode.StartsWith(paramDict.Value.systemkey) && (_dataRecordTemp.TypeCode != "PRD" && _dataRecordTemp.TypeCode != "CAT")) is404 = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    // record does not exist, throw a 404.
+                                    is404 = true;
+                                }
                             }
                         }
                     }
                 }
 
 
-                if (dataRecord != null)
+                    if (dataRecord != null)
                 {
                     if (!articleMeta)
                     {

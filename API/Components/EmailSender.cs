@@ -1,4 +1,5 @@
-﻿using Simplisity;
+﻿using DotNetNuke.UI.WebControls;
+using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,22 +56,28 @@ namespace DNNrocketAPI.Components
             {
                 try
                 {
+                    var emailOK = true;
                     var emailarray = EmailData.ToEmail.Replace(';',',').Split(',');
                     foreach (var email in emailarray)
                     {
                         if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(EmailData.FromEmail) && GeneralUtils.IsEmail(email.Trim()))
                         {
                             string[] stringarray = new string[0];
-                            DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail.Trim(), email.Trim(), "", "", EmailData.ReplyToEmail, DotNetNuke.Services.Mail.MailPriority.Normal, EmailData.EmailSubject, DotNetNuke.Services.Mail.MailFormat.Html, Encoding.UTF8, EmailData.EmailBody,  stringarray, "", "", "", "", false);
+                            var DNNemailreturn = DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail.Trim(), email.Trim(), "", "", EmailData.ReplyToEmail, DotNetNuke.Services.Mail.MailPriority.Normal, EmailData.EmailSubject, DotNetNuke.Services.Mail.MailFormat.Html, Encoding.UTF8, EmailData.EmailBody,  stringarray, "", "", "", "", false);
+                            if (!String.IsNullOrEmpty(DNNemailreturn))
+                            {
+                                emailOK = false; 
+                                LogUtils.LogSystem("EMAIL FAILURE: Portal:" + EmailData.PortalId + " Msg:" + DNNemailreturn);
+                            }
                         }
                     }
+                    return emailOK;
                 }
                 catch (Exception ex)
                 {
                     Error = ex.ToString();
                     return false;
                 }
-                return true;
             }
             else
             {

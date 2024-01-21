@@ -1017,4 +1017,7 @@
   <data name="itemlimit.Text" xml:space="preserve">
     <value>Item Limit</value>
   </data>
+  <data name="validationattr.Text" xml:space="preserve">
+    <value>Validation Attributes</value>
+  </data>
 </root>
