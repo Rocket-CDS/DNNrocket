@@ -265,12 +265,20 @@ namespace DNNrocketAPI.render
             var strOut = "";
             if (info != null)
             {
-                var appTheme = new AppThemeDNNrocketLimpet(info.PortalId, "api");
-                var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
-                var nbRazor = new SimplisityRazor(info);
-                nbRazor.SetSetting("xmlidx", xmlidx);
-                var pr = RenderRazorUtils.RazorProcessData(nbRazor, razorTempl, true);
-                strOut = pr.RenderedText;
+                try
+                {
+                    var appTheme = new AppThemeDNNrocketLimpet(info.PortalId, "api");
+                    var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
+                    var nbRazor = new SimplisityRazor(info);
+                    nbRazor.SetSetting("xmlidx", xmlidx);
+                    var pr = RenderRazorUtils.RazorProcessData(nbRazor, razorTempl, true);
+                    strOut = pr.RenderedText;
+                }
+                catch (Exception)
+                {
+                    // legacy data can throw error;
+                    strOut = "";
+                }
             }
             return new RawString(strOut);
         }
