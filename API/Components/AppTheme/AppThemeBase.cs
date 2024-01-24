@@ -253,7 +253,7 @@ namespace DNNrocketAPI.Components
                 if (dep != null)
                 {
                     var searchIdxList = dep.GetRecordList("searchindex");
-                    if (searchIdxList != null) return searchIdxList.First();
+                    if (searchIdxList != null && searchIdxList.Count > 0) return searchIdxList.First();
                 }
             }
             return new SimplisityRecord();
