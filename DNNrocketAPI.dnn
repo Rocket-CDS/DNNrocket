@@ -242,10 +242,6 @@
 					<sourceFileName>restart_app.svg</sourceFileName>
 				</file>
 				<file>
-					<name>images/rocketcds-logo-hd-square.jpg</name>
-					<sourceFileName>rocketcds-logo-hd-square.jpg</sourceFileName>
-				</file>
-				<file>
 					<name>images/rocketcds-logo-web.png</name>
 					<sourceFileName>rocketcds-logo-web.png</sourceFileName>
 				</file>
