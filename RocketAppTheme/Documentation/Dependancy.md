@@ -157,7 +157,7 @@ It will also look for the first image called "imagepatharticleimage" or "imagepa
 
 These field names are the default names used in the Shared Templates.  If you are not using the shared templates you must use the same names to make the SEO header work.  
 
-### Ativation of the detail display
+### Activation of the detail display
 The detail page is displayed in a module by using the itemid in the URL.  The name of the query param for the itemid is defined in the dependacy file.   
 The systemkey is also defined, so that only modules using the deifned systemkey are activated for detail.  
 In some situation multiple systems/module may want to display the detail.  This can be done but it will affect the SEO, only the first detail SEO will be added to the page.  
