@@ -89,7 +89,10 @@
                     <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
                     <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
                     <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
+                    @if (sessionParam.ModuleRef == "") // Module level resx does not exist.
+                    {
                     <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
+                    }
                     <div class="w3-bar-item w3-button tablink tabDependancies" onclick="openDataTab('tabDependancies','Dependancies')">@ResourceKey("AppThemes.dependancies")</div>
                     <div class="w3-bar-item w3-button w3-hide tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
                 </div>
@@ -266,36 +269,40 @@
                         </ul>
                     </div>
                 </div>
-                <div id="Resources" class="w3-container w3-border city" style="display:none">
-                    <div id="resxdatasection" class="w3-row resxlistdatasection">
 
-                        <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
+                @if (sessionParam.ModuleRef == "") // Module level resx does not exist.
+                {
+                    <div id="Resources" class="w3-container w3-border city" style="display:none">
+                        <div id="resxdatasection" class="w3-row resxlistdatasection">
 
-                        <ul id="resxlistdata" class="w3-ul">
-                            @foreach (var templateDict in appTheme.GetTemplatesResx())
-                            {
-                                var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
-                                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
-                                        &nbsp;
-                                        @templateDict.Key
-                                        <span class="w3-right">
-                                            @if (levelColor == "w3-pale-blue")
-                                            {
-                                                <span><img src="/images/level_module.svg" /></span>
-                                            }
-                                            @if (levelColor == "w3-pale-yellow")
-                                            {
-                                                <span><img src="/images/level_portal.svg" /></span>
-                                            }
-                                        </span>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
+                            <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
+
+                            <ul id="resxlistdata" class="w3-ul">
+                                @foreach (var templateDict in appTheme.GetTemplatesResx())
+                                {
+                                    var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
+                                    <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                        <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
+                                            <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-return="#editmodalcontainer" s-fields='{"moduleref":"@sessionParam.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","selectedproject":"@appTheme.ProjectName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                            &nbsp;
+                                            @templateDict.Key
+                                            <span class="w3-right">
+                                                @if (levelColor == "w3-pale-blue")
+                                                {
+                                                    <span><img src="/images/level_module.svg" /></span>
+                                                }
+                                                @if (levelColor == "w3-pale-yellow")
+                                                {
+                                                    <span><img src="/images/level_portal.svg" /></span>
+                                                }
+                                            </span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                }
                 <div id="Dependancies" class="w3-container w3-border city" style="display:none">
                     <div id="dependanciesdatasection" class="w3-row dependenciesdatasection">
 
