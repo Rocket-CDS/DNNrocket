@@ -124,20 +124,15 @@ namespace RocketTools
                                 {
                                     foundArticle = true;
 
-                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle") != "")
-                                        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
-                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name") != "")
-                                        _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                                    _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
+                                    if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
                                     if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
 
-                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription") != "")
-                                        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
-                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary") != "")
-                                        _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+                                    _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+                                    if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
                                     if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
 
-                                    if (_dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword") != "")
-                                        _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
+                                    _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
 
                                     var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, paramDict.Value.systemkey, _articleTable);
                                     if (portalContentRec == null) portalContentRec = new SimplisityRecord();
@@ -186,12 +181,9 @@ namespace RocketTools
                 {
                     if (!foundArticle) // Use PL data if no article or cat title found.
                     {
-                        if (dataRecord.GetXmlProperty("genxml/textbox/pagetitle") != "")
-                            _metatitle = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
-                        if (dataRecord.GetXmlProperty("genxml/textbox/pagedescription") != "")
-                            _metadescription = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
-                        if (dataRecord.GetXmlProperty("genxml/textbox/tagwords") != "")
-                            _metatagwords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
+                        _metatitle = dataRecord.GetXmlProperty("genxml/textbox/pagetitle");
+                        _metadescription = dataRecord.GetXmlProperty("genxml/textbox/pagedescription");
+                        _metatagwords = dataRecord.GetXmlProperty("genxml/textbox/tagwords");
                     }
 
                     _disablealternate = dataRecord.GetXmlPropertyBool("genxml/checkbox/disablealternate");
