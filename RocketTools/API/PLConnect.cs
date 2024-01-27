@@ -234,7 +234,7 @@ namespace RocketTools.API
 
             CacheUtils.ClearAllCache(_portalId.ToString());
 
-            return PLDetail();
+            return PLSettingsPopup();
         }
 
         public void DeleteTabUrl()

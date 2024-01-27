@@ -14,6 +14,7 @@ namespace RocketTools
     {
         #region Implementation of INodeManipulator
         private DNNrocketController _objCtrl;
+        private static object _lock = new object();
 
         public List<MenuNode> ManipulateNodes(List<MenuNode> nodes, PortalSettings portalSettings)
         {
@@ -31,66 +32,79 @@ namespace RocketTools
 
             rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
 
-            var debugMode = false;
-            if (settingRecord != null)
+            try
             {
-                debugMode = settingRecord.GetXmlPropertyBool("genxml/checkbox/debugmode");
-            }
-            if (rtnnodes != null && !debugMode)
-            {
-                return rtnnodes;
-            }
-
-            if (settingRecord != null)
-            {
-                var menuproviders = settingRecord.GetRecordList("menuprovider");
-                foreach (var p in menuproviders)
+                var debugMode = false;
+                if (settingRecord != null)
                 {
-                    var assembly = p.GetXmlProperty("genxml/textbox/assembly");
-                    var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
-                    var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
-                    if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
+                    debugMode = settingRecord.GetXmlPropertyBool("genxml/checkbox/debugmode");
+                }
+                if (rtnnodes != null && !debugMode)
+                {
+                    return rtnnodes;
+                }
+
+                if (settingRecord != null)
+                {
+                    var menuproviders = settingRecord.GetRecordList("menuprovider");
+                    foreach (var p in menuproviders)
                     {
-                        var prov = MenuInterface.GetInstance(assembly, namespaceclass);
-                        if (prov != null)
+                        lock (_lock)
                         {
-                            var tokenPrefix = prov.TokenPrefix();
-                            // jump out if we don't have token in nodes
-                            if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
+
+                            var assembly = p.GetXmlProperty("genxml/textbox/assembly");
+                            var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
+                            var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
+                            if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
                             {
-                                return nodes;
+                                var prov = MenuInterface.GetInstance(assembly, namespaceclass);
+                                if (prov != null)
+                                {
+                                    var tokenPrefix = prov.TokenPrefix();
+                                    // jump out if we don't have token in nodes
+                                    if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
+                                    {
+                                        return nodes;
+                                    }
+                                    var idx = 0;
+                                    var idxlp = 0;
+                                    foreach (MenuNode n in nodes)
+                                    {
+                                        if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && n.Title.ToLower() == systemkey.ToLower()) idx = idxlp;
+                                        idxlp += 1;
+                                    }
+                                    var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()).ToList();
+                                    foreach (var n in nods)
+                                    {
+                                        var parentcatref = n.Keywords;
+                                        var pageList = prov.GetMenuItems(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture(), systemkey, parentcatref);
+                                        var pageid = prov.PageId(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture());
+                                        nodes.Remove(n);
+                                        nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
+                                    }
+                                    nodes = BuildNodes(nodes, portalSettings);
+                                }
+                                else
+                                {
+                                    LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
+                                }
                             }
-                            var idx = 0;
-                            var idxlp = 0;
-                            foreach (MenuNode n in nodes)
-                            {
-                                if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && n.Title.ToLower() == systemkey.ToLower()) idx = idxlp;
-                                idxlp += 1;
-                            }
-                            var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()).ToList();
-                            foreach (var n in nods)
-                            {
-                                var parentcatref = n.Keywords;
-                                var pageList = prov.GetMenuItems(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture(), systemkey, parentcatref);
-                                var pageid = prov.PageId(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture());
-                                nodes.Remove(n);
-                                nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
-                            }
-                        }
-                        else
-                        {
-                            LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
                         }
                     }
                 }
+
+
+
+                // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
+                CacheUtils.SetCache(cachekey, nodes);
+
             }
-
-
-            nodes = BuildNodes(nodes, portalSettings);
-
-            // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
-            CacheUtils.SetCache(cachekey, nodes);
-
+            catch (Exception ex)
+            {
+                CacheUtils.RemoveCache(cachekey);
+                LogUtils.LogException(ex);
+                LogUtils.LogSystem("Menu ManipulateNodes ProviderNodes: " + ex.ToString());
+            }
             return nodes;
         }
         // ++++++ PROVIDER ++++++++++++++++

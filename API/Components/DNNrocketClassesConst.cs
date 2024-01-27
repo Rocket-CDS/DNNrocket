@@ -39,5 +39,11 @@ namespace DNNrocketAPI.Components
         public string systemkey { get; set; }
         public string queryparamvalue { get; set; }
     }
+    public class MenuProviderData
+    {
+        public string assembly { get; set; }
+        public string namespaceclass { get; set; }
+        public string systemkey { get; set; }
+    }
 
 }

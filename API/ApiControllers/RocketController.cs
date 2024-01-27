@@ -317,7 +317,7 @@ namespace DNNrocketAPI.ApiControllers
         /// <returns></returns>
         private string ProcessAction(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
-            var strOut = "ERROR: Invalid.";
+            var strOut = "ERROR ProcessAction Cmd: " + paramCmd;
             var context = HttpContext.Current;
 
             try
@@ -441,6 +441,7 @@ namespace DNNrocketAPI.ApiControllers
                         break;
                 }
                 if (scmdprocess != "") strOut = "process"; // continue processing
+                if (strOut.StartsWith("ERROR")) LogUtils.LogSystem(strOut);
             }
             catch (Exception ex)
             {
@@ -451,7 +452,7 @@ namespace DNNrocketAPI.ApiControllers
 
         private HttpResponseMessage ProcessProvider(string paramCmd, SimplisityInfo postInfo, SimplisityInfo paramInfo, SystemLimpet systemData, RocketInterface rocketInterface)
         {
-            var strOut = "ERROR: Invalid.";
+            var strOut = "ERROR ProcessProvider Cmd: " + paramCmd + " systemkey:" + systemData.SystemKey;
             object jsonReturn = null;
             object xmlReturn = null;
             var returnDictionary = new Dictionary<string, object>();

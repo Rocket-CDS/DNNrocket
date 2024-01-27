@@ -106,7 +106,7 @@ namespace RocketTools
                         var strParam = Request.QueryString[paramDict.Key];
                         if (GeneralUtils.IsNumeric(strParam))
                         {
-                            if (!foundArticle) // we can have only 1 article in the SEO, take the first found.  (catid is moved ot last position inthe list.)
+                            if (!foundArticle) // we can have only 1 article in the SEO, take the first found.  (catid is moved to last position inthe list.)
                             {
 
                                 _articleTable = paramDict.Value.tablename;

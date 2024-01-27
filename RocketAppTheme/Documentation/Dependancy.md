@@ -142,6 +142,20 @@ With the directory system you may have a list and detail structure.
 
 The QueryParams do 2 important actions when the detail page needs to be seen.  **SEO** and **Activation of the Detail Display**.  
 
+#### Categories
+The category article list query param is also defined in the dependancy file. 
+```
+<queryparams list="true">
+	<genxml>
+		<queryparam>catid</queryparam>
+		<tablename>rocketdirectoryapi</tablename>
+		<systemkey>rocketnewsapi</systemkey>
+	</genxml>
+</queryparams>
+```
+This allow for each AppTheme to have it's own categoey menu injected into the DDRMenu.
+
+
 ### SEO
 The detail should contain SEO data in the header.  The SEO data is read by using a URL parameter, this paramater is defined in the dependacies file.  Saving the directory settings will also update the Page data so the Meta.ascx can capture the detail data with an ItemId.  
 
@@ -156,6 +170,20 @@ metatagwords = "genxml/lang/genxml/textbox/seokeyword"
 It will also look for the first image called "imagepatharticleimage" or "imagepathproductimage".
 
 These field names are the default names used in the Shared Templates.  If you are not using the shared templates you must use the same names to make the SEO header work.  
+
+### DDRMenu Provider
+The categories can be added to the menu by the menu provider.  (See MenuManipulator documentation)
+
+```
+<menuprovider>
+	<genxml>
+		<assembly>RocketDirectoryAPI</assembly>
+		<namespaceclass>RocketDirectoryAPI.Components.MenuDirectory</namespaceclass>
+		<systemkey>rocketblogapi</systemkey>
+	</genxml>
+</menuprovider>
+```
+
 
 ### Activation of the detail display
 The detail page is displayed in a module by using the itemid in the URL.  The name of the query param for the itemid is defined in the dependacy file.   

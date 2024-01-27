@@ -180,6 +180,9 @@
   <data name="language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="menuandurlsettings.Text" xml:space="preserve">
+    <value>Menu, URL params, Style Helper</value>
+  </data>
   <data name="moduleclone.Help" xml:space="preserve">
     <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the clone in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
   </data>
@@ -208,7 +211,7 @@
     <value>Description</value>
   </data>
   <data name="pagelocalization.Text" xml:space="preserve">
-    <value>Page (Menu, Localization, Style Helper)</value>
+    <value>Page Localization</value>
   </data>
   <data name="pagename.Text" xml:space="preserve">
     <value>Page Name</value>

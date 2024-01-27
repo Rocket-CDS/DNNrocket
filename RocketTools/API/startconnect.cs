@@ -99,6 +99,9 @@ namespace RocketTools.API
                     case "rocketpl_getdisplay":
                         strOut = PLDetail();
                         break;
+                    case "rocketpl_urlmenu":
+                        strOut = PLSettingsPopup();
+                        break;
                     case "rocketpl_page":
                         strOut = PageView();
                         break;
@@ -113,16 +116,16 @@ namespace RocketTools.API
                         break;
                     case "rocketpl_validateurls":
                         RocketToolsUtils.ValidateUrls();
-                        strOut = PLDetail();
-                        break;
+                        strOut = PLSettingsPopup();
+                    break;
                     case "rocketpl_validatemeta":
                         RocketToolsUtils.ValidateMeta();
-                        strOut = PLDetail();
+                        strOut = PLSettingsPopup();
                         break;
                     case "rocketpl_validate":
                         RocketToolsUtils.ValidateMeta();
                         RocketToolsUtils.ValidateUrls();
-                        strOut = PLDetail();
+                        strOut = PLSettingsPopup();
                         break;
                     case "rocketpl_taburldelete":
                         DeleteTabUrl();
