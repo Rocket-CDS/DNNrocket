@@ -18,6 +18,8 @@ namespace RocketTools
 
         public List<MenuNode> ManipulateNodes(List<MenuNode> nodes, PortalSettings portalSettings)
         {
+            LogUtils.LogSystem("DDRMenuInterface.cs: ManipulateNodes START");
+
             _objCtrl = new DNNrocketController();
             var settingRecord = _objCtrl.GetRecordByGuidKey(PortalUtils.GetPortalId(), -1, "PLSETTINGS", "PLSETTINGS");
 
@@ -41,6 +43,7 @@ namespace RocketTools
                 }
                 if (rtnnodes != null && !debugMode)
                 {
+                    LogUtils.LogSystem("DDRMenuInterface.cs: ManipulateNodes END - (Return Cache)");
                     return rtnnodes;
                 }
 
@@ -97,6 +100,7 @@ namespace RocketTools
 
                 // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
                 CacheUtils.SetCache(cachekey, nodes);
+                LogUtils.LogSystem("DDRMenuInterface.cs: ManipulateNodes END");
 
             }
             catch (Exception ex)

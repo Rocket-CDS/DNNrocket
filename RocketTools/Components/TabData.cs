@@ -86,6 +86,7 @@ namespace RocketTools.Components
         #region " private functions"
         private string GetPageUrl()
         {
+            if (TabId <= 0) return "";
             var portalid = PortalSettings.Current.PortalId;
             var objTabCtrl = new TabController();
             var dnnTab = objTabCtrl.GetTab(TabId, portalid);
@@ -103,12 +104,13 @@ namespace RocketTools.Components
                     if (!String.IsNullOrWhiteSpace(pname)) pagename = pname;
                 }
                 rtnUrl = "/" + GeneralUtils.UrlFriendly(pagename) + rtnUrl;
-                dnnTab = objTabCtrl.GetTab(dnnTab.ParentId, portalid);
+                if (dnnTab.ParentId > 0)
+                    dnnTab = objTabCtrl.GetTab(dnnTab.ParentId, portalid);
+                else
+                    dnnTab = null;
                 lp += 1;
             }
-
             return rtnUrl;
-
         }
 
         #endregion

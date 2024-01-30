@@ -94,11 +94,14 @@ namespace RocketTools.Components
             {
                 var dataRecord = objCtrl.GetRecord(pl.ItemID);
                 // Update Meta data for DNN Tab DB, if the meta is empty DNN will not render the meta data.
-                var controller = new TabController();
-                var newTab = controller.GetTab(dataRecord.SortOrder, PortalUtils.GetPortalId());
-                if (newTab.Description == "") newTab.Description = ".";
-                if (newTab.KeyWords == "") newTab.KeyWords = ".";
-                controller.UpdateTab(newTab);
+                if (dataRecord.SortOrder > 0)
+                {
+                    var controller = new TabController();
+                    var newTab = controller.GetTab(dataRecord.SortOrder, PortalUtils.GetPortalId());
+                    if (newTab.Description == "") newTab.Description = ".";
+                    if (newTab.KeyWords == "") newTab.KeyWords = ".";
+                    controller.UpdateTab(newTab);
+                }
             }
         }
         public static void ValidateUrls()

@@ -256,6 +256,7 @@ namespace DNNrocketAPI.Components
         }
         public static bool PageExists(int portalId, int tabId = 0)
         {
+            if (tabId <= 0) return false;
             var controller = new TabController();
             var tab = controller.GetTab(tabId, portalId);
             if (tab == null)

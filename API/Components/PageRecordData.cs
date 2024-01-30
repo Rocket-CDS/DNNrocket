@@ -25,7 +25,7 @@ namespace DNNrocketAPI.Components
         private void Init(int portalId, int tabId, bool ignoreCache = false)
         {
             Record = new SimplisityRecord();
-            if (PageId > 0)
+            if (PageId > 0 && tabId > 0)
             {
                 var objTabs = new TabController();
                 var tabInfo = objTabs.GetTab(tabId, portalId, ignoreCache);

@@ -122,13 +122,16 @@ namespace RocketTools.API
             tabD.Save();
 
             // Update Meta data for DNN Tab DB, if the meta is empty DNN will not render the meta data.
-            var controller = new TabController();
-            var newTab = controller.GetTab(tabD.TabId, _portalId);
-            if (newTab.Description == "") newTab.Description = newTab.Title;
-            if (newTab.KeyWords == "") newTab.KeyWords = newTab.Title;
-            if (newTab.Description == "") newTab.Description = "_";
-            if (newTab.KeyWords == "") newTab.KeyWords = "_";
-            controller.UpdateTab(newTab);
+            if (tabD.TabId > 0)
+            {
+                var controller = new TabController();
+                var newTab = controller.GetTab(tabD.TabId, _portalId);
+                if (newTab.Description == "") newTab.Description = newTab.Title;
+                if (newTab.KeyWords == "") newTab.KeyWords = newTab.Title;
+                if (newTab.Description == "") newTab.Description = "_";
+                if (newTab.KeyWords == "") newTab.KeyWords = "_";
+                controller.UpdateTab(newTab);
+            }
 
             SaveTabUrls(tabD);
 
