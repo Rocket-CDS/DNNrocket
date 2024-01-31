@@ -62,6 +62,7 @@ namespace DNNrocketAPI.Components
                     {
                         if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(EmailData.FromEmail) && GeneralUtils.IsEmail(email.Trim()))
                         {
+                            LogUtils.LogSystem("SEND EMAIL: from: " + EmailData.FromEmail.Trim() + " to:" + email.Trim() + " replyto:" + EmailData.ReplyToEmail);
                             string[] stringarray = new string[0];
                             var DNNemailreturn = DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail.Trim(), email.Trim(), "", "", EmailData.ReplyToEmail, DotNetNuke.Services.Mail.MailPriority.Normal, EmailData.EmailSubject, DotNetNuke.Services.Mail.MailFormat.Html, Encoding.UTF8, EmailData.EmailBody,  stringarray, "", "", "", "", false);
                             if (!String.IsNullOrEmpty(DNNemailreturn))
