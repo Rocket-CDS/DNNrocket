@@ -436,7 +436,7 @@ namespace DNNrocketAPI.Components
             if (portalId < 0) portalId = GetPortalId();
             var portalalias = "";
             var objCtrl = new DNNrocketController();
-            var cmd = "SELECT HTTPAlias, isnull(CultureCode,'') as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE portalid = " + portalId + "  for xml raw";
+            var cmd = "SELECT HTTPAlias, isnull(CultureCode,''), IsPrimary as [CultureCode] FROM {databaseOwner}[{objectQualifier}PortalAlias]  WHERE portalid = " + portalId + "  for xml raw";
             var xmlList = objCtrl.ExecSqlXmlList(cmd);
             if (xmlList.Count > 0)
             {
@@ -444,7 +444,8 @@ namespace DNNrocketAPI.Components
                 {
                     var a = x.GetXmlProperty("row/@HTTPAlias");
                     var cc = x.GetXmlProperty("row/@CultureCode");
-                    if (cc == cultureCode)
+                    var isPrimary = x.GetXmlProperty("row/@IsPrimary");
+                    if (cc == cultureCode && isPrimary == "1")
                     {
                         portalalias = a;
                     }
