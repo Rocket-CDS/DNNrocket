@@ -2,10 +2,13 @@
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Simplisity
 {
@@ -90,6 +93,10 @@ namespace Simplisity
         public bool GetBool(string key)
         {
             return Info.GetXmlPropertyBool("r/" + key);
+        }
+        public DateTime GetDate(string key)
+        {
+            return Info.GetXmlPropertyDate("r/" + key);
         }
         public SimplisityInfo Info { get; set; }
 

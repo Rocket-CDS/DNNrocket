@@ -15,7 +15,7 @@ $(document).simplisityStartUp('/My API call url', { systemkey: 'amylisbusiness'}
 >This is a an element with a class which will be displayed when a call to the server is made. By default this is "overlayclass: 'w3-overlay'" but this call can be overwritten on the "simplisity_startup" function. If required it can be used with JQuery or JS.
 
 ```
-$('#simplisity_loader').show();  
+$('.simplisity_loader').show();  
 ```  
 <br/>
 
