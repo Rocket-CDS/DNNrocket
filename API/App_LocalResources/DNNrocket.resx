@@ -1020,4 +1020,7 @@
   <data name="validationattr.Text" xml:space="preserve">
     <value>Validation Attributes</value>
   </data>
+  <data name="address.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
 </root>
