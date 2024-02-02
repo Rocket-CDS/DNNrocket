@@ -730,6 +730,11 @@ namespace DNNrocketAPI.Components
             {
                 if (t.Key.ToLower().EndsWith(".resx")) rtnDict.Add(t.Key, t.Value);
             }
+            // also add the portallevel file names, they may not be at system level.
+            foreach (var t in PortalFileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".resx") && !rtnDict.ContainsKey(t.Key)) rtnDict.Add(t.Key, t.Value);
+            }
             return rtnDict;
         }
         public Dictionary<string, string> GetTemplatesDep()

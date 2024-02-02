@@ -87,7 +87,7 @@
         <div class="w3-container">
             <div class="w3-display-container ">
 
-                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_addresxdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ResourceKey("DNNrocket.add", "", "Icon")</div>
+                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_addresxdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.add)</div>
 
                 <div class="w3-col m4 w3-center">
                     Key
@@ -178,17 +178,16 @@
                 var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
                 foreach (var l in enabledlanguages)
                 {
-                    <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='//@(portalData.DefaultUrl)/@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                    if (DNNrocketUtils.ValidCulture(l.GetXmlProperty("genxml/code")))
+                    {
+                    <div class="w3-col m4 w3-padding simplisity_click" s-cmd="rocketapptheme_copyresx" s-return="#editmodalcontainer" s-post="" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","copylang":"@(l.GetXmlProperty("genxml/code"))"}' style="cursor: pointer;">
+                        <img class='searchlanguagebutton ' src='@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' />
+                        <span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span>
+                    </div>                        
+                    }
                 }
             }
         </div>
-
-        <span class="w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_copyresx" s-post="" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>
-            <span class="material-icons">
-                content_copy
-            </span>
-            @ResourceKey("AppThemes.addlanguage")
-        </span>
 
     </div>
 </div>

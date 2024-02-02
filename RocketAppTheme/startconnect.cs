@@ -109,6 +109,9 @@ namespace DNNrocket.AppThemes
                             case "rocketapptheme_saveresxdata":
                                 strOut = SaveResxDetail();
                                 break;
+                            case "rocketapptheme_copyresx":
+                                strOut = CopyResxFile();
+                                break;                                
 
                             case "rocketapptheme_getdepdata":
                                 strOut = GetDepDetail();
@@ -328,6 +331,26 @@ namespace DNNrocket.AppThemes
             }
         }
 
+        public String CopyResxFile()
+        {
+            try
+            {
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+                var copylang = _paramInfo.GetXmlProperty("genxml/hidden/copylang");
+                var appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+                var resxData = _dataObject.AppTheme.GetResx(fname, moduleref);
+                var newFileName = Path.GetFileNameWithoutExtension(fname) + "." + copylang + Path.GetExtension(fname);
+                var fileName = _dataObject.AppTheme.AppThemeFolderPortalMapPath.TrimEnd('\\') + "\\" + appVersionFolder + "\\resx\\" + newFileName;
+                FileUtils.SaveFile(fileName, resxData.ResxFileData);
+                _dataObject.AppTheme.Populate();
+                return GetDetail("AppThemeDetails.cshtml"); 
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
         public String GetResxDetail()
         {
             try
