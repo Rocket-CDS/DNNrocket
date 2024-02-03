@@ -99,12 +99,6 @@
 				</assembly>
 
 				<assembly>
-				  <path>bin</path>
-				  <name>handlebars.dll</name>
-				  <sourceFileName>handlebars.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
 					<path>bin</path>
 					<name>RocketTools.dll</name>
 					<sourceFileName>RocketTools.dll</sourceFileName>
@@ -324,5 +318,6 @@
       </components>
     </package>
 
+		
   </packages>
 </dotnetnuke>

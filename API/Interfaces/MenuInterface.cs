@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.Remoting;
 using Simplisity;
 using DNNrocketAPI.Components;
-using HandlebarsDotNet;
 using DNNrocketAPI.Interfaces;
 
 namespace DNNrocketAPI

@@ -76,9 +76,6 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>_external\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Handlebars">
-      <HintPath>_external\Handlebars.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>_external\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -244,7 +241,6 @@
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
-    <Compile Include="Interfaces\HandleBarsInterface.cs" />
     <Compile Include="Meta.ascx.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,7 +248,6 @@
     <Compile Include="Meta.ascx.designer.cs">
       <DependentUpon>Meta.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="render\HandlebarsEngine.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
     <Compile Include="Components\RemoteModule.cs" />

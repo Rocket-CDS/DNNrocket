@@ -801,28 +801,6 @@ namespace DNNrocketAPI.render
             return rtnString;
         }
 
-        public IEncodedString RenderHandleBars(SimplisityInfo info, AppThemeLimpet appTheme, string templateName, string moduleref = "", string cacheKey = "")
-        {
-            var dataObjects = new Dictionary<string, SimplisityInfo>();
-            dataObjects.Add("data", info);
-            return RenderHandleBars(dataObjects, appTheme, templateName, moduleref, cacheKey);
-        }
-
-        public IEncodedString RenderHandleBars(Dictionary<string, SimplisityInfo> dataObjects, AppThemeLimpet appTheme, string templateName, string moduleref = "", string cacheKey = "")
-        {
-            var strOut = "";
-            if (cacheKey != "") strOut = (string)CacheUtils.GetCache(moduleref + cacheKey, "hbs");
-            if (String.IsNullOrEmpty(strOut))
-            {
-                string jsonString = SimplisityUtils.ConvertToJson(dataObjects);
-                var template = appTheme.GetTemplate(templateName, moduleref);
-                JObject model = JObject.Parse(jsonString);
-                HandlebarsEngine hbEngine = new HandlebarsEngine();
-                strOut = hbEngine.Execute(template, model);
-                if (cacheKey != "") CacheUtils.SetCache(moduleref + cacheKey, strOut, "hbs");
-            }
-            return new RawString(strOut);
-        }
         public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = "", bool addEmpty = true )
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
