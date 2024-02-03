@@ -382,15 +382,32 @@ namespace DNNrocketAPI.Components
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            var fileMapPath = FileNameList[filename.ToLower()];
-            var fileMP = "";
-            if (moduleref != "") 
-                fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-            else
-                fileMP = GetPortalFileMapPath(fileMapPath);
-                
-            if (File.Exists(fileMP)) File.Delete(fileMP);
+            if (FileNameList.ContainsKey(filename.ToLower()))
+            {
+                var fileMapPath = FileNameList[filename.ToLower()];
+                var fileMP = "";
+                if (moduleref != "")
+                    fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                else
+                    fileMP = GetPortalFileMapPath(fileMapPath);
 
+                if (File.Exists(fileMP)) File.Delete(fileMP);
+            }
+            else
+            {
+                // File may be added to the AppTheme at only portal level (resx)
+                if (PortalFileNameList.ContainsKey(filename.ToLower()))
+                {
+                    var fileMapPath = PortalFileNameList[filename.ToLower()];
+                    var fileMP = "";
+                    if (moduleref != "")
+                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                    else
+                        fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (File.Exists(fileMP)) File.Delete(fileMP);
+                }
+            }
+            CacheFileUtils.ClearAllCache(PortalId);
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }

@@ -63,7 +63,7 @@
         }
     @if (!disableDelete)
     {
-        <span class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-before="hideresxpopup" s-return="#editmodalcontainer" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</span>
+        <span class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-return="#editmodalcontainer" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"moduleref":"@sessionParams.ModuleRef","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</span>
     }
 
     @if (sessionParams.ModuleRef != "")
@@ -196,18 +196,9 @@
 <script>
 
     $(document).ready(function () {
-
         $("#resxdatadictionarylist").sortable();
         $("#resxdatadictionarylist").disableSelection();
-
-        rpadmin.moveToTop('#articleselectmodal');
-        $('#articleselectmodal').show();
-
     });
-
-    function hideresxpopup() {
-        $('#articleselectmodal').hide();
-    }
 
     function setHeight(fieldId) {
         document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';

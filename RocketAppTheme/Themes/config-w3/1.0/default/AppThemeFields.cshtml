@@ -345,28 +345,6 @@
     <!-- The Modals -->
     <div>
 
-        <div id="languageselector" class="w3-modal">
-            <div class="w3-modal-content">
-                <header class="w3-container w3-theme-d3">
-                    <span onclick="document.getElementById('languageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                    <div class="w3-col m4 ">
-                        <input class="w3-margin w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchlanguage")..." id="searchtext" onkeyup="searchFunction()">
-                    </div>
-                </header>
-                <div class="w3-container">
-                    @{
-                        var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
-                        foreach (var l in enabledlanguages)
-                        {
-                            <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='//@(portalData.DefaultUrl)/@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
-                        }
-                    }
-                </div>
-                <footer class="w3-container w3-theme-d3"></footer>
-            </div>
-        </div>
-
-
         <div id="cssfilename" class="w3-modal">
             <div class="w3-modal-content w3-card w3-animate-zoom">
 
@@ -411,7 +389,7 @@
                 <header class="w3-container  w3-theme" style="height:38px;">
                     <span onclick="document.getElementById('resxfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 </header>
-
+                ZZZZZZZZZZZZZZZZZZZZZZ
                 <div class="w3-row w3-padding">
                     <div class="w3-col m8 w3-padding">
                         <input value="" id="resxfilename" s-xpath="genxml/textbox/resxfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
@@ -474,46 +452,6 @@
                 </div>
                 <div class="w3-row w3-panel w3-red w3-padding copyappthemereturn" style="display:none;">
                 </div>
-            </div>
-        </div>
-        <div id="dnnrocket_resxeditwrapper" style="display:none;">
-            <div class="w3-row w3-padding">
-                <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
-
-                <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
-
-                <div class="w3-col m3 w3-center">
-                    <image id="resxflag" src="//@(portalData.DefaultUrl)/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
-                    <span id="culturecoderesx"></span>
-                </div>
-
-                <div class="w3-col m4 w3-center">
-                    <h5 id="resxfilename" class="" style=""></h5>
-                </div>
-            </div>
-            <div id="dnnrocket_resxvaluelist">
-
-                <div class="w3-margin">
-                    <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
-                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
-                </div>
-
-                <div class="w3-row w3-margin">
-
-                    <table id="resxvalues" class="w3-table-all">
-
-                        <tr class="w3-theme">
-                            <th class="w3-third"></th>
-                            <th class="w3-half"></th>
-                            <th style="width:20px;"></th>
-                        </tr>
-
-                    </table>
-
-                </div>
-
-
             </div>
         </div>
 
@@ -597,11 +535,6 @@
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
     }
 
-    function selectlanguage() {
-        $('#languageselector').show();
-        $('#searchtext').focus();
-    }
-
     function searchFunction() {
         var filter = $('#searchtext').val().toUpperCase();
         $('.searchlanguagebutton').each(function (i, obj) {
@@ -612,12 +545,6 @@
                 $(this).parent().hide();
             }
         });
-    }
-
-    function actionlanguageselect(culturecode) {
-        $('#languageselector').hide();
-        simplisity_setParamField('culturecoderesx',culturecode);
-        simplisity_callserver($('#resxaddbutton'))
     }
 
     function openDataTab(target, tabName) {
