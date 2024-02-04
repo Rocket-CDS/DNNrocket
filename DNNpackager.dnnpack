@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.2.4</version>
+	<version>1.2.5</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>0_DNNrocket</name>
@@ -112,6 +112,5 @@
     <value>\API\_external\Newtonsoft.Json.dll</value>
     <value>\API\_external\netstandard.dll</value>
     <value>\API\_external\System.Drawing.Common.dll</value>
-    <value>\API\_external\handlebars.dll</value>
 	</assembly>
 </root>
