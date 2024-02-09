@@ -821,7 +821,7 @@ namespace DNNrocketAPI.render
             }
             foreach (var mData in modList)
             {
-                if (value == mData.ModuleRef)
+                if (value == mData.ModuleRef && mData.ModuleRef != "")
                     s = "selected";
                 else
                     s = "";

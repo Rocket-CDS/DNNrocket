@@ -16,8 +16,21 @@ namespace DNNrocketAPI.Components
     {
 
         private static object _lock = new object();
+        /// <summary>
+        ///
+        /// - DEFAULT RULE: WEBP will always output as WEBP, PNG will always output as PNG.  JPG,JPEG will always output as WEBP.
+        /// note: The default rule can be overwritten is the "imgtype" is passed.
+        /// default rule set by FMC on 9/1/2024
+        /// 
+        /// - IMPORTANT: If you need to delete the image file you MUST remove the cache first.
+        /// The cache holds a link to the locked image file and must be disposed.
+        /// use: ClearThumbnailLock()
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
+
             lock (_lock) // we need to lock to stop race condition when the same image is on the page mulitple times.
             {
 
@@ -25,6 +38,7 @@ namespace DNNrocketAPI.Components
                 var h = DNNrocketUtils.RequestQueryStringParam(context, "h");
                 var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
                 var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype").ToLower();
+                if (imgtype == "") imgtype = Path.GetExtension(src).Trim('.');
 
                 src = "/" + src.TrimStart('/'); // ensure a valid rel path.
 
@@ -43,43 +57,29 @@ namespace DNNrocketAPI.Components
                 context.Response.Cache.SetCacheability(HttpCacheability.Public);
 
                 var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
-                var cacheimgtype = (string)CacheUtils.GetCache(strCacheKey + "imgtype", "DNNrocketThumb");
-                if (!String.IsNullOrEmpty(cacheimgtype)) imgtype = cacheimgtype;
-
-                //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
-                //The cache holds a link to the locked image file and must be disposed.
-                //use: ClearThumbnailLock()
 
                 if (newImage == null)
-                {
-                    // Resize does not support trnasparency in webp, workaround to output png.
-                    var rtnImgMapPath = ImgUtils.ThumbMapPath(src);
-                    if (src != rtnImgMapPath)
-                    {
-                        src = rtnImgMapPath;
-                        imgtype = Path.GetExtension(src).Trim('.');
-                        CacheUtils.SetCache(strCacheKey + "imgtype", imgtype, "DNNrocketThumb");
-                    }
+                {                    
+                    if (imgtype == "jpg" || imgtype == "jpeg") imgtype = "webp"; // jpg only output webp, if not forced to another format.
                     newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
                     CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
                 }
 
                 if (newImage != null)
                 {
-                    if (imgtype == "") imgtype = Path.GetExtension(src).Trim('.');
                     ImageCodecInfo useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
                     if (imgtype.ToLower() == "png")
                     {
                         useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
                         context.Response.ContentType = "image/png";
                     }
-                    else if (imgtype.ToLower() == "webp")
+                    else if (imgtype.ToLower() == "jpg" || imgtype.ToLower() == "jpeg")
                     {
-                        context.Response.ContentType = "image/webp";
+                        context.Response.ContentType = "image/jpeg";
                     }
                     else
                     {
-                        context.Response.ContentType = "image/jpeg";
+                        context.Response.ContentType = "image/webp";
                     }
 
                     var encoderParameters = new EncoderParameters(1);

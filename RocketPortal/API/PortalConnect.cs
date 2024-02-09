@@ -117,6 +117,7 @@ namespace RocketPortal.API
             if (!UserUtils.IsSuperUser()) return "";
             var portalList = new PortalLimpetList(_paramInfo);
             portalList.Validate();
+            CacheFileUtils.ClearFileCacheAllPortals();
             return GetPortalDetail(); 
         }
         private String GetPortalDetail()
