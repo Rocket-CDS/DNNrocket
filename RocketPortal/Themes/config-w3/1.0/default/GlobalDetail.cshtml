@@ -11,17 +11,14 @@
     var info = systemGlobalData.Info;
 }
 
-
 <div id="globalsettings">
 
     <div class="w3-bar">
         <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</span>
-
         <span class="w3-padding w3-button w3-theme-light simplisity_confirmclick" s-confirm="@ResourceKey("RP.validate")?" s-cmd="portal_validate">
             <span class="material-icons">
                 verified
             </span>&nbsp;@ResourceKey("RP.validate")</span>
-
     </div>
 
     <div class="w3-row">
@@ -41,11 +38,14 @@
             <div class="w3-half w3-padding">
                 <div class="w3-row">
                     <div class="w3-half">
-                        @CheckBox(info, "genxml/checkbox/precompilerazoradmin", " Precompile Razor Admin", "class='w3-check' disabled", false)
+                        @CheckBox(info, "genxml/checkbox/precompilerazoradmin", " Precompile Razor Admin", "class='w3-check' ", false)
                     </div>
                     <div class="w3-half">
-                        @CheckBox(info, "genxml/checkbox/precompilerazor", " Precompile Razor", "class='w3-check' disabled", false)
+                        @CheckBox(info, "genxml/checkbox/precompilerazor", " Precompile Razor", "class='w3-check' ", false)
                     </div>
+                </div>
+                <div class="w3-row w3-text-red w3-tiny">
+                    <i>@ResourceKey("RP.precompile", "", "Msg")</i>
                 </div>
             </div>
             <div class="w3-half w3-padding">
@@ -172,21 +172,25 @@
             ItemId: @info.ItemID
         </div>
 
+</div>
 
-    </div>
+@{
+    <text>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(document).ready(function () {
-            selectMenu('global');
+    $(document).ready(function () {
 
-            $('.action_tageditor').tagEditor({
-                delimiter: ', ', /* space and comma */
-                removeDuplicates: true,
-                forceLowercase: false,
-            });
-            $('.tag-editor').height(60)
-
+        $('.action_tageditor').tagEditor({
+            delimiter: ', ', /* space and comma */
+            removeDuplicates: true,
+            forceLowercase: false,
         });
+        $('.tag-editor').height(60)
 
-    </script>
+    });
+
+</script>
+
+    </text>
+}

@@ -50,6 +50,7 @@ using System.Xml.Linq;
 using static DotNetNuke.Security.PortalSecurity;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Search.Entities;
+using System.Web.Http;
 
 namespace DNNrocketAPI.Components
 {
@@ -112,6 +113,39 @@ namespace DNNrocketAPI.Components
         public static string HtmlEncode(String planStr)
         {
             return System.Web.HttpUtility.HtmlEncode(planStr);
+        }
+        public static string RequestParam(HttpContextWrapper context, string paramName)
+        {
+            string result = null;
+
+            if (context.Request.Form.Count != 0)
+            {
+                result = Convert.ToString(context.Request.Form[paramName]);
+            }
+
+            if (result == null)
+            {
+                return RequestQueryStringParam(context.Request, paramName);
+            }
+
+            return (result == null) ? String.Empty : result.Trim();
+        }
+
+        public static string RequestQueryStringParam(HttpRequestBase Request, string paramName)
+        {
+            var result = String.Empty;
+
+            if (Request.QueryString.Count != 0)
+            {
+                result = Convert.ToString(Request.QueryString[paramName]);
+            }
+
+            return (result == null) ? String.Empty : result.Trim();
+        }
+
+        public static string RequestQueryStringParam(HttpContextWrapper context, string paramName)
+        {
+            return RequestQueryStringParam(context.Request, paramName);
         }
         public static string RequestParam(HttpContext context, string paramName)
         {
@@ -1941,6 +1975,17 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+
+        public static void StartBackgroundThread(ThreadStart threadStart)
+        {
+            if (threadStart != null)
+            {
+                Thread thread = new Thread(threadStart);
+                thread.IsBackground = true;
+                thread.Start();
+            }
+        }
+
         #region "Temp Storage"
 
         private static string SaveTempStorage(string XmlData,string key, int keephours = 24)

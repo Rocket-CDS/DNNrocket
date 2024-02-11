@@ -43,7 +43,7 @@ namespace DNNrocketAPI.ApiControllers
         [HttpPost]
         public HttpResponseMessage Action()
         {
-            var context = HttpContext.Current;
+            var context = (HttpContextWrapper)Request.Properties["MS_HttpContext"];
 
             if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
@@ -57,15 +57,23 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
             if (systemkey == "" || systemkey == "undefined") systemkey = paramCmd.Split('_')[0];
-            var paramInfo = BuildParamInfo();
-            var postInfo = BuildPostInfo();
+            var paramInfo = BuildParamInfo(context);
+            var postInfo = BuildPostInfo(context);
 
             var systemData = SystemSingleton.Instance(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
 
-
             TrackCmd(ref paramCmd, systemData, ref rocketInterface, ref paramInfo);
+
+            if (paramCmd == "login_signout")
+            {
+                var ps = new PortalSecurity();
+                ps.SignOut();
+                context.Response.ContentType = "text/plain";
+                context.Response.Write("");
+                context.Response.End();
+            }
 
             var rtn = new HttpResponseMessage();
             var strOut = ProcessAction(postInfo, paramInfo, paramCmd, systemkey);
@@ -99,7 +107,7 @@ namespace DNNrocketAPI.ApiControllers
         public HttpResponseMessage ActionContent()
         {
             HttpResponseMessage rtn;
-            var context = HttpContext.Current;
+            var context = (HttpContextWrapper)Request.Properties["MS_HttpContext"];
             var key = "";
             var paramCmd = "";
             if (context.Request.QueryString.AllKeys.Contains("k")) key = context.Request.QueryString["k"];
@@ -108,8 +116,8 @@ namespace DNNrocketAPI.ApiControllers
 
             if (paramCmd == "" && key == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
 
-            var paramInfo = BuildParamInfo(true);
-            var postInfo = BuildPostInfo();
+            var paramInfo = BuildParamInfo(context, true);
+            var postInfo = BuildPostInfo(context);
 
             if (paramCmd == "")
             {
@@ -154,9 +162,8 @@ namespace DNNrocketAPI.ApiControllers
 
             return rtn;
         }
-        private SimplisityInfo BuildPostInfo()
+        private SimplisityInfo BuildPostInfo(HttpContextWrapper context)
         {
-            var context = HttpContext.Current;
             var requestJson = "";
             var postInfo = new SimplisityInfo();
             if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
@@ -175,10 +182,8 @@ namespace DNNrocketAPI.ApiControllers
             return postInfo;
         }
 
-        private SimplisityInfo BuildParamInfo(bool requestContent = false)
+        private SimplisityInfo BuildParamInfo(HttpContextWrapper context, bool requestContent = false)
         {
-            var context = HttpContext.Current;
-
             var paramJson = "";
             var paramInfo = new SimplisityInfo();
             if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
@@ -318,7 +323,6 @@ namespace DNNrocketAPI.ApiControllers
         private string ProcessAction(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR ProcessAction Cmd: " + paramCmd;
-            var context = HttpContext.Current;
 
             try
             {
@@ -329,17 +333,6 @@ namespace DNNrocketAPI.ApiControllers
                 if (scmdprocess != "") paramCmd = scmdprocess; 
                 
                 var objCtrl = new DNNrocketController();
-
-                if (paramCmd == "login_signout")
-                {
-                    var ps = new PortalSecurity();
-                    ps.SignOut();
-                    strOut = "";
-                    //strOut = UserUtils.LoginForm("", new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
-                    context.Response.ContentType = "text/plain";
-                    context.Response.Write(strOut);
-                    context.Response.End();
-                }
 
                 systemkey = systemkey.Trim(' ');
                 if (systemkey == "") paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');
@@ -713,7 +706,7 @@ namespace DNNrocketAPI.ApiControllers
         private String SystemGlobalDetail(SimplisityInfo paramInfo)
         {
             var passSettings = paramInfo.ToDictionary();
-            var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
+            var appThemeSystem = new AppThemeDNNrocketLimpet(PortalUtils.GetCurrentPortalId(), "rocketportal");
             var razorTempl = appThemeSystem.GetTemplate("GlobalDetail.cshtml");
 
             SchedulerUtils.SchedulerIsInstalled();

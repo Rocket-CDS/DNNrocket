@@ -3,6 +3,7 @@ using Simplisity;
 using System;
 using System.IO;
 using System.Runtime.Remoting;
+using System.Threading;
 
 namespace DNNrocketAPI.Components
 {
@@ -19,13 +20,14 @@ namespace DNNrocketAPI.Components
             {
                 LogUtils.LogSystem("START - Schedule");
                 var gloablSettings = new SystemGlobalData();
-                //if (gloablSettings.PreCompileRazor)
-                //{
-                //    LogUtils.LogSystem("Precompile Razor - Start");
-                //    var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
-                //    RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
-                //    LogUtils.LogSystem("Precompile Razor - End");
-                //}
+                if (gloablSettings.PreCompileRazor)
+                {
+                    var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
+                    System.Threading.ThreadStart threadStart = delegate { RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder); };
+                    System.Threading.Thread thread = new System.Threading.Thread(threadStart);
+                    thread.IsBackground = true;
+                    thread.Start();
+                }
 
                 // Clear testing cache for real Scheduler processing
                 CacheUtils.ClearTestingCache();
@@ -33,16 +35,17 @@ namespace DNNrocketAPI.Components
                 var doWork = new SchedulerDoWork();
                 doWork.DoWork();
 
-                //if (gloablSettings.PreCompileRazorAdmin)
-                //{
-                //    var systemDataList = new SystemLimpetList();
-                //    foreach (var systemData in systemDataList.GetSystemActiveList())
-                //    {
-                //        LogUtils.LogSystem("Precompile Razor Admin - Start " + systemData.SystemKey);
-                //        RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
-                //        LogUtils.LogSystem("Precompile Razor Admin - End " + systemData.SystemKey);
-                //    }
-                //}
+                if (gloablSettings.PreCompileRazorAdmin)
+                {
+                    var systemDataList = new SystemLimpetList();
+                    foreach (var systemData in systemDataList.GetSystemActiveList())
+                    {
+                        System.Threading.ThreadStart threadStart = delegate { RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath); };
+                        System.Threading.Thread thread = new System.Threading.Thread(threadStart);
+                        thread.IsBackground = true;
+                        thread.Start();
+                    }
+                }
 
                 this.ScheduleHistoryItem.Succeeded = true;
                 LogUtils.LogSystemClear(gloablSettings.MaxLogFiles);

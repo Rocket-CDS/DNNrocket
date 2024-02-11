@@ -179,6 +179,9 @@ The assembly that will be executed should be installed into the bin folder and t
   <data name="portalexists.Text" xml:space="preserve">
     <value>URL already Exists</value>
   </data>
+  <data name="precompile.Msg" xml:space="preserve">
+    <value>WARNING: Turning on precompile will have a performace drop on AppPool restart.</value>
+  </data>
   <data name="protocol.Text" xml:space="preserve">
     <value>Protocol</value>
   </data>

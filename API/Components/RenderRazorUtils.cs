@@ -143,6 +143,7 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         Engine.Razor.Compile(razorTempl, hashCacheKey, null);
+                        LogUtils.LogSystem("PreCompiled Razor: " + f);
                     }
                     catch (Exception)
                     {
@@ -349,7 +350,7 @@ namespace DNNrocketAPI.Components
                         var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
                         if (appTheme != null)
                         {
-                            var injectTemplate = appTheme.GetTemplate(templateName);
+                            var injectTemplate = appTheme.GetTemplate(templateName, sRazor.SessionParamsData.ModuleRef);
                             if (injectTemplate != "")
                             {
                                 injectTemplate = ReplaceInjectTokens(injectTemplate, sRazor, templateList);

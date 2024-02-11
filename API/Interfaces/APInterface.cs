@@ -25,19 +25,27 @@ namespace DNNrocketAPI.Interfaces
         private static object _lock = new object();
         public static IProcessCommand GetInstance(string assembly, string nameSpaceClass)
         {
-            var provKey = assembly + "," + nameSpaceClass;
-            lock (_lock)
-            {
-                if ((_instances == null))
-                {
-                    _instances = new Dictionary<string, IProcessCommand>();
-                }
-                if (!_instances.ContainsKey(provKey))
-                {
-                    _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
-                }
-            }
-            return _instances[provKey];
+            //Thread safe
+            // DO NOT implement a singleton for this, it needs to be thread safe.
+            LogUtils.LogSystem("CreateProvider: " + assembly + ", " + nameSpaceClass);
+            var rtn = CreateProvider(assembly, nameSpaceClass);
+            LogUtils.LogSystem("CreateProvider: " + assembly + ", " + nameSpaceClass);
+            return rtn;
+
+            //var provKey = assembly + "," + nameSpaceClass;
+            //lock (_lock)
+            //{
+
+            //    if ((_instances == null))
+            //    {
+            //        _instances = new Dictionary<string, IProcessCommand>();
+            //    }
+            //    if (!_instances.ContainsKey(provKey))
+            //    {
+            //        _instances.Add(provKey, CreateProvider(assembly, nameSpaceClass));
+            //    }
+            //}
+            //return _instances[provKey];
         }
         public static int InstanceCount()
         {
