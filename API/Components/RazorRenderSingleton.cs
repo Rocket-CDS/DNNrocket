@@ -27,10 +27,11 @@ namespace DNNrocketAPI.Components
                         var config = new TemplateServiceConfiguration();
                         config.Debug = false;
                         config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                        
+                        config.DisableTempFileLocking = true;
+
                         // Caching provider built but not working across AppPool restart, so it is no better than the default.
                         //config.CachingProvider = new RazorCacheProvider();
-                        
+
                         _instance = (IRazorEngineService)RazorEngineService.Create(config);
                     }
                 }
