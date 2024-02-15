@@ -1928,6 +1928,7 @@ namespace DNNrocketAPI.Components
                             queryParamsData.queryparam = mp.GetXmlProperty("genxml/textbox/queryparam");
                             queryParamsData.tablename = mp.GetXmlProperty("genxml/select/tablename");
                             queryParamsData.systemkey = mp.GetXmlProperty("genxml/textbox/systemkey");
+                            queryParamsData.datatype = mp.GetXmlProperty("genxml/select/datatype");
                             queryParamsData.queryparamvalue = "";
                             paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), queryParamsData);                            
                         }

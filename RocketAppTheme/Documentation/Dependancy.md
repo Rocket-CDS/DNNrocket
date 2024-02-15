@@ -133,6 +133,7 @@ With the directory system you may have a list and detail structure.
 		<queryparam>articleid</queryparam>
 		<tablename>rocketdirectoryapi</tablename>
 		<systemkey>rocketnewsapi</systemkey>
+		<datatype>article</datatype>
 	</genxml>
 </queryparams>
 ```
@@ -150,6 +151,7 @@ The category article list query param is also defined in the dependancy file.
 		<queryparam>catid</queryparam>
 		<tablename>rocketdirectoryapi</tablename>
 		<systemkey>rocketnewsapi</systemkey>
+		<datatype>category</datatype>
 	</genxml>
 </queryparams>
 ```

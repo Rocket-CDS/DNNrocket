@@ -92,29 +92,33 @@
                     }
                     @foreach (var mp in info.GetList("queryparams"))
                     {
-                        <li class="queryparams w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+                    <li class="queryparams w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
 
-                            <div class="w3-display-container w3-padding w3-card">
-                                <div class="w3-row">
-                                    <div class="w3-third w3-padding">
-                                        <label>@ResourceKey("RocketTools.queryparam")</label>
-                                        @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
-                                    </div>
-                                    <div class="w3-third w3-padding">
-                                        <label>@ResourceKey("DNNrocket.systemkey")</label>
-                                        @TextBox(mp, "genxml/textbox/systemkey", " class='w3-input w3-border' ", "", false, lp)
-                                    </div>
-                                    <div class="w3-third w3-padding">
-                                        <label>@ResourceKey("DNNrocket.system")</label>
-                                       @DropDownList(mp,"genxml/select/tablename","rocketdirectoryapi,rocketecommerceapi", "Directory,Ecommerce"," class='w3-input w3-border' ","",false,lp2)
-                                    </div>
-                                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">
-                                        @ButtonIcon(ButtonTypes.remove)
-                                    </div>
+                        <div class="w3-display-container w3-padding w3-card">
+                            <div class="w3-row">
+                                <div class="w3-quarter w3-padding">
+                                    <label>@ResourceKey("RocketTools.queryparam")</label>
+                                    @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
+                                </div>
+                                <div class="w3-quarter w3-padding">
+                                <label>@ResourceKey("RocketTools.datatype")</label>
+                                @DropDownList(mp, "genxml/select/datatype", "article,category", "Article,Category", " class='w3-input w3-border' ", "", false, lp2)
+                                </div>
+                                <div class="w3-quarter w3-padding">
+                                    <label>@ResourceKey("DNNrocket.systemkey")</label>
+                                    @TextBox(mp, "genxml/textbox/systemkey", " class='w3-input w3-border' ", "", false, lp)
+                                </div>
+                                <div class="w3-quarter w3-padding">
+                                    <label>@ResourceKey("DNNrocket.system")</label>
+                                    @DropDownList(mp,"genxml/select/tablename","rocketdirectoryapi,rocketecommerceapi", "Directory,Ecommerce"," class='w3-input w3-border' ","",false,lp2)
+                                </div>
+                                <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">
+                                    @ButtonIcon(ButtonTypes.remove)
                                 </div>
                             </div>
-                        </li>
-                        lp2 += 1;
+                        </div>
+                    </li>
+                    lp2 += 1;
                     }
                 </ul>
 

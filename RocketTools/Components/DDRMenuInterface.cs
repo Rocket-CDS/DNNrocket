@@ -50,53 +50,60 @@ namespace RocketTools
                 if (settingRecord != null)
                 {
                     var menuproviders = settingRecord.GetRecordList("menuprovider");
-                    foreach (var p in menuproviders)
+                    if (menuproviders.Count == 0) 
+                        nodes = BuildNodes(nodes, portalSettings);
+                    else
                     {
-                        lock (_lock)
+                        foreach (var p in menuproviders)
                         {
-
-                            var assembly = p.GetXmlProperty("genxml/textbox/assembly");
-                            var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
-                            var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
-                            if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
+                            lock (_lock)
                             {
-                                var prov = MenuInterface.GetInstance(assembly, namespaceclass);
-                                if (prov != null)
+
+                                var assembly = p.GetXmlProperty("genxml/textbox/assembly");
+                                var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
+                                var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
+                                if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
                                 {
-                                    var tokenPrefix = prov.TokenPrefix();
-                                    // jump out if we don't have token in nodes
-                                    if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
+                                    var prov = MenuInterface.GetInstance(assembly, namespaceclass);
+                                    if (prov != null)
                                     {
-                                        return nodes;
+                                        var tokenPrefix = prov.TokenPrefix();
+                                        // jump out if we don't have token in nodes
+                                        if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
+                                        {
+                                            return nodes;
+                                        }
+                                        var idx = 0;
+                                        var idxlp = 0;
+                                        foreach (MenuNode n in nodes)
+                                        {
+                                            if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && n.Title.ToLower() == systemkey.ToLower()) idx = idxlp;
+                                            idxlp += 1;
+                                        }
+                                        var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()).ToList();
+                                        foreach (var n in nods)
+                                        {
+                                            var parentcatref = n.Keywords;
+                                            var pageList = prov.GetMenuItems(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture(), systemkey, parentcatref);
+                                            var pageid = prov.PageId(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture());
+                                            nodes.Remove(n);
+                                            nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
+                                        }
+                                        nodes = BuildNodes(nodes, portalSettings);
                                     }
-                                    var idx = 0;
-                                    var idxlp = 0;
-                                    foreach (MenuNode n in nodes)
+                                    else
                                     {
-                                        if (n.Depth == 0 && n.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && n.Title.ToLower() == systemkey.ToLower()) idx = idxlp;
-                                        idxlp += 1;
+                                        LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
                                     }
-                                    var nods = nodes.Where(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()).ToList();
-                                    foreach (var n in nods)
-                                    {
-                                        var parentcatref = n.Keywords;
-                                        var pageList = prov.GetMenuItems(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture(), systemkey, parentcatref);
-                                        var pageid = prov.PageId(PortalUtils.GetPortalId(), DNNrocketUtils.GetCurrentCulture());
-                                        nodes.Remove(n);
-                                        nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
-                                    }
-                                    nodes = BuildNodes(nodes, portalSettings);
-                                }
-                                else
-                                {
-                                    LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
                                 }
                             }
                         }
                     }
                 }
-
-
+                else
+                {
+                    nodes = BuildNodes(nodes, portalSettings);
+                }
 
                 // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
                 CacheUtils.SetCache(cachekey, nodes);

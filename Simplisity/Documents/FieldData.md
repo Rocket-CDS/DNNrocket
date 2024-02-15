@@ -33,8 +33,8 @@ paramInfo.GetXmlProperty("genxml/hidden/activevalue")
 <br/>
 
 
-##### ```simplisity_searchfields```
->List of the search fields and data that needs to be passed to server side for a search operation. These are passed in the "paramjson" form fields.
+##### ```simplisity_sessionfield```
+>Input fields identified with this class will persist the value to the "paraamjson" fields and repopulate the input fields on reload.
 
 ##### ```simplisity_cmdurl```
 >The current page API url endpoint. All commands that do not have a 'cmdurl' (API endpoint) specified will use this as the API endpoint. This is set by the "$(document).simplisityStartUp(string apiurl)" method, which will be on the starting page.

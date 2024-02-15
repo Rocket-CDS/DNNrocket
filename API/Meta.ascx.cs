@@ -36,6 +36,7 @@ using System.Web.UI.HtmlControls;
 using Newtonsoft.Json.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Policy;
+using RazorEngine.Compilation.ImpromptuInterface.InvokeExt;
 
 namespace RocketTools
 {
@@ -79,16 +80,36 @@ namespace RocketTools
                 }
 
                 // check for paramid
+                var queryKeyList = GetUrlCategoryQueryKeyList(_portalId);
+                var appendList = new Dictionary<string, QueryParamsData>();
                 var paramidList = DNNrocketUtils.GetQueryKeys(_portalId);
-                if (paramidList.Count > 1 && paramidList.ContainsKey("catid"))
+                var hasCategoryParam = false;
+                if (paramidList.Count > 1)
+                {
+                    foreach (var qk in queryKeyList)
+                    {
+                        if (paramidList.ContainsKey(qk))
+                        {
+                            hasCategoryParam = true;
+                            break;
+                        }
+                    }
+                }
+                if (hasCategoryParam)
                 {
                     // move the catid to the last param, so it's only taken if only the catid is in the URL.
                     var paramidList2 = new Dictionary<string, QueryParamsData>();
                     foreach (var p in paramidList)
                     {
-                        if (p.Key != "catid") paramidList2.Add(p.Key, p.Value);
+                        if (!queryKeyList.Contains(p.Key))
+                            paramidList2.Add(p.Key, p.Value);
+                        else
+                            appendList.Add(p.Key, p.Value);
                     }
-                    paramidList2.Add("catid", paramidList["catid"]);
+                    foreach (var qk in appendList)
+                    {
+                        paramidList2.Add(qk.Value.queryparam , qk.Value);
+                    }
                     paramidList = paramidList2;
                 }
 
@@ -142,7 +163,7 @@ namespace RocketTools
                                     if (_articleListTabId == 0) _articleListTabId = PortalSettings.ActiveTab.TabID;
 
                                     articleParamKey = paramDict.Key;
-                                    if (paramDict.Key != "catid")
+                                    if (!queryKeyList.Contains(articleParamKey))
                                     {
                                         string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(_metatitle) };
                                         var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
@@ -286,6 +307,26 @@ namespace RocketTools
             meta.Content = content;
             return meta;
         }
+        private List<string> GetUrlCategoryQueryKeyList(int portalId)
+        {
+            var cacheKey = "GetUrlCategoryQueryKeyList*" + portalId + "*category";
+            var paramKey = (List<string>)CacheUtils.GetCache(cacheKey, "portalid" + portalId);
+            if (paramKey == null)
+            {
+                paramKey = new List<string>(); 
+                var paramidList = DNNrocketUtils.GetQueryKeys(portalId);
+                foreach (var paramDict in paramidList)
+                {
+                    if (paramDict.Value.datatype == "category")
+                    {
+                        paramKey.Add(paramDict.Value.queryparam);
+                    }
+                }
+                CacheUtils.SetCache(cacheKey, paramKey, "portalid" + portalId);
+            }
+            return paramKey;
+        }
+
     }
 
 }
