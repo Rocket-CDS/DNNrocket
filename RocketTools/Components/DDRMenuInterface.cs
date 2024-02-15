@@ -50,29 +50,23 @@ namespace RocketTools
                 if (settingRecord != null)
                 {
                     var menuproviders = settingRecord.GetRecordList("menuprovider");
-                    if (menuproviders.Count == 0) 
-                        nodes = BuildNodes(nodes, portalSettings);
-                    else
+                    foreach (var p in menuproviders)
                     {
-                        foreach (var p in menuproviders)
+                        lock (_lock)
                         {
-                            lock (_lock)
-                            {
 
-                                var assembly = p.GetXmlProperty("genxml/textbox/assembly");
-                                var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
-                                var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
-                                if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
+                            var assembly = p.GetXmlProperty("genxml/textbox/assembly");
+                            var namespaceclass = p.GetXmlProperty("genxml/textbox/namespaceclass");
+                            var systemkey = p.GetXmlProperty("genxml/textbox/systemkey");
+                            if (!String.IsNullOrEmpty(assembly) && !String.IsNullOrEmpty(namespaceclass))
+                            {
+                                var prov = MenuInterface.GetInstance(assembly, namespaceclass);
+                                if (prov != null)
                                 {
-                                    var prov = MenuInterface.GetInstance(assembly, namespaceclass);
-                                    if (prov != null)
+                                    var tokenPrefix = prov.TokenPrefix();
+                                    // jump out if we don't have token in nodes
+                                    if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) > 0)
                                     {
-                                        var tokenPrefix = prov.TokenPrefix();
-                                        // jump out if we don't have token in nodes
-                                        if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) == 0)
-                                        {
-                                            return nodes;
-                                        }
                                         var idx = 0;
                                         var idxlp = 0;
                                         foreach (MenuNode n in nodes)
@@ -89,21 +83,17 @@ namespace RocketTools
                                             nodes.Remove(n);
                                             nodes = ProviderNodes(nodes, pageList, pageid, idx, prov.ParentId(parentcatref));
                                         }
-                                        nodes = BuildNodes(nodes, portalSettings);
                                     }
-                                    else
-                                    {
-                                        LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
-                                    }
+                                }
+                                else
+                                {
+                                    LogUtils.LogSystem("ERROR: Invalid menu provider. " + assembly + "," + namespaceclass);
                                 }
                             }
                         }
                     }
                 }
-                else
-                {
-                    nodes = BuildNodes(nodes, portalSettings);
-                }
+                nodes = BuildNodes(nodes, portalSettings);
 
                 // The nodes are passed by ref, so if they are manipulated after the nodes set has been passed back to DNN, the cache vallue will change. 
                 CacheUtils.SetCache(cachekey, nodes);
