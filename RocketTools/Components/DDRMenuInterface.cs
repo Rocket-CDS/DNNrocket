@@ -64,7 +64,6 @@ namespace RocketTools
                                 if (prov != null)
                                 {
                                     var tokenPrefix = prov.TokenPrefix();
-                                    // jump out if we don't have token in nodes
                                     if (nodes.Count(x => x.Text.ToUpper().StartsWith(tokenPrefix.ToUpper()) && x.Title.ToLower() == systemkey.ToLower()) > 0)
                                     {
                                         var idx = 0;
