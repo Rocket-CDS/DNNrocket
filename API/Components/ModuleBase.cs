@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Xml;
 
 namespace DNNrocketAPI.Components
@@ -97,7 +99,7 @@ namespace DNNrocketAPI.Components
         public bool DisableCache { get { return _record.GetXmlPropertyBool("genxml/settings/disablecache"); } set { _record.SetXmlProperty("genxml/settings/disablecache", value.ToString()); } }
         public bool DisableHeader { get { return _record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { _record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
         public bool SecureSave { get { return _record.GetXmlPropertyBool("genxml/settings/securesave"); } set { _record.SetXmlProperty("genxml/settings/securesave", value.ToString()); } }
-        public string Name { get { return _record.GetXmlProperty("genxml/settings/name"); } set { _record.SetXmlProperty("genxml/settings/name", value); } }
+        public string Name { get { return ModuleUtils.GetModuleTitle(TabId, ModuleId);} }
         public string SystemKey { get { return _record.GetXmlProperty("genxml/systemkey"); } set { _record.SetXmlProperty("genxml/systemkey", value); } }
         public bool IsSatellite { get { if (_record.GUIDKey == _record.GetXmlProperty("genxml/settings/dataref") || _record.GetXmlProperty("genxml/settings/dataref") == "") return false; else return true; } }
         /// <summary>

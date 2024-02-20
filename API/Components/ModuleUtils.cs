@@ -316,16 +316,24 @@ namespace DNNrocketAPI.Components
             var l = ModuleController.Instance.GetTabModules(tabid);
             foreach (var m in l)
             {
+                var title = m.Value.ModuleTitle + " [" + m.Value.PaneName + "]";
                 if (getDeleted)
                 {
-                    rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                    rtnDic.Add(m.Value.ModuleID, title);
                 }
                 else
                 {
-                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, title);
                 }
             }
             return rtnDic;
+        }
+        public static string GetModuleTitle(int tabid, int moduleid)
+        {
+            if (tabid <= 0 || moduleid <= 0) return "";
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo != null) return modInfo.ModuleTitle;
+            return "";
         }
         public static void UpdateModuleTitle(int tabid, int moduleid, string title)
         {
