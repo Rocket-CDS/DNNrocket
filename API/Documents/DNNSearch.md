@@ -8,7 +8,7 @@ Each row in the module will have it's own entry in the search results.  The head
 *NOTE: To stop RocketContent from indexing remove the "sqlindex" nodes from the AppTheme dependacy file.*
 
 ## RocketDirectory
-RocketDirectory or any sub-systems of RocketDirectory will index each article.  The data fields ofr hte search are pre-defined by the ArticleLimpet class.
+RocketDirectory or any sub-systems of RocketDirectory will index each article.  The data fields for the search are pre-defined by the ArticleLimpet class.
 
 ```
 title = articleData.Name ("genxml/lang/genxml/textbox/articlename")
