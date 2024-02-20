@@ -15,8 +15,9 @@ title = articleData.Name ("genxml/lang/genxml/textbox/articlename")
 bodydata = articleData.Summary ("genxml/lang/genxml/textbox/articlesummary")
 description = articleData.RichText ("genxml/lang/genxml/textbox/articlerichtext")
 ```
-
 To activate the DNN search index, define a search module in the system Admin settings.
+
+If extra data fields are required they can be added to the "DNN Search extra" field in Admin settings.  The values are the xpath of the data in the article XML, in a CSV format for multiple fields.  The extra fields are added onto the end of the search summary field.  
 
 *NOTE: To stop RocketDirectory or sub-systems from indexing do not select a search module in the Admin settings*
 
