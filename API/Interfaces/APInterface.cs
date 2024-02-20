@@ -27,9 +27,9 @@ namespace DNNrocketAPI.Interfaces
         {
             //Thread safe
             // DO NOT implement a singleton for this, it needs to be thread safe.
-            LogUtils.LogSystem("CreateProvider: " + assembly + ", " + nameSpaceClass);
+            LogUtils.LogSystem("START CreateProvider: " + assembly + ", " + nameSpaceClass);
             var rtn = CreateProvider(assembly, nameSpaceClass);
-            LogUtils.LogSystem("CreateProvider: " + assembly + ", " + nameSpaceClass);
+            LogUtils.LogSystem("END CreateProvider: " + assembly + ", " + nameSpaceClass);
             return rtn;
 
             //var provKey = assembly + "," + nameSpaceClass;
