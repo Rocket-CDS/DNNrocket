@@ -16,6 +16,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using DotNetNuke.Services.Search.Internals;
 using System.Security.Policy;
+using static DotNetNuke.Entities.Portals.PortalSettings;
+using System.Linq;
 
 namespace DNNrocketAPI.Components
 {
@@ -219,6 +221,8 @@ namespace DNNrocketAPI.Components
                                                 var title = "";
                                                 var url = "";
                                                 var queryString = "";
+                                                var culturecode = "";
+                                                var tags = new List<string>();
                                                 var moddate = DateTime.Now;
                                                 var uniqueKey = moduleInfo.ModuleID.ToString();
                                                 if (idxDict.ContainsKey("uniquekey")) uniqueKey = (string)idxDict["uniquekey"];
@@ -227,7 +231,9 @@ namespace DNNrocketAPI.Components
                                                 if (idxDict.ContainsKey("body")) body = HtmlUtils.Shorten(HtmlUtils.Clean((string)idxDict["body"], false), 500, "...");
                                                 if (idxDict.ContainsKey("title")) title = (string)idxDict["title"];
                                                 if (idxDict.ContainsKey("url")) url = (string)idxDict["url"];
+                                                if (idxDict.ContainsKey("culturecode")) culturecode = (string)idxDict["culturecode"];
                                                 if (idxDict.ContainsKey("querystring")) queryString = (string)idxDict["querystring"];
+                                                if (idxDict.ContainsKey("tags")) tags = (List<string>)idxDict["tags"];
                                                 if (idxDict.ContainsKey("modifieddate"))
                                                 {
                                                     var strDate = idxDict["modifieddate"];
@@ -243,18 +249,20 @@ namespace DNNrocketAPI.Components
                                                     Body = body,
                                                     Url = url,
                                                     QueryString = queryString,
-                                                    ModifiedTimeUtc = moddate.ToUniversalTime()
+                                                    ModifiedTimeUtc = moddate.ToUniversalTime(),
+                                                    CultureCode  = culturecode
                                                 };
-
                                                 if (moduleInfo.Terms != null && moduleInfo.Terms.Count > 0)
                                                 {
                                                     searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
                                                 }
+                                                searchDoc.Tags = searchDoc.Tags.Concat(tags).ToArray();
 
                                                 if (idxDict.ContainsKey("removesearchrecord") && (string)idxDict["removesearchrecord"] == "true")
                                                     InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
                                                 else
                                                     searchDocuments.Add(searchDoc);
+
                                             }
                                         }
                                     }

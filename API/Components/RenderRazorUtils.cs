@@ -27,39 +27,162 @@ namespace DNNrocketAPI.Components
             processResult.RenderedText = "";
             processResult.ErrorMsg = "";
 
-                try
+            if (String.IsNullOrEmpty(razorTempl)) return processResult;
+            var templateKey = GeneralUtils.GetMd5Hash(razorTempl);
+            try
+            {
+                if (HttpContext.Current == null) // can be null if ran from scheduler.
                 {
-                    if (String.IsNullOrEmpty(razorTempl)) return processResult;
-                    var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
-
-                    if (HttpContext.Current == null) // can be null if ran from scheduler.
+                    try
                     {
-                        try
-                        {
-                            LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
-                            processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                            LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
-                        }
-                        catch (Exception ex)
-                        {
-                            processResult.RenderedText = "";
-                            processResult.StatusCode = "01";
-                            processResult.ErrorMsg = ex.ToString();
-                            LogUtils.LogSystem(ex.ToString());
-                            LogUtils.LogException(ex);
-                        }
-                        return processResult;
+                        var config = new TemplateServiceConfiguration();
+                        config.Debug = debugMode;
+                        config.BaseTemplateType = typeof(RazorEngineTokens<>);
+                        IRazorEngineService service = RazorEngineService.Create(config);
+                        Engine.Razor = service;
+
+                        LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + templateKey);
+                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, templateKey, null, model);
+                        LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + templateKey);
                     }
-
-                    Engine.Razor = RazorEngineSingleton.Instance;
-
-                    var israzorCached = DNNrocketUtils.GetCache(hashCacheKey);
-                    if (israzorCached == null)
+                    catch (Exception ex)
                     {
+                        processResult.RenderedText = "";
+                        processResult.StatusCode = "01";
+                        processResult.ErrorMsg = ex.ToString();
+                        LogUtils.LogSystem(ex.ToString());
+                        LogUtils.LogException(ex);
+                    }
+                    return processResult;
+                }
+                else
+                {
+                    var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
+                    if (service == null)
+                    {
+                        var config = new TemplateServiceConfiguration();
+                        config.Debug = debugMode;
+                        config.BaseTemplateType = typeof(RazorEngineTokens<>);
+                        service = RazorEngineService.Create(config);
+                        HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
+                    }
+                    Engine.Razor = service;
+                    var israzorCached = CacheUtils.GetCache("rzcache_" + templateKey); // get a cache flag for razor compile.
+                    if (israzorCached == null || (string)israzorCached != razorTempl)
+                    {
+                        var t = DateTime.Now;
+
+                        LogUtils.LogSystem("START - RunCompile: " + templateKey);
+                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, templateKey, null, model);
+                        CacheUtils.SetCache("rzcache_" + templateKey, razorTempl);
+                        if (t.AddSeconds(10) < DateTime.Now)
+                        {
+                            LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
+                            LogUtils.LogSystem(razorTempl);
+                            LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
+                        }
+                        LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + templateKey);
+
+                    }
+                    else
+                    {
+                        processResult.RenderedText = Engine.Razor.Run(GeneralUtils.GetMd5Hash(razorTempl), null, model);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                processResult.RenderedText = "<div>" + ex.Message + " templateKey='" + templateKey + "'</div>";
+            }
+
+            return processResult;
+        }
+
+        /// <summary>
+        /// Made obsolete for speed. 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="razorTempl"></param>
+        /// <param name="debugMode"></param>
+        /// <returns></returns>
+        [Obsolete("Use RazorProcessRunCompile(SimplisityRazor model, string razorTempl, Boolean debugMode = false)")]
+        private static RazorProcessResult RazorProcessRunCompileSingleton(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
+        {
+            var processResult = new RazorProcessResult();
+            processResult.StatusCode = "00";
+            processResult.RenderedText = "";
+            processResult.ErrorMsg = "";
+
+            try
+            {
+                if (String.IsNullOrEmpty(razorTempl)) return processResult;
+                var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
+
+                if (HttpContext.Current == null) // can be null if ran from scheduler.
+                {
+                    try
+                    {
+                        LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
+                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
+                        LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
+                    }
+                    catch (Exception ex)
+                    {
+                        processResult.RenderedText = "";
+                        processResult.StatusCode = "01";
+                        processResult.ErrorMsg = ex.ToString();
+                        LogUtils.LogSystem(ex.ToString());
+                        LogUtils.LogException(ex);
+                    }
+                    return processResult;
+                }
+
+                Engine.Razor = RazorEngineSingleton.Instance;
+
+                var israzorCached = DNNrocketUtils.GetCache(hashCacheKey);
+                if (israzorCached == null)
+                {
+                    try
+                    {
+                        var t = DateTime.Now;
+                        LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
+                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
+                        DNNrocketUtils.SetCache(hashCacheKey, "True");
+                        if (t.AddSeconds(10) < DateTime.Now)
+                        {
+                            LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
+                            LogUtils.LogSystem(razorTempl);
+                            LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
+                        }
+                        LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
+                    }
+                    catch (Exception ex)
+                    {
+                        processResult.RenderedText = "";
+                        processResult.StatusCode = "02";
+                        processResult.ErrorMsg = ex.ToString();
+                        LogUtils.LogSystem(ex.ToString());
+                        LogUtils.LogException(ex);
+                        LogUtils.LogSystem("------------------------- ERROR - START ---------------------------------------- ");
+                        LogUtils.LogSystem(razorTempl);
+                        LogUtils.LogSystem("------------------------- ERROR - END ---------------------------------------- ");
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        LogUtils.LogSystem("START - Run: " + hashCacheKey);
+                        processResult.RenderedText = Engine.Razor.Run(hashCacheKey, null, model);
+                        LogUtils.LogSystem("END - Run: " + hashCacheKey);
+                    }
+                    catch (Exception)
+                    {
+                        // try again with compile, the template cache may have got removed.
                         try
                         {
                             var t = DateTime.Now;
-                            LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
+                            LogUtils.LogSystem("START - RunCompile2: " + hashCacheKey);
                             processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
                             DNNrocketUtils.SetCache(hashCacheKey, "True");
                             if (t.AddSeconds(10) < DateTime.Now)
@@ -68,65 +191,28 @@ namespace DNNrocketAPI.Components
                                 LogUtils.LogSystem(razorTempl);
                                 LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
                             }
-                            LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
+                            LogUtils.LogSystem("END - RunCompile2 Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
                         }
-                        catch (Exception ex)
+                        catch (Exception ex1)
                         {
-                            processResult.RenderedText = "";
-                            processResult.StatusCode = "02";
-                            processResult.ErrorMsg = ex.ToString();
-                            LogUtils.LogSystem(ex.ToString());
-                            LogUtils.LogException(ex);
-                            LogUtils.LogSystem("------------------------- ERROR - START ---------------------------------------- ");
-                            LogUtils.LogSystem(razorTempl);
-                            LogUtils.LogSystem("------------------------- ERROR - END ---------------------------------------- ");
+                            processResult.StatusCode = "03";
+                            processResult.ErrorMsg = ex1.ToString();
+                            LogUtils.LogSystem(ex1.ToString());
+                            LogUtils.LogException(ex1);
+                        }
                     }
                 }
-                    else
-                    {
-                        try
-                        {
-                            LogUtils.LogSystem("START - Run: " + hashCacheKey);
-                            processResult.RenderedText = Engine.Razor.Run(hashCacheKey, null, model);
-                            LogUtils.LogSystem("END - Run: " + hashCacheKey);
-                        }
-                        catch (Exception)
-                        {
-                            // try again with compile, the template cache may have got removed.
-                            try
-                            {
-                                var t = DateTime.Now;
-                                LogUtils.LogSystem("START - RunCompile2: " + hashCacheKey);
-                                processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                                DNNrocketUtils.SetCache(hashCacheKey, "True");
-                                if (t.AddSeconds(10) < DateTime.Now)
-                                {
-                                    LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
-                                    LogUtils.LogSystem(razorTempl);
-                                    LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
-                                }
-                                LogUtils.LogSystem("END - RunCompile2 Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
-                            }
-                            catch (Exception ex1)
-                            {
-                                processResult.StatusCode = "03";
-                                processResult.ErrorMsg = ex1.ToString();
-                                LogUtils.LogSystem(ex1.ToString());
-                                LogUtils.LogException(ex1);
-                            }
-                        }
-                    }
 
-                }
-                catch (Exception ex)
-                {
-                    CacheUtils.ClearAllCache();
-                    processResult.RenderedText = "";
-                    processResult.StatusCode = "03";
-                    processResult.ErrorMsg = ex.ToString();
-                    LogUtils.LogSystem(ex.ToString());
-                    LogUtils.LogException(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                CacheUtils.ClearAllCache();
+                processResult.RenderedText = "";
+                processResult.StatusCode = "03";
+                processResult.ErrorMsg = ex.ToString();
+                LogUtils.LogSystem(ex.ToString());
+                LogUtils.LogException(ex);
+            }
 
             return processResult;
         }

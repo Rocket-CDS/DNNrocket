@@ -15,6 +15,7 @@
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemActiveList();
+    var globalData = (SystemGlobalData)Model.GetDataObject("globaldata");
 
     var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
     var edittextbox = "disabled";
@@ -47,11 +48,12 @@
     </div>
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m10 w3-xlarge">
-            @if (portalData.DefaultUrl != "")
+        <div class="w3-col m10">
+            @if (globalData.Log)
             {
-                <a href="@(portalData.EngineUrlWithProtocol)" target="_blank">@ButtonIcon(ButtonTypes.home)</a>
-                <span>&nbsp;@(portalData.DefaultUrl)</span>
+            <div class="w3-text-red  w3-xlarge">
+                Logging Active
+            </div>
             }
         </div>
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>

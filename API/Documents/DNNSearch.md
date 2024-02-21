@@ -1,6 +1,8 @@
 ﻿# DNN Search
 The DNN search can be used by rocket modules.  
 
+**Before starting ensure the "Search: Site Crawler " is active on the DNN scheduler.** 
+
 ## RocketContent
 The xpath of the fields required are defined by using the dependancy file of the AppTheme. [Dependancies](https://docs.rocket-cds.org/integration/dependancies)   
 Each row in the module will have it's own entry in the search results.  The header data will be used if a row title is empty.  
@@ -23,3 +25,6 @@ If extra data fields are required they can be added to the "DNN Search extra" fi
 
 ## Langauges
 Languages in the DNN search are grouped into a single search database.   
+
+## Re-Index 
+The re-index of hte system can be done from the system Admin panel.

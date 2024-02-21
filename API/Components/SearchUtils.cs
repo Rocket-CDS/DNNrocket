@@ -1,6 +1,7 @@
 ﻿using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
+using DotNetNuke.Web.DDRMenu;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,11 @@ namespace DNNrocketAPI.Components
                 LogUtils.LogException(e);
             }
             return ret;
+        }
+
+        public static void DeleteAllDocuments(int portalId)
+        {
+            InternalSearchController.Instance.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
         }
 
     }
