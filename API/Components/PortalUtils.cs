@@ -510,6 +510,19 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        public static void SetSearchTabId(int portalId, int tabId)
+        {
+            try
+            {
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+                objPortal.SearchTabId = tabId;
+                PortalController.Instance.UpdatePortalInfo(objPortal);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+        }
         public static void SetDefaultLanguage(int portalId, string cultureCode)
         {
             try

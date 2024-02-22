@@ -24,6 +24,17 @@ namespace DNNrocketAPI.Components
             {
                 var groupKey = groupid + "_";
                 var cacheGroupKey = groupKey + GetMd5Hash(cacheKey);
+
+                var cachedateFile = PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey + "cachedate";
+                if (File.Exists(cachedateFile))
+                {
+                    var cachedate = FileUtils.ReadFile(cachedateFile);
+                    if (DateTime.Now > Convert.ToDateTime(cachedate))
+                    {
+                        RemoveCache(portalId, cacheKey, groupid);
+                    }
+                }
+
                 var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
                 CacheUtils.SetCache(cacheKey, cacheDataStr, groupid);
@@ -31,7 +42,7 @@ namespace DNNrocketAPI.Components
             }
             return cacheData;
         }
-        public static void SetCache(int portalId, string cacheKey, string objObject, string groupid = "")
+        public static void SetCache(int portalId, string cacheKey, string objObject, string groupid = "", int cacheHours = -1)
         {
             if (objObject != null) CacheUtils.SetCache(cacheKey, objObject, groupid);
             if (!String.IsNullOrEmpty(objObject))
@@ -43,6 +54,11 @@ namespace DNNrocketAPI.Components
                     Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache");
                 }
                 FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey, objObject);
+                if (cacheHours > 0)
+                {
+                    var cachedate = DateTime.Now.AddHours(cacheHours).ToString("O");                   
+                    FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey + "cachedate", cachedate);
+                }
             }
         }
 
@@ -55,6 +71,10 @@ namespace DNNrocketAPI.Components
             if (File.Exists(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey))
             {
                 File.Delete(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey);
+            }
+            if (File.Exists(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey + "cachedate"))
+            {
+                File.Delete(PortalUtils.TempDirectoryMapPath(portalId).Trim('\\') + "\\cache\\" + cacheGroupKey + "cachedate");
             }
         }
         public static void ClearAllCache(int portalId, string groupid)
