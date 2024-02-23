@@ -1023,4 +1023,7 @@
   <data name="address.Text" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="clear.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
 </root>

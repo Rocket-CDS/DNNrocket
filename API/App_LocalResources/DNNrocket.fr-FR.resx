@@ -903,9 +903,6 @@
   <data name="video.Text" xml:space="preserve">
     <value>Vidéo</value>
   </data>
-  <data name="videoCode.Text" xml:space="preserve">
-    <value>Vidéo youtube Iframe</value>
-  </data>
   <data name="link.Text" xml:space="preserve">
     <value>Lien</value>
   </data>
@@ -950,5 +947,83 @@
   </data>
   <data name="imagealt.Text" xml:space="preserve">
     <value>Texte alternatif</value>
+  </data>
+  <data name="videocode.Text" xml:space="preserve">
+    <value>Vidéo youtube Iframe</value>
+  </data>
+  <data name="editor.Text" xml:space="preserve">
+    <value>Éditeur</value>
+  </data>
+  <data name="processing.Text" xml:space="preserve">
+    <value>Traitement</value>
+  </data>
+  <data name="recyclebin.Text" xml:space="preserve">
+    <value>Corbeille</value>
+  </data>
+  <data name="restoremsg.Text" xml:space="preserve">
+    <value>Restaurer les données ?  (Cette opération écrase les données actuelles)</value>
+  </data>
+  <data name="restoredonemsg.Text" xml:space="preserve">
+    <value>Restauration terminée.</value>
+  </data>
+  <data name="secureupload.Text" xml:space="preserve">
+    <value>Téléchargement sécurisé de documents</value>
+  </data>
+  <data name="from.Text" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="to.Text" xml:space="preserve">
+    <value>Pour</value>
+  </data>
+  <data name="forcedownload.Text" xml:space="preserve">
+    <value>Télécharger en cliquant</value>
+  </data>
+  <data name="columns.Text" xml:space="preserve">
+    <value>Colonnes</value>
+  </data>
+  <data name="detailpage.Text" xml:space="preserve">
+    <value>Page de détail</value>
+  </data>
+  <data name="listpage.Text" xml:space="preserve">
+    <value>Page de liste</value>
+  </data>
+  <data name="rowlimit.Text" xml:space="preserve">
+    <value>Limite de rangée</value>
+  </data>
+  <data name="ecomode.Text" xml:space="preserve">
+    <value>Mode ECO</value>
+  </data>
+  <data name="notfound.Text" xml:space="preserve">
+    <value>Non trouvé</value>
+  </data>
+  <data name="all.Text" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="categories.Text" xml:space="preserve">
+    <value>Catégories</value>
+  </data>
+  <data name="review.Text" xml:space="preserve">
+    <value>Révision</value>
+  </data>
+  <data name="reviews.Text" xml:space="preserve">
+    <value>Commentaires</value>
+  </data>
+  <data name="reviewcount.Text" xml:space="preserve">
+    <value>Compte rendu</value>
+  </data>
+  <data name="open.Text" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
+  <data name="itemlimit.Text" xml:space="preserve">
+    <value>Limite de l'article</value>
+  </data>
+  <data name="validationattr.Text" xml:space="preserve">
+    <value>Attributs de validation</value>
+  </data>
+  <data name="address.Text" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="clear.Text" xml:space="preserve">
+    <value>Clair</value>
   </data>
 </root>
