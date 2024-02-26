@@ -1,4 +1,4 @@
-# DNNrocket v1.3.0.2
+# DNNrocket v1.3.0.3
 
 ## Dependencies
 
