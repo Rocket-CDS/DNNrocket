@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI.Components;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Windows.Input;
 using System.Xml;
 
 namespace DNNrocketAPI.ApiControllers
@@ -47,7 +49,7 @@ namespace DNNrocketAPI.ApiControllers
 
             if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
+                return this.Request.CreateResponse(HttpStatusCode.NotFound, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
             }
 
             var paramCmd = context.Request.QueryString["cmd"];
@@ -114,7 +116,7 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("cmd")) paramCmd = context.Request.QueryString["cmd"];
             LogUtils.LogSystem("START - ActionContent paramCmd: " + paramCmd);
 
-            if (paramCmd == "" && key == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
+            if (paramCmd == "" && key == "") return this.Request.CreateResponse(HttpStatusCode.NotFound, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
 
             var paramInfo = BuildParamInfo(context, true);
             var postInfo = BuildPostInfo(context);
