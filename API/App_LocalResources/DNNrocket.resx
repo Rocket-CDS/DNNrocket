@@ -1026,4 +1026,7 @@
   <data name="clear.Text" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="list.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
 </root>
