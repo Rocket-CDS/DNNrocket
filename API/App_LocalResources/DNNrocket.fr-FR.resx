@@ -337,7 +337,7 @@
     <value>License</value>
   </data>
   <data name="licenseredirect.Help" xml:space="preserve">
-    <value> Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
+    <value>Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
   </data>
   <data name="links.Text" xml:space="preserve">
     <value>Liens</value>
@@ -925,7 +925,7 @@
     <value>Ajouter un masque</value>
   </data>
   <data name="crop.Text" xml:space="preserve">
-    <value>Rogner depuis </value>
+    <value>Rogner depuis</value>
   </data>
   <data name="position.Text" xml:space="preserve">
     <value>Centre,Haut,Bas</value>
@@ -1024,6 +1024,9 @@
     <value>Adresse</value>
   </data>
   <data name="clear.Text" xml:space="preserve">
-    <value>Clair</value>
+    <value>Effacer</value>
+  </data>
+  <data name="list.Text" xml:space="preserve">
+    <value>Liste</value>
   </data>
 </root>
