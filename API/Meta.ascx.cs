@@ -148,12 +148,15 @@ namespace RocketTools
                                     _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
                                     if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
                                     if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+                                    _metatitle = _metatitle.Truncate(60);
 
                                     _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
                                     if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
                                     if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+                                    _metadescription = _metadescription.Truncate(160);
 
                                     _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
+                                    _metatagwords = _metatagwords.Truncate(160);
 
                                     var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(_dataRecordTemp.PortalId, paramDict.Value.systemkey, _articleTable);
                                     if (portalContentRec == null) portalContentRec = new SimplisityRecord();
@@ -169,8 +172,8 @@ namespace RocketTools
                                         var ogurl = DNNrocketUtils.NavigateURL(_articleDefaultTabId, _dataRecordTemp.Lang, urlparams);
 
                                         metaList.Add(BuildMeta("", "og:type", "article"));
-                                        metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(150).Replace("\"", "")));
-                                        metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(250).Replace("\"", "")));
+                                        metaList.Add(BuildMeta("", "og:title", _metatitle.Truncate(60).Replace("\"", "")));
+                                        metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(160).Replace("\"", "")));
                                         metaList.Add(BuildMeta("", "og:url", ogurl));
                                         var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
                                         if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
