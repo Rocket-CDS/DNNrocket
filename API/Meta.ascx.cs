@@ -258,8 +258,8 @@ namespace RocketTools
                         }
                         else
                         {
-                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(_articleListTabId, "", l.Key, null) + "' hreflang='" + l.Key.ToLower() + "'/>";
-                            if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(_articleListTabId);
+                            hreflangtext += "<link rel='alternate' href='" + DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID, "", l.Key, null) + "' hreflang='" + l.Key.ToLower() + "'/>";
+                            if (_cultureCode == l.Key) canonicalurl = DNNrocketUtils.NavigateURL(PortalSettings.ActiveTab.TabID);
                         }
                     }
                     CacheUtils.SetCache(cachekey, hreflangtext, _portalId.ToString());
