@@ -436,7 +436,9 @@ namespace DNNrocketAPI.Components
                         var appTheme = (AppThemeBase)sRazor.GetDataObject(datObjectName);
                         if (appTheme != null)
                         {
-                            var injectTemplate = appTheme.GetTemplate(templateName, sRazor.SessionParamsData.ModuleRef);
+                            var moduleRef = "";
+                            if (sRazor.SessionParamsData != null) moduleRef = sRazor.SessionParamsData.ModuleRef;
+                            var injectTemplate = appTheme.GetTemplate(templateName, moduleRef);
                             if (injectTemplate != "")
                             {
                                 injectTemplate = ReplaceInjectTokens(injectTemplate, sRazor, templateList);
