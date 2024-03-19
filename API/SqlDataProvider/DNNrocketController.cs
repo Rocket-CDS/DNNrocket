@@ -172,8 +172,8 @@ namespace DNNrocketAPI
                     var info = GetInfo(dataItemId, lang, tableName);
                     if (info != null)
                     {
-                        var sqlindexref = systemLinkRec.GetXmlProperty("genxml/ref");
-                        var value = info.GetXmlProperty(xpath);
+                        var sqlindexref = systemLinkRec.GetXmlPropertyRaw("genxml/ref");
+                        var value = info.GetXmlPropertyRaw(xpath);
                         CreateSystemLinkIdx(portalId, sqlindexref, info.ItemID, systemLinkRec.ItemID, lang, value, systemKey, tableName);
                     }
                 }
