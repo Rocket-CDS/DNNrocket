@@ -32,6 +32,8 @@ using System.Collections;
 using System.Web.Security;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Abstractions.Portals;
+using System.Data;
 
 namespace DNNrocketAPI.Components
 {
@@ -816,13 +818,25 @@ namespace DNNrocketAPI.Components
             }
             return rtnRec;
         }
-
         public static void AddUserRole(int portalId, int userId, int roleId)
         {
             var u = UserController.GetUserById(portalId, userId);
             if (u != null)
             {
                 RoleController.Instance.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            }
+        }
+        public static void AddUserRole(int portalId, int userId, int roleId, bool notifyUser)
+        {
+            var u = UserController.GetUserById(portalId, userId);
+            if (u != null)
+            {
+                var role = RoleController.Instance.GetRoleById(portalId, roleId);
+                var ps = PortalUtils.GetPortalSettings(portalId);
+                if (role != null && ps!= null)
+                {
+                    RoleController.AddUserRole(u, role, ps, RoleStatus.Approved, Null.NullDate, Null.NullDate, notifyUser, false);
+                }
             }
         }
         public static void RemoveUserRole(int portalId, int userId, int roleId)

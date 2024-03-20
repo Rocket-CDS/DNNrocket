@@ -1029,4 +1029,7 @@
   <data name="list.Text" xml:space="preserve">
     <value>List</value>
   </data>
+  <data name="share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
 </root>
