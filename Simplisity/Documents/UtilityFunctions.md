@@ -13,6 +13,12 @@ Simplisity has some general functions which can be used.
 ##### ```simplisity_setCookieValue(cookiename,cookievalue)```
 >Set Cookie
 
+##### ```simplisity_getSessionField(fieldname)```
+>Get Session var from cookie. (Session vars persist across post)
+
+##### ```simplisity_setSessionField(fieldname,value)```
+>Set Session var to cookie. (Session vars persist across post)
+
 ##### ```simplisity_setParamField(fieldkey, fieldvalue)```
 >Sets a value to the "simplisity_params" field, to be passed to the server.
 
