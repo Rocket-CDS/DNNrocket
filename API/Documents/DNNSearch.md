@@ -23,8 +23,5 @@ If extra data fields are required they can be added to the "DNN Search extra" fi
 
 *NOTE: To stop RocketDirectory or sub-systems from indexing do not select a search module in the Admin settings*
 
-## Langauges
-Languages in the DNN search are grouped into a single search database.   
-
 ## Re-Index 
-The re-index of hte system can be done from the system Admin panel.
+The re-index of the system can be done from the system Admin panel.
