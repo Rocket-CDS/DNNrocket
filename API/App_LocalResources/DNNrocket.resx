@@ -1032,4 +1032,7 @@
   <data name="share.Text" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="validateandindex.Text" xml:space="preserve">
+    <value>Validate and Rebuild Search Index</value>
+  </data>
 </root>

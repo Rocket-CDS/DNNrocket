@@ -122,9 +122,31 @@ namespace RocketPortal.Components
             }
             CacheUtils.RemoveCache(_cacheKey, _portalId.ToString());
         }
-
         public void Validate()
         {
+        }
+        public void ReIndex()
+        {
+            var systemDataList = new SystemLimpetList();
+            var sysList = systemDataList.GetSystemActiveList();
+            foreach (var systemData in sysList)
+            {
+                var systemKey = systemData.SystemInfo.GetXmlProperty("genxml/systemkey");
+                var baseSystemKey = systemData.SystemInfo.GetXmlProperty("genxml/basesystemkey");
+                var paramInfo = new SimplisityInfo();
+                paramInfo.GetXmlProperty("genxml/hidden/portalid", PortalId.ToString());
+
+                if (systemKey.ToLower() == "rocketcontentapi")
+                {
+                    var rocketInterface1 = new RocketInterface(systemData.SystemInfo, "rocketcontentapi");
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketcontentapi_validate", systemData.SystemInfo, rocketInterface1, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
+                }
+                if (baseSystemKey == "rocketdirectoryapi")
+                {
+                    var rocketInterface2 = new RocketInterface(systemData.SystemInfo, "portalcatalog");
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("portalcatalog_validatecatalog", systemData.SystemInfo, rocketInterface2, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
+                }
+            }
         }
         private void UpdatePortalAlias()
         {

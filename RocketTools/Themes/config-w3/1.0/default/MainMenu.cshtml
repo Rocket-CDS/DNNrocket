@@ -30,6 +30,9 @@
     <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rocketpl_urlmenu" s-return="#toolsmodalcontainer" s-after="showtoolspopup">
         @ResourceKey("RocketTools.menuandurlsettings")
     </div>
+    <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.validate") ?" s-cmd="portal_validate">
+        @ResourceKey("DNNRocket.validateandindex")
+    </div>
 </div>
 
 @if (UserUtils.IsSuperUser())
@@ -38,13 +41,6 @@
 
     <div class="w3-row w3-padding">
 
-        <div class="w3-third w3-padding">
-            <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_confirmclick" s-confirm="Validate Portal?" s-cmd="portal_validate">
-                <span class="material-icons">
-                    verified
-                </span>&nbsp;Validate Portal
-            </div>
-        </div>
         <div class="w3-third w3-padding">
             <div class="w3-button w3-block w3-large w3-theme-action w3-padding w3-margin-bottom simplisity_click" s-cmd="rockettools_testing" s-return="#toolsmodalcontainer" s-after="showtoolspopup" s-fields='{"template":"testcache.cshtml"}'>
                 Cache Test
