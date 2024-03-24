@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Abstractions.Portals;
 using System.Data;
+using System.Drawing.Printing;
 
 namespace DNNrocketAPI.Components
 {
@@ -651,6 +652,16 @@ namespace DNNrocketAPI.Components
                 {
                     rtnList.Add(PopulateUserData(u));
                 }
+            }
+            return rtnList;
+        }
+        public static List<SimplisityRecord> GetUsers(int portalId, int pageNumber, int pageSize, ref int totalRecord, bool includeDeleted = false, bool superUsersOnly = false)
+        {
+            var rtnList = new List<SimplisityRecord>();
+            var l = UserController.GetUsers(portalId, pageNumber, pageSize, ref totalRecord, includeDeleted, superUsersOnly);
+            foreach (UserInfo u in l)
+            {
+                rtnList.Add(PopulateUserData(u));
             }
             return rtnList;
         }
