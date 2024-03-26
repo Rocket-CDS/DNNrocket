@@ -130,7 +130,20 @@ namespace DNNrocketAPI.Components
             //}
         }
 
-
+        public static bool CssFileIgnoreOnSkin(string skinSrc, string ignoreonskin)
+        {
+            if (String.IsNullOrEmpty(ignoreonskin)) return false;
+            var l = ignoreonskin.Split(',');
+            var rtn = false;
+            foreach (var i in l)
+            {
+                if (i != "")
+                {
+                    if (skinSrc.ToLower().Contains(i.ToLower())) return true;
+                }
+            }
+            return rtn;
+        }
         public static void IncludeCssFile(Page page, string id, string href)
         {
             if (!string.IsNullOrEmpty(href))

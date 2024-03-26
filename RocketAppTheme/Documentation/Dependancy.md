@@ -16,6 +16,13 @@ Dependancies ONLY work on the Front View of the website.  For Admin View use "Ad
 ### ECO Mode
 ECO Mode is a module level flag setting that stops the dependancy system from injecting any dependancies with "ecofriendly" set to false.  
 
+### Do NOT inject with Skin
+In some cases the CSS file is injected with the Skin.  In these cases we can choose to ignore the injection by using the name of the skin the the skinignore node.
+```
+<ignoreonskin>rocketw3,anotherskin></ignoreonskin>
+```
+This supports CSV list and will check if SkinSrc contains any of the skin names.  
+
 **Tokens**  
 
 \{domainurl} = Protocol and domain URL of RocketAPI.  
@@ -35,6 +42,7 @@ ECO Mode is a module level flag setting that stops the dependancy system from in
 		<ctrltype>css></ctrltype>
 		<url>/DesktopModules/DNNrocket/css/w3.css</url>
 		<ecofriendly>true</ecofriendly>
+		<ignoreonskin>rocketw3,anotherskin></ignoreonskin>
 	</genxml>
 	<genxml>
 		<ctrltype>css</ctrltype>
