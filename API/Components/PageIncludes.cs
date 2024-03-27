@@ -130,7 +130,7 @@ namespace DNNrocketAPI.Components
             //}
         }
 
-        public static bool CssFileIgnoreOnSkin(string skinSrc, string ignoreonskin)
+        public static bool IgnoreOnSkin(string skinSrc, string ignoreonskin)
         {
             if (String.IsNullOrEmpty(ignoreonskin)) return false;
             var l = ignoreonskin.Split(',');
