@@ -1284,7 +1284,6 @@
     <Content Include="images\noimage2.png" />
     <Content Include="images\noimage2.svg" />
     <Content Include="images\restart_app.svg" />
-    <Content Include="images\rocketcds-logo-hd-square.jpg" />
     <Content Include="images\rocketcds-logo-web.png" />
     <Content Include="images\rocketcds-logo.svg" />
     <Content Include="images\translate.png" />

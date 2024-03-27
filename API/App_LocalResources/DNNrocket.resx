@@ -544,7 +544,7 @@
     <value>Use the upload button to select images from your file system.</value>
   </data>
   <data name="imageupload.Text" xml:space="preserve">
-    <value>Image Upload</value>
+    <value>Select Images</value>
   </data>
   <data name="articleimagelimit.Msg" xml:space="preserve">
     <value>You image upload for this article has been reached.  You must upgrade if you want to add more images.</value>
