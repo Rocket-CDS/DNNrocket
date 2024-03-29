@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Abstractions.Portals;
 using System.Data;
 using System.Drawing.Printing;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -657,11 +658,46 @@ namespace DNNrocketAPI.Components
         }
         public static List<SimplisityRecord> GetUsers(int portalId, int pageNumber, int pageSize, ref int totalRecord, bool includeDeleted = false, bool superUsersOnly = false)
         {
+            if (pageNumber > 0) pageNumber = pageNumber - 1; //zero based paging... weird.
             var rtnList = new List<SimplisityRecord>();
             var l = UserController.GetUsers(portalId, pageNumber, pageSize, ref totalRecord, includeDeleted, superUsersOnly);
             foreach (UserInfo u in l)
             {
                 rtnList.Add(PopulateUserData(u));
+            }
+            return rtnList;
+        }
+        public static List<SimplisityRecord> GetUsers(int portalId, string searchtext, int returnLimit = 100)
+        {
+            var objCtrl = new DNNrocketController();
+            var sqlcmd = "select top " + returnLimit + " userid from users where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
+            var xmlList = objCtrl.ExecSqlXmlList(sqlcmd);
+            var rtnList = new List<SimplisityRecord>();
+            foreach (SimplisityRecord uRec in xmlList)
+            {
+                var userId = uRec.GetXmlPropertyInt("row/@userid");
+                if (userId > 0)
+                {
+                    var userInfo = UserController.GetUserById(portalId, userId);
+                    if (userInfo != null) rtnList.Add(PopulateUserData(userInfo));
+                }
+            }
+            return rtnList;
+        }
+        public static List<UserData> GetUsersUserData(int portalId, string searchtext, int returnLimit = 100)
+        {
+            var objCtrl = new DNNrocketController();
+            var sqlcmd = "select top " + returnLimit + " userid from users where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
+            var xmlList = objCtrl.ExecSqlXmlList(sqlcmd);
+            var rtnList = new List<UserData>();
+            foreach (SimplisityInfo uInfo in xmlList)
+            {
+                var userId = uInfo.GetXmlPropertyInt("row/@userid");
+                if (userId > 0)
+                {
+                    var u = GetUserData(portalId, userId);
+                    rtnList.Add(u);
+                }
             }
             return rtnList;
         }
