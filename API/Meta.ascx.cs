@@ -148,11 +148,13 @@ namespace RocketTools
                                     _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seotitle");
                                     if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
                                     if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+                                    if (_metatitle == "") _metatitle = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productname");
                                     _metatitle = _metatitle.Truncate(200);
 
                                     _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
                                     if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
                                     if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+                                    if (_metadescription == "") _metadescription = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productsummary");
                                     _metadescription = _metadescription.Truncate(260);
 
                                     _metatagwords = _dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
