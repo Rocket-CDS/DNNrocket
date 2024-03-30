@@ -481,7 +481,7 @@
     <value>Hide</value>
   </data>
   <data name="disactive.Text" xml:space="preserve">
-    <value>Disactive</value>
+    <value>Deactivate</value>
   </data>
   <data name="previous.Text" xml:space="preserve">
     <value>Previous</value>
@@ -697,7 +697,7 @@
     <value>Data Service</value>
   </data>
   <data name="disabled.Text" xml:space="preserve">
-    <value>Disactivate</value>
+    <value>Disable</value>
   </data>
   <data name="tools.Text" xml:space="preserve">
     <value>Tools</value>
@@ -751,7 +751,7 @@
     <value>Disable Cache</value>
   </data>
   <data name="disableheader.Text" xml:space="preserve">
-    <value>Disactivate Header</value>
+    <value>Disable Header</value>
   </data>
   <data name="enablecache.Text" xml:space="preserve">
     <value>Enable Cache</value>
@@ -1034,5 +1034,8 @@
   </data>
   <data name="validateandindex.Text" xml:space="preserve">
     <value>Validate and Rebuild Search Index</value>
+  </data>
+  <data name="deactivate.Text" xml:space="preserve">
+    <value>Deactivate</value>
   </data>
 </root>
