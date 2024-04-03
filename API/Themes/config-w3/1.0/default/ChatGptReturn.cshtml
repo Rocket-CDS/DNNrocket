@@ -1,0 +1,28 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div class="w3-section">
+    @TextArea(new Simplisity.SimplisityInfo(), "genxml/textbox/chatgptoutput", " class='w3-input w3-border' rows='12' ", Model.SessionParamsData.Get("chatgptreturn"))
+</div>
+<div class="w3-section w3-padding">
+    <span class="w3-padding w3-button w3-theme-action" onclick="replacechatgpttext();">
+        @ResourceKey("DNNrocket.replacetext")
+    </span>
+</div>
+
+<script>
+    function replacechatgpttext() {
+        var chatgpttextid = simplisity_getSessionField("chatgpttextid");
+        $('#' + chatgpttextid).val($('#chatgptoutput').val());
+        insertIntoCkeditor(chatgpttextid, $('#chatgptoutput').val())
+        $('#chatgptmodal').hide();
+    }
+    function insertIntoCkeditor(chatgpttextid, str) {
+        CKEDITOR.instances[chatgpttextid].setData(str);
+    }
+
+</script>
+

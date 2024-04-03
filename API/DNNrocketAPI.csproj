@@ -225,6 +225,7 @@
     <Compile Include="Components\BackUpModuleTemplates.cs" />
     <Compile Include="Components\CacheUtils.cs" />
     <Compile Include="Components\CacheUtilsDNN.cs" />
+    <Compile Include="Components\ChatGPT.cs" />
     <Compile Include="Components\CurrencyData.cs" />
     <Compile Include="Components\CurrencyUtils.cs" />
     <Compile Include="Components\DeepLUtils.cs" />
@@ -368,11 +369,13 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="Themes\config-w3\1.0\default\ChatGptReturn.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseKeyForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseInject.cshtml" />
     <None Include="Themes\config-w3\1.0\default\CreateUserForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\CreateAccountInject.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\ChatGptForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\XmlModelDisplay.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterInject.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterForm.cshtml" />

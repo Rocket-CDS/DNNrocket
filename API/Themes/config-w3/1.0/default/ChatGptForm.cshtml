@@ -1,0 +1,25 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div id="chatgptmodal" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container">
+            <span onclick="document.getElementById('chatgptmodal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <div class="w3-section">
+                <div>@ResourceKey("DNNrocket.askai")</div>
+                @TextArea(new Simplisity.SimplisityInfo(), "genxml/textbox/chatgptquestion", " class='w3-input w3-border' rows='2' ")
+            </div>
+            <div class="w3-section">
+                <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="article_chatgpt" s-post="#chatgptmodal" s-return="#chatgptreturn" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
+                    <span>
+                        @ButtonText(ButtonTypes.ok)
+                    </span>
+                </span>
+            </div>
+            <div id="chatgptreturn" class="w3-section w3-margin-bottom"></div>
+        </div>
+    </div>
+</div>

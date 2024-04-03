@@ -1038,4 +1038,13 @@
   <data name="deactivate.Text" xml:space="preserve">
     <value>Deactivate</value>
   </data>
+  <data name="appendtext.Text" xml:space="preserve">
+    <value>Append Text</value>
+  </data>
+  <data name="replacetext.Text" xml:space="preserve">
+    <value>Replace Text</value>
+  </data>
+  <data name="askai.Text" xml:space="preserve">
+    <value>Ask AI a question to get an example of what you can write...</value>
+  </data>
 </root>
