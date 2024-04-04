@@ -21,7 +21,10 @@
         $('#chatgptmodal').hide();
     }
     function insertIntoCkeditor(chatgpttextid, str) {
-        CKEDITOR.instances[chatgpttextid].setData(str);
+        var editor = CKEDITOR.instances[chatgpttextid];
+        if (editor) {
+            CKEDITOR.instances[chatgpttextid].setData(str);
+        }
     }
 
 </script>
