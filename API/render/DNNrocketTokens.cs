@@ -844,7 +844,6 @@ namespace DNNrocketAPI.render
         {
             return CheckBox(rowData, "genxml/settings/ecomode", "&nbsp;" + ResourceKey("DNNrocket.ecomode").ToString(), "class='w3-check' ", defaultValue, false, 0);
         }
-
     }
 
 

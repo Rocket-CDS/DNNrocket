@@ -13,7 +13,7 @@
                 @TextArea(new Simplisity.SimplisityInfo(), "genxml/textbox/chatgptquestion", " class='w3-input w3-border' rows='2' ")
             </div>
             <div class="w3-section">
-                <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="article_chatgpt" s-post="#chatgptmodal" s-return="#chatgptreturn" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
+                <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="@Model.GetSetting("chatgptcmd")" s-post="#chatgptmodal" s-return="#chatgptreturn" s-fields='{"moduleref":"@Model.SessionParamsData.ModuleRef","moduleid":"@Model.SessionParamsData.ModuleId","tabid":"@Model.SessionParamsData.TabId"}'>
                     <span>
                         @ButtonText(ButtonTypes.ok)
                     </span>
