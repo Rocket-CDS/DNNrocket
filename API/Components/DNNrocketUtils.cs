@@ -51,6 +51,8 @@ using static DotNetNuke.Security.PortalSecurity;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Search.Entities;
 using System.Web.Http;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using System.Reflection;
 
 namespace DNNrocketAPI.Components
 {
@@ -1978,7 +1980,6 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
-
         public static void StartBackgroundThread(ThreadStart threadStart)
         {
             if (threadStart != null)
@@ -1986,6 +1987,68 @@ namespace DNNrocketAPI.Components
                 Thread thread = new Thread(threadStart);
                 thread.IsBackground = true;
                 thread.Start();
+            }
+        }
+        public static List<SimplisityRecord> DependanciesList(string moduleRef, AppThemeBase appTheme, string domainUrl, string appThemeSystemFolder)
+        {
+            var rtn = new List<SimplisityRecord>();
+            if (appTheme != null && appTheme.Exists)
+            {
+                foreach (var depfile in appTheme.GetTemplatesDep())
+                {
+                    var dep = appTheme.GetDep(depfile.Key, moduleRef);
+                    foreach (var r in dep.GetRecordList("deps"))
+                    {
+                        var urlstr = r.GetXmlProperty("genxml/url");
+                        if (urlstr.Contains("{"))
+                        {
+                            urlstr = urlstr.Replace("{domainurl}", domainUrl);
+                            urlstr = urlstr.Replace("{appthemefolder}", appTheme.AppThemeVersionFolderRel);
+                            urlstr = urlstr.Replace("{appthemesystemfolder}", appThemeSystemFolder);
+                        }
+                        r.SetXmlProperty("genxml/id", CacheUtils.Md5HashCalc(urlstr));
+                        r.SetXmlProperty("genxml/url", urlstr);
+                        rtn.Add(r);
+                    }
+                }
+            }
+            return rtn;
+        }
+        public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
+        {
+            var cssDep = (Dictionary<string, string>)CacheUtils.GetCache("cssdep" + moduleRef, moduleRef);
+            var jsDep = (Dictionary<string, string>)CacheUtils.GetCache("jsdep" + moduleRef, moduleRef);
+            if (cssDep == null)
+            {
+                cssDep = new Dictionary<string, string>();
+                jsDep = new Dictionary<string, string>();
+                foreach (var dep in DependanciesList(moduleRef, appTheme, domainUrl, appThemeSystemFolder))
+                {
+                    var ctrltype = dep.GetXmlProperty("genxml/ctrltype");
+                    var id = dep.GetXmlProperty("genxml/id");
+                    var urlstr = dep.GetXmlProperty("genxml/url");
+                    var skinignore = dep.GetXmlProperty("genxml/ignoreonskin");
+                    var ecofriendly = dep.GetXmlPropertyBool("genxml/ecofriendly");
+                    if (dep.GetXmlProperty("genxml/ecofriendly") == "" || ecofriendly == ecoMode || ecoMode == false)
+                    {
+                        var ignoreFile = PageIncludes.IgnoreOnSkin(skinSrc, skinignore);
+                        if (ctrltype == "css" && !ignoreFile) cssDep.Add(id, urlstr.ToLower());
+                        if (ctrltype == "js" && !ignoreFile) jsDep.Add(id, urlstr.ToLower());
+                    }
+                }
+                CacheUtils.SetCache("cssdep" + moduleRef, cssDep, moduleRef);
+                CacheUtils.SetCache("jsdep" + moduleRef, jsDep, moduleRef);
+            }
+            foreach (var cDep in cssDep)
+            {
+                PageIncludes.IncludeCssFile(page, cDep.Key, cDep.Value);
+            }
+            foreach (var jDep in jsDep)
+            {
+                if (jDep.Value == "{jquery}")
+                    JavaScript.RequestRegistration(CommonJs.jQuery);
+                else
+                    PageIncludes.IncludeJsFile(page, jDep.Key, jDep.Value);
             }
         }
 

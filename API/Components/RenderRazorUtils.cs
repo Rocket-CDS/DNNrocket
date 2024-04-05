@@ -396,7 +396,7 @@ namespace DNNrocketAPI.Components
         }
         public static RazorProcessResult RazorProcessData(string razorTemplate, List<object> modelList, Dictionary<string, object> dataObjects, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
-            if (razorTemplate != "")
+            if (!String.IsNullOrWhiteSpace(razorTemplate))
             {
                 if (settings == null) settings = new Dictionary<string, string>();
                 var sRazor = new SimplisityRazor();
@@ -405,8 +405,6 @@ namespace DNNrocketAPI.Components
                 sRazor.Settings = settings;
                 sRazor.List = modelList;
 
-                // The replacement INJECT works, but more thought is needed to deal with mismathcing varibles for razor model.
-                // NOTE: This idea was to try and speed up rendering when using multiple razor file.
                 razorTemplate = ReplaceInjectTokens(razorTemplate, sRazor);
 
                 return RazorProcessRunCompile(sRazor, razorTemplate, debugmode);
