@@ -245,7 +245,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                     timeout: 120000,
                     data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
                     success: function (json) {
-                        window.sessionStorage.setItem(sreturn, json); // use session storage, idependant of browser.
+                        window.sessionStorage.setItem(sreturn, JSON.stringify(json)); // use session storage, idependant of browser.
 
                         if ((typeof safter !== 'undefined') && safter !== '') {
                             var funclist = safter.split(',');
