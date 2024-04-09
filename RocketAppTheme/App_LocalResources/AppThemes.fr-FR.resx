@@ -423,4 +423,16 @@
   <data name="editportalapptheme.Text" xml:space="preserve">
     <value>Niveau du portail</value>
   </data>
+  <data name="admintemplate.Text" xml:space="preserve">
+    <value>Modèle d'administration</value>
+  </data>
+  <data name="edittemplates.Text" xml:space="preserve">
+    <value>Modifier les modèles</value>
+  </data>
+  <data name="systemleveleditmsg.Text" xml:space="preserve">
+    <value>Les modèles de niveau système ne peuvent être édités que dans le repo GitHub et téléchargés sur cette installation.</value>
+  </data>
+  <data name="viewtemplate.Text" xml:space="preserve">
+    <value>Voir le modèle</value>
+  </data>
 </root>
