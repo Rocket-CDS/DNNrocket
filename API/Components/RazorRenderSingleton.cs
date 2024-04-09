@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Components
 {
-    public sealed class RazorEngineSingleton
+ /// <summary>
+ /// NOT USED, THE LOCK MAKES IT SLOW.
+ /// </summary>
+ public sealed class RazorEngineSingleton
     {
         #region Singleton stuff
         private static IRazorEngineService _instance;
@@ -19,9 +22,9 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                if (_instance == null)
+                lock (_lock)
                 {
-                    lock (_lock)
+                    if (_instance == null)
                     {
                         // do razor test
                         var config = new TemplateServiceConfiguration();
@@ -34,8 +37,8 @@ namespace DNNrocketAPI.Components
 
                         _instance = (IRazorEngineService)RazorEngineService.Create(config);
                     }
+                    return _instance;
                 }
-                return _instance;
             }
         }
 

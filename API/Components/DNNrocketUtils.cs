@@ -880,7 +880,7 @@ namespace DNNrocketAPI.Components
                 var fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
                 if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
                 {
-                    relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".resx";
+                    relativefilename = resourcePath.TrimEnd('/') + "/" + fName + "." + lang + ".resx";
                     fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
                 }
                 if (!String.IsNullOrEmpty(fullFileName) && System.IO.File.Exists(fullFileName))
