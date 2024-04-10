@@ -1,0 +1,31 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div class="w3-section">
+    @TextArea(new Simplisity.SimplisityInfo(), "genxml/textbox/deeploutput", " class='w3-input w3-border' rows='12' ", Model.SessionParamsData.Get("deeplreturn"))
+</div>
+<div class="w3-section w3-padding">
+    <span class="w3-padding w3-button w3-theme-action" onclick="replacedeepltext();">
+        @ResourceKey("DNNrocket.replacetext")
+    </span>
+</div>
+
+<script>
+    function replacedeepltext() {
+        var deepltextid = simplisity_getSessionField("deepltextid");
+        $('#' + deepltextid).val($('#deeploutput').val());
+        insertIntoCkeditor(deepltextid, $('#deeploutput').val())
+        $('#deeplmodal').hide();
+    }
+    function insertIntoCkeditor(deepltextid, str) {
+        var editor = CKEDITOR.instances[deepltextid];
+        if (editor) {
+            CKEDITOR.instances[deepltextid].setData(str);
+        }
+    }
+
+</script>
+

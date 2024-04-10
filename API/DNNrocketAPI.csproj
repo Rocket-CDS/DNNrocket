@@ -349,6 +349,7 @@
     <None Include="DNNpackager.dnnpack" />
     <None Include="Documents\AutoLogin.md" />
     <None Include="Documents\ChangeLanguage_Code.md" />
+    <None Include="Documents\DeepL.md" />
     <None Include="Documents\ChatGpt.md" />
     <None Include="Documents\DebugAPI.md" />
     <None Include="Documents\AjaxDropDownCode.docx" />
@@ -370,6 +371,8 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="Themes\config-w3\1.0\default\DeepLForm.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\DeepLReturn.cshtml" />
     <None Include="Themes\config-w3\1.0\default\ChatGptReturn.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseKeyForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseForm.cshtml" />
