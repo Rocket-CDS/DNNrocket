@@ -670,7 +670,7 @@ namespace DNNrocketAPI.Components
         public static List<SimplisityRecord> GetUsers(int portalId, string searchtext, int returnLimit = 100)
         {
             var objCtrl = new DNNrocketController();
-            var sqlcmd = "select top " + returnLimit + " userid from users where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
+            var sqlcmd = "select top " + returnLimit + " userid from {databaseOwner}[{objectQualifier}users] where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
             var xmlList = objCtrl.ExecSqlXmlList(sqlcmd);
             var rtnList = new List<SimplisityRecord>();
             foreach (SimplisityRecord uRec in xmlList)
@@ -687,7 +687,7 @@ namespace DNNrocketAPI.Components
         public static List<UserData> GetUsersUserData(int portalId, string searchtext, int returnLimit = 100)
         {
             var objCtrl = new DNNrocketController();
-            var sqlcmd = "select top " + returnLimit + " userid from users where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
+            var sqlcmd = "select top " + returnLimit + " userid from {databaseOwner}[{objectQualifier}users] where (username like '%" + searchtext + "%' or FirstName like '%" + searchtext + "%' or LastName like '%" + searchtext + "%' or DisplayName like '%" + searchtext + "%' or Email like '%" + searchtext + "%') and IsDeleted = 0 and IsSuperUser = 0 for xml raw ";
             var xmlList = objCtrl.ExecSqlXmlList(sqlcmd);
             var rtnList = new List<UserData>();
             foreach (SimplisityInfo uInfo in xmlList)
