@@ -126,10 +126,10 @@ namespace RocketTools.API
             {
                 var controller = new TabController();
                 var newTab = controller.GetTab(tabD.TabId, _portalId);
-                if (newTab.Description == "") newTab.Description = newTab.Title;
-                if (newTab.KeyWords == "") newTab.KeyWords = newTab.Title;
-                if (newTab.Description == "") newTab.Description = "_";
-                if (newTab.KeyWords == "") newTab.KeyWords = "_";
+                //if (newTab.Description == "") newTab.Description = newTab.Title;
+                //if (newTab.KeyWords == "") newTab.KeyWords = newTab.Title;                
+                if (newTab.Description == "") newTab.Description = ".";
+                if (newTab.KeyWords == "") newTab.KeyWords = ".";
                 controller.UpdateTab(newTab);
             }
 
