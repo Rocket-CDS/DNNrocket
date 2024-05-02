@@ -139,12 +139,12 @@ namespace RocketPortal.Components
                 if (systemKey.ToLower() == "rocketcontentapi")
                 {
                     var rocketInterface1 = new RocketInterface(systemData.SystemInfo, "rocketcontentapi");
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketcontentapi_validate", systemData.SystemInfo, rocketInterface1, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketcontentapi_index", systemData.SystemInfo, rocketInterface1, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
                 }
                 if (baseSystemKey == "rocketdirectoryapi")
                 {
                     var rocketInterface2 = new RocketInterface(systemData.SystemInfo, "portalcatalog");
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn("portalcatalog_validatecatalog", systemData.SystemInfo, rocketInterface2, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("portalcatalog_indexcatalog", systemData.SystemInfo, rocketInterface2, new SimplisityInfo(), paramInfo, "/DesktopModules/DNNrocket/api", "");
                 }
             }
         }

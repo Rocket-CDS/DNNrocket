@@ -18,7 +18,7 @@
       </license>
 		<releaseNotes>
 			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
-			# DNNrocket v1.3.4.0
+			# DNNrocket v1.3.4.2
 		</releaseNotes>
       <dependencies>
       </dependencies>

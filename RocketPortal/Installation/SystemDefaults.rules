@@ -125,6 +125,10 @@
       <cmd>portal_validate</cmd>
       <action>true</action>
     </command>
+	  <command>
+		  <cmd>portal_index</cmd>
+		  <action>true</action>
+	  </command>	  
     <command>
       <cmd>portal_addsetting</cmd>
       <action>true</action>

@@ -120,6 +120,14 @@ namespace RocketPortal.API
             CacheFileUtils.ClearFileCacheAllPortals();
             return GetPortalDetail(); 
         }
+        private String IndexPortals()
+        {
+            if (!UserUtils.IsSuperUser()) return "";
+            var portalList = new PortalLimpetList(_paramInfo);
+            portalList.Index();
+            CacheFileUtils.ClearFileCacheAllPortals();
+            return GetPortalDetail();
+        }
         private String GetPortalDetail()
         {
             try

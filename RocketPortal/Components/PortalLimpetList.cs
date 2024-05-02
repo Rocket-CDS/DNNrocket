@@ -64,8 +64,17 @@ namespace RocketPortal.Components
             foreach (var p in pList)
             {
                 var pData = new PortalLimpet(p.PortalId);
-                pData.ReIndex();
                 pData.Update(); // validate is also done.
+            }
+            Populate();
+        }
+        public void Index()
+        {
+            var pList = PortalUtils.GetAllPortalRecords();
+            foreach (var p in pList)
+            {
+                var pData = new PortalLimpet(p.PortalId);
+                pData.ReIndex();
             }
             Populate();
         }

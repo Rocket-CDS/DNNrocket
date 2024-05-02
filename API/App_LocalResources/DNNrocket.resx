@@ -1047,4 +1047,7 @@
   <data name="askai.Text" xml:space="preserve">
     <value>Ask AI a question to get an example of what you can write...</value>
   </data>
+  <data name="index.Text" xml:space="preserve">
+    <value>Index</value>
+  </data>
 </root>

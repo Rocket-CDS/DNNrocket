@@ -140,6 +140,9 @@ namespace RocketPortal.API
                 case "portal_validate":
                     strOut = ValidatePortals();
                     break;
+                case "portal_index":
+                    strOut = IndexPortals();
+                    break;
                 case "portal_addsetting":
                     _portalData.Record.AddListItem("settingsdata");
                     _portalData.Update();
