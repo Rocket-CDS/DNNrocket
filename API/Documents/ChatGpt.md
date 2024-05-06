@@ -5,6 +5,8 @@ RocketCDS supports "GPT-3.5 Turbo".  TextArea and RichText can have a AI button 
 **The ChatGPT API Key must be entered in the Global Rocket Settings.** 
 To get your key you'll need an account on https://openai.com/
 
+**NOTE: Login to the API login to get the API key https://platform.openai.com/ **
+
 The razor token @ChatGPT can be used to add a button to display the ChatGPT form.
 
 ```

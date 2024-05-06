@@ -1050,4 +1050,7 @@
   <data name="index.Text" xml:space="preserve">
     <value>Index</value>
   </data>
+  <data name="chatgpt.Text" xml:space="preserve">
+    <value>ChatGPT AI</value>
+  </data>
 </root>
