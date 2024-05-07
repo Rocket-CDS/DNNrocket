@@ -1029,4 +1029,28 @@
   <data name="list.Text" xml:space="preserve">
     <value>Liste</value>
   </data>
+  <data name="share.Text" xml:space="preserve">
+    <value>Partager</value>
+  </data>
+  <data name="validateandindex.Text" xml:space="preserve">
+    <value>Valider et reconstruire l'index de recherche</value>
+  </data>
+  <data name="deactivate.Text" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="appendtext.Text" xml:space="preserve">
+    <value>Ajouter un texte</value>
+  </data>
+  <data name="replacetext.Text" xml:space="preserve">
+    <value>Remplacer le texte</value>
+  </data>
+  <data name="askai.Text" xml:space="preserve">
+    <value>Posez une question à ChatGPT pour obtenir un exemple de ce que vous pouvez écrire...</value>
+  </data>
+  <data name="index.Text" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="chatgpt.Text" xml:space="preserve">
+    <value>ChatGPT</value>
+  </data>
 </root>
