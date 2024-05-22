@@ -182,7 +182,7 @@ namespace DNNrocketAPI.Components
                 {
 
                     var lastContentModifiedOnDate = moduleInfo.LastContentModifiedOnDate;
-                    LogUtils.LogSystem("[DEBUG:GetModifiedSearchDocuments] - ModuleId: " + moduleInfo.ModuleID + " lastContentModifiedOnDate: " + moduleInfo.LastContentModifiedOnDate.ToString("O") + "  beginDateUtc: " + beginDateUtc.ToString("O"));
+                    //LogUtils.LogSystem("[DEBUG:GetModifiedSearchDocuments] - ModuleId: " + moduleInfo.ModuleID + " lastContentModifiedOnDate: " + moduleInfo.LastContentModifiedOnDate.ToString("O") + "  beginDateUtc: " + beginDateUtc.ToString("O"));
 
                     // "lastContentModifiedOnDate" is the date when content was updated and is updated by using DNNrocketUtils.SynchronizeModule(_moduleid); on Content save.
                     if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
