@@ -339,9 +339,6 @@
   <data name="setup.Text" xml:space="preserve">
     <value>Setup</value>
   </data>
-  <data name="dnnrocketaccount.Help" xml:space="preserve">
-    <value>An account at &lt;a href='https://www.rocket-cds.org' target='_blank'&gt;www.rocket-cds.org&lt;/a&gt; is free and allows you to track, maintain, transfer and validate licenses.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
-  </data>
   <data name="getlicense.Help" xml:space="preserve">
     <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
   </data>
@@ -356,9 +353,6 @@
   </data>
   <data name="licenseredirect.Help" xml:space="preserve">
     <value>You will be redirect to the DNNrocket license website, where you can choose your payment method for this website license. </value>
-  </data>
-  <data name="dnnrocketaccount.Text" xml:space="preserve">
-    <value>DNNrocket Account</value>
   </data>
   <data name="accountemail.Text" xml:space="preserve">
     <value>Account Email</value>

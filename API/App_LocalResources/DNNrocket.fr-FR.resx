@@ -234,12 +234,6 @@
   <data name="disactive.Text" xml:space="preserve">
     <value>Désactivé</value>
   </data>
-  <data name="dnnrocketaccount.Help" xml:space="preserve">
-    <value>Un compte at &lt;a href='https://www.rocket-cds.org' target='_blank'&gt;www.rocket-cds.org&lt;/a&gt; est gratuit et permet de suivre, maintenir, transférer et valider les licences. It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
-  </data>
-  <data name="dnnrocketaccount.Text" xml:space="preserve">
-    <value>Compte DNNrocket</value>
-  </data>
   <data name="docs.Text" xml:space="preserve">
     <value>Documents</value>
   </data>

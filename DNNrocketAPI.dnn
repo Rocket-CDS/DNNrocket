@@ -1,24 +1,25 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.3.4">
+		<package name="RocketSystem" type="Library" version="1.3.5">
 			<friendlyName>RocketSystem</friendlyName>
+			<DefinitionName>RocketSystem</DefinitionName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
       <owner>
-				<name>Charles France</name>
-				<organization>DNN Rocket</organization>
-				<url>www.rocket-cds.org</url>
-				<email>support@rocket-cds.org</email>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
 			</owner>
 			<license>
-        Copyright (c) 2019, www.rocket-cds.org
+        Copyright (c) 2019, www.nevoweb.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
 		<releaseNotes>
 			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
-			# DNNrocket v1.3.4.3
+			# DNNrocket v1.3.5.0
 		</releaseNotes>
       <dependencies>
       </dependencies>
@@ -111,23 +112,22 @@
 
     <package name="RocketPortal" type="Library" version="1.0.31">
       <friendlyName>RocketPortal</friendlyName>
-      <description>RocketPortal</description>
+		<DefinitionName>RocketPortal</DefinitionName>
+		<description>RocketPortal</description>
       <iconFile></iconFile>
       <owner>
-        <name>Charles France</name>
-        <organization>DNN Rocket</organization>
-        <url>www.rocket-cds.org</url>
-        <email>support@rocket-cds.org</email>
+        <name>David Lee</name>
+        <organization>Nevoweb</organization>
+        <url>www.nevoweb.com</url>
+        <email>support@nevoweb.com</email>
       </owner>
       <license>
-        Copyright (c) 2020, www.rocket-cds.org
+        Copyright (c) 2020, www.nevoweb.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
       <releaseNotes>
-        RocketPortal uses the DNNRocket framework
-        Installed as part of the RocketSystem Library
       </releaseNotes>
 
       <dependencies>
@@ -247,6 +247,19 @@
 					<name>images/recycling.svg</name>
 					<sourceFileName>recycling.svg</sourceFileName>
 				</file>
+				<file>
+					<name>images/nevoweb-32x32.png</name>
+					<sourceFileName>nevoweb-32x32.png</sourceFileName>
+				</file>
+				<file>
+					<name>images/nevoweb-logo.jpg</name>
+					<sourceFileName>nevoweb-logo.jpg</sourceFileName>
+				</file>
+				<file>
+					<name>images/nevoweb-logo.png</name>
+					<sourceFileName>nevoweb-logo.png</sourceFileName>
+				</file>
+
 
 				<file>
 					<name>\rocketadmin.ascx</name>
@@ -273,16 +286,17 @@
 
     <package name="RocketAppTheme" type="Library" version="1.0.31">
       <friendlyName>RocketAppTheme</friendlyName>
-      <description>RocketAppTheme</description>
+		<DefinitionName>RocketAppTheme</DefinitionName>
+		<description>RocketAppTheme</description>
       <iconFile></iconFile>
       <owner>
-        <name>Charles France</name>
-        <organization>DNN Rocket</organization>
-        <url>www.rocket-cds.org</url>
-        <email>support@rocket-cds.org</email>
+        <name>David Lee</name>
+        <organization>Nevoweb</organization>
+        <url>www.nevoweb.com</url>
+        <email>support@nevoweb.com</email>
       </owner>
       <license>
-        Copyright (c) 2020, www.rocket-cds.org
+        Copyright (c) 2020, www.nevoweb.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
