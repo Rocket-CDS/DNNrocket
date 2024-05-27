@@ -97,7 +97,10 @@
 	  <value>\RocketPortal\Skins\rocketportal\rocketadmin.ascx</value>
 	<value>\RocketPortal\Skins\rocketportal\rocketadmin.xml</value>
 	<value>\RocketPortal\Skins\rocketportal\rocketedit.ascx</value>
-	<value>\RocketPortal\Skins\rocketportal\rocketedit.xml</value>	  
+	<value>\RocketPortal\Skins\rocketportal\rocketedit.xml</value>
+	  <value>\API\images\nevoweb-32x32.png</value>
+	  <value>\API\images\nevoweb-logo.jpg</value>
+	  <value>\API\images\nevoweb-logo.png</value>
 
   </file>
 	<assembly>
