@@ -47,6 +47,9 @@ namespace RocketTools.API
                         break;                    
                     case "rocketactions_getdisplay":
                         strOut = MainMenu();
+                        break;
+                    case "rockettools_copylanguage":
+                        strOut = CopyLanguage();
                         break;                    
                     case "rockettools_login":
                         _userParams.TrackClear(_systemData.SystemKey);
@@ -218,6 +221,13 @@ namespace RocketTools.API
             _dataObjects.Add("paraminfo", _paramInfo);
             var template = _paramInfo.GetXmlProperty("genxml/hidden/template");
             var razorTempl = _appThemeTools.GetTemplate(template);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        private string CopyLanguage()
+        {
+            var razorTempl = _appThemeTools.GetTemplate("CopyLanguage.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

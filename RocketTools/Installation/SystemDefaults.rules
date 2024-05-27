@@ -20,6 +20,10 @@
 		  <cmd>rockettools_testing</cmd>
 		  <action>true</action>
 	  </command>
+	  <command>
+		  <cmd>rockettools_copylanguage</cmd>
+		  <action>true</action>
+	  </command>
 
   </commands>
   
