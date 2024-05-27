@@ -1053,4 +1053,7 @@
   <data name="chatgpt.Text" xml:space="preserve">
     <value>ChatGPT AI</value>
   </data>
+  <data name="restarting.Text" xml:space="preserve">
+    <value>Restarting</value>
+  </data>
 </root>

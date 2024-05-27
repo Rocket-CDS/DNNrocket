@@ -7,6 +7,7 @@ using Simplisity;
 using System;  
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;  
 using System.Net;  
@@ -675,7 +676,14 @@ namespace DNNrocketAPI.ApiControllers
             CacheFileUtils.ClearFileCacheAllPortals();
             CacheUtils.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
-            return "OK";
+
+            var appThemeSystem = new AppThemeDNNrocketLimpet(PortalUtils.GetCurrentPortalId(), "api");
+            var razorTempl = appThemeSystem.GetTemplate("CloseParsonabar.cshtml");
+            var globalData = new SystemGlobalData();
+
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, globalData, null, null, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         private string ClearTempDB()
         {
@@ -687,7 +695,14 @@ namespace DNNrocketAPI.ApiControllers
         {
             ClearCache();
             DNNrocketUtils.RecycleApplicationPool();
-            return "OK";
+
+            var appThemeSystem = new AppThemeDNNrocketLimpet(PortalUtils.GetCurrentPortalId(), "api");
+            var razorTempl = appThemeSystem.GetTemplate("CloseParsonabar.cshtml");
+            var globalData = new SystemGlobalData();
+
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, globalData, null, null, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         private string AutoLoginCodeFile(SimplisityInfo paramInfo)
         {

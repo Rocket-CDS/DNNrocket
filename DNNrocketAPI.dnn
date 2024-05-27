@@ -265,10 +265,6 @@
 					<name>\rocketedit.xml</name>
 					<sourceFileName>rocketedit.xml</sourceFileName>
 				</file>
-				<file>
-					<name>\DesktopModules\Admin\Dnn.PersonaBar\images\Logo.svg</name>
-					<sourceFileName>rocketcds-personabarlogo.svg</sourceFileName>
-				</file>
 			</files>
 		</component>
 

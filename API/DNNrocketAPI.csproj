@@ -380,6 +380,7 @@
     <None Include="Themes\config-w3\1.0\default\CreateUserForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\CreateAccountInject.cshtml" />
     <None Include="Themes\config-w3\1.0\default\ChatGptForm.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\CloseParsonabar.cshtml" />
     <None Include="Themes\config-w3\1.0\default\XmlModelDisplay.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterInject.cshtml" />
     <None Include="Themes\config-w3\1.0\default\RegisterForm.cshtml" />
