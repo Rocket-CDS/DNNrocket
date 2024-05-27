@@ -374,7 +374,7 @@ namespace DNNrocketAPI.Components
             foreach (var l in GetCultureCodeList(portalId))
             {
                 var lc = GetLanguageCode(l);
-                if (rtnList.Contains(lc))  rtnList.Add(lc);
+                if (!rtnList.Contains(lc))  rtnList.Add(lc);
             }
             return rtnList;
         }        
