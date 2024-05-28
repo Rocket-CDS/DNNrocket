@@ -1,8 +1,8 @@
 # RocketCDS Installation
 
 There are 3 types of installation.  
-**Classic:** Follow the DNN documentation directly, but using the RocketCDS install package.  
-**DNN Upgrade** Upgrade an existing DNN Install.  
+**Classic DNN:** Upgrade an existing DNN Install.  
+**RocketCDS Base:** Follow the DNN documentation directly, but using the RocketCDS install package.  
 **nvQuickSite: This is the quick way and takes less than 5 minutes to complete.**  But IIS and SQL Server must be installed.
 
 ## Requirements
@@ -10,7 +10,22 @@ There are 3 types of installation.
 Requirements for installing DNN.   
 [https://docs.dnncommunity.org/content/getting-started/setup/requirements/index.html](https://docs.dnncommunity.org/content/getting-started/setup/requirements/index.html)
 
-## Classic Installation
+## New DNN Installation or Upgrade 
+To install RocketCDS into an existing DNN website you can install ALL RocketCDS modules into DNN as normal modules.
+
+#### Miniumum Modules Required
+```
+0_DNNrocket_*.*.*_Install.zip
+RocketContentAPI_*.*.*_Install.zip
+RocketContentMod_*.*.*_Install.zip
+RocketDirectoryAPI_*.*.*_Install.zip
+RocketDirectoryMod_*.*.*_Install.zip
+RocketWebpUtils_*.*.*_Install.zip
+xRocketEndInstall.zip
+```
+## RocketCDS Base Installation
+
+The base installation package for RocketCDS will install the above modules automatically.  
 
 To install RocketCDS using the classic DNN method follow the tutorial on DNN documentation.
 
@@ -20,20 +35,7 @@ RocketCDS Install Package : [https://github.com/Rocket-CDS/RocketCDS/releases](h
 
 DNN documentation: [https://docs.dnncommunity.org/content/getting-started/setup/index.html](https://docs.dnncommunity.org/content/getting-started/setup/index.html)
 
-## DNN Upgrade
-To install RocketCDS into an existing DNN website you can install ALL RocketCDS modules into DNN as normal modules.
-*This is not the quickest method and may lead to having to ensure you have the correct versions of the RocketCDS modules.*  
-#### Miniumum Modules Required
-```
-0_DNNrocket_*.*.*_Install.zip
-RocketContentAPI_*.*.*_Install.zip
-RocketContentMod_*.*.*_Install.zip
-RocketDirectoryAPI_*.*.*_Install.zip
-RocketDirectoryMod_*.*.*_Install.zip
-RocketWebpUtils_*.*.*_Install.zip
-```
-The base installation package for RocketCDS will install these automatically and also the RocketEcommerce.  
-Additional Module can be added as required.
+*NOTE: The RocketCDS install package is an unchanged DNN install with the default Rocket modules included.  The advantage is the installation process will also install all the default Rocket modules and there will be no need to install the Rocket modules individually.*
 
 ## Installation with nvQuickSite
 
