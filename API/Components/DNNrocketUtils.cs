@@ -2037,8 +2037,8 @@ namespace DNNrocketAPI.Components
                     if (dep.GetXmlProperty("genxml/ecofriendly") == "" || ecofriendly == ecoMode || ecoMode == false)
                     {
                         var ignoreFile = PageIncludes.IgnoreOnSkin(skinSrc, skinignore);
-                        if (ctrltype == "css" && !ignoreFile) cssDep.Add(id, urlstr.ToLower());
-                        if (ctrltype == "js" && !ignoreFile) jsDep.Add(id, urlstr.ToLower());
+                        if (ctrltype == "css" && !ignoreFile) cssDep.Add(id, urlstr);
+                        if (ctrltype == "js" && !ignoreFile) jsDep.Add(id, urlstr);
                     }
                 }
                 CacheUtils.SetCache("cssdep" + moduleRef, cssDep, moduleRef);
