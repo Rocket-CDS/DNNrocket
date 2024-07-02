@@ -358,4 +358,14 @@ translate
 link
 &lt;/span&gt;</value>
   </data>
+  <data name="start.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+play_circle
+&lt;/span&gt;</value>
+  </data>
+  <data name="stop.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+stop_circle
+&lt;/span&gt;</value>
+  </data>
 </root>

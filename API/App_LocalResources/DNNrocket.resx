@@ -1050,4 +1050,13 @@
   <data name="restarting.Text" xml:space="preserve">
     <value>Restarting</value>
   </data>
+  <data name="status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="start.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="stop.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>

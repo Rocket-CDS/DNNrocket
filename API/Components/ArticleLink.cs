@@ -49,6 +49,8 @@ namespace DNNrocketAPI.Components
                 {
                     rtn = Info.GetXmlProperty("genxml/textbox/externallink" + FieldId);
                     if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
+                    if (!rtn.ToLower().StartsWith("http")) rtn = "https://" + rtn.TrimStart('/');
+                    if (!GeneralUtils.IsUriValid(rtn)) return "";
                 }
                 if (Anchor != "" && rtn != "") rtn += "#" + Anchor;
                 return rtn;
