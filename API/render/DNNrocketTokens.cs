@@ -686,17 +686,15 @@ namespace DNNrocketAPI.render
                 if (!url.ToLower().StartsWith("http"))
                 {
                     url = url.Replace("//", "");
-                    url = "http://" + url;
+                    url = "https://" + url;
                 }
-                Uri uriResult;
-                bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult);
-                if (result)
+                if (GeneralUtils.IsUriValid(url))
                 {
                     System.Uri uri = new Uri(url);
                     string uriWithoutScheme = uri.Host + uri.PathAndQuery + uri.Fragment;
                     if (openInNewWindow) attributes = attributes + " target='_blank'";
                     if (text == "") text = uriWithoutScheme;
-                    strOut = "<a " + attributes + " href='//" + uriWithoutScheme + "'>" + text.TrimEnd('/') + "</a>";
+                    strOut = "<a " + attributes + " href='" + url + "'>" + text.TrimEnd('/') + "</a>";
                 }
             }
             return new RawString(strOut);
