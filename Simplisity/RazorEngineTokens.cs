@@ -390,6 +390,11 @@ namespace Simplisity
             }
             return new RawString(info.GetXmlPropertyDate(xpath).ToString(format, new CultureInfo(cultureCode)));
         }
+        public IEncodedString DateOf(DateTime dateTime, String cultureCode, String format = "g")
+        {
+            if (dateTime > DateTime.MinValue) return new RawString(dateTime.ToString(format, new CultureInfo(cultureCode)));
+            return new RawString("");
+        }
         /// <summary>
         /// Succinct shortens your text to a specified size, and then dots to the end.
         /// </summary>
