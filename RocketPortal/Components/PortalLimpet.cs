@@ -320,8 +320,6 @@ namespace RocketPortal.Components
         public SystemLimpetList SystemDataList { get; private set; }
         public string SecurityKey { get { return Record.GetXmlProperty("genxml/config/securitykey"); } set { Record.SetXmlProperty("genxml/config/securitykey", value); } }
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
-        public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/checkbox/emailon"); } }
-        public bool DebugMode { get { if (Record == null) return false; else return Record.GetXmlPropertyBool("genxml/checkbox/debugmode"); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "dnn-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
 
