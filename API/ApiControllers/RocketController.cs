@@ -225,6 +225,8 @@ namespace DNNrocketAPI.ApiControllers
                 if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson" && key.ToLower() != "remote")
                 {
                     var keyValue = DNNrocketUtils.RequestParam(context, key);
+                    // NOTE: This does NOT work with an XML format data. (For XML use GeneralUtils.Base64Encode() and GeneralUtils.Base64Decode() in the data node value)
+                    // [TODO: Allow XML format]
                     paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
                 }
                 if (key.ToLower() == "remote")
