@@ -1,8 +1,4 @@
-﻿
-
-
-
-/* W3.CSS 4.13 June 2019 by Jan Egil and Borge Refsnes */
+﻿/* W3.CSS 4.15 December 2020 by Jan Egil and Borge Refsnes */
 html {
     box-sizing: border-box
 }
@@ -216,6 +212,18 @@ h6 {
 
 .w3-serif {
     font-family: serif
+}
+
+.w3-sans-serif {
+    font-family: sans-serif
+}
+
+.w3-cursive {
+    font-family: cursive
+}
+
+.w3-monospace {
+    font-family: monospace
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1333,6 +1341,22 @@ a {
 .w3-padding-64 {
     padding-top: 64px !important;
     padding-bottom: 64px !important
+}
+
+.w3-padding-top-64 {
+    padding-top: 64px !important
+}
+
+.w3-padding-top-48 {
+    padding-top: 48px !important
+}
+
+.w3-padding-top-32 {
+    padding-top: 32px !important
+}
+
+.w3-padding-top-24 {
+    padding-top: 24px !important
 }
 
 .w3-left {
