@@ -61,14 +61,14 @@ The XML contains meta data that is used by the system, there is no UI in the app
 ```
 <moduletemplates list="true">
 	<genxml>
-		<file>view.cshtml></file>
-		<name>List View></name>
-		<cmd>list></cmd>
+		<file>view.cshtml</file>
+		<name>List View</name>
+		<cmd>list</cmd>
 	</genxml>
 	<genxml>
-		<file>hozcatmenu2lvl.cshtml></file>
-		<name>Horizontal Category Menu (2 levels)></name>
-		<cmd>catmenu></cmd>			
+		<file>hozcatmenu2lvl.cshtml</file>
+		<name>Horizontal Category Menu (2 levels)</name>
+		<cmd>catmenu</cmd>			
 	</genxml>
 </moduletemplates>
 ```
@@ -83,7 +83,7 @@ list = Same as listdetail. (Deprecated)
 listonly = list data only   
 detailonly = article data only  
 catmenu = Category Data  
-satellite = List data without populating it.  The call for dasta should be made in the razor template.  
+satellite = List data without populating it.  The call for data should be made in the razor template.  
 
 
 

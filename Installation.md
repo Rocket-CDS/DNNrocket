@@ -7,7 +7,7 @@ There are 3 types of installation.
 
 ## Requirements
 
-Requirements for installing DNN.   
+Requirements for installing DNN.  
 [https://docs.dnncommunity.org/content/getting-started/setup/requirements/index.html](https://docs.dnncommunity.org/content/getting-started/setup/requirements/index.html)
 
 ## New DNN Installation or Upgrade 

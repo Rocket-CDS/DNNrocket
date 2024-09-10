@@ -1929,7 +1929,8 @@ namespace DNNrocketAPI.Components
                 {
                     foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
                     {
-                        if (!paramidList.ContainsKey(mp.GetXmlProperty("genxml/textbox/queryparam")))
+                        var qkey = mp.GetXmlProperty("genxml/textbox/queryparam") + "_" + mp.GetXmlProperty("genxml/textbox/systemkey");
+                        if (!paramidList.ContainsKey(qkey))
                         {
                             var queryParamsData = new QueryParamsData();
                             queryParamsData.queryparam = mp.GetXmlProperty("genxml/textbox/queryparam");
@@ -1939,7 +1940,7 @@ namespace DNNrocketAPI.Components
                             if (String.IsNullOrEmpty(datatype)) datatype = "article"; // legacy with no datatype
                             queryParamsData.datatype = datatype;
                             queryParamsData.queryparamvalue = "";
-                            paramidList.Add(mp.GetXmlProperty("genxml/textbox/queryparam"), queryParamsData);                            
+                            paramidList.Add(qkey, queryParamsData);                            
                         }
                     }
                     CacheUtils.SetCache(cacheKeyQueryparams, paramidList, "portalid" + portalId);
