@@ -1878,7 +1878,7 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
-        public static List<ModuleBase> GetModList(int portalId)
+        public static List<ModuleBase> GetModList(int portalId, bool includeDeleted = false)
         {
             var rtnList = new List<ModuleBase>();
             // get template
@@ -1887,7 +1887,13 @@ namespace DNNrocketAPI.Components
             foreach (var sInfo in dataList)
             {
                 var mData = new ModuleBase(portalId, sInfo.GUIDKey, sInfo.ModuleId, sInfo.GetXmlPropertyInt("genxml/data/tabid"));
-                if (mData != null) rtnList.Add(mData);
+                if (mData != null)
+                {
+                    if (includeDeleted)
+                        rtnList.Add(mData);
+                    else
+                        if (!IsModuleDeleted(mData.ModuleId)) rtnList.Add(mData);
+                }
             }
             return rtnList;
         }
@@ -2057,6 +2063,13 @@ namespace DNNrocketAPI.Components
                     PageIncludes.IncludeJsFile(page, jDep.Key, jDep.Value);
             }
         }
+        public static bool IsModuleDeleted(int moduleId)
+        {
+            var objModCtrl = new ModuleController();
+            var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
+            return objModInfo.IsDeleted;
+        }
+
 
         #region "Temp Storage"
 
