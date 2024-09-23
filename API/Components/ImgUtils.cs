@@ -43,7 +43,8 @@ namespace DNNrocketAPI.Components
                             var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
 
                             // change extension incase we converted from unsupported image type. (.webp)
-                            unqName = Path.GetDirectoryName(unqName) + "\\" + Path.GetFileNameWithoutExtension(unqName) + Path.GetExtension(fname); 
+                            unqName = Path.GetDirectoryName(unqName) + "\\" + Path.GetFileNameWithoutExtension(unqName) + Path.GetExtension(fname);
+                            unqName = unqName.TrimStart('\\');
                             userfilename = Path.GetFileNameWithoutExtension(userfilename) + Path.GetExtension(fname); 
 
                             if (File.Exists(fname))
