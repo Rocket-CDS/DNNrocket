@@ -93,6 +93,11 @@ namespace DNNrocketAPI.Components
             get { return Record.GetXmlProperty("genxml/fullurl"); }
             set { Record.SetXmlProperty("genxml/fullurl", value); }
         }
+        public string ImageRelPath
+        {
+            get { return Record.GetXmlProperty("genxml/imagerelpath"); }
+            set { Record.SetXmlProperty("genxml/imagerelpath", value); }
+        }
 
     }
 }

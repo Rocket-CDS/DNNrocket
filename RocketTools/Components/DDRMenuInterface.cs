@@ -171,6 +171,7 @@ namespace RocketTools
             n2.Selected = false;
             n2.Breadcrumb = false;
             n2.Separator = false;
+            n2.LargeImage = pg.ImageRelPath;
             if (parentNode != null)
             {
                 parentNode.Children.Add(n2);
