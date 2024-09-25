@@ -11,6 +11,22 @@
 @{
     var info = new SimplisityInfo((SimplisityRecord)Model.List.First());
     var systemAppTheme = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
+    var duplicateQueryKey = false;
+    var pStore = new List<string>();
+    var pStoreDuplicate = new List<string>();
+    foreach (var mp in info.GetList("queryparams"))
+    {
+        var qKey = mp.GetXmlProperty("genxml/textbox/queryparam");
+        if (pStore.Contains(qKey))
+        {
+            pStoreDuplicate.Add(qKey);
+            duplicateQueryKey = true;
+        }
+        else
+        {
+            pStore.Add(qKey);
+        }
+    }
 }
 
 
@@ -85,6 +101,12 @@
                     </div>
                     <span><b>@ResourceKey("RocketTools.queryparams")</b></span>
                 </div>
+        @if (duplicateQueryKey)
+        {
+            <div class="w3-text-red">
+                @ResourceKey("RocketTools.queryparamsduplicate")
+            </div>
+        }
 
                 <ul id="queryparamsdata" class="w3-ul">
                     @{
@@ -92,13 +114,18 @@
                     }
                     @foreach (var mp in info.GetList("queryparams"))
                     {
+                    var warningClass = "";
+                    if (pStoreDuplicate.Contains(mp.GetXmlProperty("genxml/textbox/queryparam")))
+                    {
+                    warningClass = "w3-pale-red";
+                    }
                     <li class="queryparams w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
 
                         <div class="w3-display-container w3-padding w3-card">
                             <div class="w3-row">
                                 <div class="w3-quarter w3-padding">
-                                    <label>@ResourceKey("RocketTools.queryparam")</label>
-                                    @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border' ", "", false, lp2)
+                                <label>@ResourceKey("RocketTools.queryparam")</label>
+                                @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border " + warningClass + "' ", "", false, lp2)
                                 </div>
                                 <div class="w3-quarter w3-padding">
                                 <label>@ResourceKey("RocketTools.datatype")</label>

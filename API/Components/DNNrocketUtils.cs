@@ -1935,7 +1935,7 @@ namespace DNNrocketAPI.Components
                 {
                     foreach (SimplisityRecord mp in plRecord.GetRecordList("queryparams"))
                     {
-                        var qkey = mp.GetXmlProperty("genxml/textbox/queryparam") + "_" + mp.GetXmlProperty("genxml/textbox/systemkey");
+                        var qkey = mp.GetXmlProperty("genxml/textbox/queryparam");
                         if (!paramidList.ContainsKey(qkey))
                         {
                             var queryParamsData = new QueryParamsData();
@@ -1954,7 +1954,6 @@ namespace DNNrocketAPI.Components
             }
             return paramidList;
         }
-
         public static void DeleteOldFiles(string folderPath, uint maximumAgeInDays, params string[] filesToExclude)
         {
             DateTime minimumDate = DateTime.Now.AddDays(-maximumAgeInDays);

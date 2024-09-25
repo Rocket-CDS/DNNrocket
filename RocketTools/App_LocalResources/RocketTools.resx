@@ -246,6 +246,9 @@
   <data name="queryparams.Text" xml:space="preserve">
     <value>Query Params for article ID</value>
   </data>
+  <data name="queryparamsduplicate.Text" xml:space="preserve">
+    <value>WARNING: There are duplicate URL parameter keys, this may stop SEO working.</value>
+  </data>
   <data name="recycleapppool.Text" xml:space="preserve">
     <value>Recycle AppPool</value>
   </data>
