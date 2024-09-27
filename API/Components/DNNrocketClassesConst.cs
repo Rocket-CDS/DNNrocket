@@ -19,7 +19,6 @@ namespace DNNrocketAPI.Components
 
     public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, execute, import, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use, previous, yes, no, fail, bars, copy, paste, home, photo, folder, folderopen, tree, notes, history, locked, unlocked, task, savesend, settings, translate, link, start, stop };
 
-
     public class ValuePair
     {
         [JsonProperty("key")]

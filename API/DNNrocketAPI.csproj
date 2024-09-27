@@ -240,6 +240,7 @@
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\RazorRenderSingleton.cs" />
+    <Compile Include="Components\W3\W3Utils.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
@@ -847,6 +848,8 @@
     <Content Include="images\dataset.svg" />
     <Content Include="images\edit.svg" />
     <Content Include="images\edit_app.svg" />
+    <Content Include="images\exit_to_app.svg" />
+    <Content Include="images\exit_to_appwhite.svg" />
     <Content Include="images\flags\16\af-ZA.png" />
     <Content Include="images\flags\16\ar-AE.png" />
     <Content Include="images\flags\16\ar-BH.png" />

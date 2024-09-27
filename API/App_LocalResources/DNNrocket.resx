@@ -928,7 +928,7 @@
     <value>Add Mask</value>
   </data>
   <data name="crop.Text" xml:space="preserve">
-    <value>Crop from</value>
+    <value>Crop Image from</value>
   </data>
   <data name="position.Text" xml:space="preserve">
     <value>Center,Top,Bottom</value>
@@ -1058,5 +1058,8 @@
   </data>
   <data name="stop.Text" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="menu.Text" xml:space="preserve">
+    <value>Menu</value>
   </data>
 </root>
