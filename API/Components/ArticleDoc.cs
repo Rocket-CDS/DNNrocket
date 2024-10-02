@@ -17,9 +17,9 @@ namespace DNNrocketAPI.Components
             if (Info.GetXmlProperty("genxml/hidden/dockey") == "")
             {
                 var dockey = GeneralUtils.GetUniqueString();
-                Info.SetXmlProperty("genxml/hidden/dockey", dockey);
-                Exists = false;
+                Info.SetXmlProperty("genxml/hidden/dockey", dockey);                
             }
+            if (RelPath == "") Exists = false;
         }
 
         public SimplisityInfo Info { get; private set; }
