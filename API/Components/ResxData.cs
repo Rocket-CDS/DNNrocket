@@ -60,8 +60,11 @@ namespace DNNrocketAPI.Components
                 foreach (XmlNode n in engNodList)
                 {
                     var key = n.SelectSingleNode("@name").InnerText;
-                    if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
-                    englishKeys.Add(key, n.SelectSingleNode("value").InnerText);
+                    if (key != null)
+                    {
+                        if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
+                        if (!englishKeys.ContainsKey(key)) englishKeys.Add(key, n.SelectSingleNode("value").InnerText);
+                    }
                 }                
             }
 
@@ -69,8 +72,11 @@ namespace DNNrocketAPI.Components
             foreach (XmlNode n in nodList)
             {
                 var key = n.SelectSingleNode("@name").InnerText;
-                if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
-                DataDictionary1.Add(key, n.SelectSingleNode("value").InnerText);
+                if (key != null)
+                {
+                    if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
+                    DataDictionary1.Add(key, n.SelectSingleNode("value").InnerText);
+                }
             }
 
             // add any missing English keys
