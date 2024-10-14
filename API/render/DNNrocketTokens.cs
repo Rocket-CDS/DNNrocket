@@ -801,36 +801,43 @@ namespace DNNrocketAPI.render
 
         public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = "", bool addEmpty = true )
         {
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
-            var modList = DNNrocketUtils.GetModList(portalId);
-
-            if (info == null) info = new SimplisityInfo();
-            var strOut = "";
-            var value = info.GetXmlProperty(xpath);
-
-            var upd = getUpdateAttr(xpath, attributes, false);
-            var id = getIdFromXpath(xpath, 0, "");
-            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
-            var c = 0;
-            var s = "";
-            if (addEmpty)
+            try
             {
-                strOut += "    <option value=''></option>";
-            }
-            foreach (var mData in modList)
-            {
-                if (value == mData.ModuleRef && mData.ModuleRef != "")
-                    s = "selected";
-                else
-                    s = "";
-                var TabName = PagesUtils.GetPageName(mData.Record.GetXmlPropertyInt("genxml/data/tabid"), portalId);
-                var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;[" + mData.AppThemeAdminFolder + "]";
-                strOut += "    <option value='" + mData.ModuleRef + "' " + s + ">" + moduleName + "</span></option>";
-                c += 1;
-            }
-            strOut += "</select>";
+                if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+                var modList = DNNrocketUtils.GetModList(portalId);
 
-            return new RawString(strOut);
+                if (info == null) info = new SimplisityInfo();
+                var strOut = "";
+                var value = info.GetXmlProperty(xpath);
+
+                var upd = getUpdateAttr(xpath, attributes, false);
+                var id = getIdFromXpath(xpath, 0, "");
+                strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
+                var c = 0;
+                var s = "";
+                if (addEmpty)
+                {
+                    strOut += "    <option value=''></option>";
+                }
+                foreach (var mData in modList)
+                {
+                    if (value == mData.ModuleRef && mData.ModuleRef != "")
+                        s = "selected";
+                    else
+                        s = "";
+                    var TabName = PagesUtils.GetPageName(mData.Record.GetXmlPropertyInt("genxml/data/tabid"), portalId);
+                    var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;[" + mData.AppThemeAdminFolder + "]";
+                    strOut += "    <option value='" + mData.ModuleRef + "' " + s + ">" + moduleName + "</span></option>";
+                    c += 1;
+                }
+                strOut += "</select>";
+
+                return new RawString(strOut);
+            }
+            catch (Exception ex)
+            {
+                return new RawString(ex.ToString());
+            }
         }
         /// <summary>
         /// Creates a checkbox for ECOMode in the settings of a module.

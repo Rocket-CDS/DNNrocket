@@ -2066,6 +2066,7 @@ namespace DNNrocketAPI.Components
         {
             var objModCtrl = new ModuleController();
             var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
+            if (objModInfo == null) return true;
             return objModInfo.IsDeleted;
         }
 
