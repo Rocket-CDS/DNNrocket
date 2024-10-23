@@ -677,18 +677,6 @@ namespace DNNrocketAPI.render
             var url = info.GetXmlProperty(xpath);
             return GetLinkURL(url, openInNewWindow, text, attributes);
         }
-        /// <summary>
-        /// Builds the List URL with paramaters.
-        /// </summary>
-        /// <param name="listpageid"></param>
-        /// <param name="urlparams"></param>
-        /// <returns></returns>
-        public IEncodedString ListUrl(int listpageid, string[] urlparams = null)
-        {
-            if (urlparams == null) urlparams = new string[] { };
-            var listurl = DNNrocketUtils.NavigateURL(listpageid, urlparams);
-            return new RawString(listurl);
-        }
 
         private IEncodedString GetLinkURL(string url, bool openInNewWindow = true, string text = "", string attributes = "")
         {
