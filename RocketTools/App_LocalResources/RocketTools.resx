@@ -289,12 +289,6 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   <data name="roles.Text" xml:space="preserve">
     <value>Roles</value>
   </data>
-  <data name="roles.Text1" xml:space="preserve">
-    <value>Roles</value>
-  </data>
-  <data name="roles.Text2" xml:space="preserve">
-    <value>Roles</value>
-  </data>
   <data name="rolesok.Text" xml:space="preserve">
     <value>The Roles has been saved to the modules.</value>
   </data>
