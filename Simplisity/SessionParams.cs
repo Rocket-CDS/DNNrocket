@@ -108,6 +108,12 @@ namespace Simplisity
         {
             SortActivate = 0;
         }
+        public bool IsSearchMode()
+        {
+            if (SearchText != "") return true;
+            if (SearchTextAdmin != "") return true;
+            return false;
+        }
         #region "properties"
         //Order by
         public string OrderByRef { get { return Info.GetXmlProperty("r/orderbyref"); } set { Info.SetXmlProperty("r/orderbyref", value.ToString()); } }
@@ -124,7 +130,8 @@ namespace Simplisity
         /// <summary>
         /// Return a session data value, with an element "id" of "searchtext"
         /// </summary>
-        public string SearchText { get { return Info.GetXmlProperty("r/searchtext"); } set { Info.SetXmlProperty("r/searchtext", value.ToString()); } }
+        public string SearchTextAdmin { get { return Info.GetXmlProperty("r/searchtext"); } set { Info.SetXmlProperty("r/searchtext", value.ToString()); } }
+        public string SearchText { get { return Info.GetXmlProperty("r/viewsearchtext"); } set { Info.SetXmlProperty("r/viewsearchtext", value.ToString()); } }
         public string BrowserSessionId { get; set; }
         public string BrowserId { get; set; }
         public string CultureCode { get { return Info.GetXmlProperty("r/culturecode"); } set { Info.SetXmlProperty("r/culturecode", value.ToString()); } }
