@@ -528,6 +528,27 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        public IEncodedString SFields(params string[] sFields)
+        {
+            var strOut = "";
+            var lp = 0;
+            if (sFields.Count() % 2 == 0)
+            {
+                while (lp < sFields.Count())
+                {
+                    strOut += "\"" + sFields[lp] + "\":";
+                    lp += 1;
+                    strOut += "\"" + sFields[lp] + "\",";
+                    lp += 1;
+                }
+            }
+            else
+            {
+                strOut = "Key does not contain a value.  Parameters must be even containing a Key and Value";
+            }
+            if (strOut != "") strOut = "s-fields='{" + strOut.TrimEnd(',') + "}'";
+            return new RawString(strOut);
+        }
 
         #endregion
 
@@ -580,7 +601,6 @@ namespace Simplisity
             }            
             return "";
         }
-
         #endregion
 
 

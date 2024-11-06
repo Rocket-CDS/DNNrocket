@@ -1062,4 +1062,7 @@
   <data name="menu.Text" xml:space="preserve">
     <value>Menu</value>
   </data>
+  <data name="user.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
 </root>
