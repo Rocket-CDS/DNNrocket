@@ -83,8 +83,9 @@ namespace DNNrocketAPI.Components
                 var rtnString = client.DownloadString(uri);
                 return rtnString;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogUtils.LogException(ex);
                 return "FAIL";
             }
         }

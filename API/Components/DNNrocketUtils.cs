@@ -1023,6 +1023,7 @@ namespace DNNrocketAPI.Components
         public static void SetCurrentCulture(string cultureCode)
         {
             SetCookieValue("language", cultureCode);
+            SetCookieValue("simplisity_language", cultureCode);
             Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
         }
         public static void SetCurrentCulture()
