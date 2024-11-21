@@ -10,6 +10,9 @@
 @{
     var info = new SimplisityInfo();
     info.PortalId = PortalUtils.GetCurrentPortalId();
+    var systemDataList = new SystemLimpetList();
+    var systemList = systemDataList.GetSystemActiveList();
+    var lp = 1;
 }
 
 <div class="w3-row">
@@ -30,6 +33,33 @@
             <span class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy") ?" s-return="#copyreturn" s-cmd="rocketcontentapi_copylanguage" s-post=".a-copylanguage" s-fields='{"portalid":"@info.PortalId","systemkey":"rocketcontentapi"}'>@ResourceKey("DNNrocket.copy")</span>
         </div>
     </div>
+
+    @foreach (var systemData in systemList)
+    {
+        if (systemData.BaseSystemKey == "rocketdirectoryapi" || systemData.SystemKey == "rocketdirectoryapi")
+        {
+            var sKey = systemData.SystemKey;
+            <div class="w3-xlarge">@systemData.SystemName</div>
+            <div class="w3-row w3-margin @(sKey)copylanguage">
+                <div class="w3-quarter w3-padding">
+                    <label>@ResourceKey("DNNrocket.source")</label>
+                    @DropDownCultureCodeList(info, "genxml/" + sKey + "sourcelanguage", " class='w3-input w3-border'")
+                </div>
+                <div class="w3-quarter w3-padding">
+                    <label>@ResourceKey("DNNrocket.destination")</label>
+                    @DropDownCultureCodeList(info, "genxml/" + sKey + "destlanguage", " class='w3-input w3-border'")
+                </div>
+                <div class="w3-twoquarter w3-padding">
+                    <label>@ResourceKey("DNNrocket.overwrite")</label><br />
+                    @CheckBox(new SimplisityInfo(), "genxml/" + sKey + "overwritelang", "", "class='w3-check' style='width:80px;'")
+                    &nbsp;
+                    <span class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy") ?" s-return="#copyreturn" s-cmd="rocketdirectoryapi_copylanguage" s-post=".@(sKey)copylanguage" s-fields='{"portalid":"@info.PortalId","systemkey":"@systemData.SystemKey"}'>@ResourceKey("DNNrocket.copy")</span>
+                </div>
+            </div>
+            lp += 1;
+        }
+    }
+
 
     <div id="copyreturn" class="w3-xlarge w3-pale-blue w3-center">
     </div>
