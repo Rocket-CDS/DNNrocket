@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
         public static Dictionary<string, string> W3colors()
         {
             var rtn = new Dictionary<string, string>();
-            var sList = ",w3-theme, w3-red, w3-pink, w3-purple, w3-deep-purple, w3-indigo, w3-blue, w3-light-blue, w3-cyan, w3-aqua, w3-teal, w3-green, w3-light-green, w3-lime, w3-sand, w3-khaki, w3-yellow, w3-amber, w3-orange, w3-deep-orange, w3-blue-gray, w3-brown, w3-light-gray, w3-gray, w3-dark-gray, w3-black, w3-white,w3-pale-red,w3-pale-yellow,w3-pale-green,w3-pale-blue";
+            var sList = ",w3-theme, w3-red, w3-pink, w3-purple, w3-deep-purple, w3-indigo, w3-blue, w3-light-blue, w3-cyan, w3-aqua, w3-teal, w3-green, w3-light-green, w3-lime, w3-sand, w3-khaki, w3-yellow, w3-amber, w3-orange, w3-deep-orange, w3-blue-gray, w3-brown, w3-light-gray, w3-gray, w3-dark-gray, w3-black, w3-white,w3-pale-red,w3-pale-yellow,w3-pale-green,w3-pale-blue, w3-theme-l5, w3-theme-l4, w3-theme-l3, w3-theme-l2, w3-theme-l1, w3-theme-d1, w3-theme-d2, w3-theme-d3, w3-theme-d4, w3-theme-d5, w3-theme-light, w3-theme-dark, w3-theme-action";
             foreach (string s in sList.Split(','))
             {
                 rtn.Add(s.Trim(' '), s.Trim(' '));
