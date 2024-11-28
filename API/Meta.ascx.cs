@@ -178,7 +178,7 @@ namespace RocketTools
                                         metaList.Add(BuildMeta("", "og:description", _metadescription.Truncate(260).Replace("\"", "")));
                                         metaList.Add(BuildMeta("", "og:url", ogurl));
                                         var imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
-                                        if (imgRelPath != "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
+                                        if (imgRelPath == "") imgRelPath = _dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
                                         if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", Request.Url.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
 
                                         articleMeta = true;
