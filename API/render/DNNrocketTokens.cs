@@ -821,12 +821,15 @@ namespace DNNrocketAPI.render
                 }
                 foreach (var mData in modList)
                 {
+                    var paneName = "";
+                    var modInfo = ModuleUtils.GetModuleInfo(mData.TabId, mData.ModuleId);
+                    if (modInfo != null) paneName = modInfo.PaneName;
                     if (value == mData.ModuleRef && mData.ModuleRef != "")
                         s = "selected";
                     else
                         s = "";
                     var TabName = PagesUtils.GetPageName(mData.Record.GetXmlPropertyInt("genxml/data/tabid"), portalId);
-                    var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;[" + mData.AppThemeAdminFolder + "]";
+                    var moduleName = TabName + ":&nbsp;" + mData.Name + "&nbsp;" + paneName + "&nbsp;[" + mData.AppThemeAdminFolder + "]";
                     strOut += "    <option value='" + mData.ModuleRef + "' " + s + ">" + moduleName + "</span></option>";
                     c += 1;
                 }
