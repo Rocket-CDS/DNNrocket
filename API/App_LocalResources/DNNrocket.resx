@@ -1065,4 +1065,10 @@
   <data name="user.Text" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="imageheight.Text" xml:space="preserve">
+    <value>Image Height</value>
+  </data>
+  <data name="imagewidth.Text" xml:space="preserve">
+    <value>Image Width</value>
+  </data>
 </root>

@@ -98,6 +98,7 @@ namespace DNNrocketAPI.Components
         public bool InjectJQuery { get { return _record.GetXmlPropertyBool("genxml/settings/injectjquery"); } set { _record.SetXmlProperty("genxml/settings/injectjquery", value.ToString()); } }
         public bool DisableCache { get { return _record.GetXmlPropertyBool("genxml/settings/disablecache"); } set { _record.SetXmlProperty("genxml/settings/disablecache", value.ToString()); } }
         public bool DisableHeader { get { return _record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { _record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
+        public string DisplayTemplate { get { return _record.GetXmlProperty("genxml/settings/displaytemplate").ToLower(); } set { _record.SetXmlProperty("genxml/settings/displaytemplate", value.ToString()); } }
         public bool SecureSave { get { return _record.GetXmlPropertyBool("genxml/settings/securesave"); } set { _record.SetXmlProperty("genxml/settings/securesave", value.ToString()); } }
         public string Name { get { return ModuleUtils.GetModuleTitle(TabId, ModuleId);} }
         public string SystemKey { get { return _record.GetXmlProperty("genxml/systemkey"); } set { _record.SetXmlProperty("genxml/systemkey", value); } }
