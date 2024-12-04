@@ -91,6 +91,10 @@ namespace DNNrocketAPI.Components
         {
             InternalSearchController.Instance.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
         }
+        public static void DeleteModuleDocuments(int portalId, int moduleId)
+        {
+            InternalSearchController.Instance.DeleteSearchDocumentsByModule(portalId, moduleId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
+        }
 
     }
     public class SearchPostModel
