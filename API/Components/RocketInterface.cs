@@ -65,6 +65,11 @@ namespace DNNrocketAPI.Components
             get { return Info.GetXmlProperty("genxml/textbox/interfacekey"); }
             set { Info.SetXmlProperty("genxml/textbox/interfacekey", value.ToString()); }
         }
+        public string OnSystemKey
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/onsystemkey"); }
+            set { Info.SetXmlProperty("genxml/textbox/onsystemkey", value.ToString()); }
+        }
         public string TemplateRelPath
         {
             get { return Info.GetXmlProperty("genxml/textbox/relpath"); }
