@@ -988,7 +988,7 @@ namespace DNNrocketAPI.Components
         public static string SetEditCulture(string editlang)
         {
             if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
-            SetCookieValue("editlang", editlang);
+            SetCookieValue("simplisity_editlanguage", editlang);
             return editlang;
         }
 
@@ -1002,10 +1002,10 @@ namespace DNNrocketAPI.Components
                     return HttpContext.Current.Request.QueryString["editlang"];
                 }
                 // no url language, look in the cookies.
-                if (HttpContext.Current.Request.Cookies["editlang"] != null)
+                if (HttpContext.Current.Request.Cookies["simplisity_editlanguage"] != null)
                 {
                     var l = GetCultureCodeList();
-                    var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
+                    var rtnlang = HttpContext.Current.Request.Cookies["simplisity_editlanguage"].Value;
                     if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
                     {
                         if (l.Count >= 1)
