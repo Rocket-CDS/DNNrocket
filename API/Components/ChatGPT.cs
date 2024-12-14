@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace DNNrocketAPI.Components
@@ -16,7 +19,27 @@ namespace DNNrocketAPI.Components
             var globalData = new SystemGlobalData();
             _openai_key = globalData.ChatGptKey;
         }
+        public async Task<string> GenerateImageAsync(string prompt, string size = "512x512")
+        {
+            if (!String.IsNullOrEmpty(prompt) && !String.IsNullOrEmpty(_openai_key))
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/images/generations");
+                request.Headers.Add("Authorization", "Bearer " + _openai_key);
 
+                var content = new StringContent("{\n    \"model\": \"dall-e-3\",\n    \"prompt\": \"" + PadQuotes(prompt) + "\",\n    \"n\": 1,\n    \"size\": \"" + size + "\"\n  }", null, "application/json");
+                request.Content = content;
+
+
+                var response = await client.SendAsync(request).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                var sJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(sJson, "root");
+                var sUrl = doc.SelectSingleNode("root/data/url").InnerText;
+                return sUrl;
+            }
+            return "";
+        }
         public string SendMsg(string sQuestion)
         {
             if (_openai_key == "") return "ChatGpt API Key missing";
@@ -75,9 +98,7 @@ namespace DNNrocketAPI.Components
                 return s;
         }
 
-
-
-
+        public string openai_key { get { return _openai_key; } }
 
     }
 }

@@ -12,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 using ThoughtWorks.QRCode.Codec;
 using System.Web.UI.WebControls;
 using RocketWebpUtils;
+using System.Net;
 
 namespace DNNrocketAPI.Components
 {
@@ -866,8 +867,21 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        public static void DownloadAndSaveImage(string imageUrl, string filename)
+        {
+            WebClient client = new WebClient();
+            Stream stream = client.OpenRead(imageUrl);
+            Bitmap bitmap; bitmap = new Bitmap(stream);
 
+            if (bitmap != null)
+            {
+                bitmap.Save(filename, ImageFormat.Jpeg);
+            }
 
+            stream.Flush();
+            stream.Close();
+            client.Dispose();
+        }
     }
 
 
@@ -996,7 +1010,6 @@ namespace DNNrocketAPI.Components
             canvas.Dispose();
 
         }
-
         public Bitmap Image
         {
             get { return _bmp; }
