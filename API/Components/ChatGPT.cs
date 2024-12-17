@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -13,30 +16,45 @@ namespace DNNrocketAPI.Components
 {
     public class ChatGPT
     {
+        private static MediaTypeHeaderValue contentType = new MediaTypeHeaderValue("application/json");
         private string _openai_key;
         public ChatGPT()
         {
             var globalData = new SystemGlobalData();
             _openai_key = globalData.ChatGptKey;
         }
-        public async Task<string> GenerateImageAsync(string prompt, string size = "512x512")
+        public async Task<string> GenerateImageAsync(string prompt, string dalleversion = "dall-e-2", string imageSize = "1024×1024")
         {
             if (!String.IsNullOrEmpty(prompt) && !String.IsNullOrEmpty(_openai_key))
             {
-                var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/images/generations");
-                request.Headers.Add("Authorization", "Bearer " + _openai_key);
+                if (dalleversion != "dall-e-3" && dalleversion != "dall-e-2")
+                {
+                    dalleversion = "dall-e-2";
+                    imageSize = "1024×1024";
+                }
+                using (HttpClient client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/images/generations");
+                    var requestBody = new
+                    {
+                        model = dalleversion,
+                        prompt = PadQuotes(prompt),
+                        n = 1,
+                        quality = "standard",
+                        size = imageSize
+                    };
+                    var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
+                    request.Content = content;
 
-                var content = new StringContent("{\n    \"model\": \"dall-e-3\",\n    \"prompt\": \"" + PadQuotes(prompt) + "\",\n    \"n\": 1,\n    \"size\": \"" + size + "\"\n  }", null, "application/json");
-                request.Content = content;
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_openai_key}");
 
+                    HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+                    string responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var response = await client.SendAsync(request).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                var sJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(sJson, "root");
-                var sUrl = doc.SelectSingleNode("root/data/url").InnerText;
-                return sUrl;
+                    XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(responseString, "root");
+                    var sUrl = doc.SelectSingleNode("root/data/url").InnerText;
+                    return sUrl;
+                }
             }
             return "";
         }
