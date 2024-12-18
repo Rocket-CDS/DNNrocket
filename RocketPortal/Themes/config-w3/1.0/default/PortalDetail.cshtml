@@ -92,6 +92,22 @@
         }
     </div>
 
+    <div class="w3-row">
+        <div class="w3-third w3-padding">
+            <label>AI Images</label>
+            <div id="AiImageCountMonth" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.AiImageCountMonth)</div>
+        </div>
+        <div class="w3-third w3-padding">
+            <label>Month</label>
+            <div id="AiImageCountMonthDate" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.AiImageMonthDate.Month) - @(portalData.AiImageMonthDate.Year)</div>
+        </div>
+        <div class="w3-third w3-padding">
+            <label>AI Images (Total)</label>
+            <div id="AiImageCountTotal" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.AiImageCountTotal)</div>
+        </div>
+    </div>
+
+
 
     <div class="w3-row w3-border-bottom">
         <div onclick="selectmenu('systemdata');" class="w3-half w3-hover-light-grey w3-center">

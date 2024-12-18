@@ -274,6 +274,16 @@ namespace RocketPortal.Components
             SecurityKeyEdit = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
             ResetSecurity(); // also updates
         }
+        public void AiImageCount(int addNumber = 1)
+        {
+            AiImageCountTotal += addNumber;
+            if (AiImageMonthDate.Month == DateTime.Now.Month && AiImageMonthDate.Year == DateTime.Now.Year)
+                AiImageCountMonth += addNumber;
+            else
+                AiImageCountMonth = addNumber;
+            AiImageMonthDate = DateTime.Now;
+            Update();
+        }
 
         #region "setting"
         public string GetPortalSetting(int idx)
@@ -322,6 +332,9 @@ namespace RocketPortal.Components
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "dnn-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
+        public int AiImageCountMonth { get { return Record.GetXmlPropertyInt("genxml/data/aiimagecountmonth"); } set { Record.SetXmlProperty("genxml/data/aiimagecountmonth", value.ToString()); } }
+        public DateTime AiImageMonthDate { get { return Record.GetXmlPropertyDate("genxml/data/aiimagemonthdate"); } set { Record.SetXmlProperty("genxml/data/aiimagemonthdate", value.ToString("O"), TypeCode.DateTime); } }
+        public int AiImageCountTotal { get { return Record.GetXmlPropertyInt("genxml/data/aiimagecounttotal"); } set { Record.SetXmlProperty("genxml/data/aiimagecounttotal", value.ToString()); } }
 
     }
 }
