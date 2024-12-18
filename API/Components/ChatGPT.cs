@@ -23,14 +23,14 @@ namespace DNNrocketAPI.Components
             var globalData = new SystemGlobalData();
             _openai_key = globalData.ChatGptKey;
         }
-        public async Task<string> GenerateImageAsync(string prompt, string dalleversion = "dall-e-2", string imageSize = "1024×1024")
+        public async Task<string> GenerateImageAsync(string prompt, string dalleversion = "dall-e-2", string imageSize = "1024x1024")
         {
             if (!String.IsNullOrEmpty(prompt) && !String.IsNullOrEmpty(_openai_key))
             {
                 if (dalleversion != "dall-e-3" && dalleversion != "dall-e-2")
                 {
                     dalleversion = "dall-e-2";
-                    imageSize = "1024×1024";
+                    imageSize = "1024x1024";
                 }
                 using (HttpClient client = new HttpClient())
                 {
@@ -52,8 +52,13 @@ namespace DNNrocketAPI.Components
                     string responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(responseString, "root");
-                    var sUrl = doc.SelectSingleNode("root/data/url").InnerText;
-                    return sUrl;
+                    var urlNode = doc.SelectSingleNode("root/data/url");
+                    if (urlNode != null) 
+                        return urlNode.InnerText;
+                    else
+                    {
+                        return doc.OuterXml;
+                    }
                 }
             }
             return "";
