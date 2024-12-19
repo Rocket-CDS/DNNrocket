@@ -1,4 +1,5 @@
-﻿using Simplisity;
+﻿using Microsoft.SqlServer.Server;
+using Simplisity;
 using Simplisity.TemplateEngine;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace DNNrocketAPI.Components
 {
     public class AppThemeBase
     {
-
+        private string _projectName;
         public AppThemeBase()
         {
         }
@@ -26,13 +27,14 @@ namespace DNNrocketAPI.Components
         }
         private void Init(int portalid, string appThemeFolderRel, string versionFolder = "", string projectName = "")
         {
+            _projectName = projectName;
             AppThemeFolderRel = appThemeFolderRel;
             FileNameList = new Dictionary<string, string>();
             PortalFileNameList = new Dictionary<string, string>();
             ImageFileNameList = new Dictionary<string, string>();
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
             AppThemeFolder = Path.GetFileName(AppThemeFolderMapPath); // the format of the directory <systemkey>.<AppThemName>, make the directory look like a file.
-            if (!Directory.Exists(AppThemeFolderMapPath)) Directory.CreateDirectory(AppThemeFolderMapPath);
+            if (!Directory.Exists(AppThemeFolderMapPath) && projectName != "") Directory.CreateDirectory(AppThemeFolderMapPath);
             PopulateVersionList();
             if (versionFolder == "") versionFolder = LatestVersionFolder;
             AppVersionFolder = versionFolder;
@@ -104,7 +106,7 @@ namespace DNNrocketAPI.Components
             RazorFolderMapPath = DNNrocketUtils.MapPath(RazorFolderRel);
             DepFolderMapPath = DNNrocketUtils.MapPath(DepFolderRel);
 
-            CreateNewAppTheme();
+            if (_projectName != "") CreateNewAppTheme();
 
         }
 
@@ -140,7 +142,7 @@ namespace DNNrocketAPI.Components
         }
         private void SyncFiles()
         {
-            if (AppThemeFolder != "")
+            if (AppThemeFolder != "" && _projectName != "")
             {
                 // sync filesystem
                 SyncSystemLevel("default", "*.*");
@@ -169,7 +171,7 @@ namespace DNNrocketAPI.Components
         {
             var versionFolder = dblVersionFolder.ToString("0.0", CultureInfo.GetCultureInfo("en-US"));
 
-            if (!Directory.Exists(AppThemeFolderMapPath + "\\" + versionFolder))
+            if (!Directory.Exists(AppThemeFolderMapPath + "\\" + versionFolder) && _projectName != "")
             {
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder);
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder + "\\css");
