@@ -142,7 +142,7 @@ namespace DNNrocketAPI.Components
         }
         private void SyncFiles()
         {
-            if (AppThemeFolder != "" && _projectName != "")
+            if (AppThemeFolder != "")
             {
                 // sync filesystem
                 SyncSystemLevel("default", "*.*");
