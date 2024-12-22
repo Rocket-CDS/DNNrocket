@@ -25,7 +25,5 @@
 	<assembly>
 		<value>DNNrocketAPI.dll</value>
 		<value>DNNrocketAPI.pdb</value>
-		<value>handlebars.dll</value>
-		<value>libwebp_x64.dll</value>		
 	</assembly>
 </root>

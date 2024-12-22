@@ -76,6 +76,14 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>_external\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-Q8-AnyCPU, Version=14.2.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_external\Magick.NET-Q8-AnyCPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=14.2.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>_external\Magick.NET.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>_external\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -1354,10 +1362,6 @@
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RocketWebpUtils\RocketWebpUtils.csproj">
-      <Project>{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}</Project>
-      <Name>RocketWebpUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplisity\Simplisity.csproj">
       <Project>{4547e469-243d-4ce8-95de-755b24d78deb}</Project>
       <Name>Simplisity</Name>

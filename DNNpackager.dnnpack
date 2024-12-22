@@ -104,16 +104,19 @@
 
   </file>
 	<assembly>
-    <value>\bin\Simplisity.dll</value>
-    <value>\bin\DNNrocketImages.dll</value>
-    <value>\bin\DNNrocketDocuments.dll</value>
-    <value>\bin\DNNrocketCountry.dll</value>
-    <value>\bin\DNNrocketAPI.dll</value>
-    <value>\bin\RocketPortal.dll</value>
-	<value>\bin\RocketTools.dll</value>
-	<value>\bin\RocketAppThemes.dll</value>
-    <value>\API\_external\Newtonsoft.Json.dll</value>
-    <value>\API\_external\netstandard.dll</value>
-    <value>\API\_external\System.Drawing.Common.dll</value>
+        <value>\bin\Simplisity.dll</value>
+        <value>\bin\DNNrocketImages.dll</value>
+        <value>\bin\DNNrocketDocuments.dll</value>
+        <value>\bin\DNNrocketCountry.dll</value>
+        <value>\bin\DNNrocketAPI.dll</value>
+        <value>\bin\RocketPortal.dll</value>
+	    <value>\bin\RocketTools.dll</value>
+	    <value>\bin\RocketAppThemes.dll</value>
+        <value>\API\_external\Newtonsoft.Json.dll</value>
+        <value>\API\_external\netstandard.dll</value>
+        <value>\API\_external\System.Drawing.Common.dll</value>
+		<value>\API\_external\Magick.Native-Q8-x64.dll</value>
+		<value>\API\_external\Magick.NET.Core.dll</value>
+		<value>\API\_external\Magick.NET-Q8-AnyCPU.dll</value>
 	</assembly>
 </root>

@@ -11,8 +11,13 @@ using DotNetNuke.Web.DDRMenu;
 using static System.Net.Mime.MediaTypeNames;
 using ThoughtWorks.QRCode.Codec;
 using System.Web.UI.WebControls;
-using RocketWebpUtils;
 using System.Net;
+using ImageMagick;
+using System.Web;
+
+
+// [TODO: Convert to https://github.com/dlemstra/Magick.NET]
+// This is already using Magick, but it has been integrated for Webp and merged into old code that was created before webp and Magik existed.
 
 namespace DNNrocketAPI.Components
 {
@@ -255,6 +260,36 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static Bitmap NewBitmap(this FileInfo fi)
+        {
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = new Bitmap(fi.FullName);
+            }
+            catch (Exception)
+            {
+                // use 'MagickImage()' if you want just the 1st frame of an animated image. 
+                // 'MagickImageCollection()' returns all frames
+                using (var magickImages = new MagickImageCollection(fi))
+                {
+                    var ms = new MemoryStream();
+                    if (magickImages.Count > 1)
+                    {
+                        magickImages.Write(ms, MagickFormat.Gif);
+                    }
+                    else
+                    {
+                        magickImages.Write(ms, MagickFormat.Png);
+                    }
+                    bitmap?.Dispose();
+                    bitmap = new Bitmap(ms);
+                    // keep MemoryStream from being garbage collected while Bitmap is in use
+                    bitmap.Tag = ms;
+                }
+            }
+            return bitmap;
+        }
         public static string ResizeImage(string fileNamePath, string fileNamePathOut, double intMaxWidth)
         {
             var extension = Path.GetExtension(fileNamePathOut);
@@ -266,9 +301,9 @@ namespace DNNrocketAPI.Components
 
                 if (extension != null && extension.ToLower() == ".webp")
                 {
-                    using (WebP webp = new WebP())
-                        sourceImage = webp.Load(fileNamePath);
                     imgtype = "webp";
+                    var fi = new FileInfo(fileNamePath);
+                    sourceImage = NewBitmap(fi);
                 }
                 else
                 {
@@ -304,8 +339,13 @@ namespace DNNrocketAPI.Components
                             {
                                 try
                                 {
-                                    using (WebP webp = new WebP())
-                                        webp.Save(newImage, fileNamePathOut, 80);
+                                    using (MagickImage image = new MagickImage(fileNamePath))
+                                    {
+                                        // Set the format to WebP
+                                        image.Format = MagickFormat.WebP;
+                                        // Save the image
+                                        image.Write(fileNamePathOut);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
@@ -492,10 +532,12 @@ namespace DNNrocketAPI.Components
         {
             var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".jpg";
             byte[] rawWebP = File.ReadAllBytes(imgPathName);
-            using (WebP webp = new WebP())
+            using (MagickImage image = new MagickImage(imgPathName))
             {
-                var bmp = webp.Decode(rawWebP);
-                bmp.Save(outFileMapPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                // Set the format to WebP
+                image.Format = MagickFormat.Jpg;
+                // Save the image
+                image.Write(outFileMapPath);
             }
             return outFileMapPath;
         }
@@ -536,9 +578,13 @@ namespace DNNrocketAPI.Components
             {
                 try
                 {
-                    Bitmap bmp = new Bitmap(imgPathName);
-                    using (WebP webp = new WebP())
-                        webp.Save(bmp, outFileMapPath, 80);
+                    using (MagickImage image = new MagickImage(imgPathName))
+                    {
+                        // Set the format to WebP
+                        image.Format = MagickFormat.WebP;
+                        // Save the image
+                        image.Write(outFileMapPath);
+                    }
                 }
                 catch (Exception)
                 {
@@ -546,9 +592,13 @@ namespace DNNrocketAPI.Components
                     // attempt to clear all file locks and try again
                     try
                     {
-                        Bitmap bmp = new Bitmap(imgPathName);
-                        using (WebP webp = new WebP())
-                            webp.Save(bmp, outFileMapPath, 80);
+                        using (MagickImage image = new MagickImage(imgPathName))
+                        {
+                            // Set the format to WebP
+                            image.Format = MagickFormat.WebP;
+                            // Save the image
+                            image.Write(outFileMapPath);
+                        }
                     }
                     catch
                     {
@@ -666,8 +716,8 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         // Process as Webp
-                        using (WebP webp = new WebP())
-                            sourceImage = webp.Load(strFilepath);
+                        var fi = new FileInfo(strFilepath);
+                        sourceImage = NewBitmap(fi);
                     }
                     catch (Exception)
                     {

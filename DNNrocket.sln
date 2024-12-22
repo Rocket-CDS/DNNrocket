@@ -32,8 +32,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Country", "Country\Country.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketTools", "RocketTools\RocketTools.csproj", "{C650794E-A80D-4725-BFD0-E419A2C337F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketWebpUtils", "RocketWebpUtils\RocketWebpUtils.csproj", "{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Comp All (debug)|Any CPU = Comp All (debug)|Any CPU
@@ -99,11 +97,6 @@ Global
 		{C650794E-A80D-4725-BFD0-E419A2C337F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C650794E-A80D-4725-BFD0-E419A2C337F6}.Razor|Any CPU.ActiveCfg = razor|Any CPU
 		{C650794E-A80D-4725-BFD0-E419A2C337F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}.Comp All (debug)|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}.CompAll (release)|Any CPU.ActiveCfg = Release|Any CPU
-		{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}.Razor|Any CPU.ActiveCfg = Release|Any CPU
-		{A1DC4D92-BA61-4932-84AD-A16BE9E7EED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
