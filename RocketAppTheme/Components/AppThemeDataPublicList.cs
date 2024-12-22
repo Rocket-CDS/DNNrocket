@@ -64,7 +64,7 @@ namespace Rocket.AppThemes.Components
                     if (Directory.Exists(localdirMapPath))
                     {
                         var systemData = SystemSingleton.Instance(SelectedSystemKey);
-                        var appTheme = new AppThemeLimpet(a.PortalId, systemData, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                        var appTheme = AppThemeUtils.AppThemeDefault(a.PortalId, systemData, a.GetXmlProperty("genxml/hidden/appthemefolder"), "");
 
                         // update list data
                         a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);

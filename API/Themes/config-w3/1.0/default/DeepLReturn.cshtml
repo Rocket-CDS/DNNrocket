@@ -21,9 +21,11 @@
         $('#deeplmodal').hide();
     }
     function insertIntoCkeditor(deepltextid, str) {
-        var editor = CKEDITOR.instances[deepltextid];
-        if (editor) {
-            CKEDITOR.instances[deepltextid].setData(str);
+        if (typeof CKEDITOR !== 'undefined') {
+            var editor = CKEDITOR.instances[deepltextid];
+            if (editor) {
+                CKEDITOR.instances[deepltextid].setData(str);
+            }
         }
     }
 

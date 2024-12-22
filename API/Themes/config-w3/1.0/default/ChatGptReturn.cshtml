@@ -21,9 +21,11 @@
         $('#chatgptmodal').hide();
     }
     function insertIntoCkeditor(chatgpttextid, str) {
-        var editor = CKEDITOR.instances[chatgpttextid];
-        if (editor) {
-            CKEDITOR.instances[chatgpttextid].setData(str);
+        if (typeof CKEDITOR !== 'undefined') {
+            var editor = CKEDITOR.instances[chatgpttextid];
+            if (editor) {
+                CKEDITOR.instances[chatgpttextid].setData(str);
+            }
         }
     }
 

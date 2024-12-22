@@ -59,7 +59,7 @@ namespace Rocket.AppThemes.Components
                 var dr = new System.IO.DirectoryInfo(d1);
                 if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
                 {
-                    var appTheme = new AppThemeLimpet(_portalId, dr.Name, "", org);
+                    var appTheme = AppThemeUtils.AppTheme(_portalId, dr.Name, "", org);
                     if (appTheme.FileNameList.Count > 0) list.Add(appTheme);
                 }
             }
