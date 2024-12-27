@@ -69,6 +69,16 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+        public static Dictionary<string, string> W3imagestyle()
+        {
+            var rtn = new Dictionary<string, string>();
+            var sList = ",w3-round,w3-round-large,w3-round-xlarge,w3-round-xxlarge,w3-circle,w3-border";
+            foreach (string s in sList.Split(','))
+            {
+                rtn.Add(s.Trim(' '), s.Trim(' '));
+            }
+            return rtn;
+        }
 
 
     }
