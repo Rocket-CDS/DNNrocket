@@ -95,7 +95,6 @@ namespace DNNrocketAPI.Components
         public string DataRef { get { if (_record.GetXmlProperty("genxml/settings/dataref") == "") return ModuleRef; else return _record.GetXmlProperty("genxml/settings/dataref"); } set { _record.SetXmlProperty("genxml/settings/dataref", value); } }
         public string ProjectName { get { return _record.GetXmlProperty("genxml/data/projectname"); } set { _record.SetXmlProperty("genxml/data/projectname", value); } }
         public bool HasProject { get { if (_record.GetXmlProperty("genxml/data/projectname") == "") return false; else return true; } }
-        public bool InjectJQuery { get { return _record.GetXmlPropertyBool("genxml/settings/injectjquery"); } set { _record.SetXmlProperty("genxml/settings/injectjquery", value.ToString()); } }
         public bool DisableCache { get { return _record.GetXmlPropertyBool("genxml/settings/disablecache"); } set { _record.SetXmlProperty("genxml/settings/disablecache", value.ToString()); } }
         public bool DisableHeader { get { return _record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { _record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
         public string DisplayTemplate { get { return _record.GetXmlProperty("genxml/settings/displaytemplate").ToLower(); } set { _record.SetXmlProperty("genxml/settings/displaytemplate", value.ToString()); } }
@@ -111,6 +110,12 @@ namespace DNNrocketAPI.Components
                 if (_record.GetXmlProperty("genxml/settings/ecomode") == "") return true;
                 return _record.GetXmlPropertyBool("genxml/settings/ecomode"); 
             } set { _record.SetXmlProperty("genxml/settings/ecomode", value.ToString()); } }
+        #endregion
+
+        #region "Deprecated"
+        [Obsolete("Use use .dep file instead.")]
+        public bool InjectJQuery { get { return _record.GetXmlPropertyBool("genxml/settings/injectjquery"); } set { _record.SetXmlProperty("genxml/settings/injectjquery", value.ToString()); } }
+
         #endregion
 
     }
