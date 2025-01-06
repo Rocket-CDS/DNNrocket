@@ -26,9 +26,12 @@ namespace DNNrocketAPI.Components
                 var groupKey = "_" + groupid;
                 var groupCacheKeys = (List<string>)DNNrocketUtils.GetCache(groupKey);
                 var rtnList = new List<object>();
-                foreach (var gck in groupCacheKeys)
+                if (groupCacheKeys != null)
                 {
-                    rtnList.Add(DNNrocketUtils.GetCache(gck));
+                    foreach (var gck in groupCacheKeys)
+                    {
+                        rtnList.Add(DNNrocketUtils.GetCache(gck));
+                    }
                 }
                 return rtnList;
             }

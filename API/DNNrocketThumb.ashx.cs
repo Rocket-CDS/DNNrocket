@@ -59,9 +59,22 @@ namespace DNNrocketAPI.Components
                 var newImage = (Bitmap)CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
 
                 if (newImage == null)
-                {                    
+                {
                     if (imgtype == "jpg" || imgtype == "jpeg") imgtype = "webp"; // jpg only output webp, if not forced to another format.
-                    newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
+
+                    var portalId = PortalUtils.GetCurrentPortalId();
+                    var bitFileMapPath = Path.Combine(Path.GetDirectoryName(src), Path.GetFileNameWithoutExtension(src) + "_" + w + "_" + h + "." + imgtype);
+                    if (!File.Exists(bitFileMapPath))
+                    {
+                        newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
+                        newImage.Save(bitFileMapPath);
+                    }
+                    else
+                    {
+                        var fi = new FileInfo(bitFileMapPath);
+                        newImage = ImgUtils.NewBitmap(fi);
+                    }
+
                     CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
                 }
 
