@@ -64,7 +64,7 @@ namespace DNNrocketAPI.Components
 
                     var portalId = PortalUtils.GetCurrentPortalId();
                     var bitFileMapPath = Path.Combine(Path.GetDirectoryName(src), Path.GetFileNameWithoutExtension(src) + "_" + w + "_" + h + "." + imgtype);
-                    if (!File.Exists(bitFileMapPath))
+                    if (!File.Exists(bitFileMapPath) && File.Exists(src))
                     {
                         newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
                         newImage.Save(bitFileMapPath);
