@@ -8,7 +8,7 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <div style="height: 32px;">
-                <span onclick="document.getElementById('deeplmodal').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+                <span onclick="resetfields();document.getElementById('deeplmodal').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
             </div>
             <div id="deeplsourcetext">
                 <div class="w3-section">
@@ -38,5 +38,12 @@
     }
     function hidesourcetext() {
         $('#deeplsourcetext').hide();
+    }
+    function resetfields() {
+        $('#deeplreturn').html('');
+        $('#deeploutput').val('');
+        $('#deeploutput').hide();
+        $('#deeplquestion').val('');
+        $('#deeplsourcetext').show();
     }
 </script>

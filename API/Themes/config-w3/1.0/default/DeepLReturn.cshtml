@@ -19,6 +19,7 @@
         $('#' + deepltextid).val($('#deeploutput').val());
         insertIntoCkeditor(deepltextid, $('#deeploutput').val())
         $('#deeplmodal').hide();
+        resetfields();
     }
     function insertIntoCkeditor(deepltextid, str) {
         if (typeof CKEDITOR !== 'undefined') {
