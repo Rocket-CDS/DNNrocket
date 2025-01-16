@@ -53,6 +53,7 @@ using DotNetNuke.Services.Search.Entities;
 using System.Web.Http;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace DNNrocketAPI.Components
 {
@@ -876,18 +877,10 @@ namespace DNNrocketAPI.Components
             {
                 var fName = s[0];
                 var rKey = s[1];
-                var relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".ascx.resx";
-                var fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
-                if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
-                {
-                    relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".resx";
-                    fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
-                }
-                if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
-                {
-                    relativefilename = resourcePath.TrimEnd('/') + "/" + fName + "." + lang + ".resx";
-                    fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
-                }
+
+                var relativefilename = GetResourceFileRelPath(resourcePath, fName, lang);
+                var fullFileName = HostingEnvironment.MapPath(relativefilename);
+
                 if (!String.IsNullOrEmpty(fullFileName) && System.IO.File.Exists(fullFileName))
                 {
                     var xmlDoc = new XmlDocument();
@@ -912,6 +905,64 @@ namespace DNNrocketAPI.Components
                 }
 
                 CacheUtils.SetCache(ckey, rtnList);
+            }
+            return rtnList;
+        }
+        public static string GetResourceFileRelPath(String resourcePath, String resourceFileName, String cultureCode = "")
+        {
+            if (cultureCode == "") cultureCode = GetCurrentCulture();
+            var rtnList = new Dictionary<String, String>();
+            var fName = Path.GetFileNameWithoutExtension(resourceFileName);
+            var relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".ascx.resx";
+            var fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
+            if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
+            {
+                relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".resx";
+                fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
+            }
+            if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
+            {
+                relativefilename = resourcePath.TrimEnd('/') + "/" + fName + "." + cultureCode + ".resx";
+            }
+            return relativefilename;
+        }
+        public static string GetResourceFileMapPath(String resourcePath, String resourceFileName, String cultureCode = "")
+        {
+            var relPath = GetResourceFileRelPath(resourcePath, resourceFileName, cultureCode);
+            var fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relPath);
+            if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName)) return "";
+            return fullFileName;
+        }
+        public static Dictionary<string, string> ResxValues(string resourceFileName, string cultureCode, string keyExtension)
+        {
+            var rtnList = new Dictionary<string, string>();
+            var fullFileName = MapPath(resourceFileName);
+            if (!String.IsNullOrEmpty(fullFileName) && System.IO.File.Exists(fullFileName))
+            {
+                var xmlDoc = new XmlDocument();
+                xmlDoc.Load(fullFileName);
+                var xmlNodList = xmlDoc.SelectNodes("root/data");
+                if (xmlNodList != null)
+                {
+                    foreach (XmlNode nod in xmlNodList)
+                    {
+                        if (nod.Attributes != null)
+                        {
+                            var n = nod.Attributes["name"].Value;
+                            if (n.EndsWith("." + keyExtension.TrimStart('.')))
+                            {
+                                var s = n.Split('.');
+                                if (s.Length == 2)
+                                {
+                                    var rKey = s[0];
+                                    var rtnValue = Localization.GetString(n, resourceFileName, PortalSettings.Current, cultureCode, true);
+                                    if (!rtnList.ContainsKey(rKey)) rtnList.Add(rKey, rtnValue);
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
             return rtnList;
         }
