@@ -68,10 +68,13 @@ namespace DNNrocketAPI.render
             }
             return DropDownList(info, xpath, cultureCodes, attributes, defaultValue, localized, row, listname);
         }
+        public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var countryDict = DNNrocketUtils.GetCountryCodeList(info.PortalId);
+            return DropDownList(info, xpath, countryDict, attributes, defaultValue, localized, row, listname);
+        }
 
-
-
-    public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataSytemKeys = new Dictionary<string, string>();
 
