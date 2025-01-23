@@ -22,8 +22,9 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                lock (_lock)
-                {
+                // Remove lock for speed.
+                //lock (_lock)
+                //{
                     if (_instance == null)
                     {
                         // do razor test
@@ -38,7 +39,7 @@ namespace DNNrocketAPI.Components
                         _instance = (IRazorEngineService)RazorEngineService.Create(config);
                     }
                     return _instance;
-                }
+                //}
             }
         }
 
