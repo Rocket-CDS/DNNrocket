@@ -1651,12 +1651,19 @@ namespace DNNrocketAPI.Components
         public static void ClearThumbnailLock()
         {
             //Images in Cache still retain the file lock, we must dispose of then out of cache.
-            var l = CacheUtils.GetGroupCache("DNNrocketThumb");
-            foreach (Bitmap i in l)
+            try
             {
-                i.Dispose();
+                var l = CacheUtils.GetGroupCache("DNNrocketThumb");
+                foreach (Bitmap i in l)
+                {
+                    i.Dispose();
+                }
+                CacheUtils.ClearAllCache("DNNrocketThumb");
             }
-            CacheUtils.ClearAllCache("DNNrocketThumb");
+            catch (Exception)
+            {
+                // ignore
+            }
         }
 
         public static void ClearTempDB()
