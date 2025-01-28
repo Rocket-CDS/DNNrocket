@@ -25,7 +25,11 @@
         if (typeof CKEDITOR !== 'undefined') {
             var editor = CKEDITOR.instances[deepltextid];
             if (editor) {
-                CKEDITOR.instances[deepltextid].setData(str);
+                var lfcrRegexp = /\n|\s{2,}/g
+                str = "<p>" + str + "</p>";
+                var result = str.replace(lfcrRegexp, "</p><p>")
+                result = result.replaceAll("<p></p>", "");
+                CKEDITOR.instances[deepltextid].setData(result);
             }
         }
     }
