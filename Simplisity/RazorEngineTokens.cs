@@ -214,6 +214,7 @@ namespace Simplisity
                 var datav = datavalue.Split(',');
             if (datav.Count() == datat.Count())
             {
+                if (attributes == "") attributes = " class='simplisitycheckboxlist' ";
                 var upd = getUpdateAttr(xpath, attributes, localized);
                 var id = getIdFromXpath(xpath, row, listname);
                 strOut = "<div id='" + id + "' " + upd + " " + attributes + ">";
@@ -230,7 +231,7 @@ namespace Simplisity
                     {
                         supdate = " s-update='lang' ";
                     }
-                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + supdate + " s-xpath='" + xpath + "' name='" + id + "$" + c.ToString("") + "' type='checkbox' value='" + v + "' " + value + " /><label for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label>";
+                    strOut += "   <span class='simplisitycheckbox'> <input id='" + id + "_" + c.ToString("") + "' " + supdate + " s-xpath='" + xpath + "' name='" + id + "$" + c.ToString("") + "' type='checkbox' value='" + v + "' " + value + " /><label for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label></span>";
                     c += 1;
                 }
                 strOut += "</div>";
