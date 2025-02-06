@@ -281,7 +281,6 @@
     <Compile Include="Components\SearchUtils.cs" />
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
-    <Compile Include="Components\RazorRenderSingleton.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />

@@ -36,8 +36,9 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         var config = new TemplateServiceConfiguration();
-                        config.Debug = debugMode;
+                        //config.Debug = debugMode;
                         config.BaseTemplateType = typeof(RazorEngineTokens<>);
+                        config.DisableTempFileLocking = true;
                         IRazorEngineService service = RazorEngineService.Create(config);
                         Engine.Razor = service;
 
@@ -61,8 +62,9 @@ namespace DNNrocketAPI.Components
                     if (service == null)
                     {
                         var config = new TemplateServiceConfiguration();
-                        config.Debug = debugMode;
+                        //config.Debug = debugMode;
                         config.BaseTemplateType = typeof(RazorEngineTokens<>);
+                        config.DisableTempFileLocking = true;
                         service = RazorEngineService.Create(config);
                         HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
                     }
@@ -86,7 +88,7 @@ namespace DNNrocketAPI.Components
                     }
                     else
                     {
-                        processResult.RenderedText = Engine.Razor.Run(GeneralUtils.GetMd5Hash(razorTempl), null, model);
+                        processResult.RenderedText = Engine.Razor.Run(templateKey, null, model);
                     }
                 }
             }
@@ -97,126 +99,6 @@ namespace DNNrocketAPI.Components
 
             return processResult;
         }
-
-        /// <summary>
-        /// Made obsolete for speed. 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="razorTempl"></param>
-        /// <param name="debugMode"></param>
-        /// <returns></returns>
-        [Obsolete("Use RazorProcessRunCompile(SimplisityRazor model, string razorTempl, Boolean debugMode = false)")]
-        private static RazorProcessResult RazorProcessRunCompileSingleton(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
-        {
-            var processResult = new RazorProcessResult();
-            processResult.StatusCode = "00";
-            processResult.RenderedText = "";
-            processResult.ErrorMsg = "";
-
-            try
-            {
-                if (String.IsNullOrEmpty(razorTempl)) return processResult;
-                var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
-
-                if (HttpContext.Current == null) // can be null if ran from scheduler.
-                {
-                    try
-                    {
-                        LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
-                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + hashCacheKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        processResult.RenderedText = "";
-                        processResult.StatusCode = "01";
-                        processResult.ErrorMsg = ex.ToString();
-                        LogUtils.LogSystem(ex.ToString());
-                        LogUtils.LogException(ex);
-                    }
-                    return processResult;
-                }
-
-                Engine.Razor = RazorEngineSingleton.Instance;
-
-                var israzorCached = DNNrocketUtils.GetCache(hashCacheKey);
-                if (israzorCached == null)
-                {
-                    try
-                    {
-                        var t = DateTime.Now;
-                        LogUtils.LogSystem("START - RunCompile: " + hashCacheKey);
-                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        DNNrocketUtils.SetCache(hashCacheKey, "True");
-                        if (t.AddSeconds(10) < DateTime.Now)
-                        {
-                            LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
-                            LogUtils.LogSystem(razorTempl);
-                            LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
-                        }
-                        LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        processResult.RenderedText = "";
-                        processResult.StatusCode = "02";
-                        processResult.ErrorMsg = ex.ToString();
-                        LogUtils.LogSystem(ex.ToString());
-                        LogUtils.LogException(ex);
-                        LogUtils.LogSystem("------------------------- ERROR - START ---------------------------------------- ");
-                        LogUtils.LogSystem(razorTempl);
-                        LogUtils.LogSystem("------------------------- ERROR - END ---------------------------------------- ");
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        LogUtils.LogSystem("START - Run: " + hashCacheKey);
-                        processResult.RenderedText = Engine.Razor.Run(hashCacheKey, null, model);
-                        LogUtils.LogSystem("END - Run: " + hashCacheKey);
-                    }
-                    catch (Exception)
-                    {
-                        // try again with compile, the template cache may have got removed.
-                        try
-                        {
-                            var t = DateTime.Now;
-                            LogUtils.LogSystem("START - RunCompile2: " + hashCacheKey);
-                            processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                            DNNrocketUtils.SetCache(hashCacheKey, "True");
-                            if (t.AddSeconds(10) < DateTime.Now)
-                            {
-                                LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
-                                LogUtils.LogSystem(razorTempl);
-                                LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
-                            }
-                            LogUtils.LogSystem("END - RunCompile2 Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + hashCacheKey);
-                        }
-                        catch (Exception ex1)
-                        {
-                            processResult.StatusCode = "03";
-                            processResult.ErrorMsg = ex1.ToString();
-                            LogUtils.LogSystem(ex1.ToString());
-                            LogUtils.LogException(ex1);
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                CacheUtils.ClearAllCache();
-                processResult.RenderedText = "";
-                processResult.StatusCode = "03";
-                processResult.ErrorMsg = ex.ToString();
-                LogUtils.LogSystem(ex.ToString());
-                LogUtils.LogException(ex);
-            }
-
-            return processResult;
-        }
-
         public static void PreCompileRazorFolder(string folderMapPath)
         {
             foreach (var f in Directory.GetFiles(folderMapPath,"*.cshtml", SearchOption.AllDirectories))
