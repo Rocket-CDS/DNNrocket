@@ -76,12 +76,6 @@
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>_external\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Magick.NET-Q8-AnyCPU">
-      <HintPath>_external\Magick.NET-Q8-AnyCPU.dll</HintPath>
-    </Reference>
-    <Reference Include="Magick.NET.Core">
-      <HintPath>_external\Magick.NET.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>_external\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -242,9 +236,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ThoughtWorks.QRCode">
-      <HintPath>_external\ThoughtWorks.QRCode.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -1359,6 +1350,10 @@
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RocketUtils\RocketUtils.csproj">
+      <Project>{dac6b7d6-213e-4ba6-b199-90ab250da69d}</Project>
+      <Name>RocketUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplisity\Simplisity.csproj">
       <Project>{4547e469-243d-4ce8-95de-755b24d78deb}</Project>
       <Name>Simplisity</Name>

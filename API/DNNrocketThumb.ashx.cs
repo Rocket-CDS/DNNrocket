@@ -66,13 +66,13 @@ namespace DNNrocketAPI.Components
                     var bitFileMapPath = Path.Combine(Path.GetDirectoryName(src), Path.GetFileNameWithoutExtension(src) + "_" + w + "_" + h + "." + imgtype);
                     if (!File.Exists(bitFileMapPath) && File.Exists(src))
                     {
-                        newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
+                        newImage = RocketUtils.ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h), imgtype);
                         newImage.Save(bitFileMapPath);
                     }
                     else
                     {
                         var fi = new FileInfo(bitFileMapPath);
-                        newImage = ImgUtils.NewBitmap(fi);
+                        newImage = RocketUtils.ImgUtils.NewBitmap(fi);
                     }
 
                     CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
@@ -80,10 +80,10 @@ namespace DNNrocketAPI.Components
 
                 if (newImage != null)
                 {
-                    ImageCodecInfo useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
+                    ImageCodecInfo useEncoder = RocketUtils.ImgUtils.GetEncoder(ImageFormat.Jpeg);
                     if (imgtype.ToLower() == "png")
                     {
-                        useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
+                        useEncoder = RocketUtils.ImgUtils.GetEncoder(ImageFormat.Png);
                         context.Response.ContentType = "image/png";
                     }
                     else if (imgtype.ToLower() == "jpg" || imgtype.ToLower() == "jpeg")

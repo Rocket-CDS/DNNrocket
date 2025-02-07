@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
-    <ProjectReference Include="..\RocketPortal\RocketPortal.csproj" />
-    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\RocketPortal\RocketPortal.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
