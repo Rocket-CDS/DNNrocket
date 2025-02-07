@@ -579,7 +579,7 @@ namespace DNNrocket.AppThemes
 
         public string AddListImage()
         {
-            RocketUtils.ImgUtils.MoveImageToFolder(_postInfo, _dataObject.AppTheme.ImageFolderMapPath);
+            RocketUtils.ImgUtils.MoveImageToFolder(UserUtils.GetCurrentUserId(),_postInfo, _dataObject.AppTheme.ImageFolderMapPath, PortalUtils.TempDirectoryMapPath());
             _dataObject.AppTheme.Populate();
             return GetDetail();
         }
