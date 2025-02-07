@@ -42,7 +42,7 @@ namespace RocketUtils
                         if (imageCount <= maxImages)
                         {
                             var unqName = RocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + Path.GetExtension(friendlyname), destinationFolder);
-                            var fname = ImgUtils.ResizeImage(tempDirectoryMapPath + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
+                            var fname = ResizeImage(tempDirectoryMapPath + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
 
                             // change extension incase we converted from unsupported image type. (.webp)
                             unqName = Path.GetDirectoryName(unqName) + "\\" + Path.GetFileNameWithoutExtension(unqName) + Path.GetExtension(fname);
@@ -55,7 +55,7 @@ namespace RocketUtils
                                 {
                                     var imageDirectorySEO = destinationFolder + "\\seo";
                                     if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                                    ImgUtils.CopyImageForSEO(tempDirectoryMapPath + "\\" + userfilename, imageDirectorySEO, unqName);
+                                    CopyImageForSEO(tempDirectoryMapPath + "\\" + userfilename, imageDirectorySEO, unqName);
                                 }
                                 rtn.Add(unqName);
                                 imageCount += 1;
@@ -860,7 +860,7 @@ namespace RocketUtils
                             imageFile.Flush();
                         }
                         var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
-                        var filename = ImgUtils.ResizeImage(tempFileMapPath, newfilename, size);
+                        var filename = ResizeImage(tempFileMapPath, newfilename, size);
                         rtn.Add(filename);
 
                         if (Path.GetExtension(newfilename).ToLower() != ".webp") ConvertToWebp(newfilename, Path.GetDirectoryName(newfilename) + "\\" + Path.GetFileNameWithoutExtension(newfilename) + ".webp");

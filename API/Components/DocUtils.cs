@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Components
                 foreach (var ncode in filenameList)
                 {
                     var fname = GeneralUtils.DeCode(ncode);
-                    if (!ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
+                    if (!RocketUtils.ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
                     {
                         if (!Directory.Exists(docFolderMapPath)) Directory.CreateDirectory(docFolderMapPath);
                         var docFileMapPath = docFolderMapPath.TrimEnd('/') + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey());
@@ -75,7 +75,7 @@ namespace DNNrocketAPI.Components
                 foreach (var ncode in filenameList)
                 {
                     var fname = GeneralUtils.DeCode(ncode);
-                    if (!ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
+                    if (!RocketUtils.ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
                     {
                         var docFileMapPath = docFolderMapPath.TrimEnd('/') + "\\" + FileUtils.RemoveInvalidFileChars(fname);
                         if (File.Exists(docFileMapPath))
@@ -111,7 +111,7 @@ namespace DNNrocketAPI.Components
                 foreach (var ncode in filenameList)
                 {
                     var fname = GeneralUtils.DeCode(ncode);
-                    if (!ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
+                    if (!RocketUtils.ImgUtils.IsImageFile(Path.GetExtension(fname)) && IsSafeFileType(Path.GetExtension(fname)))
                     {
                         var docFileMapPath = docFolderMapPath.TrimEnd('/') + "/" + FileUtils.RemoveInvalidFileChars(fname);
                         if (File.Exists(docFileMapPath))

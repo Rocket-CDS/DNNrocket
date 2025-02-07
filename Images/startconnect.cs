@@ -101,13 +101,13 @@ namespace DNNrocket.Images
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
                         var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname, imageDirectory);
-                        var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
+                        var fname = RocketUtils.ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
                         if (!File.Exists(fname)) return "ERROR: " + fname;
                         if (createseo)
                         {
                             var imageDirectorySEO = imageDirectory + "\\seo";
                             if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                            ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
+                            RocketUtils.ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
                         }
 
                         File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
