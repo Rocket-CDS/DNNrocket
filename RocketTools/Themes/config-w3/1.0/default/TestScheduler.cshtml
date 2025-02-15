@@ -44,17 +44,25 @@
     <div class="w3-large">
         NOTES:
     </div>
-    <div>
-        For testing the scheduler Interface should use the "CacheUtils.DateTimeNow()" method to test for system/test date.
-    </div>
-    <div>
-        IMPORTANT: Ativate logging in the gloabl settings.
-    </div>
-    <div>
-        Review scheduler actions by looking at the Log.  "/Portals/_default/Logs".
-    </div>
-    <div>
-        Disable the scheudler during testing to ensure correct results.
+    <div class="w3-padding">
+        For testing the scheduler Interface should use the "CacheUtils.DateTimeNow()" method to test for system/test date.</br>
+        </br>
+        IMPORTANT: Ativate logging in the gloabl settings.</br>
+        Review scheduler actions by looking at the Log.  "/Portals/_default/Logs".</br>
+        Disable the scheudler during testing to ensure correct results.</br>
+        </br>
+        Reset the lastSchedulerTime by editing the DB. </br>
+        </br>
+        Examples:</br>
+        </br>
+        <div class="w3-light-gray w3-border w3-padding" >update [RocketDirectoryAPI] set [XMLData].modify('replace value of (/genxml/lastschedulertime/text())[1] with ""') where TypeCode = 'rocketdirectoryapiPortalCatalog'</div>
+        </br>
+        <div class="w3-light-gray w3-border w3-padding">update [RocketDirectoryAPI] set [XMLData].modify('replace value of (/genxml/lastschedulertime/text())[1] with ""') where TypeCode = 'rocketlibraryapiPortalCatalog'</div>
+        </br>
+        <div class="w3-light-gray w3-border w3-padding">update [RocketDirectoryAPI] set [XMLData].modify('replace value of (/genxml/lastschedulertime/text())[1] with ""') where TypeCode = 'rocketbusinessapiPortalCatalog'</div>
+        </br>
+        <div class="w3-light-gray w3-border w3-padding">update [RocketEcommerceAPI] set [XMLData].modify('replace value of (/genxml/lastschedulertime/text())[1] with ""') where TypeCode = 'PortalShop'</div>
+
     </div>
 
 </div>
