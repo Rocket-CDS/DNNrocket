@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.4.0">
+		<package name="RocketSystem" type="Library" version="1.4.1">
 			<friendlyName>RocketSystem</friendlyName>
 			<DefinitionName>RocketSystem</DefinitionName>
 			<description>Rocket System</description>
@@ -19,7 +19,7 @@
       </license>
 		<releaseNotes>
 			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
-			# DNNrocket v1.4.0
+			# DNNrocket v1.4.1
 		</releaseNotes>
       <dependencies>
       </dependencies>
@@ -104,7 +104,13 @@
 					<name>RocketTools.dll</name>
 					<sourceFileName>RocketTools.dll</sourceFileName>
 				</assembly>
-				
+
+				<assembly>
+					<path>bin</path>
+					<name>RocketUtils.dll</name>
+					<sourceFileName>RocketUtils.dll</sourceFileName>
+				</assembly>
+
 			</assemblies>
 		</component>
       </components>
