@@ -267,21 +267,24 @@ namespace RocketUtils
             {
                 // use 'MagickImage()' if you want just the 1st frame of an animated image. 
                 // 'MagickImageCollection()' returns all frames
-                using (var magickImages = new MagickImageCollection(fi))
+                if (File.Exists(fi.FullName))
                 {
-                    var ms = new MemoryStream();
-                    if (magickImages.Count > 1)
+                    using (var magickImages = new MagickImageCollection(fi))
                     {
-                        magickImages.Write(ms, MagickFormat.Gif);
+                        var ms = new MemoryStream();
+                        if (magickImages.Count > 1)
+                        {
+                            magickImages.Write(ms, MagickFormat.Gif);
+                        }
+                        else
+                        {
+                            magickImages.Write(ms, MagickFormat.Png);
+                        }
+                        bitmap?.Dispose();
+                        bitmap = new Bitmap(ms);
+                        // keep MemoryStream from being garbage collected while Bitmap is in use
+                        bitmap.Tag = ms;
                     }
-                    else
-                    {
-                        magickImages.Write(ms, MagickFormat.Png);
-                    }
-                    bitmap?.Dispose();
-                    bitmap = new Bitmap(ms);
-                    // keep MemoryStream from being garbage collected while Bitmap is in use
-                    bitmap.Tag = ms;
                 }
             }
             return bitmap;

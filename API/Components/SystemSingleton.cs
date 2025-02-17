@@ -20,6 +20,7 @@ namespace DNNrocketAPI.Components
         {
             lock (_lock)
             {
+                systemKey = systemKey.ToLower();
                 if ((_instances == null))
                 {
                     _instances = new Dictionary<string, SystemLimpet>();
@@ -27,7 +28,7 @@ namespace DNNrocketAPI.Components
                 if (!_instances.ContainsKey(systemKey))
                 {
                     var systemData = new SystemLimpet(systemKey);
-                    var baseSystemKey = systemData.SystemInfo.GetXmlProperty("genxml/basesystemkey");
+                    var baseSystemKey = systemData.SystemInfo.GetXmlProperty("genxml/basesystemkey").ToLower();
                     if (baseSystemKey != "")
                     {
                         // search for additional plugins in the base system.
