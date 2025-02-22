@@ -1047,4 +1047,28 @@
   <data name="chatgpt.Text" xml:space="preserve">
     <value>ChatGPT</value>
   </data>
+  <data name="restarting.Text" xml:space="preserve">
+    <value>Redémarrage</value>
+  </data>
+  <data name="status.Text" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="start.Text" xml:space="preserve">
+    <value>Démarrage</value>
+  </data>
+  <data name="stop.Text" xml:space="preserve">
+    <value>Arrêter</value>
+  </data>
+  <data name="menu.Text" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="user.Text" xml:space="preserve">
+    <value>Utilisateur</value>
+  </data>
+  <data name="imageheight.Text" xml:space="preserve">
+    <value>Hauteur de l'image</value>
+  </data>
+  <data name="imagewidth.Text" xml:space="preserve">
+    <value>Largeur de l'image</value>
+  </data>
 </root>
