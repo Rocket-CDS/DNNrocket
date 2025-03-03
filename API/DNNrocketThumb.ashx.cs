@@ -24,7 +24,7 @@ namespace DNNrocketAPI.Components
         /// 
         /// - IMPORTANT: If you need to delete the image file you MUST remove the cache first.
         /// The cache holds a link to the locked image file and must be disposed.
-        /// use: ClearThumbnailLock()
+        /// use: DNNrocketUtils.ClearThumbnailLock();
         /// 
         /// </summary>
         /// <param name="context"></param>
