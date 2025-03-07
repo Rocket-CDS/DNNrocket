@@ -101,6 +101,13 @@
 	  <value>\API\images\nevoweb-32x32.png</value>
 	  <value>\API\images\nevoweb-logo.jpg</value>
 	  <value>\API\images\nevoweb-logo.png</value>
+	  <value>\API\images\rocket-32x32-white.png</value>
+	  <value>\API\images\rocket-32x32.png</value>
+	  <value>\API\images\rocket-logo-512x512-white.png</value>
+	  <value>\API\images\rocket-logo-512x512.png</value>
+	  <value>\API\images\rocket-logo-white.png</value>
+	  <value>\API\images\rocket-logo.png</value>
+	  <value>\API\images\rocket-small-logo.png</value>
 
   </file>
 	<assembly>
