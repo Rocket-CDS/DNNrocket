@@ -201,6 +201,10 @@ namespace DNNrocketAPI.Components
                 Info.SetXmlProperty("genxml/checkbox/imagehidden" + FieldId, value.ToString());
             }
         }
+        public bool Exists
+        {
+            get { if (RelPath == "") return false; else return true; }
+        }
 
     }
 }
