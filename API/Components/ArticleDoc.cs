@@ -62,6 +62,8 @@ namespace DNNrocketAPI.Components
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name" + FieldId);
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/name");
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/documentname" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/documentname" + FieldId);
                 if (rtn == "") rtn = Path.GetFileNameWithoutExtension(FileUtils.RemoveInvalidFileChars(FileName));
                 return rtn;
             }
