@@ -120,4 +120,206 @@
   <data name="roles.Text" xml:space="preserve">
     <value>Rôles</value>
   </data>
+  <data name="actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="adddefaultroles.Confirm" xml:space="preserve">
+    <value>Cela créera tous les rôles par défaut utilisés par le Rocket Framework.</value>
+  </data>
+  <data name="adddefaultroles.Text" xml:space="preserve">
+    <value>Ajouter des rôles de roquettes par défaut</value>
+  </data>
+  <data name="applyroles.Confirm" xml:space="preserve">
+    <value>Cette action permet d'ajouter et de retirer les autorisations EDIT aux modules sélectionnés. Êtes-vous sûr ?</value>
+  </data>
+  <data name="applyroles.Text" xml:space="preserve">
+    <value>Appliquer les autorisations EDIT aux rôles</value>
+  </data>
+  <data name="assembly.Text" xml:space="preserve">
+    <value>Assemblée</value>
+  </data>
+  <data name="clone.Confirm" xml:space="preserve">
+    <value>Cloner le module sélectionné sur TOUTES les pages sélectionnées ?</value>
+  </data>
+  <data name="clone.Text" xml:space="preserve">
+    <value>Clone</value>
+  </data>
+  <data name="clonesok.Text" xml:space="preserve">
+    <value>Le module a été cloné sur les pages sélectionnées.</value>
+  </data>
+  <data name="companykey.Help" xml:space="preserve">
+    <value>Une clé de société DNNrocket est utilisée pour l'administration des licences et relie ce site web à une société.  Plusieurs sites web peuvent avoir la même clé d'entreprise.  Vous pouvez trouver les clés de société dans votre &lt;a href='https://www.nevoweb.com' target='blank'&gt;compte DNNrocket&lt;/a&gt; dans la section sociétés.</value>
+  </data>
+  <data name="companykey.Text" xml:space="preserve">
+    <value>Clé de l'entreprise</value>
+  </data>
+  <data name="copylanguage.Confirm" xml:space="preserve">
+    <value>Copier la langue ?  Cette option permet d'écraser la langue de destination.</value>
+  </data>
+  <data name="copylanguage.Text" xml:space="preserve">
+    <value>Langue de copie</value>
+  </data>
+  <data name="datatype.Text" xml:space="preserve">
+    <value>Type de données</value>
+  </data>
+  <data name="deletebackup.Confirm" xml:space="preserve">
+    <value>Supprimer cette sauvegarde ?</value>
+  </data>
+  <data name="deletebackupall.Confirm" xml:space="preserve">
+    <value>Supprimer toutes les sauvegardes ?</value>
+  </data>
+  <data name="destinationlanguage.Text" xml:space="preserve">
+    <value>Langue de destination</value>
+  </data>
+  <data name="disablealternate.Text" xml:space="preserve">
+    <value>Désactiver l'alternative</value>
+  </data>
+  <data name="disablecanonical.Text" xml:space="preserve">
+    <value>Désactiver Canonical</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Editer</value>
+  </data>
+  <data name="editpageurl.Text" xml:space="preserve">
+    <value>Modifier l'URL de la page</value>
+  </data>
+  <data name="indexanddnn.Text" xml:space="preserve">
+    <value>Réindexer la base de données Index et recherche DNN</value>
+  </data>
+  <data name="language.Text" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="menuandurlsettings.Text" xml:space="preserve">
+    <value>Menu, paramètres URL, Style Helper</value>
+  </data>
+  <data name="moduleclone.Help" xml:space="preserve">
+    <value>Les modules peuvent être clonés sur l'ensemble du site à l'aide de cette interface.  Sélectionnez la page sur laquelle se trouve le module que vous souhaitez cloner.  Sélectionnez le module, puis les pages sur lesquelles vous souhaitez le cloner.  Le système essaiera de placer le clone dans le même conteneur. Si le même conteneur n'existe pas sur la page de destination, le module cloné sera placé dans le conteneur de contenu principal.</value>
+  </data>
+  <data name="moduleroles.Help" xml:space="preserve">
+    <value>Les rôles de module peuvent être ajoutés ou supprimés de plusieurs modules sur l'ensemble du site.  Les autorisations EDIT seront activées lorsque le module sera mis à jour avec un nouveau rôle.  Pour un contrôle plus granulaire, utilisez l'interface standard du module.</value>
+  </data>
+  <data name="modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="namespaceclass.Text" xml:space="preserve">
+    <value>Namespace.Class</value>
+  </data>
+  <data name="next.Text" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="ok.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="pageadmin.Text" xml:space="preserve">
+    <value>Page Admin</value>
+  </data>
+  <data name="pagedescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="pagelocalization.Text" xml:space="preserve">
+    <value>Localisation des pages</value>
+  </data>
+  <data name="pagename.Text" xml:space="preserve">
+    <value>Nom de la page</value>
+  </data>
+  <data name="pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="pagetagwords.Text" xml:space="preserve">
+    <value>Mots clés (facultatif)</value>
+  </data>
+  <data name="pagetitle.Text" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="portaladmin.Text" xml:space="preserve">
+    <value>Administrateur du portail</value>
+  </data>
+  <data name="previous.Text" xml:space="preserve">
+    <value>Précédent</value>
+  </data>
+  <data name="providers.Text" xml:space="preserve">
+    <value>Liste des fournisseurs supplémentaires (Assembly,Namespace.Class)</value>
+  </data>
+  <data name="queryparam.Text" xml:space="preserve">
+    <value>Clé du paramètre URL</value>
+  </data>
+  <data name="queryparams.Text" xml:space="preserve">
+    <value>Paramètres de la requête pour l'ID de l'article</value>
+  </data>
+  <data name="queryparamsduplicate.Text" xml:space="preserve">
+    <value>AVERTISSEMENT : Il y a des clés de paramètres d'URL en double, ce qui peut empêcher le référencement de fonctionner.</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycler l'AppPool</value>
+  </data>
+  <data name="refresh.Text" xml:space="preserve">
+    <value>Rafraîchir</value>
+  </data>
+  <data name="remove.Text" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="removecss.Text" xml:space="preserve">
+    <value>Supprimer le CSS</value>
+  </data>
+  <data name="restorebackup.Confirm" xml:space="preserve">
+    <value>Restaurer la sauvegarde ?  Cette opération annule les données actuelles pour toutes les langues.</value>
+  </data>
+  <data name="retry.Text" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="return.Text" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="rocketactions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="rocketclones.Text" xml:space="preserve">
+    <value>Modules de clonage</value>
+  </data>
+  <data name="rocketlang.Help" xml:space="preserve">
+    <value>Vous pouvez copier les enregistrements de langue de tous les modules DNNrocket sur le site. Sélectionnez un système DNNrocket, une langue à copier et une langue de destination.  Seuls les modules DNNrocket copieront les langues. &lt;br/&gt;&lt;br/&gt;
+La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUTES les données de contenu du module seront sauvegardées dans un enregistrement historique, qui peut être restauré.  ATTENTION ! Cette action remplacera la "langue de destination" par la "langue de copie".</value>
+  </data>
+  <data name="rocketlang.Text" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="rocketroles.Text" xml:space="preserve">
+    <value>Rôles des modules</value>
+  </data>
+  <data name="rolesok.Text" xml:space="preserve">
+    <value>Les rôles ont été enregistrés dans les modules.</value>
+  </data>
+  <data name="save.Text" xml:space="preserve">
+    <value>Économiser</value>
+  </data>
+  <data name="searchpattern.Text" xml:space="preserve">
+    <value>Modèle de recherche Regex (nom de fichier)</value>
+  </data>
+  <data name="sourcelanguage.Text" xml:space="preserve">
+    <value>Langue source</value>
+  </data>
+  <data name="tokenprefix.Text" xml:space="preserve">
+    <value>Préfixe du jeton de page</value>
+  </data>
+  <data name="topage.Text" xml:space="preserve">
+    <value>Page de destination</value>
+  </data>
+  <data name="uncheckall.Text" xml:space="preserve">
+    <value>Décocher tout</value>
+  </data>
+  <data name="update.Text" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Valider</value>
+  </data>
 </root>

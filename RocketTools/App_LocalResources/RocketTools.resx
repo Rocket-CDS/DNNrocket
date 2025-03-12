@@ -180,6 +180,9 @@
   <data name="editpageurl.Text" xml:space="preserve">
     <value>Edit Page URL</value>
   </data>
+  <data name="indexanddnn.Text" xml:space="preserve">
+    <value>Reindex Database Index and DNN search</value>
+  </data>
   <data name="language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
