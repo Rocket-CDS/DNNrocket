@@ -54,7 +54,7 @@ namespace DNNrocketAPI.Components
             LastUpdated = Directory.GetLastWriteTime(AppThemeFolderMapPath);
 
             Exists = false;
-            if (File.Exists(RazorFolderMapPath + "\\view.cshtml")) Exists = true;
+            if (File.Exists(RazorFolderMapPath + "\\view.cshtml") || File.Exists(AppThemeFolderMapPath + "\\apptheme.config")) Exists = true;
 
             Populate();
 
