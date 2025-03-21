@@ -952,7 +952,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var list = GetRecordList(listName);
-                if (index > (list.Count - 1)) return new SimplisityInfo();
+                if (index > (list.Count - 1)) return new SimplisityRecord();
                 return list[index];
             }
             return null;
