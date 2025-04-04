@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using Newtonsoft.Json;
@@ -329,6 +332,11 @@ namespace Simplisity
                                 case "int":
                                     xmlOut.SetXmlProperty(xpath, val, TypeCode.Int32);
                                     break;
+                                case "money":
+                                    var cultureCode = smi.GetXmlProperty(dataroot + "/s-culturecode");
+                                    var val2 = ConvertMoneyToInt(val, cultureCode);
+                                    xmlOut.SetXmlProperty(xpath, val2, TypeCode.Int32);
+                                    break;
                                 default:
                                     xmlOut.SetXmlProperty(xpath, val);
                                     break;
@@ -339,7 +347,33 @@ namespace Simplisity
             }
 
         }
-
+        private static string ConvertMoneyToInt(string val, string cultureCode)
+        {
+            if (!GeneralUtils.IsNumeric(val)) return "0";
+            var val2 = val;
+            if (cultureCode == "") cultureCode = Thread.CurrentThread.CurrentCulture.Name;
+            NumberFormatInfo nfi = new CultureInfo(cultureCode, false).NumberFormat;
+            if (!HasNonNumeric(val)) val2 = ConvertToDollars(Convert.ToInt32(val), nfi.CurrencyDecimalDigits).ToString();
+            return val2;
+        }
+        private static decimal ConvertToDollars(int value, int currencyDecimalDigits)
+        {
+            decimal multiplier = (decimal)Math.Pow(10, currencyDecimalDigits);
+            return value * multiplier;
+        }
+        private static bool HasNonNumeric(string input)
+        {
+            bool hasNonNumeric = false;
+            foreach (char c in input)
+            {
+                if (!char.IsDigit(c))
+                {
+                    hasNonNumeric = true;
+                    break;
+                }
+            }
+            return hasNonNumeric;
+        }
 
         private static void AddCheckBoxToSimplisty(ref SimplisityInfo xmlOut, SimplisityInfo sInfo, List<SimplisityInfo> ctrllist, string dataroot, bool lang)
         {
