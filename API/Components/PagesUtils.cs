@@ -90,6 +90,55 @@ namespace DNNrocketAPI.Components
             }
 
         }
+        public static void AddTabUrl301(int tabId, string pageUrl, string queryString, int portalId, string cultureCode)
+        {
+            try
+            {
+                // update tab url table.
+                if (pageUrl != "" & tabId > 0)
+                {
+                    var objTabs = new TabController();
+
+                    if (!pageUrl.StartsWith("/")) pageUrl = "/" + pageUrl;
+                    var tabInfo = objTabs.GetTab(tabId, portalId);
+                    if (tabInfo != null)
+                    {
+                        var tabUrlsList = objTabs.GetTabUrls(tabId, portalId);
+                        var seqNum = 0;
+
+                        var tabUrlInfo = tabUrlsList.FirstOrDefault(t => t.Url == pageUrl && t.CultureCode == cultureCode);
+                        if (tabUrlInfo == null)
+                        {
+                            tabUrlInfo = new TabUrlInfo();
+                            seqNum = Convert.ToInt32(tabUrlsList.Count) + 1;
+                        }
+                        else
+                        {
+                            seqNum = tabUrlInfo.SeqNum;
+                        }
+
+                        tabUrlInfo.TabId = tabId;
+                        tabUrlInfo.SeqNum = seqNum;
+                        tabUrlInfo.HttpStatus = "301";
+                        tabUrlInfo.Url = pageUrl;
+                        tabUrlInfo.QueryString = queryString;
+                        tabUrlInfo.CultureCode = cultureCode;
+                        tabUrlInfo.IsSystem = true;
+                        tabUrlInfo.PortalAliasUsage = 0;
+                        objTabs.SaveTabUrl(tabUrlInfo, PortalSettings.Current.PortalId, true);
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException("SaveTabUrls: Error on RocketPL", null, ex);
+            }
+
+        }
 
         public static Dictionary<int, string> GetParentPageNames(int portalId, int tabId, Dictionary<int, string> dictPages)
         {
@@ -143,6 +192,26 @@ namespace DNNrocketAPI.Components
             catch (Exception ex)
             {
                 Exceptions.ProcessModuleLoadException("ValidateTabUrls: Error on DNNrocket PageUtils", null, ex);
+            }
+
+        }
+        public static void RemoveAllTabUrls(int tabId)
+        {
+            try
+            {
+                if (tabId > 0)
+                {
+                    var objTabs = new TabController();
+                    var tabUrlList = objTabs.GetTabUrls(tabId, PortalSettings.Current.PortalId);
+                    foreach (var t in tabUrlList)
+                    {
+                        objTabs.DeleteTabUrl(t, PortalSettings.Current.PortalId, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException("RemoveAllTabUrls: Error on DNNrocket PageUtils", null, ex);
             }
 
         }

@@ -219,6 +219,6 @@ The assembly that will be executed should be installed into the bin folder and t
     <value>System</value>
   </data>
   <data name="validate.Text" xml:space="preserve">
-    <value>Validate</value>
+    <value>Validate Portals Data</value>
   </data>
 </root>

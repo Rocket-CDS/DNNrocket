@@ -320,6 +320,6 @@ The selected “Copy Language” will replace the “Destination Language”.  A
     <value>URL</value>
   </data>
   <data name="validate.Text" xml:space="preserve">
-    <value>Validate</value>
+    <value>Validate Portal Data</value>
   </data>
 </root>

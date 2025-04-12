@@ -15,10 +15,6 @@
 
     <div class="w3-bar">
         <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</span>
-        <span class="w3-padding w3-button w3-theme-light simplisity_confirmclick" s-confirm="@ResourceKey("RP.validate")?" s-cmd="portal_validate">
-            <span class="material-icons">
-                verified
-            </span>&nbsp;@ResourceKey("RP.validate")</span>
     </div>
 
     <div class="w3-row">
@@ -109,12 +105,12 @@
                 </div>
                 <div class="w3-half w3-padding">
                     <label>DeepL AuthKey</label>
-                    @TextBox(info, "genxml/textbox/deeplauthkey", " class='w3-input w3-border' autocomplete='off' ")
+                    @TextBox(info, "genxml/textbox/deeplauthkey", " class='w3-input w3-border' autocomplete='off' ","",false,0,"","password")
                 </div>
             </div>
             <div class="w3-row w3-padding">
                 <label>OpenAI ChatGpt Key</label>
-                @TextBox(info, "genxml/textbox/openaichatgptkey", " class='w3-input w3-border' autocomplete='off' ")
+                @TextBox(info, "genxml/textbox/openaichatgptkey", " class='w3-input w3-border' autocomplete='off' ", "", false, 0, "", "password")
             </div>
 
 
@@ -191,6 +187,8 @@
             forceLowercase: false,
         });
         $('.tag-editor').height(60)
+
+        selectMenu('global');
 
     });
 
