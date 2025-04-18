@@ -653,6 +653,7 @@ namespace Simplisity
         /// <returns></returns>
         public static string GetUniqueString(int randomsize = 8)
         {
+            if (randomsize > 8) randomsize = 8;
             if (randomsize <= 0) randomsize = 8;
             int timeStamp = (int)(DateTime.Now.Ticks >> 23); // retain bits 23 to 55
             var strticks = timeStamp.ToString() + GetRandomKey(randomsize, true);
