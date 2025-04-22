@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="roles.Text" xml:space="preserve">
-    <value>Rôles</value>
-  </data>
   <data name="actions.Text" xml:space="preserve">
     <value>Actions</value>
   </data>
@@ -189,8 +186,14 @@
   <data name="language.Text" xml:space="preserve">
     <value>Langue</value>
   </data>
-  <data name="menuandurlsettings.Text" xml:space="preserve">
-    <value>Menu, paramètres URL, Style Helper</value>
+  <data name="menuandurlsettings3.Text" xml:space="preserve">
+    <value>Aide au style</value>
+  </data>
+  <data name="menuandurlsettings1.Text" xml:space="preserve">
+    <value>Fournisseurs de menus</value>
+  </data>
+  <data name="menuandurlsettings2.Text" xml:space="preserve">
+    <value>Paramètres de l'action URL</value>
   </data>
   <data name="moduleclone.Help" xml:space="preserve">
     <value>Les modules peuvent être clonés sur l'ensemble du site à l'aide de cette interface.  Sélectionnez la page sur laquelle se trouve le module que vous souhaitez cloner.  Sélectionnez le module, puis les pages sur lesquelles vous souhaitez le cloner.  Le système essaiera de placer le clone dans le même conteneur. Si le même conteneur n'existe pas sur la page de destination, le module cloné sera placé dans le conteneur de contenu principal.</value>
@@ -291,6 +294,9 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   </data>
   <data name="rocketroles.Text" xml:space="preserve">
     <value>Rôles des modules</value>
+  </data>
+  <data name="roles.Text" xml:space="preserve">
+    <value>Rôles</value>
   </data>
   <data name="rolesok.Text" xml:space="preserve">
     <value>Les rôles ont été enregistrés dans les modules.</value>

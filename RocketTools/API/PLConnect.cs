@@ -28,8 +28,10 @@ namespace RocketTools.API
             var info = _objCtrl.GetRecordByGuidKey(_portalId, -1, "PLSETTINGS", "PLSETTINGS");
             if (info == null) info = new SimplisityRecord();
 
+            _passSettings.Add("menutype", _paramInfo.GetXmlProperty("genxml/hidden/menutype"));
+
             var razorTempl = _appThemeTools.GetTemplate("SettingsPopup.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, null, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, info, _dataObjects, _passSettings, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
         }
