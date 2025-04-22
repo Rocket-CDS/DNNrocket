@@ -266,24 +266,6 @@
 					<sourceFileName>nevoweb-logo.png</sourceFileName>
 				</file>
 
-
-				<file>
-					<name>\rocketadmin.ascx</name>
-					<sourceFileName>rocketadmin.ascx</sourceFileName>
-				</file>
-				<file>
-					<name>\rocketadmin.xml</name>
-					<sourceFileName>rocketadmin.xml</sourceFileName>
-				</file>
-
-				<file>
-					<name>\rocketedit.ascx</name>
-					<sourceFileName>rocketedit.ascx</sourceFileName>
-				</file>
-				<file>
-					<name>\rocketedit.xml</name>
-					<sourceFileName>rocketedit.xml</sourceFileName>
-				</file>
 			</files>
 		</component>
 

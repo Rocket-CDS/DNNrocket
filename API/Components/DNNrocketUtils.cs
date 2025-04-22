@@ -117,6 +117,22 @@ namespace DNNrocketAPI.Components
         {
             return System.Web.HttpUtility.HtmlEncode(planStr);
         }
+        public static string RequestParam(HttpContextBase context, string paramName)
+        {
+            string result = null;
+
+            if (context.Request.Form.Count != 0)
+            {
+                result = Convert.ToString(context.Request.Form[paramName]);
+            }
+
+            if (result == null)
+            {
+                return RequestQueryStringParam(context.Request, paramName);
+            }
+
+            return (result == null) ? String.Empty : result.Trim();
+        }
         public static string RequestParam(HttpContextWrapper context, string paramName)
         {
             string result = null;
