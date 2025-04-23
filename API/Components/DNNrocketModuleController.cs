@@ -192,7 +192,7 @@ namespace DNNrocketAPI.Components
                         var systemData = SystemSingleton.Instance(systemKey);
                         if (!systemData.Exists) // MVC naming convension
                         {
-                            systemKey = moduleInfo.DesktopModule.ModuleName.Replace("MVC", "");
+                            systemKey = moduleInfo.DesktopModule.ModuleName.Replace("MVC", "api");
                             systemData = SystemSingleton.Instance(systemKey);
                         }
                         if (!systemData.Exists) // legacy naming convension
