@@ -190,6 +190,11 @@ namespace DNNrocketAPI.Components
                         var portalId = moduleInfo.PortalID;
                         var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "api");
                         var systemData = SystemSingleton.Instance(systemKey);
+                        if (!systemData.Exists) // MVC naming convension
+                        {
+                            systemKey = moduleInfo.DesktopModule.ModuleName.Replace("MVC", "");
+                            systemData = SystemSingleton.Instance(systemKey);
+                        }
                         if (!systemData.Exists) // legacy naming convension
                         {
                             systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "");
