@@ -12,6 +12,7 @@ using ThoughtWorks.QRCode.Codec;
 using System.Net;
 using ImageMagick;
 using System.Web;
+using System.Xml.Linq;
 
 // [TODO: Convert to https://github.com/dlemstra/Magick.NET]
 // This is already using Magick, but it has been integrated for Webp and merged into old code that was created before webp and Magik existed.
@@ -841,8 +842,6 @@ namespace RocketUtils
 
             return newImage;
         }
-
-
         public static List<string> UploadBase64Image(string[] filenameList, string[] filebase64List, string tempFileMapPath, string imageFolderMapPath, int size)
         {
             var rtn = new List<string>();
@@ -852,7 +851,8 @@ namespace RocketUtils
                 foreach (var ncode in filenameList)
                 {
                     var fname = GeneralUtils.DeCode(ncode);
-                    if (IsImageFile(Path.GetExtension(fname)))
+                    var fext = Path.GetExtension(fname).ToLower();
+                    if (IsImageFile(fext) || fext == ".svg")
                     {
                         var fbase64 = filebase64List[lp];
                         fbase64 = fbase64.Split(',')[1];
@@ -863,10 +863,16 @@ namespace RocketUtils
                             imageFile.Flush();
                         }
                         var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
-                        var filename = ResizeImage(tempFileMapPath, newfilename, size);
-                        rtn.Add(filename);
-
-                        if (Path.GetExtension(newfilename).ToLower() != ".webp") ConvertToWebp(newfilename, Path.GetDirectoryName(newfilename) + "\\" + Path.GetFileNameWithoutExtension(newfilename) + ".webp");
+                        if (fext == ".svg")
+                        {
+                            File.Move(tempFileMapPath, newfilename);
+                        }
+                        else
+                        {
+                            var filename = ResizeImage(tempFileMapPath, newfilename, size);
+                            rtn.Add(filename);
+                            if (Path.GetExtension(newfilename).ToLower() != ".webp") ConvertToWebp(newfilename, Path.GetDirectoryName(newfilename) + "\\" + Path.GetFileNameWithoutExtension(newfilename) + ".webp");
+                        }
 
                         try
                         {
