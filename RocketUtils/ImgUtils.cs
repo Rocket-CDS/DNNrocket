@@ -13,6 +13,7 @@ using System.Net;
 using ImageMagick;
 using System.Web;
 using System.Xml.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 // [TODO: Convert to https://github.com/dlemstra/Magick.NET]
 // This is already using Magick, but it has been integrated for Webp and merged into old code that was created before webp and Magik existed.
@@ -866,6 +867,7 @@ namespace RocketUtils
                         if (fext == ".svg")
                         {
                             File.Move(tempFileMapPath, newfilename);
+                            rtn.Add(newfilename);
                         }
                         else
                         {
