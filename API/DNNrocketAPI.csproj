@@ -266,6 +266,7 @@
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
+    <Compile Include="Components\PageMetaData.cs" />
     <Compile Include="Components\ModuleBase.cs" />
     <Compile Include="Components\AutoLogin.cs" />
     <Compile Include="Components\RazorCacheProvider.cs" />
