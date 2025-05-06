@@ -307,5 +307,20 @@ namespace RocketUtils
                 }
             }
         }
+        public static void DownloadAndSaveImage(string imageUrl, string filename)
+        {
+            WebClient client = new WebClient();
+            Stream stream = client.OpenRead(imageUrl);
+            Bitmap bitmap; bitmap = new Bitmap(stream);
+
+            if (bitmap != null)
+            {
+                bitmap.Save(filename, ImageFormat.Jpeg);
+            }
+
+            stream.Flush();
+            stream.Close();
+            client.Dispose();
+        }
     }
 }
