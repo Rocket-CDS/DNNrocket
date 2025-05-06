@@ -113,7 +113,15 @@ namespace RocketUtils
         }
         public static bool IsImageFile(string strExtension)
         {
-            return  strExtension.ToLower() == ".webp" | strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp" | strExtension.ToLower() == ".jfif";
+            return strExtension.ToLower() == ".webp" ||
+                strExtension.ToLower() == ".jpg" ||
+                strExtension.ToLower() == ".jpeg" ||
+                strExtension.ToLower() == ".gif" ||
+                strExtension.ToLower() == ".png" ||
+                strExtension.ToLower() == ".tiff" ||
+                strExtension.ToLower() == ".bmp" ||
+                strExtension.ToLower() == ".avif" ||
+                strExtension.ToLower() == ".jfif";
         }
         public static string ConvertWebpToJpg(string imgPathName)
         {
