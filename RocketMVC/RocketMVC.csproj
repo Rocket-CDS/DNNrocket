@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>DNNrocket.MVC</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\API\_external\DNNcore\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Mvc">
+      <HintPath>..\API\_external\DNNcore\DotNetNuke.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.MvcPipeline">
+      <HintPath>..\API\_external\DNNcore\DotNetNuke.Web.MvcPipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\API\_external\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="REM ** Copy to sub-bin folder, so install package can be built from them **&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(TargetDir) $(ConfigurationName)" />
+  </Target>
+
+</Project>
