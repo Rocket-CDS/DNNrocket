@@ -409,6 +409,10 @@ namespace DNNrocketAPI.render
             }
             return new RawString("");
         }
+        public IEncodedString ImageUrl(string url, int width = 0, int height = 0)
+        {
+            return ImageUrl("", url, width, height, "");
+        }
         public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = "")
         {
             return ImageUrl("", url, width, height, imgType);
@@ -429,7 +433,7 @@ namespace DNNrocketAPI.render
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="extraurlparams"></param>
-        /// <param name="imgType">Force Image Type or default to image type. "webp","png","jpg",""</param>
+        /// <param name="imgType">redundant, legacy.</param>
         /// <returns></returns>
         public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType)
         {
@@ -439,14 +443,13 @@ namespace DNNrocketAPI.render
             var displayExtension = Path.GetExtension(imgRelPath).ToLower();
             if ((width > 0 || height > 0) && displayExtension != ".svg") // create resized image on disk
             {
-                if (displayExtension == ".jpg") displayExtension = ".webp";
+                if (displayExtension != ".png") displayExtension = ".webp";
                 var newRelPath = Path.GetDirectoryName(imgRelPath).Replace("\\","/") + "/" + Path.GetFileNameWithoutExtension(imgRelPath) + "_" + width + "_" + height + displayExtension;
                 var newMapPath = DNNrocketUtils.MapPath(newRelPath);
                 var srcMapPath = DNNrocketUtils.MapPath(imgRelPath);
-                if (!File.Exists(newRelPath) && File.Exists(srcMapPath))
+                if (!File.Exists(newMapPath) && File.Exists(srcMapPath))
                 {
-                    var newImage = RocketUtils.ImgUtils.CreateThumbnail(srcMapPath, width, height, imgType);
-                    newImage.Save(newMapPath);
+                    RocketUtils.ImgUtils.ProcessResizeImage(srcMapPath, newMapPath, width, height);
                 }
                 imgRelPath = engineUrl.TrimEnd('/') + "/" + newRelPath.TrimStart('/');
             }
