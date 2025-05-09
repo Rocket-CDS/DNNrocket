@@ -411,11 +411,15 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString ImageUrl(string url, int width = 0, int height = 0)
         {
-            return ImageUrl("", url, width, height, "");
+            return ImageUrl("", url, width, height, "", true);
         }
         public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = "")
         {
-            return ImageUrl("", url, width, height, imgType);
+            return ImageUrl("", url, width, height, imgType, true);
+        }
+        public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = "", bool cropCenter = true)
+        {
+            return ImageUrl("", url, width, height, imgType, cropCenter);
         }
         /// <summary>
         /// Display Thumbnail Image
@@ -433,9 +437,9 @@ namespace DNNrocketAPI.render
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="extraurlparams"></param>
-        /// <param name="imgType">redundant, legacy.</param>
+        /// <param name="imgType">Defines outpupt type: empty,png,jpg. Default = webp </param>
         /// <returns></returns>
-        public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType)
+        public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)
         {
             if (String.IsNullOrEmpty(imgRelPath)) imgRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
 
@@ -443,13 +447,13 @@ namespace DNNrocketAPI.render
             var displayExtension = Path.GetExtension(imgRelPath).ToLower();
             if ((width > 0 || height > 0) && displayExtension != ".svg") // create resized image on disk
             {
-                if (displayExtension != ".png") displayExtension = ".webp";
+                if (imgType != "") displayExtension = "." + imgType;
                 var newRelPath = Path.GetDirectoryName(imgRelPath).Replace("\\","/") + "/" + Path.GetFileNameWithoutExtension(imgRelPath) + "_" + width + "_" + height + displayExtension;
                 var newMapPath = DNNrocketUtils.MapPath(newRelPath);
                 var srcMapPath = DNNrocketUtils.MapPath(imgRelPath);
                 if (!File.Exists(newMapPath) && File.Exists(srcMapPath))
                 {
-                    RocketUtils.ImgUtils.ProcessResizeImage(srcMapPath, newMapPath, width, height);
+                    RocketUtils.ImgUtils.ProcessResizeImage(srcMapPath, newMapPath, width, height, imgType, cropCenter);
                 }
                 imgRelPath = engineUrl.TrimEnd('/') + "/" + newRelPath.TrimStart('/');
             }
@@ -822,66 +826,6 @@ namespace DNNrocketAPI.render
         }
 
         #region "Obsolete Methods"
-        [Obsolete("Method is deprecated, please use ImageUrl(url, width, height, imgType) instead.")]
-        public IEncodedString ImageUrl(string url, int width, int height, string extraurlparams, string imgType)
-        {
-            return ImageUrl("", url, width, height, imgType);
-        }
-        [Obsolete("Method is deprecated, please use ImageUrl(url, width, height, imgType) instead.")]
-        public IEncodedString ImageUrl(string url, string extraurlparams, string imgType)
-        {
-            return ImageUrl("", url, 0, 0, imgType);
-        }
-        [Obsolete("Method is deprecated, please use ImageUrl(url, width, height, imgType) instead.")]
-        public IEncodedString ImageUrl(string engineUrl, string url, int width, int height, string extraurlparams, string imgType)
-        {
-            return ImageUrl("", url, 0, 0, imgType);
-        }
-        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
-        public IEncodedString ThumbnailImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
-        {
-            var pngType = "";
-            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
-            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
-            if (url.ToLower().EndsWith(".webp")) pngType = "&imgtype=webp";
-            if (width > 0 || height > 0)
-            {
-                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
-            }
-            else
-            {
-                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
-            }
-            return new RawString(url);
-        }
-        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
-        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
-        {
-            return ThumbnailImageUrl("", url, width, height, extraurlparams, pngImage);
-        }
-        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
-        public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
-        {
-            return ThumbnailImageWebsiteDomainUrl(PortalUtils.DefaultPortalAlias(), url, width, height, extraurlparams, pngImage);
-        }
-        [Obsolete("Method1 is deprecated, please use ImageUrl(...) instead.")]
-        public IEncodedString ThumbnailImageWebsiteDomainUrl(string websiteDomainUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
-        {
-            var pngType = "";
-            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
-            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
-            if (!websiteDomainUrl.StartsWith("http")) websiteDomainUrl = "//" + websiteDomainUrl;
-            if (width > 0 || height > 0)
-            {
-                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
-            }
-            else
-            {
-                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
-            }
-            return new RawString(url);
-        }
-
         #endregion
 
     }

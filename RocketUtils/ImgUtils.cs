@@ -15,14 +15,13 @@ using System.Web;
 using System.Xml.Linq;
 using System.Runtime.InteropServices.ComTypes;
 
-// [TODO: Convert to https://github.com/dlemstra/Magick.NET]
-// This is already using Magick, but it has been integrated for Webp and merged into old code that was created before webp and Magik existed.
+// uses: https://github.com/dlemstra/Magick.NET
 
 namespace RocketUtils
 {
     public static class ImgUtils
     {
-        public static void ProcessResizeImage(string inputPath, string outputPath, int width, int height)
+        public static void ProcessResizeImage(string inputPath, string outputPath, int width, int height, string imgType = "webp", bool cropcenter = true)
         {
             using (var img = new MagickImage(inputPath))
             {
@@ -51,18 +50,20 @@ namespace RocketUtils
                         new_width = (int)Math.Round((decimal)(new_height / current_ratio));
                     }
 
-
-                    String geomStr = width.ToString() + "x" + height.ToString();
-                    String newGeomStr = new_width.ToString() + "x" + new_height.ToString();
-
-                    var intermediate_geo = new MagickGeometry(newGeomStr);
-                    var final_geo = new MagickGeometry(geomStr);
-                    if (displayExtension == ".png")
+                    if (imgType.ToLower() == "png")
                         img.Format = MagickFormat.Png;
+                    else if (imgType.ToLower() == "jpg")
+                        img.Format = MagickFormat.Jpg;
                     else
                         img.Format = MagickFormat.WebP;
-                    img.Resize(intermediate_geo);
-                    img.Crop(final_geo);
+
+                    img.Resize((uint)new_width, (uint)new_height);
+                    
+                    if (cropcenter)
+                        img.Crop((uint)width, (uint)height, Gravity.Center);
+                    else
+                        img.Crop((uint)width, (uint)height, Gravity.Northwest);
+
                     img.Write(outputPath);
                 }
             }
