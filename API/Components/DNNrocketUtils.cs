@@ -2100,6 +2100,25 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+        public static List<Dependency> InjectDependencies(string moduleRef, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
+        {
+            var rtn = (List<Dependency>)CacheUtils.GetCache("dependencyList" + moduleRef, moduleRef);
+            if (rtn == null)
+            {
+                rtn = new List<Dependency>();
+                foreach (var dep in DependanciesList(moduleRef, appTheme, domainUrl, appThemeSystemFolder))
+                {
+                    var dependencyData = new Dependency(dep); 
+                    if (dependencyData.ecofriendly == ecoMode || ecoMode == false)
+                    {
+                        if (!dependencyData.IgnoreOnSkin(skinSrc)) rtn.Add(dependencyData);
+                    }
+                }
+                CacheUtils.SetCache("dependencyList" + moduleRef,rtn, moduleRef);
+            }
+            return rtn;
+        }
+        [Obsolete("Use InjectDependencies(string moduleRef, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)")]
         public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
         {
             var cssDep = (Dictionary<string, string>)CacheUtils.GetCache("cssdep" + moduleRef, moduleRef);

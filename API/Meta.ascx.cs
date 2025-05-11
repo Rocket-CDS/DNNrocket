@@ -87,8 +87,9 @@ namespace RocketTools
                 if (metaPageData.KeyWords != "") page.Header.Keywords = metaPageData.KeyWords;
                 if (!String.IsNullOrEmpty(metaPageData.CanonicalLinkUrl) && !_disablecanonical) page.CanonicalLinkUrl = metaPageData.CanonicalLinkUrl;
 
-                foreach (var meta in metaPageData.HtmlMeta)
+                foreach (var metaDict in metaPageData.HtmlMeta)
                 {
+                    var meta = PagesUtils.BuildMeta("", metaDict.Key, metaDict.Value);
                     page.Header.Controls.Add(meta);
                 }
 

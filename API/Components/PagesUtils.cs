@@ -597,7 +597,7 @@ namespace DNNrocketAPI.Components
                 }
 
                 var articleMeta = false;
-                var metaList = new List<HtmlMeta>();
+                var metaList = new Dictionary<string,string>();
                 var articleid = 0;
                 var articleParamKey = "";
                 var foundArticle = false;
@@ -657,13 +657,13 @@ namespace DNNrocketAPI.Components
                                         string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(metatitle) };
                                         var ogurl = DNNrocketUtils.NavigateURL(articleDefaultTabId, dataRecordTemp.Lang, urlparams);
 
-                                        metaList.Add(BuildMeta("", "og:type", "article"));
-                                        metaList.Add(BuildMeta("", "og:title", metatitle.Truncate(200).Replace("\"", "")));
-                                        metaList.Add(BuildMeta("", "og:description", metadescription.Truncate(260).Replace("\"", "")));
-                                        metaList.Add(BuildMeta("", "og:url", ogurl));
+                                        metaList.Add("og:type", "article");
+                                        metaList.Add("og:title", metatitle.Truncate(200).Replace("\"", ""));
+                                        metaList.Add("og:description", metadescription.Truncate(260).Replace("\"", ""));
+                                        metaList.Add("og:url", ogurl);
                                         var imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
                                         if (imgRelPath == "") imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
-                                        if (imgRelPath != "") metaList.Add(BuildMeta("", "og:image", requestUri.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/')));
+                                        if (imgRelPath != "") metaList.Add("og:image", requestUri.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/'));
 
                                         articleMeta = true;
                                     }
@@ -760,7 +760,7 @@ namespace DNNrocketAPI.Components
 
                 foreach (var meta in metaList)
                 {
-                    page.HtmlMeta.Add(meta);
+                    page.HtmlMeta.Add(meta.Key, meta.Value);
                 }
 
                 if (plRecord != null)
@@ -780,8 +780,7 @@ namespace DNNrocketAPI.Components
                 return page;
             }
         }
-
-        private static HtmlMeta BuildMeta(string name, string property, string content)
+        public static HtmlMeta BuildMeta(string name, string property, string content)
         {
             HtmlMeta meta = new HtmlMeta();
             meta.Name = name;

@@ -274,6 +274,7 @@
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />
+    <Compile Include="Components\DependencyData.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />

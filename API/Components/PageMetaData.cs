@@ -15,7 +15,7 @@ namespace DNNrocketAPI.Components
         public PageMetaData()
         {
             CssRemovalPattern = new List<string>();
-            HtmlMeta = new List<HtmlMeta>();
+            HtmlMeta = new Dictionary<string, string>();
         }
         public string Language { get; set; }
         public string Title { get; set; }
@@ -23,7 +23,7 @@ namespace DNNrocketAPI.Components
         public string KeyWords { get; set; }
         public string CanonicalLinkUrl { get; set; }
         public string AlternateLinkHtml { get; set; }
-        public List<HtmlMeta> HtmlMeta { get; set; }
+        public Dictionary<string, string> HtmlMeta { get; set; }
         public bool Redirect404 { get; set; }
         public List<string> CssRemovalPattern { get; set; }
 

@@ -196,9 +196,12 @@
     <value>NOTE: Dependancies are only used in the front website view.  For Admin use "AdminFirstHeader.cshtml".</value>
   </data>
   <data name="dependancies.Text" xml:space="preserve">
-    <value>Dependancies</value>
+    <value>Dependencies</value>
   </data>
-  <data name="details.Text" xml:space="preserve">
+    <data name="dependencies.Text" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+	<data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
   </data>
   <data name="displayname.Text" xml:space="preserve">
