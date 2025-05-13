@@ -424,7 +424,7 @@ namespace DNNrocketAPI.render
         /// <summary>
         /// Display Thumbnail Image
         /// 
-        /// - DEFAULT RULE: WEBP will always output as WEBP, PNG will always output as PNG.  JPG,JPEG will always output as WEBP.
+        /// - DEFAULT RULE: PNG will always output as PNG all other supported image formats will output as WEBP.
         /// note: The default rule can be overwritten is the "imgtype" is passed.
         /// default rule set by FMC on 9/1/2024
         /// 
@@ -432,7 +432,7 @@ namespace DNNrocketAPI.render
         /// The cache holds a link to the locked image file and must be disposed.
         /// use: DNNrocketUtils.ClearThumbnailLock();
         /// </summary>
-        /// <param name="engineUrl"></param>
+        /// <param name="engineUrl">Domain URL, used to get full URL image path.</param>
         /// <param name="imgRelPath"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -442,15 +442,21 @@ namespace DNNrocketAPI.render
         public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)
         {
             if (String.IsNullOrEmpty(imgRelPath)) imgRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            var srcMapPath = DNNrocketUtils.MapPath(imgRelPath);
 
             imgRelPath = "/" + imgRelPath.TrimStart('/'); // ensure a valid rel path.
-            var displayExtension = Path.GetExtension(imgRelPath).ToLower();
-            if ((width > 0 || height > 0) && displayExtension != ".svg") // create resized image on disk
+            var fileExtension = Path.GetExtension(imgRelPath).ToLower();
+            if ((width != 0 || height != 0) && fileExtension != ".svg") // create resized image on disk
             {
-                if (imgType != "") displayExtension = "." + imgType;
-                var newRelPath = Path.GetDirectoryName(imgRelPath).Replace("\\","/") + "/" + Path.GetFileNameWithoutExtension(imgRelPath) + "_" + width + "_" + height + displayExtension;
+                var newExtension = ".webp";
+                if (imgType != "") newExtension = "." + imgType;
+                if (fileExtension == ".png")
+                {
+                    newExtension = fileExtension;
+                    imgType = "png";
+                }
+                var newRelPath = Path.GetDirectoryName(imgRelPath).Replace("\\","/") + "/" + Path.GetFileNameWithoutExtension(imgRelPath) + "_" + width + "_" + height + newExtension;
                 var newMapPath = DNNrocketUtils.MapPath(newRelPath);
-                var srcMapPath = DNNrocketUtils.MapPath(imgRelPath);
                 if (!File.Exists(newMapPath) && File.Exists(srcMapPath))
                 {
                     RocketUtils.ImgUtils.ProcessResizeImage(srcMapPath, newMapPath, width, height, imgType, cropCenter);

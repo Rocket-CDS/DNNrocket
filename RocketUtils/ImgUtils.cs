@@ -24,14 +24,24 @@ namespace RocketUtils
         public static void ProcessResizeImage(string inputPath, string outputPath, int width, int height, string imgType = "webp", bool cropcenter = true)
         {
             using (var img = new MagickImage(inputPath))
-            {
+            {                
                 if (img.Height != height || img.Width != width)
                 {
-                    var displayExtension = Path.GetExtension(inputPath).ToLower();
+                    if (height < 0) //dynamically choose Height or Width to resize
+                    {                        
+                        height = 0;
+                        if (img.Width < img.Height)
+                        {
+                            height = width;
+                            width = 0;
+                        }
+                    }
 
+                    var displayExtension = Path.GetExtension(inputPath).ToLower();
+                    if (width == 0) width = (int)img.Width;
                     decimal result_ratio = (decimal)height / (decimal)width;
                     decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
-
+                    
                     Boolean preserve_width = false;
                     if (current_ratio > result_ratio)
                     {
@@ -138,23 +148,9 @@ namespace RocketUtils
         {
             if (File.Exists(MapPath))
             {
-                try
+                using (var img = new MagickImage(MapPath))
                 {
-                    Bitmap image = new Bitmap(MapPath);
-                    for (int y = 0; y < image.Height; ++y)
-                    {
-                        for (int x = 0; x < image.Width; ++x)
-                        {
-                            if (image.GetPixel(x, y).A != 255)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
+                    return img.IsOpaque;
                 }
             }
             return false;
