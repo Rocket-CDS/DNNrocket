@@ -27,8 +27,8 @@ namespace RocketUtils
             {                
                 if (img.Height != height || img.Width != width)
                 {
+                    var displayExtension = Path.GetExtension(inputPath).ToLower();
                     decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
-
                     if (height < 0) //dynamically choose Height or Width to resize
                     {                        
                         height = 0;
@@ -38,11 +38,9 @@ namespace RocketUtils
                             width = (int)Math.Round((decimal)(height / current_ratio));
                         }
                     }
-
-                    var displayExtension = Path.GetExtension(inputPath).ToLower();
-                    if (width == 0) width = (int)img.Width;
+                    if (width == 0) width = width = (int)Math.Round((decimal)(height / current_ratio));
                     decimal result_ratio = (decimal)height / (decimal)width;
-                    
+
                     Boolean preserve_width = false;
                     if (current_ratio > result_ratio)
                     {
