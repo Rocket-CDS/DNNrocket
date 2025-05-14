@@ -46,7 +46,6 @@ namespace RocketTools
     {
         private int _portalId;
         private string _cultureCode;
-        private string _metatitle = "";
         private string _metadescription = "";
         private string _metatagwords = "";
         private string _articleTable = "";
@@ -78,7 +77,7 @@ namespace RocketTools
 
                 page.CanonicalLinkUrl = ""; // remove so we dont; display anything from invalid module values.
 
-                if (page.Title != "") page.Title = _metatitle;
+                if (metaPageData.Title != "") page.Title = metaPageData.Title;
                 if (metaPageData.Description != "") page.Description = metaPageData.Description;
                 if (metaPageData.Description != "") page.MetaDescription = metaPageData.Description;
                 if (metaPageData.Description != "") page.Header.Description = metaPageData.Description;
