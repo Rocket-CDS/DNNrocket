@@ -120,7 +120,8 @@
 	    <value>\bin\RocketTools.dll</value>
 		<value>\bin\RocketUtils.dll</value>
 		<value>\bin\RocketAppThemes.dll</value>
-        <value>\API\_external\Newtonsoft.Json.dll</value>
+		<value>\bin\RocketMVC.dll</value>
+		<value>\API\_external\Newtonsoft.Json.dll</value>
         <value>\API\_external\netstandard.dll</value>
         <value>\API\_external\System.Drawing.Common.dll</value>
 	</assembly>

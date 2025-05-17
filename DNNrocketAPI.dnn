@@ -111,6 +111,12 @@
 					<sourceFileName>RocketUtils.dll</sourceFileName>
 				</assembly>
 
+				<assembly>
+					<path>bin</path>
+					<name>RocketMVC.dll</name>
+					<sourceFileName>RocketMVC.dll</sourceFileName>
+				</assembly>
+
 			</assemblies>
 		</component>
       </components>
