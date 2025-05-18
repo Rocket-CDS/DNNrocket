@@ -1,0 +1,183 @@
+<root>
+  <!-- To build install file use "Solution Directory" -->
+	<version>1.5.0</version>
+	<!-- Include only files that match the regular expression -->
+  <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
+  <name>DNNrocket</name>
+  <directory include='false'>
+		<!-- All paths should be from the source root (project root) -->
+		<value>\.git</value>
+		<value>\.vs</value>
+		<value>\bin</value>
+
+  </directory>
+  <directory include='true'>
+    <!-- All paths should be from the source root (project root) -->
+    <value>\API</value>
+    <value>\API\App_LocalResources</value>
+    <value>\API\images\*</value>
+    <value>\API\Systems</value>
+    <value>\API\Themes\*</value>
+	<value>\API\CKEditor\*</value>
+
+	  <value>\Country</value>
+    <value>\Country\App_LocalResources</value>
+    <value>\Country\Themes\*</value>
+
+    <value>\Documents</value>
+    <value>\Documents\Themes\*</value>
+
+    <value>\Images</value>
+    <value>\Images\App_LocalResources</value>
+    <value>\Images\Themes\*</value>
+
+    <value>\Simplisity</value>
+    <value>\Simplisity\js</value>
+	<value>\Simplisity\css</value>
+
+	<value>\css\*</value>
+    <value>\js\*</value>
+    <value>\Quill\*</value>
+    <value>\CodeMirror\*</value>
+
+    <value>\RocketPortal</value>
+    <value>\RocketPortal\App_LocalResources</value>
+    <value>\RocketPortal\Themes\*</value>
+    <value>\RocketPortal\Skins\*</value>
+    <value>\RocketPortal\Installation</value>
+    <value>\RocketPortal\WebsiteBuilds</value>
+
+    <value>\RocketAppTheme</value>
+    <value>\RocketAppTheme\App_LocalResources</value>
+    <value>\RocketAppTheme\AppThemeBase</value>
+    <value>\RocketAppTheme\Themes\*</value>
+
+	<value>\RocketTools</value>
+	<value>\RocketTools\App_LocalResources</value>
+	<value>\RocketTools\Installation</value>
+	<value>\RocketTools\Themes\*</value>
+
+  </directory>
+  <file include='false'>
+  </file>
+  <file include='true'>
+    <!-- All paths should be from the source root (project root) -->
+    <!-- These files will be NOT in the Resource.zip, they will be on the root of the install zip -->
+    <value>\API\Installation\01.00.00.SqlDataProvider</value>
+	  <value>\API\Installation\01.00.21.SqlDataProvider</value>
+	  <value>\API\Installation\01.01.01.SqlDataProvider</value>
+	  <value>\API\Installation\Uninstall.SqlDataProvider</value>
+
+    <value>\API\images\action_bottom.svg</value>
+    <value>\API\images\action_delete.svg</value>
+    <value>\API\images\action_down.svg</value>
+    <value>\API\images\action_export.svg</value>
+    <value>\API\images\action_help.svg</value>
+    <value>\API\images\action_import.svg</value>
+    <value>\API\images\action_move.svg</value>
+    <value>\API\images\action_print.svg</value>
+    <value>\API\images\action_refresh.svg</value>
+    <value>\API\images\action_rss.svg</value>
+    <value>\API\images\action_settings.svg</value>
+    <value>\API\images\action_source.svg</value>
+    <value>\API\images\action_sourcecode.svg</value>
+    <value>\API\images\action_top.svg</value>
+    <value>\API\images\action_up.svg</value>
+    <value>\API\images\clear_cache.svg</value>
+    <value>\API\images\edit.svg</value>
+    <value>\API\images\edit_app.svg</value>
+    <value>\API\images\level_module.svg</value>
+    <value>\API\images\level_portal.svg</value>
+    <value>\API\images\restart_app.svg</value>
+    <value>\API\images\rocketcds-logo-web.png</value>
+    <value>\API\images\rocketcds-logo.svg</value>
+	  <value>\API\images\recycling.svg</value>
+	  <value>\API\images\rocketcds-personabarlogo.svg</value>
+	  <value>\RocketPortal\Skins\rocketportal\rocketadmin.ascx</value>
+	  <value>\RocketPortal\Skins\rocketportal\rocketadmin.xml</value>
+	  <value>\RocketPortal\Skins\rocketportal\rocketedit.ascx</value>
+	  <value>\RocketPortal\Skins\rocketportal\rocketedit.xml</value>
+	  <value>\API\images\nevoweb-32x32.png</value>
+	  <value>\API\images\nevoweb-logo.jpg</value>
+	  <value>\API\images\nevoweb-logo.png</value>
+	  <value>\API\images\rocket-32x32-white.png</value>
+	  <value>\API\images\rocket-32x32.png</value>
+	  <value>\API\images\rocket-logo-512x512-white.png</value>
+	  <value>\API\images\rocket-logo-512x512.png</value>
+	  <value>\API\images\rocket-logo-white.png</value>
+	  <value>\API\images\rocket-logo.png</value>
+	  <value>\API\images\rocket-small-logo.png</value>
+
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\01.00.00.SqlDataProvider</value>
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\Uninstall.SqlDataProvider</value>
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\SystemDefaults.rules</value>
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\Resource.zip</value>
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\system.rules</value>
+
+	  <value dest='RocketContentMod'>..\RocketModules\RocketContentMod\Installation\Resource.zip</value>
+
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\01.00.00.SqlDataProvider</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\Uninstall.SqlDataProvider</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\SystemDefaults.rules</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\SystemInit.rules</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\Resource.zip</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\system.rules</value>
+
+	  <value dest='RocketDirectoryMod'>..\RocketModules\RocketDirectoryMod\Installation\Resource.zip</value>
+
+	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\Installation\SystemInit.rules</value>
+	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\Installation\Resource.zip</value>
+	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\system.rules</value>
+
+	  <value dest='RocketBlogMod'>..\RocketModules\RocketBlogMod\Installation\Resource.zip</value>
+
+	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\Installation\SystemInit.rules</value>
+	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\Installation\Resource.zip</value>
+	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\system.rules</value>
+
+	  <value dest='RocketEventsMod'>..\RocketModules\RocketEventsMod\Installation\Resource.zip</value>
+
+	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\Installation\SystemInit.rules</value>
+	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\Installation\Resource.zip</value>
+	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\system.rules</value>
+
+	  <value dest='RocketNewsMod'>..\RocketModules\RocketNewsMod\Installation\Resource.zip</value>
+
+	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\Installation\SystemDefaults.rules</value>
+	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\Installation\Resource.zip</value>
+	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\system.rules</value>
+
+	  <value dest='RocketFormsMod'>..\RocketModules\RocketFormsMod\Installation\Resource.zip</value>
+
+
+  </file>
+	<assembly>
+        <value>\bin\Simplisity.dll</value>
+        <value>\bin\DNNrocketImages.dll</value>
+        <value>\bin\DNNrocketDocuments.dll</value>
+        <value>\bin\DNNrocketCountry.dll</value>
+        <value>\bin\DNNrocketAPI.dll</value>
+        <value>\bin\RocketPortal.dll</value>
+	    <value>\bin\RocketTools.dll</value>
+		<value>\bin\RocketUtils.dll</value>
+		<value>\bin\RocketAppThemes.dll</value>
+		<value>\bin\RocketMVC.dll</value>
+		<value>\API\_external\Newtonsoft.Json.dll</value>
+        <value>\API\_external\netstandard.dll</value>
+        <value>\API\_external\System.Drawing.Common.dll</value>
+
+		<value>\bin\RocketContentAPI.dll</value>
+		<value>\bin\RocketContentMod.dll</value>
+		<value>\bin\RocketDirectoryAPI.dll</value>
+		<value>\bin\RocketDirectoryMod.dll</value>
+		<value>\bin\RocketBlogAPI.dll</value>
+		<value>\bin\RocketBlogMod.dll</value>
+		<value>\bin\RocketEventsAPI.dll</value>
+		<value>\bin\RocketEventsMod.dll</value>
+		<value>\bin\RocketNewsAPI.dll</value>
+		<value>\bin\RocketNewsMod.dll</value>
+		<value>\bin\RocketForms.dll</value>
+		<value>\bin\RocketFormsMod.dll</value>
+
+	</assembly>
+</root>
