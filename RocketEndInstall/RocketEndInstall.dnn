@@ -39,7 +39,7 @@
 				<component type="Script">
 					<scripts>
 						<basePath>
-							<basePath>DesktopModules\RocketEndInstall</basePath>
+							<basePath>DesktopModules\DNNrocket\RocketEndInstall</basePath>
 						</basePath>
 						<script type="Install">
 							<name>01.00.03.SqlDataProvider</name>

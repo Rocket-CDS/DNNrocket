@@ -149,6 +149,8 @@
 
 	  <value dest='RocketFormsMod'>..\RocketModules\RocketFormsMod\Installation\Resource.zip</value>
 
+	  <value dest='RocketEndInstall'>..\DNNRocket\RocketEndInstall\Installation\Resource.zip</value>
+	  <value dest='RocketEndInstall'>..\DNNRocket\RocketEndInstall\Installation\01.00.03.SqlDataProvider</value>
 
   </file>
 	<assembly>

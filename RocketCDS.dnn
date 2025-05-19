@@ -1384,10 +1384,19 @@
 
 			<components>
 
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\Admin</basePath>
+						<resourceFile>
+							<name>RocketEndInstall\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
 				<component type="Script">
 					<scripts>
 						<basePath>
-							<basePath>DesktopModules\RocketEndInstall</basePath>
+							<basePath>DesktopModules\DNNrocket\RocketEndInstall</basePath>
 						</basePath>
 						<script type="Install">
 							<name>RocketEndInstall\01.00.03.SqlDataProvider</name>
@@ -1396,65 +1405,6 @@
 					</scripts>
 				</component>
 
-				<component type="File">
-					<files>
-
-						<basePath>\</basePath>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketCDS\RocketCDS.html</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketCDS\RocketCDS.html</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketCDS\App_LocalResources\RocketCDS.resx</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketCDS\App_LocalResources\RocketCDS.resx</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketCDS\css\RocketCDS.css</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketCDS\css\RocketCDS.css</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketCDS\scripts\RocketCDS.js</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketCDS\scripts\RocketCDS.js</sourceFileName>
-						</file>
-
-
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketRestart\RocketRestart.html</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketRestart\RocketRestart.html</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketRestart\App_LocalResources\RocketRestart.resx</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketRestart\App_LocalResources\RocketRestart.resx</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketRestart\css\RocketRestart.css</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketRestart\css\RocketRestart.css</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketRestart\scripts\RocketRestart.js</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketRestart\scripts\RocketRestart.js</sourceFileName>
-						</file>
-
-
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketClearCache\RocketClearCache.html</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketClearCache\RocketClearCache.html</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketClearCache\App_LocalResources\RocketClearCache.resx</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketClearCache\App_LocalResources\RocketClearCache.resx</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketClearCache\css\RocketClearCache.css</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketClearCache\css\RocketClearCache.css</sourceFileName>
-						</file>
-						<file>
-							<name>DesktopModules\Admin\Dnn.PersonaBar\Modules\RocketClearCache\scripts\RocketClearCache.js</name>
-							<sourceFileName>Dnn.PersonaBar\Modules\RocketClearCache\scripts\RocketClearCache.js</sourceFileName>
-						</file>
-
-					</files>
-				</component>
 
 				<component type="Assembly">
 					<assemblies>
