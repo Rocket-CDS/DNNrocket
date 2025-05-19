@@ -1,0 +1,88 @@
+﻿<dotnetnuke type="Package" version="5.0">
+	<packages>
+
+		<package name="RocketEndInstall" type="Library" version="1.0.0">
+			<friendlyName>RocketEndInstall</friendlyName>
+			<description>RocketEndInstall - Do any processing to finish RocketCDs installation.</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David C Lee</name>
+				<organization>Nevoweb - DNN Rocket</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2022, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketCDS
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\Admin</basePath>
+						<resourceFile>
+							<name>Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Script">
+					<scripts>
+						<basePath>
+							<basePath>DesktopModules\RocketEndInstall</basePath>
+						</basePath>
+						<script type="Install">
+							<name>01.00.03.SqlDataProvider</name>
+							<version>01.00.03</version>
+						</script>
+					</scripts>
+				</component>
+
+
+				<component type="Assembly">
+					<assemblies>
+
+						<assembly>
+							<path>bin</path>
+							<name>Magick.NET.Core.dll</name>
+							<sourceFileName>Magick.NET.Core.dll</sourceFileName>
+						</assembly>
+						<assembly>
+							<path>bin</path>
+							<name>Magick.NET-Q8-AnyCPU.dll</name>
+							<sourceFileName>Magick.NET-Q8-AnyCPU.dll</sourceFileName>
+						</assembly>
+						<assembly>
+							<path>bin</path>
+							<name>RazorEngine.dll</name>
+							<sourceFileName>RazorEngine.dll</sourceFileName>
+						</assembly>
+						<assembly>
+							<path>bin</path>
+							<name>ThoughtWorks.QRCode.dll</name>
+							<sourceFileName>ThoughtWorks.QRCode.dll</sourceFileName>
+						</assembly>
+						<assembly>
+							<path>bin</path>
+							<name>Magick.Native-Q8-x64.dll</name>
+							<sourceFileName>Magick.Native-Q8-x64.dll</sourceFileName>
+						</assembly>
+
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+	</packages>
+</dotnetnuke>

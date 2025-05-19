@@ -1,0 +1,53 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       PERSONABAR                    ------------
+-------------------------------------------------------------------------------
+
+delete {databaseOwner}[{objectQualifier}PersonaBarMenu] where Identifier = 'RocketCDS'
+GO
+
+insert into {databaseOwner}[{objectQualifier}PersonaBarMenu] (
+    Identifier, ModuleName, ResourceKey, 
+    [Path], ParentId, [Order], 
+    AllowHost, [Enabled])
+values(
+    'RocketCDS', 'RocketCDS', 'nav_RocketCDS', 
+    'RocketCDS', 1, 500, 
+    1, 1)
+
+
+GO
+
+delete {databaseOwner}[{objectQualifier}PersonaBarMenu] where Identifier = 'RocketRestart'
+GO
+
+insert into PersonaBarMenu (
+    Identifier, ModuleName, ResourceKey, 
+    [Path], ParentId, [Order], 
+    AllowHost, [Enabled])
+values(
+    'RocketRestart', 'RocketRestart', 'nav_RocketRestart', 
+    'RocketRestart', 1, 505, 
+    1, 1)
+
+GO
+
+delete {databaseOwner}[{objectQualifier}PersonaBarMenu] where Identifier = 'RocketClearCache'
+GO
+
+insert into PersonaBarMenu (
+    Identifier, ModuleName, ResourceKey, 
+    [Path], ParentId, [Order], 
+    AllowHost, [Enabled])
+values(
+    'RocketClearCache', 'RocketClearCache', 'nav_RocketClearCache', 
+    'RocketClearCache', 1, 510, 
+    1, 1)
+
+GO
+
+
+

@@ -1,0 +1,10 @@
+insert into PersonaBarMenu (
+    Identifier, ModuleName, ResourceKey, 
+    [Path], ParentId, [Order], 
+    AllowHost, [Enabled])
+values(
+    'RocketClearCache', 'RocketClearCache', 'nav_RocketClearCache', 
+    'RocketClearCache', 1, 100, 
+    1, 1)
+
+    

@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		admin.html = admin.html
 		adminsystem.html = adminsystem.html
 		..\dnnpack.config = ..\dnnpack.config
+		DNNrocket.dnnpack = DNNrocket.dnnpack
 		DNNrocketAPI.dnn = DNNrocketAPI.dnn
 		Installation.md = Installation.md
 		README.md = README.md
@@ -60,6 +61,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketFormsMod", "..\RocketModules\RocketFormsMod\RocketFormsMod.csproj", "{3BB4277A-A2B0-416A-9D0F-167D0DB0507C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketNewsMod", "..\RocketModules\RocketNewsMod\RocketNewsMod.csproj", "{C8F9D988-B081-4E0A-9082-223C7A8E6F3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketEndInstall", "RocketEndInstall\RocketEndInstall.csproj", "{158DF8B0-3924-4C6B-8696-3CD367A73F05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -238,6 +241,16 @@ Global
 		{C8F9D988-B081-4E0A-9082-223C7A8E6F3F}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8F9D988-B081-4E0A-9082-223C7A8E6F3F}.Razor|Any CPU.Build.0 = Debug|Any CPU
 		{C8F9D988-B081-4E0A-9082-223C7A8E6F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Comp All (debug)|Any CPU.ActiveCfg = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Comp All (debug)|Any CPU.Build.0 = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.CompAll (release)|Any CPU.ActiveCfg = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.CompAll (release)|Any CPU.Build.0 = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Razor|Any CPU.Build.0 = Debug|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

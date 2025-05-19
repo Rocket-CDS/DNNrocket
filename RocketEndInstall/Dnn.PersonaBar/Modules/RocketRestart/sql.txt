@@ -1,0 +1,10 @@
+insert into PersonaBarMenu (
+    Identifier, ModuleName, ResourceKey, 
+    [Path], ParentId, [Order], 
+    AllowHost, [Enabled])
+values(
+    'RocketRestart', 'RocketRestart', 'nav_RocketRestart', 
+    'RocketRestart', 1, 100, 
+    1, 1)
+
+    

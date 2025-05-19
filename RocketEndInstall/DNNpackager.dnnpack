@@ -1,0 +1,36 @@
+<root>
+	<version>1.0.0</version>
+  <websitedestrelpath>\DesktopModules\DNNrocket\API</websitedestrelpath>
+  <websitedestbinrelpath>\bin</websitedestbinrelpath>
+  <!-- Include only files that match the regular expression -->
+    <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
+	<directory include='false'>
+		<!-- All paths should be from the source root (project root) -->
+		<value>\.git</value>
+		<value>\.vs</value>
+		<value>\bin</value>
+		<value>\Components</value>
+		<value>\Installation</value>
+		<value>\Interfaces</value>
+		<value>\obj</value>
+		<value>\packages</value>
+		<value>\Providers</value>
+    <value>\render</value>
+    <value>\SqlDataProvider</value>
+    <value>\_external</value>
+    <value>\ApiControllers</value>
+	</directory>
+	<directory include='true'>
+		<value>\Dnn.PersonaBar\*</value>
+	</directory>
+	<file include='true'>
+		<value>\Installation\01.00.03.SqlDataProvider</value>
+	</file>
+	<assembly>
+		<value>\_external\Magick.NET.Core.dll</value>
+		<value>\_external\Magick.NET-Q8-AnyCPU.dll</value>
+		<value>\_external\RazorEngine.dll</value>
+		<value>\_external\ThoughtWorks.QRCode.dll</value>
+		<value>\_external\Magick.Native-Q8-x64.dll</value>
+	</assembly>
+</root>

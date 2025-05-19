@@ -1,0 +1,24 @@
+
+<div id="my-persona-bar-component">
+
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js?v=1"></script>
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css">
+
+<div id="adminpanel">
+    <div class="simplisity_loader">
+        <span class=" simplisity_loader_inner">
+        </span>
+    </div>
+</div>    
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rocketapi_recycleapppool', '{"systemkey":"rocketapi"}', '')
+    });
+
+</script>
+
+
+</div>
