@@ -1,0 +1,1362 @@
+﻿<dotnetnuke type="Package" version="5.0">
+	<packages>
+		<package name="RocketSystem" type="Library" version="1.5.0">
+			<friendlyName>RocketSystem</friendlyName>
+			<DefinitionName>RocketSystem</DefinitionName>
+			<description>Rocket System</description>
+      <iconFile></iconFile>
+      <owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+        Copyright (c) 2019, www.nevoweb.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+		<releaseNotes>
+			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
+			# DNNrocket v1.5.0
+		</releaseNotes>
+      <dependencies>
+      </dependencies>
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\DNNrocket</basePath>
+            <script type="Install">
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+			  <script type="Install">
+				  <name>01.00.21.SqlDataProvider</name>
+				  <version>01.00.21</version>
+			  </script>
+			  <script type="Install">
+				  <name>01.01.01.SqlDataProvider</name>
+				  <version>01.01.01</version>
+			  </script>
+			  <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="ResourceFile">
+			<resourceFiles>
+				<basePath>DesktopModules\DNNrocket</basePath>
+				<resourceFile>
+					<name>Resource.zip</name>
+				</resourceFile>
+			</resourceFiles>
+		</component>
+  
+		  <component type="Assembly">
+			<assemblies>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>System.Drawing.Common.dll</name>
+				  <sourceFileName>System.Drawing.Common.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>Simplisity.dll</name>
+				  <sourceFileName>Simplisity.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>netstandard.dll</name>
+				  <sourceFileName>netstandard.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>DNNrocketImages.dll</name>
+				  <sourceFileName>DNNrocketImages.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>DNNrocketDocuments.dll</name>
+				  <sourceFileName>DNNrocketDocuments.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>DNNrocketCountry.dll</name>
+				  <sourceFileName>DNNrocketCountry.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+				  <path>bin</path>
+				  <name>DNNrocketAPI.dll</name>
+				  <sourceFileName>DNNrocketAPI.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+					<path>bin</path>
+					<name>RocketTools.dll</name>
+					<sourceFileName>RocketTools.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+					<path>bin</path>
+					<name>RocketUtils.dll</name>
+					<sourceFileName>RocketUtils.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+					<path>bin</path>
+					<name>RocketMVC.dll</name>
+					<sourceFileName>RocketMVC.dll</sourceFileName>
+				</assembly>
+
+			</assemblies>
+		</component>
+      </components>
+		</package>
+
+    <package name="RocketPortal" type="Library" version="1.0.31">
+      <friendlyName>RocketPortal</friendlyName>
+		<DefinitionName>RocketPortal</DefinitionName>
+		<description>RocketPortal</description>
+      <iconFile></iconFile>
+      <owner>
+        <name>David Lee</name>
+        <organization>Nevoweb</organization>
+        <url>www.nevoweb.com</url>
+        <email>support@nevoweb.com</email>
+      </owner>
+      <license>
+        Copyright (c) 2020, www.nevoweb.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+      </releaseNotes>
+
+      <dependencies>
+        <dependency type="CoreVersion">09.00.00</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>RocketPortal.dll</name>
+              <sourceFileName>RocketPortal.dll</sourceFileName>
+            </assembly>
+
+          </assemblies>
+        </component>
+
+        <component type="File">
+	        <files>
+		        <basePath>\</basePath>
+
+				<file>
+					<name>images/action_bottom.svg</name>
+					<sourceFileName>action_bottom.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_delete.svg</name>
+					<sourceFileName>action_delete.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_down.svg</name>
+					<sourceFileName>action_down.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_export.svg</name>
+					<sourceFileName>action_export.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_help.svg</name>
+					<sourceFileName>action_help.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_import.svg</name>
+					<sourceFileName>action_import.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_move.svg</name>
+					<sourceFileName>action_move.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_print.svg</name>
+					<sourceFileName>action_print.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_refresh.svg</name>
+					<sourceFileName>action_refresh.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_rss.svg</name>
+					<sourceFileName>action_rss.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_settings.svg</name>
+					<sourceFileName>action_settings.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_source.svg</name>
+					<sourceFileName>action_source.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_sourcecode.svg</name>
+					<sourceFileName>action_sourcecode.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_top.svg</name>
+					<sourceFileName>action_top.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/action_up.svg</name>
+					<sourceFileName>action_up.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/clear_cache.svg</name>
+					<sourceFileName>clear_cache.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/edit.svg</name>
+					<sourceFileName>edit.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/edit_app.svg</name>
+					<sourceFileName>edit_app.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/level_module.svg</name>
+					<sourceFileName>level_module.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/level_portal.svg</name>
+					<sourceFileName>level_portal.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/restart_app.svg</name>
+					<sourceFileName>restart_app.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/rocketcds-logo-web.png</name>
+					<sourceFileName>rocketcds-logo-web.png</sourceFileName>
+				</file>
+				<file>
+					<name>images/rocketcds-logo.svg</name>
+					<sourceFileName>rocketcds-logo.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/recycling.svg</name>
+					<sourceFileName>recycling.svg</sourceFileName>
+				</file>
+				<file>
+					<name>images/nevoweb-32x32.png</name>
+					<sourceFileName>nevoweb-32x32.png</sourceFileName>
+				</file>
+				<file>
+					<name>images/nevoweb-logo.jpg</name>
+					<sourceFileName>nevoweb-logo.jpg</sourceFileName>
+				</file>
+				<file>
+					<name>images/nevoweb-logo.png</name>
+					<sourceFileName>nevoweb-logo.png</sourceFileName>
+				</file>
+
+				<file>
+					<name>\rocketadmin.ascx</name>
+					<sourceFileName>rocketadmin.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>\rocketadmin.xml</name>
+					<sourceFileName>rocketadmin.xml</sourceFileName>
+				</file>
+
+				<file>
+					<name>\rocketedit.ascx</name>
+					<sourceFileName>rocketedit.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>\rocketedit.xml</name>
+					<sourceFileName>rocketedit.xml</sourceFileName>
+				</file>
+				
+			</files>
+		</component>
+
+	  </components>
+    </package>
+
+    <package name="RocketAppTheme" type="Library" version="1.0.31">
+      <friendlyName>RocketAppTheme</friendlyName>
+		<DefinitionName>RocketAppTheme</DefinitionName>
+		<description>RocketAppTheme</description>
+      <iconFile></iconFile>
+      <owner>
+        <name>David Lee</name>
+        <organization>Nevoweb</organization>
+        <url>www.nevoweb.com</url>
+        <email>support@nevoweb.com</email>
+      </owner>
+      <license>
+        Copyright (c) 2020, www.nevoweb.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+		  RocketAppTheme uses the DNNRocket framework
+		  Installed as part of the RocketSystem Library
+	  </releaseNotes>
+
+      <dependencies>
+        <dependency type="CoreVersion">09.00.00</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="Assembly">
+          <assemblies>
+			  
+            <assembly>
+              <path>bin</path>
+              <name>RocketAppThemes.dll</name>
+              <sourceFileName>RocketAppThemes.dll</sourceFileName>
+            </assembly>	  
+			  
+		  </assemblies>
+        </component>
+
+      </components>
+    </package>
+
+	<package name="RocketContentAPI" type="Library" version="1.1.5">
+			<friendlyName>RocketContentAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketContentAPI</DefinitionName>
+			<description>RocketContentAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketContentAPI uses the DNNRocket framework
+				v1.1.5.0
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+				<component type="Script">
+					<scripts>
+						<basePath>DesktopModules\DNNrocketModules\RocketContentAPI\Installation</basePath>
+						<script type="Install">
+							<name>RocketContentAPI\01.00.00.SqlDataProvider</name>
+							<version>01.00.00</version>
+						</script>
+						<script type="UnInstall">
+							<name>RocketContentAPI\Uninstall.SqlDataProvider</name>
+							<version>01.00.00</version>
+						</script>
+					</scripts>
+				</component>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketContentAPI</basePath>
+						<resourceFile>
+							<name>RocketContentAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketContentAPI.dll</name>
+							<sourceFileName>RocketContentAPI.dll</sourceFileName>
+						</assembly>
+
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+	<package name="RocketContentMod" type="Module" version="1.0.2">
+		<friendlyName>  RocketContent</friendlyName>
+		<DefinitionName>RocketContent</DefinitionName>
+		<description>By Nevoweb - A complete website content editor with built-in AI and language translation.</description>
+		<iconFile>~/DesktopModules/RocketModules/RocketContentMod/icon.png</iconFile>
+		<owner>
+			<name>David Lee</name>
+			<organization>Nevoweb</organization>
+			<url>www.nevoweb.com</url>
+			<email>support@nevoweb.com</email>
+		</owner>
+		<license>
+			Copyright (c) 2020, www.nevoweb.com
+			All rights reserved.
+
+			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+		</license>
+		<releaseNotes>
+		</releaseNotes>
+		<dependencies>
+			<dependency type="CoreVersion">09.00.00</dependency>
+		</dependencies>
+		<components>
+
+			<component type="ResourceFile">
+				<resourceFiles>
+					<basePath>DesktopModules\RocketModules\RocketContentMod</basePath>
+					<resourceFile>
+						<name>RocketContentMod\Resource.zip</name>
+					</resourceFile>
+				</resourceFiles>
+			</component>
+
+			<component type="Assembly">
+				<assemblies>
+					<assembly>
+						<path>bin</path>
+						<name>RocketContentMod.dll</name>
+						<sourceFileName>RocketContentMod.dll</sourceFileName>
+					</assembly>
+				</assemblies>
+			</component>
+
+
+			<component type="Module">
+				<desktopModule>
+					<moduleName>RocketContentMod</moduleName>
+					<foldername>RocketModules/RocketContentMod</foldername>
+					<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+					<supportedFeatures>
+						<supportedFeature type="Portable" />
+						<supportedFeature type="Searchable" />
+						<supportedFeature type="Upgradeable" />
+					</supportedFeatures>
+					<moduleDefinitions>
+						<moduleDefinition>
+							<friendlyName>RocketContent</friendlyName>
+							<DefinitionName>RocketContent</DefinitionName>
+							<defaultCacheTime>0</defaultCacheTime>
+							<moduleControls>
+								<moduleControl>
+									<controlKey />
+									<controlSrc>DesktopModules/RocketModules/RocketContentMod/View.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle />
+									<controlType>View</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+									<viewOrder>0</viewOrder>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>Edit</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketContentMod/Edit.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>Edit</controlTitle>
+									<controlType>Edit</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>Settings</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketContentMod/Settings.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>Settings</controlTitle>
+									<controlType>Admin</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>AppTheme</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketContentMod/AppTheme.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>AppTheme</controlTitle>
+									<controlType>Admin</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>RecycleBin</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketContentMod/RecycleBin.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>RecycleBin</controlTitle>
+									<controlType>Edit</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+							</moduleControls>
+						</moduleDefinition>
+					</moduleDefinitions>
+				</desktopModule>
+				<eventMessage>
+					<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+					<processorCommand>UpgradeModule</processorCommand>
+					<attributes>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+						<upgradeVersionsList>01.00.00</upgradeVersionsList>
+					</attributes>
+				</eventMessage>
+			</component>
+
+		</components>
+	</package>
+
+	<package name="RocketDirectoryAPI" type="Library" version="1.2.5">
+		<friendlyName>RocketDirectoryAPI by Nevoweb</friendlyName>
+		<DefinitionName>RocketDirectoryAPI</DefinitionName>
+		<description>RocketDirectoryAPI</description>
+		<iconFile></iconFile>
+		<owner>
+			<name>David Lee</name>
+			<organization>Nevoweb</organization>
+			<url>www.nevoweb.com</url>
+			<email>support@nevoweb.com</email>
+		</owner>
+		<license>
+			Copyright (c) 2020, www.nevoweb.com
+			All rights reserved.
+
+			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+		</license>
+		<releaseNotes>
+			RocketDirectoryAPI uses the DNNRocket framework
+		</releaseNotes>
+
+		<dependencies>
+			<dependency type="CoreVersion">09.00.00</dependency>
+		</dependencies>
+
+		<components>
+			<component type="Script">
+				<scripts>
+					<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI\Installation</basePath>
+					<script type="Install">
+						<name>RocketDirectoryAPI\01.00.00.SqlDataProvider</name>
+						<version>01.00.00</version>
+					</script>
+					<script type="UnInstall">
+						<name>RocketDirectoryAPI\Uninstall.SqlDataProvider</name>
+						<version>01.00.00</version>
+					</script>
+				</scripts>
+			</component>
+
+			<component type="ResourceFile">
+				<resourceFiles>
+					<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI</basePath>
+					<resourceFile>
+						<name>RocketDirectoryAPI\Resource.zip</name>
+					</resourceFile>
+				</resourceFiles>
+			</component>
+
+			<component type="Assembly">
+				<assemblies>
+					<assembly>
+						<path>bin</path>
+						<name>RocketDirectoryAPI.dll</name>
+						<sourceFileName>RocketDirectoryAPI.dll</sourceFileName>
+					</assembly>
+
+				</assemblies>
+			</component>
+
+		</components>
+	</package>
+
+	<package name="RocketDirectoryMod" type="Module" version="1.0.1">
+		<friendlyName> RocketDirectory</friendlyName>
+		<DefinitionName>RocketDirectory</DefinitionName>
+		<description>By Nevoweb - A directory system for organizing, storing, and managing information about entities.</description>
+		<iconFile>~/DesktopModules/RocketModules/RocketDirectoryMod/icon.png</iconFile>
+		<owner>
+			<name>David Lee</name>
+			<organization>Nevoweb</organization>
+			<url>www.nevoweb.com</url>
+			<email>support@nevoweb.com</email>
+		</owner>
+		<license>
+			Copyright (c) 2020, www.nevoweb.com
+			All rights reserved.
+
+			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+		</license>
+		<releaseNotes>
+		</releaseNotes>
+		<dependencies>
+			<dependency type="CoreVersion">09.00.00</dependency>
+		</dependencies>
+		<components>
+
+			<component type="ResourceFile">
+				<resourceFiles>
+					<basePath>DesktopModules\RocketModules\RocketDirectoryMod</basePath>
+					<resourceFile>
+						<name>RocketDirectoryMod\Resource.zip</name>
+					</resourceFile>
+				</resourceFiles>
+			</component>
+
+			<component type="Assembly">
+				<assemblies>
+					<assembly>
+						<path>bin</path>
+						<name>RocketDirectoryMod.dll</name>
+						<sourceFileName>RocketDirectoryMod.dll</sourceFileName>
+					</assembly>
+				</assemblies>
+			</component>
+
+
+			<component type="Module">
+				<desktopModule>
+					<moduleName>RocketDirectoryMod</moduleName>
+					<foldername>RocketModules/RocketDirectoryMod</foldername>
+					<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+					<supportedFeatures>
+						<supportedFeature type="Portable" />
+						<supportedFeature type="Searchable" />
+						<supportedFeature type="Upgradeable" />
+					</supportedFeatures>
+					<moduleDefinitions>
+						<moduleDefinition>
+							<friendlyName>RocketDirectory</friendlyName>
+							<DefinitionName>RocketDirectory</DefinitionName>
+							<defaultCacheTime>0</defaultCacheTime>
+							<moduleControls>
+								<moduleControl>
+									<controlKey />
+									<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/View.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle />
+									<controlType>View</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+									<viewOrder>0</viewOrder>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>Edit</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Edit.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>Edit</controlTitle>
+									<controlType>Edit</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>Settings</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Settings.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>Settings</controlTitle>
+									<controlType>Admin</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>AppTheme</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AppTheme.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>AppTheme</controlTitle>
+									<controlType>Admin</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+								<moduleControl>
+									<controlKey>AdminPanel</controlKey>
+									<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AdminPanel.ascx</controlSrc>
+									<supportsPartialRendering>False</supportsPartialRendering>
+									<controlTitle>AdminPanel</controlTitle>
+									<controlType>Edit</controlType>
+									<iconFile />
+									<helpUrl />
+									<supportsPopUps>False</supportsPopUps>
+								</moduleControl>
+							</moduleControls>
+						</moduleDefinition>
+					</moduleDefinitions>
+				</desktopModule>
+			</component>
+
+		</components>
+	</package>
+
+		<package name="RocketBlogAPI" type="Library" version="1.0.0">
+			<friendlyName>RocketBlogAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketBlogAPI</DefinitionName>
+			<description>RocketBlogAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketBlogAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketBlogAPI</basePath>
+						<resourceFile>
+							<name>RocketBlogAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketBlogAPI.dll</name>
+							<sourceFileName>RocketBlogAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketBlogMod" type="Module" version="1.0.0">
+			<friendlyName> RocketBlog</friendlyName>
+			<DefinitionName>RocketBlog</DefinitionName>
+			<description>By Nevoweb - An online Blog platform for creation and display of blog posts.</description>
+			<iconFile>~/DesktopModules/RocketModules/RocketBlogMod/icon.png</iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+			</releaseNotes>
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\RocketModules\RocketBlogMod</basePath>
+						<resourceFile>
+							<name>RocketBlogMod\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+
+				<component type="Module">
+					<desktopModule>
+						<moduleName>RocketBlogMod</moduleName>
+						<foldername>RocketModules/RocketDirectoryMod</foldername>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<supportedFeatures>
+							<supportedFeature type="Portable" />
+							<supportedFeature type="Upgradeable" />
+							<supportedFeature type="Searchable" />
+						</supportedFeatures>
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>RocketBlog</friendlyName>
+								<DefinitionName>RocketBlog</DefinitionName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/View.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Edit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Edit</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Settings.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Settings</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AppTheme</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AppTheme.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AppTheme</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AdminPanel</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AdminPanel.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AdminPanel</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketEventsAPI" type="Library" version="1.1.0">
+			<friendlyName>RocketEventsAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketEventsAPI</DefinitionName>
+			<description>RocketEventsAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketEventsAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketEventsAPI</basePath>
+						<resourceFile>
+							<name>RocketEventsAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketEventsAPI.dll</name>
+							<sourceFileName>RocketEventsAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketEventsMod" type="Module" version="1.1.0">
+			<friendlyName> RocketEvents</friendlyName>
+			<DefinitionName>RocketEvents</DefinitionName>
+			<description>By Nevoweb - Events system designed to facilitate the organization, promotion, management, and execution of events over the internet.</description>
+			<iconFile>~/DesktopModules/RocketModules/RocketEventsMod/icon.png</iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+			</releaseNotes>
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\RocketModules\RocketEventsMod</basePath>
+						<resourceFile>
+							<name>RocketEventsMod\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketEventsMod.dll</name>
+							<sourceFileName>RocketEventsMod.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+				<component type="Module">
+					<desktopModule>
+						<moduleName>RocketEventsMod</moduleName>
+						<foldername>RocketModules/RocketDirectoryMod</foldername>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<supportedFeatures>
+							<supportedFeature type="Portable" />
+							<supportedFeature type="Searchable" />
+							<supportedFeature type="Upgradeable" />
+						</supportedFeatures>
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>RocketEvents</friendlyName>
+								<DefinitionName>RocketEvents</DefinitionName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/RocketModules/RocketEventsMod/View.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Edit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Edit</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Settings.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Settings</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AppTheme</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AppTheme.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AppTheme</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AdminPanel</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AdminPanel.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AdminPanel</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketNewsAPI" type="Library" version="1.0.0">
+			<friendlyName>RocketNewsAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketNewsAPI</DefinitionName>
+			<description>RocketNewsAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketNewsAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketNewsAPI</basePath>
+						<resourceFile>
+							<name>RocketNewsAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketNewsAPI.dll</name>
+							<sourceFileName>RocketNewsAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketNewsMod" type="Module" version="1.0.0">
+			<friendlyName> RocketNews</friendlyName>
+			<DefinitionName>RocketNews</DefinitionName>
+			<description>By Nevoweb - An online news system that provides users with access to news articles, reports, videos, and other forms of content.</description>
+			<iconFile>~/DesktopModules/RocketModules/RocketDirectoryMod/icon.png</iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+			</releaseNotes>
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\RocketModules\RocketEventsMod</basePath>
+						<resourceFile>
+							<name>RocketNewsMod\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Module">
+					<desktopModule>
+						<moduleName>RocketNewsMod</moduleName>
+						<foldername>RocketModules/RocketDirectoryMod</foldername>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<supportedFeatures>
+							<supportedFeature type="Portable" />
+							<supportedFeature type="Searchable" />
+							<supportedFeature type="Upgradeable" />
+						</supportedFeatures>
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>RocketNews</friendlyName>
+								<DefinitionName>RocketNews</DefinitionName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/View.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Edit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Edit</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/Settings.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Settings</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AppTheme</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AppTheme.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AppTheme</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AdminPanel</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketDirectoryMod/AdminPanel.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AdminPanel</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketForms" type="Library" version="1.0.5">
+			<friendlyName>RocketForms by Nevoweb</friendlyName>
+			<DefinitionName>RocketForms</DefinitionName>
+			<description>RocketForms</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketForms uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketForms</basePath>
+						<resourceFile>
+							<name>RocketForms\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketForms.dll</name>
+							<sourceFileName>RocketForms.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketFormsMod" type="Module" version="1.0.0">
+			<friendlyName> RocketForm</friendlyName>
+			<DefinitionName>RocketForm</DefinitionName>
+			<description>By Nevoweb - An online form system that is used to collect data from users over the internet.</description>
+			<iconFile>~/DesktopModules/RocketModules/RocketFormsMod/icon.png</iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+			</releaseNotes>
+			<dependencies>
+				<dependency type="CoreVersion">09.00.00</dependency>
+			</dependencies>
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\RocketModules\RocketFormsMod</basePath>
+						<resourceFile>
+							<name>RocketFormsMod\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketFormsMod.dll</name>
+							<sourceFileName>RocketFormsMod.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+
+				<component type="Module">
+					<desktopModule>
+						<moduleName>RocketFormsMod</moduleName>
+						<foldername>RocketModules/RocketFormsMod</foldername>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<supportedFeatures>
+							<supportedFeature type="Portable" />
+							<supportedFeature type="Upgradeable" />
+						</supportedFeatures>
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>RocketForm</friendlyName>
+								<DefinitionName>RocketForm</DefinitionName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/RocketModules/RocketFormsMod/View.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketFormsMod/Edit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Edit</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketFormsMod/Settings.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Settings</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>AppTheme</controlKey>
+										<controlSrc>DesktopModules/RocketModules/RocketFormsMod/AppTheme.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>AppTheme</controlTitle>
+										<controlType>Admin</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+
+			</components>
+		</package>
+
+	</packages>
+</dotnetnuke>

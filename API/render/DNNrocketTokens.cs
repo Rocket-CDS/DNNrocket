@@ -90,13 +90,24 @@ namespace DNNrocketAPI.render
             }
             return DropDownList(info, xpath, dataSytemKeys, attributes, defaultValue, localized, row, listname);
         }
+        /// <summary>
+        /// Output CSV list of resx values. <br/>
+        /// @ResourceCSV("*Resx File Name*", "*csv list of resx file keys*")
+        /// Example:<br/>
+        /// @ResourceCSV("RocketIntra", "test1,test2,test3")
+        /// </summary>
+        /// <param name="resourceFileKey"></param>
+        /// <param name="keyListCSV"></param>
+        /// <param name="lang"></param>
+        /// <param name="resourceExtension"></param>
+        /// <returns></returns>
         public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
         {
             var csvList = keyListCSV.Split(',');
             var strOut = "";
             foreach (var csv in csvList)
             {
-                var resourceFileKeyCsv = resourceFileKey + "-" + csv;
+                var resourceFileKeyCsv = resourceFileKey + "." + csv;
                 strOut += ResourceKeyString(resourceFileKeyCsv, lang, resourceExtension).Replace(",",".") + ",";
             }
             return new RawString(strOut.TrimEnd(','));

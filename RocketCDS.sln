@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		RocketCDS.dnn = RocketCDS.dnn
 		RocketCDS.dnnpack = RocketCDS.dnnpack
+		RocketCDSupgrade.dnn = RocketCDSupgrade.dnn
+		RocketCDSupgrade.dnnpack = RocketCDSupgrade.dnnpack
 		css\w3.css = css\w3.css
 	EndProjectSection
 EndProject
