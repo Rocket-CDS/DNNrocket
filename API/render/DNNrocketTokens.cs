@@ -92,7 +92,7 @@ namespace DNNrocketAPI.render
         }
         /// <summary>
         /// Output CSV list of resx values. <br/>
-        /// @ResourceCSV("*Resx File Name*", "*csv list of resx file keys*")
+        /// @ResourceCSV("Resx File Name", "csv list of resx file keys")
         /// Example:<br/>
         /// @ResourceCSV("RocketIntra", "test1,test2,test3")
         /// </summary>
