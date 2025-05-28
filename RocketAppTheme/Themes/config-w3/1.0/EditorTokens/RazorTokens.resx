@@ -289,7 +289,7 @@
     <comment>Display TextBox field</comment>
   </data>
   <data name="Razor.ThumbnailImageUrl" xml:space="preserve">
-    <value>@ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "")</value>
+    <value>@ImageUrl(string url, int width = 0, int height = 0)</value>
   </data>
   <data name="Razor.ResourceCSV" xml:space="preserve">
     <value>@ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")</value>

@@ -73,8 +73,8 @@
                             var imagecount = Model.List.Count();
                             foreach (string imageName in Model.List)
                             {
-                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@(imageFolderRel)/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(imageFolderRel + "/" + imageName)" selectorcount="@(lp)">
-                                    <img src="@ThumbnailImageUrl(imageFolderRel + "/" + imageName, imagesize, imagesize,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
+                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@(imageFolderRel)/@imageName" dnnrocket-imagethumburl="@ImageUrl(imageFolderRel + "/" + imageName)" selectorcount="@(lp)">
+                                    <img src="@ImageUrl(imageFolderRel + "/" + imageName, imagesize, imagesize,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
                                     <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
                                 </div>
                                 lp += 1;
