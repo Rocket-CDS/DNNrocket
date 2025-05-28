@@ -531,7 +531,7 @@
 		</components>
 	</package>
 
-	<package name="RocketDirectoryAPI" type="Library" version="1.2.5">
+	<package name="RocketDirectoryAPI" type="Library" version="1.2.6">
 		<friendlyName>RocketDirectoryAPI by Nevoweb</friendlyName>
 		<DefinitionName>RocketDirectoryAPI</DefinitionName>
 		<description>RocketDirectoryAPI</description>
@@ -1116,7 +1116,7 @@
 
 				<component type="ResourceFile">
 					<resourceFiles>
-						<basePath>DesktopModules\RocketModules\RocketEventsMod</basePath>
+						<basePath>DesktopModules\RocketModules\RocketNewsMod</basePath>
 						<resourceFile>
 							<name>RocketNewsMod\Resource.zip</name>
 						</resourceFile>
