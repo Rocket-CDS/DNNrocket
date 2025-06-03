@@ -90,7 +90,7 @@ namespace DNNrocket.Images
             var strOut = "";
             var createseo = _paramInfo.GetXmlPropertyBool("genxml/hidden/createseo");
             var resize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
-            if (resize == 0) resize = 640;
+            if (resize == 0) resize = 1024;
             var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {

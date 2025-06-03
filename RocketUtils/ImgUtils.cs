@@ -21,6 +21,14 @@ namespace RocketUtils
 {
     public static class ImgUtils
     {
+        public static int ImageWidth(string inputPath)
+        {
+            if (!File.Exists(inputPath)) return 0;
+            using (var img = new MagickImage(inputPath))
+            {
+                return (int)img.Width;
+            }
+        }
         public static void ProcessResizeImage(string inputPath, string outputPath, int width, int height, string imgType = "webp", bool cropcenter = true)
         {
             using (var img = new MagickImage(inputPath))
@@ -29,8 +37,9 @@ namespace RocketUtils
                 {
                     var displayExtension = Path.GetExtension(inputPath).ToLower();
                     decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
+
                     if (height < 0) //dynamically choose Height or Width to resize
-                    {                        
+                    {
                         height = 0;
                         if (img.Width < img.Height)
                         {
@@ -39,6 +48,7 @@ namespace RocketUtils
                         }
                     }
                     if (width == 0) width = width = (int)Math.Round((decimal)(height / current_ratio));
+
                     decimal result_ratio = (decimal)height / (decimal)width;
 
                     Boolean preserve_width = false;
@@ -85,7 +95,7 @@ namespace RocketUtils
             if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
             var createseo = postInfo.GetXmlPropertyBool("genxml/hidden/createseo");
             var resize = postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
-            if (resize == 0) resize = 640;
+            if (resize == 0) resize = 1024;
             var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
@@ -210,7 +220,7 @@ namespace RocketUtils
                             imageFile.Write(bytes, 0, bytes.Length);
                             imageFile.Flush();
                         }
-                        if (fext == ".svg")
+                        if (fext == ".svg" || ImageWidth(tempFileMapPath) <= size)
                         {
                             var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
                             File.Move(tempFileMapPath, newfilename);
