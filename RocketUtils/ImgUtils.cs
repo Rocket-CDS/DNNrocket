@@ -35,7 +35,7 @@ namespace RocketUtils
             {                
                 if (img.Height != height || img.Width != width)
                 {
-                    var displayExtension = Path.GetExtension(inputPath).ToLower();
+                    var outputExtension = Path.GetExtension(outputPath).ToLower();
                     decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
 
                     if (height < 0) //dynamically choose Height or Width to resize
@@ -68,13 +68,17 @@ namespace RocketUtils
                         new_height = height;
                         new_width = (int)Math.Round((decimal)(new_height / current_ratio));
                     }
-
-                    if (imgType.ToLower() == "png")
+                    if (outputExtension == ".png")
                         img.Format = MagickFormat.Png;
-                    else if (imgType.ToLower() == "jpg")
-                        img.Format = MagickFormat.Jpg;
                     else
-                        img.Format = MagickFormat.WebP;
+                    {
+                        if (imgType.ToLower() == "png")
+                            img.Format = MagickFormat.Png;
+                        else if (imgType.ToLower() == "jpg")
+                            img.Format = MagickFormat.Jpg;
+                        else
+                            img.Format = MagickFormat.WebP;
+                    }
 
                     img.Resize((uint)new_width, (uint)new_height);
                     
@@ -220,7 +224,7 @@ namespace RocketUtils
                             imageFile.Write(bytes, 0, bytes.Length);
                             imageFile.Flush();
                         }
-                        if (fext == ".svg" || ImageWidth(tempFileMapPath) <= size)
+                        if (fext == ".svg")
                         {
                             var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
                             File.Move(tempFileMapPath, newfilename);
@@ -228,6 +232,8 @@ namespace RocketUtils
                         }
                         else
                         {
+                            var imgWidth = ImageWidth(tempFileMapPath);
+                            if (imgWidth <= size) size = imgWidth; // make webp if smaller
                             var ext = ".webp";
                             if (Path.GetExtension(fname).ToLower() == ".png") ext = ".png";
                             var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + ext);
