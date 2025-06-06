@@ -288,7 +288,7 @@
     <value>@TextBox(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display TextBox field</comment>
   </data>
-  <data name="Razor.ThumbnailImageUrl" xml:space="preserve">
+  <data name="Razor.ImageUrl" xml:space="preserve">
     <value>@ImageUrl(string url, int width = 0, int height = 0)</value>
   </data>
   <data name="Razor.ResourceCSV" xml:space="preserve">
