@@ -47,7 +47,7 @@ namespace DNNrocketAPI.Components
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/documentpath" + FieldId);
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/hidden/documentpath");
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/documentpath");
-                return rtn;
+                return "/" + rtn.TrimStart('/');
             }
             set
             {
