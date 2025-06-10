@@ -40,7 +40,6 @@ namespace DNNrocketAPI.Components
                         model = dalleversion,
                         prompt = PadQuotes(prompt),
                         n = 1,
-                        quality = "standard",
                         size = imageSize
                     };
                     var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
