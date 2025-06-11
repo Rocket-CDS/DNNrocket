@@ -75,12 +75,17 @@ namespace RocketUtils
                         if (imgType.ToLower() == "png")
                             img.Format = MagickFormat.Png;
                         else if (imgType.ToLower() == "jpg")
+                        {
                             img.Format = MagickFormat.Jpg;
+                            img.SetCompression(CompressionMethod.LosslessJPEG);
+                        }
                         else
+                        {
                             img.Format = MagickFormat.WebP;
+                            img.SetCompression(CompressionMethod.WebP);
+                        }
                     }
-
-                    img.Quality = 80;
+                    img.Quality = 85;
                     img.Strip();
                     img.Resize((uint)new_width, (uint)new_height);
                     
