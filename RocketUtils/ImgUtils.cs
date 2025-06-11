@@ -80,6 +80,8 @@ namespace RocketUtils
                             img.Format = MagickFormat.WebP;
                     }
 
+                    img.Quality = 80;
+                    img.Strip();
                     img.Resize((uint)new_width, (uint)new_height);
                     
                     if (cropcenter)

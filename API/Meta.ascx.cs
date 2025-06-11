@@ -77,13 +77,13 @@ namespace RocketTools
 
                 page.CanonicalLinkUrl = ""; // remove so we dont; display anything from invalid module values.
 
-                if (metaPageData.Title != "") page.Title = metaPageData.Title;
-                if (metaPageData.Description != "") page.Description = metaPageData.Description;
-                if (metaPageData.Description != "") page.MetaDescription = metaPageData.Description;
-                if (metaPageData.Description != "") page.Header.Description = metaPageData.Description;
-                if (metaPageData.KeyWords != "") page.KeyWords = metaPageData.KeyWords;
-                if (metaPageData.KeyWords != "") page.MetaKeywords = metaPageData.KeyWords;
-                if (metaPageData.KeyWords != "") page.Header.Keywords = metaPageData.KeyWords;
+                if (!String.IsNullOrEmpty(metaPageData.Title)) page.Title = metaPageData.Title;
+                if (!String.IsNullOrEmpty(metaPageData.Description)) page.Description = metaPageData.Description;
+                if (!String.IsNullOrEmpty(metaPageData.Description)) page.MetaDescription = metaPageData.Description;
+                if (!String.IsNullOrEmpty(metaPageData.Description)) page.Header.Description = metaPageData.Description;
+                if (!String.IsNullOrEmpty(metaPageData.KeyWords)) page.KeyWords = metaPageData.KeyWords;
+                if (!String.IsNullOrEmpty(metaPageData.KeyWords)) page.MetaKeywords = metaPageData.KeyWords;
+                if (!String.IsNullOrEmpty(metaPageData.KeyWords)) page.Header.Keywords = metaPageData.KeyWords;
                 if (!String.IsNullOrEmpty(metaPageData.CanonicalLinkUrl) && !_disablecanonical) page.CanonicalLinkUrl = metaPageData.CanonicalLinkUrl;
 
                 foreach (var metaDict in metaPageData.HtmlMeta)
