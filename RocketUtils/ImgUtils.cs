@@ -14,6 +14,7 @@ using ImageMagick;
 using System.Web;
 using System.Xml.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Collections;
 
 // uses: https://github.com/dlemstra/Magick.NET
 
@@ -119,16 +120,30 @@ namespace RocketUtils
                         var userfilename = userid + "_" + friendlyname;
                         if (imageCount <= maxImages)
                         {
-                            var ext = ".webp";
-                            if (Path.GetExtension(friendlyname).ToLower() == ".png") ext = ".png";
-                            var unqName = RocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + ext, destinationFolder);
-                            var outputMapPath = destinationFolder + "\\" + unqName;
-
-                            ProcessResizeImage(tempDirectoryMapPath + "\\" + userfilename, outputMapPath, resize, 0); 
+                            var outputMapPath = "";
+                            var fext = Path.GetExtension(friendlyname).ToLower();
+                            if (fext == ".svg")
+                            {
+                                var unqName = RocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + ".svg", destinationFolder);
+                                outputMapPath = destinationFolder + "\\" + unqName;
+                                outputMapPath = destinationFolder + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + ".svg");
+                                File.Move(tempDirectoryMapPath + "\\" + userfilename, outputMapPath);
+                            }
+                            else
+                            {
+                                var ext = ".webp";
+                                if (Path.GetExtension(friendlyname).ToLower() == ".png") ext = ".png";
+                                var unqName = RocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + ext, destinationFolder);
+                                outputMapPath = destinationFolder + "\\" + unqName;
+                                var imgWidth = ImageWidth(tempDirectoryMapPath + "\\" + userfilename);
+                                if (imgWidth <= resize) resize = imgWidth; // make webp if smaller
+                                outputMapPath = destinationFolder + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + ext);
+                                ProcessResizeImage(tempDirectoryMapPath + "\\" + userfilename, outputMapPath, resize, 0);
+                            }
 
                             if (File.Exists(outputMapPath))
                             {
-                                rtn.Add(unqName);
+                                rtn.Add(outputMapPath);
                                 imageCount += 1;
                             }
                         }
@@ -210,6 +225,23 @@ namespace RocketUtils
                 }
             }
             return outFileMapPath;
+        }
+
+        public static List<string> UploadImages(int userid, SimplisityInfo postInfo, string destinationFolder, string tempDirectoryMapPath, int maxImages = 50)
+        {
+            var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            var fileuploadbase64 = postInfo.GetXmlProperty("genxml/hidden/fileuploadbase64");
+
+            var baseFileMapPath = tempDirectoryMapPath + "\\" + GeneralUtils.GetGuidKey();
+            var imgsize = postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
+            if (imgsize == 0) imgsize = 1280;
+            var filenameList = fileuploadlist.Split('*');
+            var filebase64List = fileuploadbase64.Split('*');
+
+            if (fileuploadbase64 != "")
+                return UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destinationFolder, imgsize);
+            else if (fileuploadlist != "") return MoveImageToFolder(userid, postInfo, destinationFolder, tempDirectoryMapPath);
+            return new List<string>();
         }
         public static List<string> UploadBase64Image(string[] filenameList, string[] filebase64List, string tempFileMapPath, string imageFolderMapPath, int size)
         {
