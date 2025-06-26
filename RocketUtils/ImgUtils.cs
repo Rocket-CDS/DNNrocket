@@ -127,7 +127,13 @@ namespace RocketUtils
                                 var unqName = RocketUtils.GetUniqueFileName(GeneralUtils.UrlFriendly(Path.GetFileNameWithoutExtension(friendlyname)) + ".svg", destinationFolder);
                                 outputMapPath = destinationFolder + "\\" + unqName;
                                 outputMapPath = destinationFolder + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + ".svg");
-                                File.Move(tempDirectoryMapPath + "\\" + userfilename, outputMapPath);
+                                if (!IsSvgDangerous(tempDirectoryMapPath + "\\" + userfilename))
+                                    File.Move(tempDirectoryMapPath + "\\" + userfilename, outputMapPath);
+                                else
+                                {
+                                    var warningFileMapPath = tempDirectoryMapPath.TrimEnd('\\') + "\\..\\..\\..\\DesktopModules\\DNNrocket\\API\\images\\warning.svg";
+                                    File.Copy(warningFileMapPath, outputMapPath,true);
+                                }
                             }
                             else
                             {
@@ -266,7 +272,13 @@ namespace RocketUtils
                         if (fext == ".svg")
                         {
                             var newfilename = imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname));
-                            File.Move(tempFileMapPath, newfilename);
+                            if (!IsSvgDangerous(tempFileMapPath)) 
+                                File.Move(tempFileMapPath, newfilename);
+                            else
+                            {
+                                var warningFileMapPath = Path.GetDirectoryName(tempFileMapPath).TrimEnd('\\') + "\\..\\..\\..\\DesktopModules\\DNNrocket\\API\\images\\warning.svg";
+                                File.Copy(warningFileMapPath, newfilename, true);
+                            }
                             rtn.Add(newfilename);
                         }
                         else
@@ -381,5 +393,25 @@ namespace RocketUtils
             stream.Close();
             client.Dispose();
         }
+
+        public static bool IsSvgDangerous(string svgFilePath)
+        {
+            string svgContent = File.ReadAllText(svgFilePath);
+
+            // Check for <script> tags
+            if (Regex.IsMatch(svgContent, @"<\s*script", RegexOptions.IgnoreCase))
+                return true;
+
+            // Check for on* event handler attributes (e.g., onclick, onload)
+            if (Regex.IsMatch(svgContent, @"on\w+\s*=", RegexOptions.IgnoreCase))
+                return true;
+
+            // Check for javascript: URIs
+            if (Regex.IsMatch(svgContent, @"javascript\s*:", RegexOptions.IgnoreCase))
+                return true;
+
+            return false;
+        }
+
     }
 }
