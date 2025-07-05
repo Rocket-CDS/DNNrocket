@@ -79,10 +79,16 @@ namespace DNNrocketAPI.Components
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", "Bearer " + _openai_key);
 
-            var data = "{";
-            data += " \"model\":\"gpt-3.5-turbo\",";
-            data += " \"messages\": [{\"role\": \"user\", \"content\": \"" + PadQuotes(sQuestion) + "\"}]";
-            data += "}";
+            var payload = new
+            {
+                model = "gpt-3.5-turbo",
+                messages = new[]
+                {
+                    new { role = "user", content = sQuestion }
+                }
+            };
+            string data = JsonConvert.SerializeObject(payload);
+
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
                 streamWriter.Write(data);
@@ -97,6 +103,14 @@ namespace DNNrocketAPI.Components
             var sResponse = doc.SelectSingleNode("root/choices/message/content").InnerText;
             return sResponse;
         }
+        public static string EscapeJsonString(string value)
+        {
+            if (value == null)
+                return null;
+            // Use Json.NET to escape the string properly
+            return Newtonsoft.Json.JsonConvert.ToString(value).Trim('"');
+        }
+
         private string PadQuotes(string s)
         {
             if (s.IndexOf("\\") != -1)
