@@ -34,69 +34,66 @@ namespace RocketUtils
         {
             using (var img = new MagickImage(inputPath))
             {                
-                if (img.Height != height || img.Width != width)
+                var outputExtension = Path.GetExtension(outputPath).ToLower();
+                decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
+
+                if (height < 0) //dynamically choose Height or Width to resize
                 {
-                    var outputExtension = Path.GetExtension(outputPath).ToLower();
-                    decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
-
-                    if (height < 0) //dynamically choose Height or Width to resize
+                    height = 0;
+                    if (img.Width < img.Height)
                     {
-                        height = 0;
-                        if (img.Width < img.Height)
-                        {
-                            height = width;
-                            width = (int)Math.Round((decimal)(height / current_ratio));
-                        }
+                        height = width;
+                        width = (int)Math.Round((decimal)(height / current_ratio));
                     }
-                    if (width == 0) width = width = (int)Math.Round((decimal)(height / current_ratio));
-
-                    decimal result_ratio = (decimal)height / (decimal)width;
-
-                    Boolean preserve_width = false;
-                    if (current_ratio > result_ratio)
-                    {
-                        preserve_width = true;
-                    }
-                    int new_width = 0;
-                    int new_height = 0;
-                    if (preserve_width)
-                    {
-                        new_width = width;
-                        new_height = (int)Math.Round((decimal)(current_ratio * new_width));
-                    }
-                    else
-                    {
-                        new_height = height;
-                        new_width = (int)Math.Round((decimal)(new_height / current_ratio));
-                    }
-                    if (outputExtension == ".png")
-                        img.Format = MagickFormat.Png;
-                    else
-                    {
-                        if (imgType.ToLower() == "png")
-                            img.Format = MagickFormat.Png;
-                        else if (imgType.ToLower() == "jpg")
-                        {
-                            img.Format = MagickFormat.Jpg;
-                            img.SetCompression(CompressionMethod.LosslessJPEG);
-                        }
-                        else
-                        {
-                            img.Format = MagickFormat.WebP;
-                            img.SetCompression(CompressionMethod.WebP);
-                        }
-                    }
-                    img.Quality = 85;
-                    img.Strip();
-                    img.Resize((uint)new_width, (uint)new_height);
-                    
-                    if (cropcenter)
-                        img.Crop((uint)width, (uint)height, Gravity.Center);
-                    else
-                        img.Crop((uint)width, (uint)height, Gravity.Northwest);
-
-                    img.Write(outputPath);
                 }
+                if (width == 0) width = width = (int)Math.Round((decimal)(height / current_ratio));
+
+                decimal result_ratio = (decimal)height / (decimal)width;
+
+                Boolean preserve_width = false;
+                if (current_ratio > result_ratio)
+                {
+                    preserve_width = true;
+                }
+                int new_width = 0;
+                int new_height = 0;
+                if (preserve_width)
+                {
+                    new_width = width;
+                    new_height = (int)Math.Round((decimal)(current_ratio * new_width));
+                }
+                else
+                {
+                    new_height = height;
+                    new_width = (int)Math.Round((decimal)(new_height / current_ratio));
+                }
+                if (outputExtension == ".png")
+                    img.Format = MagickFormat.Png;
+                else
+                {
+                    if (imgType.ToLower() == "png")
+                        img.Format = MagickFormat.Png;
+                    else if (imgType.ToLower() == "jpg")
+                    {
+                        img.Format = MagickFormat.Jpg;
+                        img.SetCompression(CompressionMethod.LosslessJPEG);
+                    }
+                    else
+                    {
+                        img.Format = MagickFormat.WebP;
+                        img.SetCompression(CompressionMethod.WebP);
+                    }
+                }
+                img.Quality = 85;
+                img.Strip();
+                img.Resize((uint)new_width, (uint)new_height);
+                    
+                if (cropcenter)
+                    img.Crop((uint)width, (uint)height, Gravity.Center);
+                else
+                    img.Crop((uint)width, (uint)height, Gravity.Northwest);
+
+                img.Write(outputPath);
             }
         }
 
