@@ -11,10 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		admin.html = admin.html
 		adminsystem.html = adminsystem.html
 		..\dnnpack.config = ..\dnnpack.config
-		DNNpackager.dnnpack = DNNpackager.dnnpack
 		DNNrocketAPI.dnn = DNNrocketAPI.dnn
 		Installation.md = Installation.md
 		README.md = README.md
+		RocketCDS.dnn = RocketCDS.dnn
+		RocketCDSupgrade.dnn = RocketCDSupgrade.dnn
 		css\w3.css = css\w3.css
 	EndProjectSection
 EndProject
