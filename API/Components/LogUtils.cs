@@ -39,6 +39,11 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        public static void LogError(string message)
+        {
+            ILog errorLogger = LoggerSource.Instance.GetLogger("DNN.Errors");
+            errorLogger.Info($"ROCKET: " + message);
+        }
 
         //  --------------------- Debug Log files ------------------------------
         /// <summary>
