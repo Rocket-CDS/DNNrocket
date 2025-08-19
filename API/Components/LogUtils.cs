@@ -39,6 +39,11 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Forces the message into the DNN log.  
+        /// NOTE: Only use for errors.  This should not be used for standard logging, use LogSystem() function for that. 
+        /// </summary>
+        /// <param name="message"></param>
         public static void LogError(string message)
         {
             ILog errorLogger = LoggerSource.Instance.GetLogger("DNN.Errors");
