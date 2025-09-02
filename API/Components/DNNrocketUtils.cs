@@ -2118,7 +2118,7 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
-        [Obsolete("Use InjectDependencies(string moduleRef, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)")]
+        // Use for WebForms
         public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
         {
             var cssDep = (Dictionary<string, string>)CacheUtils.GetCache("cssdep" + moduleRef, moduleRef);

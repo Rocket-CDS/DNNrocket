@@ -56,6 +56,13 @@ namespace Simplisity
 
     public class GeneralUtils
     {
+        public static string SafeSubstring(string input, int maxLength)
+        {
+            if (string.IsNullOrEmpty(input))
+                return "";
+
+            return input.Length <= maxLength ? input : input.Substring(0, maxLength);
+        }
         public static bool IsAbsoluteUrl(string url)
         {
             Uri result;
