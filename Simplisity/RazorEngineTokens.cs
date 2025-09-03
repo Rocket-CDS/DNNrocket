@@ -148,7 +148,10 @@ namespace Simplisity
             var typeattr = "type='date'";
             if (attributes.ToLower().Contains(" type=")) typeattr = "";
 
-            var strOut = "<input value='" + value.ToString("yyyy-MM-dd")+ "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
+            var v = "";
+            if (!String.IsNullOrEmpty(valueStr)) v = value.ToString("yyyy-MM-dd");
+
+            var strOut = "<input value='" + v + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
 
             return new RawString(strOut);
         }
