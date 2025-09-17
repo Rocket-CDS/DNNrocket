@@ -193,7 +193,33 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
-        public string GetTemplate(string templateFileName, string moduleref = "")
+        public string GetTemplateRelPath(string templateFileName, string moduleref = "")
+        {
+            if (FileNameList.ContainsKey(templateFileName.ToLower()))
+            {
+                var fileRelPath = FileNameList[templateFileName.ToLower()];
+                var fileRel = "";
+                if (moduleref != "") fileRel = GetModuleFileRelPath(fileRelPath, moduleref);
+                if (!File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRel = GetPortalFileRelPath(fileRelPath);
+                if (File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRelPath = fileRel;
+                return fileRelPath;
+            }
+            else
+            {
+                // we might only have the file at portallevel
+                if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
+                {
+                    var fileRelPath = PortalFileNameList[templateFileName.ToLower()];
+                    var fileRel = "";
+                    if (moduleref != "") fileRel = GetModuleFileRelPath(fileRelPath, moduleref);
+                    if (!File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRel = GetPortalFileRelPath(fileRelPath);
+                    if (File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRelPath = fileRel;
+                    return fileRelPath;
+                }
+            }
+            return "";
+        }
+        public string GetTemplateMapPath(string templateFileName, string moduleref = "")
         {
             if (FileNameList.ContainsKey(templateFileName.ToLower()))
             {
@@ -202,7 +228,7 @@ namespace DNNrocketAPI.Components
                 if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
                 if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
                 if (File.Exists(fileMP)) fileMapPath = fileMP;
-                return FileUtils.ReadFile(fileMapPath);
+                return fileMapPath;
             }
             else
             {
@@ -214,11 +240,16 @@ namespace DNNrocketAPI.Components
                     if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
                     if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
                     if (File.Exists(fileMP)) fileMapPath = fileMP;
-                    return FileUtils.ReadFile(fileMapPath);
+                    return fileMapPath;
                 }
-                
             }
             return "";
+        }
+        public string GetTemplate(string templateFileName, string moduleref = "")
+        {
+            var fileMapPath = GetTemplateMapPath(templateFileName, moduleref);
+            if (!File.Exists(fileMapPath)) return "";
+            return FileUtils.ReadFile(fileMapPath);
         }
         public ResxData GetResx(string templateFileName, string moduleref = "")
         {
@@ -441,27 +472,35 @@ namespace DNNrocketAPI.Components
             if (PortalFileNameList.ContainsKey(fileName.ToLower())) return true;
             return false;
         }
+        private string GetModuleFileRelPath(string filename, string moduleref)
+        {
+            var fn = Path.GetFileName(filename);
+            return PortalFileDirectoryRel + GetSubFolder(filename) + "/" + moduleref + "_" + fn;
+        }
+        private string GetPortalFileRelPath(string filename)
+        {
+            var fn = Path.GetFileName(filename);
+            return PortalFileDirectoryRel + GetSubFolder(filename) + "/" + fn;
+        }
         private string GetModuleFileMapPath(string filename, string moduleref)
         {
             var fn = Path.GetFileName(filename);
-            var ext = Path.GetExtension(filename);
-            var subfolder = "default";
-            if (ext == ".css") subfolder = "css";
-            if (ext == ".js") subfolder = "js";
-            if (ext == ".resx") subfolder = "resx";
-            if (ext == ".dep") subfolder = "dep";
-            return PortalFileDirectoryMapPath + subfolder + "\\" + moduleref + "_" + fn;
+            return PortalFileDirectoryMapPath + GetSubFolder(filename) + "\\" + moduleref + "_" + fn;
         }
         private string GetPortalFileMapPath(string filename)
         {
             var fn = Path.GetFileName(filename);
+            return PortalFileDirectoryMapPath + "\\"  + GetSubFolder(filename) + "\\" + fn;
+        }
+        private string GetSubFolder(string filename)
+        {
             var ext = Path.GetExtension(filename);
             var subfolder = "default";
             if (ext == ".css") subfolder = "css";
             if (ext == ".js") subfolder = "js";
             if (ext == ".resx") subfolder = "resx";
             if (ext == ".dep") subfolder = "dep";
-            return PortalFileDirectoryMapPath + "\\"  + subfolder + "\\" + fn;
+            return subfolder;
         }
 
         public void DeleteTheme()

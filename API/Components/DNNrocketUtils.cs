@@ -2137,8 +2137,29 @@ namespace DNNrocketAPI.Components
                     if (dep.GetXmlProperty("genxml/ecofriendly") == "" || ecofriendly == ecoMode || ecoMode == false)
                     {
                         var ignoreFile = PageIncludes.IgnoreOnSkin(skinSrc, skinignore);
-                        if (ctrltype == "css" && !ignoreFile) cssDep.Add(id, urlstr);
-                        if (ctrltype == "js" && !ignoreFile) jsDep.Add(id, urlstr);
+                        if (ctrltype == "css" && !ignoreFile)
+                        {
+                            if (urlstr.ToLower().StartsWith("http"))
+                                cssDep.Add(id, urlstr);
+                            else
+                            {
+                                var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
+                                if (relUrl != "") urlstr = relUrl;
+                                cssDep.Add(id, urlstr);
+                            }
+                        }
+
+                        if (ctrltype == "js" && !ignoreFile)
+                        {
+                            if (urlstr.ToLower().StartsWith("http"))
+                                jsDep.Add(id, urlstr);
+                            else
+                            {
+                                var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
+                                if (relUrl != "") urlstr = relUrl;
+                                jsDep.Add(id, urlstr);
+                            }
+                        }
                     }
                 }
                 CacheUtils.SetCache("cssdep" + moduleRef, cssDep, moduleRef);
