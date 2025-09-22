@@ -11,15 +11,19 @@ namespace DNNrocketAPI.Components
     {
         public ArticleDoc(SimplisityInfo info, string fieldId)
         {
-            Info = info;
-            FieldId = fieldId;
-            Exists = true;
-            if (Info.GetXmlProperty("genxml/hidden/dockey") == "")
+            if (info != null)
             {
-                var dockey = GeneralUtils.GetUniqueString();
-                Info.SetXmlProperty("genxml/hidden/dockey", dockey);                
+                Info = info;
+                FieldId = fieldId;
+                Exists = true;
+                if (Info.GetXmlProperty("genxml/hidden/dockey") == "")
+                {
+                    var dockey = GeneralUtils.GetUniqueString();
+                    Info.SetXmlProperty("genxml/hidden/dockey", dockey);
+                }
+                if (RelPath == "") Exists = false;
             }
-            if (RelPath == "") Exists = false;
+            Exists = false;
         }
 
         public SimplisityInfo Info { get; private set; }

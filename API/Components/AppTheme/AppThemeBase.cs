@@ -195,30 +195,46 @@ namespace DNNrocketAPI.Components
         }
         public string GetTemplateRelPath(string templateFileName, string moduleref = "")
         {
+            string baseFileMapPath = "";
+
+            // Get the base file path (system or portal level)
             if (FileNameList.ContainsKey(templateFileName.ToLower()))
             {
-                var fileRelPath = FileNameList[templateFileName.ToLower()];
-                var fileRel = "";
-                if (moduleref != "") fileRel = GetModuleFileRelPath(fileRelPath, moduleref);
-                if (!File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRel = GetPortalFileRelPath(fileRelPath);
-                if (File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRelPath = fileRel;
-                return fileRelPath;
+                baseFileMapPath = FileNameList[templateFileName.ToLower()];
+            }
+            else if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
+            {
+                baseFileMapPath = PortalFileNameList[templateFileName.ToLower()];
             }
             else
             {
-                // we might only have the file at portallevel
-                if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
+                return ""; // File not found at any level
+            }
+
+            // Convert base path to relative for fallback
+            var baseFileRelPath = DNNrocketUtils.MapPathReverse(baseFileMapPath);
+
+            // If moduleref is provided, check for module-specific file first
+            if (!String.IsNullOrEmpty(moduleref))
+            {
+                var moduleFileRel = GetModuleFileRelPath(baseFileRelPath, moduleref);
+                if (File.Exists(DNNrocketUtils.MapPath(moduleFileRel)))
                 {
-                    var fileRelPath = PortalFileNameList[templateFileName.ToLower()];
-                    var fileRel = "";
-                    if (moduleref != "") fileRel = GetModuleFileRelPath(fileRelPath, moduleref);
-                    if (!File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRel = GetPortalFileRelPath(fileRelPath);
-                    if (File.Exists(DNNrocketUtils.MapPath(fileRel))) fileRelPath = fileRel;
-                    return fileRelPath;
+                    return moduleFileRel; // Module-Level file exists
                 }
             }
-            return "";
+
+            // Check for portal-level file (regardless of whether moduleref is provided)
+            var portalFileRel = GetPortalFileRelPath(baseFileRelPath);
+            if (File.Exists(DNNrocketUtils.MapPath(portalFileRel)))
+            {
+                return portalFileRel; // Portal-Level file exists
+            }
+
+            // Fall back to system-level file
+            return baseFileRelPath; // System-Level file (default)
         }
+
         public string GetTemplateMapPath(string templateFileName, string moduleref = "")
         {
             if (FileNameList.ContainsKey(templateFileName.ToLower()))

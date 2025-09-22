@@ -1172,8 +1172,27 @@ namespace DNNrocketAPI.Components
         public static string MapPathReverse(string fullMapPath)
         {
             if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
-            return @"/" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
+
+            // Get the physical application path once and cache it
+            var physicalAppPath = HttpContext.Current?.Request?.PhysicalApplicationPath;
+            if (String.IsNullOrEmpty(physicalAppPath)) return "";
+
+            // Ensure consistent path separators and normalize paths
+            var normalizedFullPath = Path.GetFullPath(fullMapPath).Replace('\\', '/');
+            var normalizedAppPath = Path.GetFullPath(physicalAppPath).Replace('\\', '/').TrimEnd('/');
+
+            // Check if the full path starts with the application path
+            if (!normalizedFullPath.StartsWith(normalizedAppPath, StringComparison.OrdinalIgnoreCase))
+            {
+                // Path is not within the application - return as-is or handle as needed
+                return fullMapPath;
+            }
+
+            // Remove the application path and ensure it starts with "/"
+            var relativePath = normalizedFullPath.Substring(normalizedAppPath.Length);
+            return relativePath.StartsWith("/") ? relativePath : "/" + relativePath;
         }
+
         public static string Email(int portalId = -1)
         {
             if (portalId >= 0)
