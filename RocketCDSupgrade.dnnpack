@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.5.5</version>
+	<version>1.5.6</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>RocketCDSupgrade</name>
