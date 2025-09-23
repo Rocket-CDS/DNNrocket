@@ -900,5 +900,49 @@ namespace DNNrocketAPI.Components
             ps.SignOut();
         }
 
+        /// <summary>
+        /// Check if a user has access to a specific module
+        /// </summary>
+        /// <param name="portalId">Portal ID</param>
+        /// <param name="userId">User ID to check</param>
+        /// <param name="moduleId">Module ID to check access for</param>
+        /// <param name="permissionKey">Permission key to check ("VIEW", "EDIT", "ADMIN")</param>
+        /// <returns>True if user has access, false otherwise</returns>
+        public static bool HasModuleAccess(int portalId, int userId, int moduleId, string permissionKey = "VIEW")
+        {
+            try
+            {
+                // Get the module info
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+                if (moduleInfo == null) return false;
+
+                // Get the user info
+                var userInfo = UserController.GetUserById(portalId, userId);
+                if (userInfo == null) return false;
+
+                // Check if user is super user (has access to everything)
+                if (userInfo.IsSuperUser) return true;
+
+                // Use DNN's module permission controller to check access
+                DotNetNuke.Security.SecurityAccessLevel accessLevel = DotNetNuke.Security.SecurityAccessLevel.View;
+                if (permissionKey.Equals("EDIT", StringComparison.OrdinalIgnoreCase))
+                {
+                    accessLevel = DotNetNuke.Security.SecurityAccessLevel.Edit;
+                }
+                else if (permissionKey.Equals("ADMIN", StringComparison.OrdinalIgnoreCase))
+                {
+                    accessLevel = DotNetNuke.Security.SecurityAccessLevel.Admin;
+                }
+                // You can add more mappings if needed
+
+                return DotNetNuke.Security.Permissions.ModulePermissionController.HasModuleAccess(accessLevel, permissionKey, moduleInfo);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return false;
+            }
+        }
+
     }
 }
