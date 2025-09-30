@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-using System.Xml;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.FileSystem;
-using System.IO.Compression;
-using DataProvider = DotNetNuke.Data.DataProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Common;
+using DotNetNuke.Framework;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.DDRMenu;
 using RazorEngine;
-using System.Web.UI.WebControls;
 using Simplisity;
-using DotNetNuke.Abstractions.Portals;
-using System.Web.UI;
-using DotNetNuke.Framework;
-using System.Web.UI.HtmlControls;
+using System;
+using System.Collections.Generic;
+using System.IO.Compression;
+using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Xml;
+using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace DNNrocketAPI.Components
 {
@@ -526,6 +527,48 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Changes the complete theme (skin and container) for a portal
+        /// </summary>
+        /// <param name="portalId">The portal ID</param>
+        /// <param name="skinName">The skin folder name (e.g., "Xcillion")</param>
+        /// <param name="skinFile">The skin file name (e.g., "Home")</param>
+        /// <param name="containerName">The container folder name (e.g., "Xcillion")</param>
+        /// <param name="containerFile">The container file name (e.g., "Title_h2")</param>
+        /// <param name="isGlobalTheme">True if it's a global theme, false for portal-specific</param>
+        public static void ChangePortalTheme(int portalId, string skinName, string skinFile, string containerName, string containerFile, bool isGlobalTheme = true)
+        {
+            try
+            {
+                // Determine the path prefix based on theme location
+                string pathPrefix = isGlobalTheme ? "[G]" : "[L]";
+
+                // Build the skin and container paths
+                string skinPath = $"{pathPrefix}Skins/{skinName}/{skinFile}.ascx";
+                string containerPath = $"{pathPrefix}Containers/{containerName}/{containerFile}.ascx";
+
+                // Set the portal skin (normal viewing)
+                SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Portal, skinPath);
+
+                // Set the admin skin (edit mode)
+                SkinController.SetSkin(SkinController.RootSkin, portalId, SkinType.Admin, skinPath);
+
+                // Set the portal container (normal viewing)
+                SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Portal, containerPath);
+
+                // Set the admin container (edit mode)
+                SkinController.SetSkin(SkinController.RootContainer, portalId, SkinType.Admin, containerPath);
+
+                // Clear portal cache to ensure changes take effect
+                DataCache.ClearPortalCache(portalId, true);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                throw;
+            }
+        }
+
         public static List<TabUrlInfo> GetTabUrls(int portalId, int tabId)
         {
             var controller = new TabController();

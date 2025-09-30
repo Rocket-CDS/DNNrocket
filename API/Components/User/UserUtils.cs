@@ -60,7 +60,36 @@ namespace DNNrocketAPI.Components
                 return -1; 
             }
         }
+        /// <summary>
+        /// Remove user from recyclebin (hard delete)
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="userId"></param>
+        /// <param name="notify"></param>
+        /// <param name="deleteAdmin"></param>
+        public static void RemoveUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)
+        {
+            try
+            {
+                var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                if (userInfo != null)
+                {
+                    UserController.RemoveUser(userInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
 
+        }
+        /// <summary>
+        /// Move user to recycle bin.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="userId"></param>
+        /// <param name="notify"></param>
+        /// <param name="deleteAdmin"></param>
         public static void DeleteUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)
         {
             try

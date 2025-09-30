@@ -1,36 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Simplisity;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
-using RazorEngine;
-using System.Security.Cryptography;
-using DotNetNuke.Entities.Users;
+﻿using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-using System.Xml;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Entities.Modules;
-using System.Net;
-using System.IO;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Security.Membership;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
-using System.Globalization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Common;
-using DotNetNuke.UI.UserControls;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
-using static DotNetNuke.Common.Globals;
-using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Mail;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.UserControls;
+using Newtonsoft.Json.Linq;
+using RazorEngine;
+using RazorEngine.Configuration;
+using RazorEngine.Templating;
+using Simplisity;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+using System.Xml;
+using static DotNetNuke.Common.Globals;
 
 namespace DNNrocketAPI.Components
 {
@@ -45,7 +48,7 @@ namespace DNNrocketAPI.Components
             var portal = GetPortal(portalId);
             PortalController.DeletePortal(portal, "");
         }
-        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal", string cultureCode = "en-US")
+        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal", string cultureCode = "en-US", bool useEmailAsUserName = true)
         {
             if (userId <= 0) userId = UserUtils.GetCurrentUserId();
             var serverPath = "";
@@ -67,6 +70,23 @@ namespace DNNrocketAPI.Components
                                                      serverPath,
                                                      "",
                                                      isChild);
+
+
+
+            // Set the Registration_UseEmailAsUserName setting correctly
+            if (portalId > 0)
+            {
+                try
+                {
+                    // With this line:
+                    PortalController.Instance.UpdatePortalSetting(portalId, "Registration_UseEmailAsUserName", useEmailAsUserName.ToString(), true, cultureCode, false);
+                }
+                catch (Exception ex)
+                {
+                    LogUtils.LogException(ex);
+                }
+            }
+
 
             return portalId;
         }
@@ -253,6 +273,22 @@ namespace DNNrocketAPI.Components
         public static void EnablePopups(int portalId, bool value)
         {
             PortalController.Instance.UpdatePortalSetting(portalId, "EnablePopUps", value.ToString(), true, DNNrocketUtils.GetCurrentCulture(), false);
+        }
+        public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)
+        {
+            try
+            {
+                PortalController.Instance.UpdatePortalSetting(portalId, settingName, settingValue, true, DNNrocketUtils.GetCurrentCulture(), false);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+        public static void UseEmailAsUserName(int portalId, bool value)
+        {
+            UpdatePortalSetting(portalId, "Registration_UseEmailAsUserName", value.ToString());
         }
         public static PortalSettings GetPortalSettings()
         {
@@ -694,6 +730,36 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Updates the copyright message (footer text) for a specific portal
+        /// </summary>
+        /// <param name="portalId">The portal ID</param>
+        /// <param name="copyrightMessage">The new copyright message</param>
+        public static void UpdatePortalCopyright(int portalId, string copyrightMessage)
+        {
+            try
+            {
+                // Get the portal information
+                var portalController = PortalController.Instance;
+                var portal = portalController.GetPortal(portalId);
 
+                if (portal != null)
+                {
+                    // Update the footer text (copyright message)
+                    portal.FooterText = copyrightMessage;
+
+                    // Save the changes
+                    portalController.UpdatePortalInfo(portal);
+
+                    // Clear cache to ensure changes take effect immediately
+                    DataCache.ClearPortalCache(portalId, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                throw;
+            }
+        }
     }
 }
