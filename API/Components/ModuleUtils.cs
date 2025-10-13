@@ -1,24 +1,25 @@
-﻿using System;
-using Simplisity;
-using System.IO;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Entities.Modules.Definitions;
+﻿using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Security.Permissions;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
-using System.Collections;
-using DotNetNuke.UI.UserControls;
-using System.Web.Security;
-using System.Reflection;
-using System.Web.UI.WebControls;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.UI.UserControls;
+using Simplisity;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -374,6 +375,31 @@ namespace DNNrocketAPI.Components
         public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
+        }
+        public static string EditUrl(int tabid, int moduleid, string controlKey = "")
+        {
+            var moduleInfo = GetModuleInfo(tabid, moduleid);
+            if (moduleInfo == null) return "";
+
+            try
+            {
+                string editUrl;
+                if (!string.IsNullOrEmpty(controlKey))
+                {
+                    // Use Globals.NavigateURL instead of NavigationManager
+                    editUrl = DotNetNuke.Common.Globals.NavigateURL(tabid, controlKey, "mid=" + moduleid.ToString());
+                }
+                else
+                {
+                    editUrl = DotNetNuke.Common.Globals.NavigateURL(tabid, "Edit", "mid=" + moduleid.ToString());
+                }
+                return editUrl;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return "";
+            }
         }
 
     }

@@ -150,9 +150,6 @@
   <data name="enteremailaddress.Text" xml:space="preserve">
     <value>Enter Email Address</value>
   </data>
-  <data name="sendreset.Text" xml:space="preserve">
-    <value>Send Reset Link</value>
-  </data>
   <data name="autorize.Text" xml:space="preserve">
     <value>Authorise</value>
   </data>
@@ -194,5 +191,59 @@
   </data>
   <data name="loginpage.Text" xml:space="preserve">
     <value>Login Page</value>
+  </data>
+  <data name="login.Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="resetpassword.Text" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="resetpassword.Msg" xml:space="preserve">
+    <value>Enter your email to receive reset instructions</value>
+  </data>
+  <data name="loginsuccessful.Text" xml:space="preserve">
+    <value>Login Successful!</value>
+  </data>
+  <data name="welcomemessage.Text" xml:space="preserve">
+    <value>Welcome to ProspectApp. You are now logged in.</value>
+  </data>
+  <data name="readytostart.Text" xml:space="preserve">
+    <value>Ready to Get Started?</value>
+  </data>
+  <data name="accessadminpanel.Text" xml:space="preserve">
+    <value>Access your admin panel to manage your account and settings.</value>
+  </data>
+  <data name="loginfailed.Text" xml:space="preserve">
+    <value>Login Failed</value>
+  </data>
+  <data name="checkcredentials.Text" xml:space="preserve">
+    <value>Please check your credentials and try again.</value>
+  </data>
+  <data name="authenticationrequired.Text" xml:space="preserve">
+    <value>Authentication Required</value>
+  </data>
+  <data name="unsuccessfullogin.Text" xml:space="preserve">
+    <value>Your login attempt was unsuccessful. Please verify your email address and password are correct.</value>
+  </data>
+  <data name="tryagain.Text" xml:space="preserve">
+    <value>Try Again</value>
+  </data>
+  <data name="registrationsuccessful.Text" xml:space="preserve">
+    <value>Registration Successful!</value>
+  </data>
+  <data name="accountcreated.Text" xml:space="preserve">
+    <value>Your account has been created successfully. Welcome to ProspectApp!</value>
+  </data>
+  <data name="readytologin.Text" xml:space="preserve">
+    <value>Ready to Sign In?</value>
+  </data>
+  <data name="proceedtologin.Text" xml:space="preserve">
+    <value>You can now proceed to the login page to access your new account.</value>
+  </data>
+  <data name="gotologin.Text" xml:space="preserve">
+    <value>Go to Login</value>
   </data>
 </root>

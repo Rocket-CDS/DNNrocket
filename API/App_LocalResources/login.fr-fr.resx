@@ -117,20 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cancel.Text" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="closemodal.Text" xml:space="preserve">
+    <value>Fermer Modal</value>
+  </data>
   <data name="enterpassword.Text" xml:space="preserve">
     <value>Entrez le mot de passe</value>
   </data>
+  <data name="enterusername.Text" xml:space="preserve">
+    <value>Entrez le nom d'utilisateur</value>
+  </data>
+  <data name="forgotpassword.Text" xml:space="preserve">
+    <value>Vous avez oubli&amp;#233; le mot de passe ?</value>
+  </data>
   <data name="incorrectpass.Text" xml:space="preserve">
-    <value>Nom d’utilisateur ou mot de passe incorrect!</value>
+    <value>Nom d'utilisateur ou mot de passe incorrect!</value>
+  </data>
+  <data name="password.Text" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="rememberme.Text" xml:space="preserve">
+    <value>souvenez-vous de moi</value>
+  </data>
+  <data name="username.Text" xml:space="preserve">
+    <value>Identifiant</value>
   </data>
   <data name="emailaddress.Text" xml:space="preserve">
     <value>Adresse e-mail</value>
   </data>
   <data name="enteremailaddress.Text" xml:space="preserve">
-    <value>Entrer l’adresse e-mail</value>
-  </data>
-  <data name="sendreset.Text" xml:space="preserve">
-    <value>Envoyer le lien de r&amp;#233;initialisation</value>
+    <value>Entrer l'adresse e-mail</value>
   </data>
   <data name="autorize.Text" xml:space="preserve">
     <value>Autoriser</value>
@@ -139,7 +157,7 @@
     <value>Mot de passe de confirmation</value>
   </data>
   <data name="displayname.Text" xml:space="preserve">
-    <value>Nom de l’affichage</value>
+    <value>Nom de l'affichage</value>
   </data>
   <data name="email.Text" xml:space="preserve">
     <value>E-mail utilisateur</value>
@@ -148,19 +166,19 @@
     <value>Entrez le mot de passe de confirmation</value>
   </data>
   <data name="enterdisplayname.Text" xml:space="preserve">
-    <value>Entrez le nom d’affichage</value>
+    <value>Entrez le nom d'affichage</value>
   </data>
   <data name="enteremail.Text" xml:space="preserve">
     <value>Entrez le courrier &amp;#233;lectronique utilisateur</value>
   </data>
   <data name="enterusernameemail.Text" xml:space="preserve">
-    <value>Entrez le nom d’utilisateur ou l’adresse e-mail</value>
+    <value>Entrez le nom d'utilisateur ou l'adresse e-mail</value>
   </data>
   <data name="notification.Text" xml:space="preserve">
     <value>Notification</value>
   </data>
   <data name="usernameemail.Text" xml:space="preserve">
-    <value>Nom d’utilisateur ou adresse e-mail</value>
+    <value>Nom d'utilisateur ou adresse e-mail</value>
   </data>
   <data name="createuser.Text" xml:space="preserve">
     <value>Cr&amp;#233;er un utilisateur</value>
@@ -169,30 +187,63 @@
     <value>Attribuer un mot de passe al&amp;#233;atoire</value>
   </data>
   <data name="register.Text" xml:space="preserve">
-    <value>Registre</value>
+    <value>Inscription</value>
   </data>
   <data name="loginpage.Text" xml:space="preserve">
     <value>Page de connexion</value>
   </data>
-  <data name="cancel.Text" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="login.Text" xml:space="preserve">
+    <value>Connexion</value>
   </data>
-  <data name="closemodal.Text" xml:space="preserve">
-    <value>Fermer Modal</value>
+  <data name="send.Text" xml:space="preserve">
+    <value>Envoyer</value>
   </data>
-  <data name="enterusername.Text" xml:space="preserve">
-    <value>Entrez le nom d’utilisateur</value>
+  <data name="resetpassword.Text" xml:space="preserve">
+    <value>Réinitialiser le mot de passe</value>
   </data>
-  <data name="forgotpassword.Text" xml:space="preserve">
-    <value>Vous avez oubli&amp;#233; le mot de passe ?</value>
+  <data name="resetpassword.Msg" xml:space="preserve">
+    <value>Entrez votre e-mail pour recevoir les instructions de réinitialisation</value>
   </data>
-  <data name="rememberme.Text" xml:space="preserve">
-    <value>souvenez-vous de moi</value>
+  <data name="loginsuccessful.Text" xml:space="preserve">
+    <value>Connexion réussie !</value>
   </data>
-  <data name="password.Text" xml:space="preserve">
-    <value>Mot de passe</value>
+  <data name="welcomemessage.Text" xml:space="preserve">
+    <value>Bienvenue dans ProspectApp. Vous êtes maintenant connecté.</value>
   </data>
-  <data name="username.Text" xml:space="preserve">
-    <value>Identifiant</value>
+  <data name="readytostart.Text" xml:space="preserve">
+    <value>Prêt à commencer ?</value>
+  </data>
+  <data name="accessadminpanel.Text" xml:space="preserve">
+    <value>Accédez à votre panneau d'administration pour gérer votre compte et vos paramètres.</value>
+  </data>
+  <data name="loginfailed.Text" xml:space="preserve">
+    <value>Échec de la connexion</value>
+  </data>
+  <data name="checkcredentials.Text" xml:space="preserve">
+    <value>Veuillez vérifier vos identifiants et réessayer.</value>
+  </data>
+  <data name="authenticationrequired.Text" xml:space="preserve">
+    <value>Authentification requise</value>
+  </data>
+  <data name="unsuccessfullogin.Text" xml:space="preserve">
+    <value>Votre tentative de connexion a échoué. Veuillez vérifier que votre adresse e-mail et votre mot de passe sont corrects.</value>
+  </data>
+  <data name="tryagain.Text" xml:space="preserve">
+    <value>Essayez de nouveau</value>
+  </data>
+  <data name="registrationsuccessful.Text" xml:space="preserve">
+    <value>Inscription réussie !</value>
+  </data>
+  <data name="accountcreated.Text" xml:space="preserve">
+    <value>Votre compte a été créé avec succès. Bienvenue dans ProspectApp !</value>
+  </data>
+  <data name="readytologin.Text" xml:space="preserve">
+    <value>Prêt à vous connecter ?</value>
+  </data>
+  <data name="proceedtologin.Text" xml:space="preserve">
+    <value>Vous pouvez maintenant procéder à la page de connexion pour accéder à votre nouveau compte.</value>
+  </data>
+  <data name="gotologin.Text" xml:space="preserve">
+    <value>Aller à la connexion</value>
   </data>
 </root>

@@ -421,7 +421,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\login.fr-fr.resx" />
-    <EmbeddedResource Include="App_LocalResources\login.resx" />
+    <EmbeddedResource Include="App_LocalResources\login.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="BreadCrumb.ascx" />

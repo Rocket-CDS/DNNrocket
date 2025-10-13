@@ -370,6 +370,29 @@ namespace DNNrocketAPI.Components
 
             return GetUserCreateStatus(registerstatus);
         }
+        public static string RegisterUser(string displayname, string username, string useremail, string password, string confirmpassword, string currentCulture, bool approved)
+        {
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(currentCulture);
+
+            UserInfo objUser;
+            objUser = new UserInfo
+            {
+                PortalID = PortalUtils.GetPortalId(),
+                UserID = Null.NullInteger,
+                Username = username,
+                Email = useremail,
+                FirstName = username, // accessing this and others requires Profile property access
+                LastName = string.Empty,
+                DisplayName = displayname
+            };
+            objUser.Membership.Password = password;
+            objUser.Membership.PasswordConfirm = confirmpassword;
+            objUser.Membership.Approved = approved;
+            var registerstatus = UserController.CreateUser(ref objUser);
+
+            return GetUserCreateStatus(registerstatus);
+        }
 
         private static string GetUserCreateStatus(UserCreateStatus userRegistrationStatus)
         {
