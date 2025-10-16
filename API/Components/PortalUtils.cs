@@ -427,6 +427,24 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static void SetUserRegistration(int portalId, int value)
+        {
+            PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+            if (objPortal != null)
+            {
+                objPortal.UserRegistration = value;
+                PortalController.Instance.UpdatePortalInfo(objPortal);
+            }
+        }
+        public static int GetUserRegistration(int portalId)
+        {
+            PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+            if (objPortal == null)
+            {
+                return 0;
+            }
+            return objPortal.UserRegistration;
+        }
 
         public static PortalSettings GetCurrentPortalSettings()
         {

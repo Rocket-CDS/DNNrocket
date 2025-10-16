@@ -246,4 +246,19 @@
   <data name="gotologin.Text" xml:space="preserve">
     <value>Go to Login</value>
   </data>
+  <data name="registrationfailed.Text" xml:space="preserve">
+    <value>Registration Failed</value>
+  </data>
+  <data name="registrationissue.Text" xml:space="preserve">
+    <value>There was an issue creating your account.</value>
+  </data>
+  <data name="registrationerror.Text" xml:space="preserve">
+    <value>Registration Error</value>
+  </data>
+  <data name="pleasetrylater.Text" xml:space="preserve">
+    <value>Please review the error message below and try again.</value>
+  </data>
+  <data name="backtohome.Text" xml:space="preserve">
+    <value>Back to Home</value>
+  </data>
 </root>
