@@ -853,5 +853,71 @@ namespace DNNrocketAPI.Components
 
         #endregion
 
+                /// <summary>
+/// Updates page details in DNN
+/// </summary>
+/// <param name="portalId">The portal ID</param>
+/// <param name="tabId">The tab/page ID to update</param>
+/// <param name="pageName">The new page name (optional)</param>
+/// <param name="title">The new page title (optional)</param>
+/// <param name="description">The new page description (optional)</param>
+/// <param name="keywords">The new page keywords (optional)</param>
+/// <param name="isVisible">Whether the page is visible (optional)</param>
+/// <param name="disableLink">Whether to disable the page link (optional)</param>
+/// <param name="iconFile">The icon file for the page (optional)</param>
+/// <param name="url">Redirect URL if this is a redirect page (optional)</param>
+/// <returns>True if successful, false otherwise</returns>
+public static bool UpdatePageDetails(int portalId, int tabId, string pageName = null, string title = null, 
+    string description = null, string keywords = null, bool? isVisible = null, bool? disableLink = null, 
+    string iconFile = null, string url = null)
+{
+    try
+    {
+        if (tabId <= 0) return false;
+
+        var controller = new TabController();
+        var tab = controller.GetTab(tabId, portalId);
+        
+        if (tab == null || tab.IsDeleted) return false;
+
+        // Update properties only if new values are provided
+        if (!string.IsNullOrEmpty(pageName))
+            tab.TabName = pageName;
+        
+        if (!string.IsNullOrEmpty(title))
+            tab.Title = title;
+        
+        if (!string.IsNullOrEmpty(description))
+            tab.Description = description;
+        
+        if (!string.IsNullOrEmpty(keywords))
+            tab.KeyWords = keywords;
+        
+        if (isVisible.HasValue)
+            tab.IsVisible = isVisible.Value;
+        
+        if (disableLink.HasValue)
+            tab.DisableLink = disableLink.Value;
+        
+        if (!string.IsNullOrEmpty(iconFile))
+            tab.IconFile = iconFile;
+        
+        if (!string.IsNullOrEmpty(url))
+            tab.Url = url;
+
+        // Update the tab
+        controller.UpdateTab(tab);
+        
+        // Clear cache to ensure changes take effect
+        TabController.Instance.ClearCache(portalId);
+        
+        return true;
+    }
+    catch (Exception ex)
+    {
+        Exceptions.ProcessModuleLoadException("UpdatePageDetails: Error updating page details", null, ex);
+        return false;
+    }
+}
     }
 }

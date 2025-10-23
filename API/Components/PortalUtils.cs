@@ -274,6 +274,22 @@ namespace DNNrocketAPI.Components
         {
             PortalController.Instance.UpdatePortalSetting(portalId, "EnablePopUps", value.ToString(), true, DNNrocketUtils.GetCurrentCulture(), false);
         }
+        public static void SSLSetup(int portalId, int value)
+        {
+            PortalController.Instance.UpdatePortalSetting(portalId, "SSLSetup", value.ToString(), true, DNNrocketUtils.GetCurrentCulture(), false);
+        }
+        public static void PageHeadTextUpdate(int portalId, string value)
+        {
+            PortalController.Instance.UpdatePortalSetting(portalId, "PageHeadText", value.ToString(), true, DNNrocketUtils.GetCurrentCulture(), false);
+        }
+        public static void PageHeadTextAppend(int portalId, string value)
+        {
+            var ps = GetPortalSettings(portalId);
+            var pageHeadText = ps.PageHeadText;
+            pageHeadText = pageHeadText.Replace(value, "");
+            pageHeadText += value;
+            PortalController.Instance.UpdatePortalSetting(portalId, "PageHeadText", pageHeadText, true, DNNrocketUtils.GetCurrentCulture(), false);
+        }
         public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)
         {
             try
