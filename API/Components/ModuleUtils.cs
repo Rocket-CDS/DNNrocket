@@ -376,6 +376,27 @@ namespace DNNrocketAPI.Components
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
+        public static string GetLibraryVersion(string definitionName)
+        {
+            var packageController = PackageController.Instance;
+
+            // If you know it's a Library extension, you can be more specific
+            var package = packageController.GetExtensionPackage(-1,
+                p => p.Name == definitionName && p.PackageType == "Library");
+
+            if (package != null)
+            {
+                return "v" + package.Version.ToString(3); // Returns version in format x.x.x
+            }
+            return "v0.0.0";
+        }
+        public static string GetModuleVersion(int portalId, string definitionName)
+        {
+            var m = DesktopModuleController.GetDesktopModuleByModuleName(definitionName, portalId);
+            if (m != null) return "v" + m.Version;
+            return "v0.0.0";
+        }
+
         public static string EditUrl(int tabid, int moduleid, string controlKey = "")
         {
             var moduleInfo = GetModuleInfo(tabid, moduleid);
