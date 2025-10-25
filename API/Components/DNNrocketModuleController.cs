@@ -21,7 +21,19 @@ using System.Linq;
 
 namespace DNNrocketAPI.Components
 {
-
+    /// <summary>
+    /// Import,Export,Search need the portalid passed ito systemData.
+    /// 
+    /// Certain methods need the portalid, but the current portalid is not available from the scheduler.
+    /// We put the portalid that needs to be processed in the SystemData Record.
+    /// The systemInfo SimplsityInfo class is always passed to the Provider and the provider should default to this when there is no portalid.
+    ///
+    /// systemData.Record.PortalId = portalId;  // used to run on shcheduler.  
+    ///
+    /// if (portalid < 0) portalid = systemInfo.PortalId;
+    ///
+    /// NOTE: The portalid should not be passed to the server from the UI, unless a security test is done to ensure the user is host.
+    /// </summary>
     public class DNNrocketModuleController : ModuleSearchBase, IPortable, IUpgradeable
     {
 
@@ -68,10 +80,9 @@ namespace DNNrocketAPI.Components
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/tabid", tabId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
                                 paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
-                                systemData.Record.PortalId = portalId;  // export run on shcheduler,
+                                systemData.Record.PortalId = portalId;  // used to run on shcheduler.  
 
                                 var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
                                 paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
@@ -212,7 +223,7 @@ namespace DNNrocketAPI.Components
                                         var paramInfo = new SimplisityInfo();
                                         paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
                                         paramInfo.SetXmlProperty("genxml/hidden/tabid", moduleInfo.TabID.ToString());
-                                        paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+                                        systemData.Record.PortalId = portalId;
 
                                         // We should return ALL languages into the dictionary
                                         var returnDictionary2 = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");

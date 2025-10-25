@@ -692,15 +692,33 @@ namespace DNNrocketAPI.Components
         }
         public static string HomeDirectoryMapPath(int portalId)
         {
-            if (portalId < 0) portalId = PortalSettings.Current.PortalId;
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-            return portalInfo.HomeDirectoryMapPath;
+            try
+            {
+                if (portalId < 0) portalId = PortalSettings.Current.PortalId;
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
+                return portalInfo.HomeDirectoryMapPath;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                LogUtils.LogError("ERROR: On HomeDirectoryMapPath(int portalId), this often thrown from the scheudler when we do not have a valid portalid.");
+                throw;
+            }
         }
         public static string HomeDirectoryRel(int portalId)
         {
-            if (portalId < 0) portalId = PortalSettings.Current.PortalId;
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-            return portalInfo.HomeDirectory;
+            try
+            {
+                if (portalId < 0) portalId = PortalSettings.Current.PortalId;
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
+                return portalInfo.HomeDirectory;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                LogUtils.LogError("ERROR: On HomeDirectoryRel(int portalId), this often thrown from the scheudler when we do not have a valid portalid.");
+                throw;
+            }
         }
         public static void CreateRocketDirectories(int portalId = -1)
         {            
