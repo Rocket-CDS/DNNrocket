@@ -512,7 +512,34 @@ namespace DNNrocketAPI.Components
                 tab.TabPermissions.Cast<TabPermissionInfo>()
                     .FirstOrDefault(tp => tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
         }
+        public static void SetLoginPage(int portalId, int pageId)
+        {
+            try
+            {
+                if (portalId <= 0 || pageId <= 0) return;
 
+                // Verify the page exists and is not deleted
+                var controller = new TabController();
+                var tab = controller.GetTab(pageId, portalId);
+                if (tab == null || tab.IsDeleted) return;
+
+                // Get the portal controller and update the login page setting
+                var portalController = new PortalController();
+                var portalInfo = portalController.GetPortal(portalId);
+                if (portalInfo != null)
+                {
+                    portalInfo.LoginTabId = pageId;
+                    portalController.UpdatePortalInfo(portalInfo);
+                    
+                    // Clear portal cache to ensure changes take effect
+                    DataCache.ClearPortalCache(portalId, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException("SetLoginPage: Error setting login page", null, ex);
+            }
+        }
         public static void AddPageSkin(int portalId, int pageId, string skinFolderName, string skinNameAscx)
         {
             if (pageId > 0)

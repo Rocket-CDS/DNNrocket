@@ -422,6 +422,53 @@ namespace DNNrocketAPI.Components
                 return "";
             }
         }
+        /// <summary>
+        /// Checks if an extension exists by name
+        /// </summary>
+        /// <param name="extensionName">The name of the extension to check</param>
+        /// <returns>True if extension exists, false otherwise</returns>
+        public static bool ExtensionExists(string extensionName)
+        {
+            if (string.IsNullOrWhiteSpace(extensionName))
+                return false;
+
+            var package = PackageController.Instance.GetExtensionPackage(-1,
+                p => p.Name.Equals(extensionName, StringComparison.OrdinalIgnoreCase));
+
+            return package != null;
+        }
+
+        /// <summary>
+        /// Checks if an extension exists by name and type
+        /// </summary>
+        /// <param name="extensionName">The name of the extension to check</param>
+        /// <param name="packageType">The type of package (Module, Library, Skin, etc.)</param>
+        /// <returns>True if extension exists, false otherwise</returns>
+        public static bool ExtensionExists(string extensionName, string packageType)
+        {
+            if (string.IsNullOrWhiteSpace(extensionName) || string.IsNullOrWhiteSpace(packageType))
+                return false;
+
+            var package = PackageController.Instance.GetExtensionPackage(-1,
+                p => p.Name.Equals(extensionName, StringComparison.OrdinalIgnoreCase) &&
+                     p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase));
+
+            return package != null;
+        }
+
+        /// <summary>
+        /// Gets extension information if it exists
+        /// </summary>
+        /// <param name="extensionName">The name of the extension to check</param>
+        /// <returns>PackageInfo if extension exists, null otherwise</returns>
+        public static PackageInfo GetExtensionInfo(string extensionName)
+        {
+            if (string.IsNullOrWhiteSpace(extensionName))
+                return null;
+
+            return PackageController.Instance.GetExtensionPackage(-1,
+                p => p.Name.Equals(extensionName, StringComparison.OrdinalIgnoreCase));
+        }
 
     }
 }
