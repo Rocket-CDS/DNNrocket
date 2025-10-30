@@ -122,6 +122,30 @@ namespace DNNrocketAPI.Components
             }
 
         }
+        public static string GetCurrentUserDisplayName()
+        {
+            if (UserController.Instance.GetCurrentUserInfo() != null)
+            {
+                return UserController.Instance.GetCurrentUserInfo().DisplayName;
+            }
+            return "";
+        }
+        public static void SetCurrentUserDisplayName(string displayName)
+        {
+            try
+            {
+                var userInfo = UserController.Instance.GetCurrentUserInfo();
+                if (userInfo != null && HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    userInfo.UpdateDisplayName(displayName);
+                    UserController.UpdateUser(userInfo.PortalID, userInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+        }
 
         public static string GetCurrentUserName()
         {
