@@ -1,41 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Simplisity;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
-using RazorEngine;
-using System.Security.Cryptography;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-using System.Xml;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Entities.Modules;
-using System.Net;
-using System.IO;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Entities.Users.Membership;
-using System.Globalization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Services.Mail;
+﻿using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
-using DotNetNuke.UI.UserControls;
-using DotNetNuke.Security.Roles;
-using System.Collections;
-using System.Web.Security;
-using DotNetNuke.Entities.Host;
+using DotNetNuke.Common.Lists;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Profile;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Mail;
+using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.UserControls;
+using RazorEngine;
+using RazorEngine.Configuration;
+using RazorEngine.Templating;
+using Simplisity;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing.Printing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+using System.Web.Security;
 using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace DNNrocketAPI.Components
 {
@@ -57,7 +58,7 @@ namespace DNNrocketAPI.Components
             catch (Exception ex)
             {
                 var ms = ex.ToString();
-                return -1; 
+                return -1;
             }
         }
         /// <summary>
@@ -328,7 +329,7 @@ namespace DNNrocketAPI.Components
             {
                 // get default login form
                 var apiAppTheme = new AppThemeRocketApiLimpet();
-                razorTempl = apiAppTheme.GetTemplate("LoginForm.cshtml");                
+                razorTempl = apiAppTheme.GetTemplate("LoginForm.cshtml");
             }
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
@@ -491,7 +492,7 @@ namespace DNNrocketAPI.Components
                     || status == UserCreateStatus.DuplicateUserName
                     || status == UserCreateStatus.UserAlreadyRegistered
                     || status == UserCreateStatus.UsernameAlreadyExists)
-                {                    
+                {
                     objUser = UserController.GetUserByName(username);
                     UserController.AddUserPortal(portalId, objUser.UserID);
                     status = UserCreateStatus.Success;
@@ -832,7 +833,7 @@ namespace DNNrocketAPI.Components
         public static Boolean IsClientOnly()
         {
             if (!IsAuthorised()) return false;
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator ) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
             {
                 return true;
             }
@@ -851,9 +852,9 @@ namespace DNNrocketAPI.Components
         public static Boolean IsEditor()
         {
             if (!IsAuthorised()) return false;
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator ) || 
-                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) || 
-                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) || 
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Collaborator) ||
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) ||
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) ||
                 UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators))
             {
                 return true;
@@ -956,7 +957,7 @@ namespace DNNrocketAPI.Components
             {
                 var role = RoleController.Instance.GetRoleById(portalId, roleId);
                 var ps = PortalUtils.GetPortalSettings(portalId);
-                if (role != null && ps!= null)
+                if (role != null && ps != null)
                 {
                     RoleController.AddUserRole(u, role, ps, RoleStatus.Approved, Null.NullDate, Null.NullDate, notifyUser, false);
                 }
@@ -1016,6 +1017,103 @@ namespace DNNrocketAPI.Components
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Updates or creates a DNN user profile property for a user in the specified portal.
+        /// If the property definition doesn't exist in the portal, it will be created.
+        /// </summary>
+        /// <param name="userId">The user ID to update the profile for.</param>
+        /// <param name="key">The profile property name/key.</param>
+        /// <param name="value">The value to set for the profile property.</param>
+        /// <param name="portalId">The portal ID where the user profile should be updated (defaults to 0).</param>
+        /// <param name="category">The category for the profile property if it needs to be created (defaults to "Custom").</param>
+        /// <param name="visibilityAllUsers">The visibility mode for the property if it needs to be created (defaults to AdminOnly). True = All Users.</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
+        public static bool UpdateOrCreateUserProfileProperty(int userId, string key, string value, int portalId = 0, string category = "Custom", bool visibilityAllUsers = false)
+        {
+            try
+            {
+                var visibility = UserVisibilityMode.AdminOnly;
+                if (visibilityAllUsers) visibility = UserVisibilityMode.AllUsers;
+
+                // Validate inputs
+                if (userId <= 0 || string.IsNullOrWhiteSpace(key))
+                {
+                    return false;
+                }
+
+                // Get the user from the specified portal
+                var user = UserController.GetUserById(portalId, userId);
+                if (user == null)
+                {
+                    return false;
+                }
+
+                // Check if the profile property definition exists in the specified portal
+                var propertyDefinition = ProfileController.GetPropertyDefinitionByName(portalId, key);
+
+                if (propertyDefinition == null)
+                {
+                    // Property definition doesn't exist, create it in the specified portal
+                    var listController = new ListController();
+                    var dataTypes = listController.GetListEntryInfoDictionary("DataType");
+                    var textType = dataTypes["DataType:Text"];
+
+                    // Get the next view order for the portal
+                    var existingProperties = ProfileController.GetPropertyDefinitionsByPortal(portalId);
+                    var maxViewOrder = 0;
+                    foreach (ProfilePropertyDefinition prop in existingProperties)
+                    {
+                        if (prop.ViewOrder > maxViewOrder)
+                        {
+                            maxViewOrder = prop.ViewOrder;
+                        }
+                    }
+
+                    // Create the new property definition in the specified portal
+                    propertyDefinition = new ProfilePropertyDefinition(portalId)
+                    {
+                        DataType = textType?.EntryID ?? -1,
+                        DefaultValue = string.Empty,
+                        ModuleDefId = Null.NullInteger,
+                        PropertyCategory = category,
+                        PropertyName = key,
+                        Required = false,
+                        ViewOrder = maxViewOrder + 2,
+                        Visible = true,
+                        Length = 255,
+                        DefaultVisibility = visibility,
+                        ReadOnly = false,
+                        ValidationExpression = string.Empty
+                    };
+
+                    // Add the property definition to the specified portal
+                    var definitionId = ProfileController.AddPropertyDefinition(propertyDefinition);
+                    if (definitionId < 0)
+                    {
+                        return false;
+                    }
+                }
+
+                // Now update the user's profile in the specified portal with the new value
+                // First, ensure the user's profile has the property loaded
+                ProfileController.GetUserProfile(ref user);
+
+                // Set the profile property value
+                user.Profile.SetProfileProperty(key, value ?? string.Empty);
+
+                // Update the user profile
+                ProfileController.UpdateUserProfile(user);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                // Log the exception if you have logging available
+                // Logger.Error("Error updating user profile property", ex);
                 return false;
             }
         }
