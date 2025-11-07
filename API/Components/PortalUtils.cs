@@ -813,5 +813,42 @@ namespace DNNrocketAPI.Components
                 throw;
             }
         }
+        
+        public static string GetRootDomainUrl(int portalId = -1)
+        {
+            var portalAlias = DefaultPortalAlias(portalId);
+            
+            if (string.IsNullOrEmpty(portalAlias))
+                return "";
+            
+            // Remove any path components (everything after the first /)
+            var domainPart = portalAlias.Split('/')[0];
+            
+            // If it doesn't start with http/https, assume https
+            if (!domainPart.StartsWith("http://") && !domainPart.StartsWith("https://"))
+            {
+                domainPart = "https://" + domainPart;
+            }
+            
+            // Parse to get just the root domain
+            try
+            {
+                var uri = new Uri(domainPart);
+                var rootDomain = $"{uri.Scheme}://{uri.Host}";
+                
+                // Include port if it's not default
+                if (!uri.IsDefaultPort)
+                {
+                    rootDomain += $":{uri.Port}";
+                }
+                
+                return rootDomain;
+            }
+            catch (Exception)
+            {
+                // If URI parsing fails, return the domain part with https prefix
+                return domainPart.StartsWith("http") ? domainPart : "https://" + domainPart;
+            }
+        }
     }
 }
