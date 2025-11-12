@@ -399,6 +399,7 @@ namespace DNNrocketAPI.Components
         {
 
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(currentCulture);
+            var portalSettings = PortalUtils.GetPortalSettings(PortalUtils.GetPortalId());
 
             UserInfo objUser;
             objUser = new UserInfo
@@ -414,6 +415,11 @@ namespace DNNrocketAPI.Components
             objUser.Membership.Password = password;
             objUser.Membership.PasswordConfirm = confirmpassword;
             objUser.Membership.Approved = approved;
+            objUser.Profile.PreferredLocale = currentCulture;
+            if (portalSettings != null) objUser.Profile.PreferredTimeZone = portalSettings.TimeZone;
+            objUser.Profile.FirstName = displayname;
+            objUser.Profile.LastName = string.Empty;
+
             var registerstatus = UserController.CreateUser(ref objUser);
 
             return GetUserCreateStatus(registerstatus);

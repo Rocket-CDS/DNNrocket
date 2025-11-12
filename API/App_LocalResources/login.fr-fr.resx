@@ -130,16 +130,16 @@
     <value>Entrez le nom d'utilisateur</value>
   </data>
   <data name="forgotpassword.Text" xml:space="preserve">
-    <value>Vous avez oubli&amp;#233; le mot de passe ?</value>
+    <value>Mot de passe oublié ?</value>
   </data>
   <data name="incorrectpass.Text" xml:space="preserve">
-    <value>Nom d'utilisateur ou mot de passe incorrect!</value>
+    <value>Nom d'utilisateur ou mot de passe incorrect !</value>
   </data>
   <data name="password.Text" xml:space="preserve">
     <value>Mot de passe</value>
   </data>
   <data name="rememberme.Text" xml:space="preserve">
-    <value>souvenez-vous de moi</value>
+    <value>Se souvenir de moi</value>
   </data>
   <data name="username.Text" xml:space="preserve">
     <value>Identifiant</value>
