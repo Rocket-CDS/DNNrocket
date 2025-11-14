@@ -261,4 +261,16 @@
   <data name="backtohome.Text" xml:space="preserve">
     <value>Retour à l'accueil</value>
   </data>
+  <data name="verifymessage1.Text" xml:space="preserve">
+    <value>Votre inscription est presque terminée.</value>
+  </data>
+  <data name="verifymessage2.Text" xml:space="preserve">
+    <value>Un courriel de vérification a été envoyé à votre boîte de réception. Pour activer votre compte, veuillez ouvrir l'e-mail et cliquer sur le lien de vérification.</value>
+  </data>
+  <data name="verifymessage3.Text" xml:space="preserve">
+    <value>Si vous ne le voyez pas, vérifiez votre dossier de spam ou de courrier indésirable.</value>
+  </data>
+  <data name="verifymessage4.Text" xml:space="preserve">
+    <value>Si vous vous êtes inscrit récemment.</value>
+  </data>
 </root>

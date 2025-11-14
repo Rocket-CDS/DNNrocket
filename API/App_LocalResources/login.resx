@@ -261,4 +261,16 @@
   <data name="backtohome.Text" xml:space="preserve">
     <value>Back to Home</value>
   </data>
+  <data name="verifymessage1.Text" xml:space="preserve">
+    <value>Your registration is almost complete.</value>
+  </data>
+  <data name="verifymessage2.Text" xml:space="preserve">
+    <value>A verification email has been sent to your inbox. To activate your account, please open the email and click the verification link.</value>
+  </data>
+  <data name="verifymessage3.Text" xml:space="preserve">
+    <value>If you don’t see it, be sure to check your spam or junk folder.</value>
+  </data>
+  <data name="verifymessage4.Text" xml:space="preserve">
+    <value>If you have recently registered.</value>
+  </data>
 </root>
