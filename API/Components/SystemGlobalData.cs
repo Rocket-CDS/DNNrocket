@@ -89,5 +89,6 @@ namespace DNNrocketAPI.Components
         public bool Log { get { return Info.GetXmlPropertyBool("genxml/checkbox/log"); } set { Info.SetXmlProperty("genxml/checkbox/log", value.ToString()); } }        
         public int MaxLogFiles { get { return Info.GetXmlPropertyInt("genxml/textbox/maxlogfiles"); } set { Info.SetXmlProperty("genxml/textbox/maxlogfiles", value.ToString()); } }
         public string ChatGptKey { get { return Info.GetXmlProperty("genxml/textbox/openaichatgptkey"); } set { Info.SetXmlProperty("genxml/textbox/openaichatgptkey", value); } }
+        public string AmbeeKey { get { return Info.GetXmlProperty("genxml/textbox/ambeeapikey"); } set { Info.SetXmlProperty("genxml/textbox/ambeeapikey", value); } }
     }
 }
