@@ -14,7 +14,7 @@
 <div id="globalsettings">
 
     <div class="w3-bar">
-        <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</span>
+        <span class="w3-padding w3-button w3-theme-action a-saveglobaldata simplisity_click" s-list=".externalapi" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</span>
     </div>
 
     <div class="w3-row">
@@ -116,6 +116,40 @@
                 <label>Ambee API Key</label>
                 @TextBox(info, "genxml/textbox/ambeeapikey", " class='w3-input w3-border' autocomplete='off' ", "", false, 0, "", "password")
             </div>
+
+            <div class="w3-row w3-padding">
+                <div class="w3-button w3-large w3-theme-action w3-padding w3-margin-bottom " onclick="$('#externalapimodal').show();">
+                    @ResourceKey("RP.externalapi")
+                </div>
+            </div>
+            <div id="externalapimodal" class="w3-modal " style="top:-30px;">
+                <div class="w3-modal-content w3-animate-opacity" style="width:90%;">
+                    <header class="w3-container" style="height:38px;">
+                        <div class="w3-button w3-display-topright" onclick="$('#externalapimodal').hide();">
+                            @ButtonIcon(ButtonTypes.close)
+                        </div>
+                    </header>
+                    <div class="w3-row">
+                        <div class="w3-button w3-green w3-margin simplisity_click" s-cmd="global_addexternalapi" s-return="#externalapimodalcontainer">
+                            @ButtonIcon(ButtonTypes.add)
+                        </div>
+                        <div class="w3-button w3-theme-action w3-margin" onclick="$('#externalapimodal').hide();$('.a-saveglobaldata').trigger('click')">
+                            @ButtonIcon(ButtonTypes.save)
+                        </div>
+                        <div><b>@ResourceKey("RP.externalapi")</b></div>
+                    </div>
+                    <div id="externalapimodalcontainer" class="w3-container externalapimodalpopup" style="min-height:480px;">
+                        @{
+                            var appThemeRocketPortal = new AppThemeDNNrocketLimpet(PortalUtils.GetCurrentPortalId(), "rocketportal");
+                        }
+                        @RenderTemplate("ExternalApiList.cshtml", appThemeRocketPortal, Model)
+                    </div>
+                </div>
+            </div>
+
+
+
+
 
             <div class="w3-row">
                 <div class="w3-half w3-padding">

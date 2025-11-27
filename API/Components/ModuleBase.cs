@@ -97,6 +97,7 @@ namespace DNNrocketAPI.Components
         public bool HasProject { get { if (_record.GetXmlProperty("genxml/data/projectname") == "") return false; else return true; } }
         public bool DisableCache { get { return _record.GetXmlPropertyBool("genxml/settings/disablecache"); } set { _record.SetXmlProperty("genxml/settings/disablecache", value.ToString()); } }
         public bool DisableHeader { get { return _record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { _record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
+        public bool DebugMode { get { return _record.GetXmlPropertyBool("genxml/settings/debugmode"); } set { _record.SetXmlProperty("genxml/settings/debugmode", value.ToString()); } }
         public string DisplayTemplate { get { return _record.GetXmlProperty("genxml/settings/displaytemplate").ToLower(); } set { _record.SetXmlProperty("genxml/settings/displaytemplate", value.ToString()); } }
         public bool SecureSave { get { return _record.GetXmlPropertyBool("genxml/settings/securesave"); } set { _record.SetXmlProperty("genxml/settings/securesave", value.ToString()); } }
         public bool DocumentDownloadCount { get { return _record.GetXmlPropertyBool("genxml/settings/downloadcount"); } set { _record.SetXmlProperty("genxml/settings/downloadcount", value.ToString()); } }

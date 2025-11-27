@@ -1,0 +1,51 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+<!--inject-->
+@{
+    var systemGlobalData = new SystemGlobalData();
+    var lp3 = 1;
+}
+
+<table class="w3-table w3-bordered">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="width:64px;"></th>
+        </tr>
+    </thead>
+    @foreach (SimplisityInfo i in systemGlobalData.GetExternalApiInfoList())
+    {
+        <tr class="externalapi">
+    <td>
+        <div class="w3-row">
+            <div class="w3-padding w3-col m2">
+                <label>API Ref</label>
+                @TextBox(i, "genxml/textbox/apiref", "class='w3-input w3-border' maxlength='500'  placeholder='API Ref...' ", "", false, lp3)
+            </div>
+            <div class="w3-padding  w3-col m5">
+                <label>API Base URL</label>
+                @TextBox(i, "genxml/textbox/apiurl", "class='w3-input w3-border ' maxlength='500' placeholder='Base URL...' ", "", false, lp3)
+            </div>
+            <div class="w3-padding  w3-col m5">
+                <label>API Key</label>
+                @TextBox(i, "genxml/textbox/apikey", "class='w3-input w3-border' maxlength='500' placeholder='API Key...' ", "", false, lp3)
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="global_deleteexternalapi" s-return="#externalapimodalcontainer" s-fields='{"idx":"@(lp3)"}'>
+            @ButtonIcon(ButtonTypes.delete)
+        </div>
+    </td>
+</tr>
+        lp3 += 1;
+    }
+</table>
+
+
+

@@ -52,7 +52,8 @@
     <Reference Include="ClientDependency.Core">
       <HintPath>_external\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke">
+    <Reference Include="DotNetNuke, Version=9.13.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>_external\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Abstractions">
@@ -263,6 +264,7 @@
     <Compile Include="Components\CurrencyUtils.cs" />
     <Compile Include="Components\DeepLUtils.cs" />
     <Compile Include="Components\DynamicUtils.cs" />
+    <Compile Include="Components\ExternalApiModel.cs" />
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />

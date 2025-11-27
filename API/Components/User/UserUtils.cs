@@ -199,7 +199,7 @@ namespace DNNrocketAPI.Components
                             UserController.UpdateUser(objUser.PortalID, objUser);
                         }
 
-                        var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                        var portalSettings = PortalUtils.GetCurrentPortalSettings();
 
                         if (sendEmail) Mail.SendMail(objUser, MessageType.PasswordReminder, portalSettings);
 

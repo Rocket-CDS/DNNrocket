@@ -221,4 +221,7 @@ The assembly that will be executed should be installed into the bin folder and t
   <data name="validate.Text" xml:space="preserve">
     <value>Validate Portals Data</value>
   </data>
+  <data name="externalapi.Text" xml:space="preserve">
+    <value>External API Keys</value>
+  </data>
 </root>

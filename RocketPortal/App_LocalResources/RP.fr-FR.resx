@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="system.Text" xml:space="preserve">
-    <value>Système</value>
-  </data>
-  <data name="validate.Text" xml:space="preserve">
-    <value>Valider</value>
-  </data>
-  <data name="githuborg.Text" xml:space="preserve">
-    <value>GitHub Organization</value>
-  </data>
   <data name="accesscode.Text" xml:space="preserve">
     <value>Code d'accès à l'API</value>
   </data>
@@ -160,6 +151,9 @@ L'assemblage qui sera exécuté doit être installé dans le dossier bin, puis l
   </data>
   <data name="general.Text" xml:space="preserve">
     <value>Général !</value>
+  </data>
+  <data name="githuborg.Text" xml:space="preserve">
+    <value>GitHub Organization</value>
   </data>
   <data name="imagetype.Text" xml:space="preserve">
     <value>Type d'image</value>
@@ -217,5 +211,14 @@ L'assemblage qui sera exécuté doit être installé dans le dossier bin, puis l
   </data>
   <data name="serviceurl.Text" xml:space="preserve">
     <value>URL du service web</value>
+  </data>
+  <data name="system.Text" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="externalapi.Text" xml:space="preserve">
+    <value>Clés API externes</value>
   </data>
 </root>

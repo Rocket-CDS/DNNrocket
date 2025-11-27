@@ -409,6 +409,12 @@ namespace DNNrocketAPI.ApiControllers
                             strOut = SystemGlobalDetail(paramInfo);
                         }
                         break;
+                    case "global_addexternalapi":
+                        if (UserUtils.IsSuperUser()) strOut = AddGlobalExternalApi(paramInfo);
+                        break;
+                    case "global_deleteexternalapi":
+                        if (UserUtils.IsSuperUser()) strOut = DeleteGlobalExternalApi(paramInfo);
+                        break;                        
                     case "global_installscheduler":
                         if (UserUtils.IsSuperUser())
                         {
@@ -740,6 +746,32 @@ namespace DNNrocketAPI.ApiControllers
             var globalData = new SystemGlobalData();
             globalData.Save(postInfo);
             ClearCache();
+        }
+        private String DisplayGlobalExternalApi(SimplisityInfo paramInfo)
+        {
+            var globalData = new SystemGlobalData();
+            var passSettings = paramInfo.ToDictionary();
+            var appThemeSystem = new AppThemeDNNrocketLimpet(PortalUtils.GetCurrentPortalId(), "rocketportal");
+            var razorTempl = appThemeSystem.GetTemplate("ExternalApiList.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, globalData, null, passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+
+        private String AddGlobalExternalApi(SimplisityInfo paramInfo)
+        {
+            var globalData = new SystemGlobalData();
+            globalData.AddExternalAPI();
+            globalData.Update();
+            return DisplayGlobalExternalApi(paramInfo);
+        }
+        private String DeleteGlobalExternalApi(SimplisityInfo paramInfo)
+        {
+            var globalData = new SystemGlobalData();
+            var idx = paramInfo.GetXmlPropertyInt("genxml/hidden/idx");
+            globalData.DeleteExternalAPI(idx);
+            globalData.Update();
+            return DisplayGlobalExternalApi(paramInfo);
         }
         private void GlobalResetAccessCodes()
         {

@@ -71,6 +71,44 @@ namespace DNNrocketAPI.Components
             return ClientCodes.Contains(clientCode);
         }
 
+        #region "External APIs"
+        public void AddExternalAPI()
+        {
+            Info.AddListItem("externalapi", new SimplisityInfo());
+        }
+        public void DeleteExternalAPI(int idx)
+        {
+            Info.RemoveListItem("externalapi", idx);
+        }
+
+        public List<SimplisityInfo> GetExternalApiInfoList()
+        {
+            return Info.GetList("externalapi");
+        }
+        public List<ExternalApiModel> GetExternalAPIs()
+        {
+            var rtn = new List<ExternalApiModel>();
+            foreach (var a in Info.GetList("externalapi"))
+            {
+                var e = new ExternalApiModel();
+                e.ApiUrl = a.GetXmlProperty("genxml/textbox/apiurl");
+                e.ApiKey = a.GetXmlProperty("genxml/textbox/apikey");
+                e.ApiRef = a.GetXmlProperty("genxml/textbox/apiref");
+            }
+            return rtn;
+        }
+        public ExternalApiModel GetExternalAPI(string apiref)
+        {
+            var a = Info.GetRecordListItem("externalapi", "genxml/textbox/apiref", apiref);
+            var e = new ExternalApiModel();
+            if (a != null) return e;
+            e.ApiUrl = a.GetXmlProperty("genxml/textbox/apiurl");
+            e.ApiKey = a.GetXmlProperty("genxml/textbox/apikey");
+            e.ApiRef = a.GetXmlProperty("genxml/textbox/apiref");
+            return e;
+        }
+        #endregion
+
         public SimplisityInfo Info { get; set; }
         public SimplisityRecord ConfigInfo { get; set; }
 

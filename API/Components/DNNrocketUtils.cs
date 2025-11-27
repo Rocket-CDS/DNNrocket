@@ -1133,6 +1133,11 @@ namespace DNNrocketAPI.Components
         public static string GetCurrentCountryCode()
         {
             var cc = GetCurrentCulture();
+            return GetCountryCode(cc);
+        }
+        public static string GetCountryCode(string cultureCode)
+        {
+            var cc = cultureCode;
             var c = cc.Split('-');
             var rtn = "";
             if (c.Length > 0) rtn = c[c.Length - 1];
