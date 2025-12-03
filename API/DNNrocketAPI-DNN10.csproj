@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DNNrocketAPI</RootNamespace>
     <AssemblyName>DNNrocketAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -50,35 +50,35 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
-      <HintPath>_external\ClientDependency.Core.dll</HintPath>
+      <HintPath>_external\DNN10\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke, Version=9.13.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>_external\DotNetNuke.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Abstractions">
-      <HintPath>_external\DotNetNuke.Abstractions.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>_external\DotNetNuke.Instrumentation.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>_external\DotNetNuke.Web.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>_external\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
-      <HintPath>_external\DotNetNuke.Web.DDRMenu.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Razor">
-      <HintPath>_external\DotNetNuke.Web.Razor.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>_external\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>_external\DNN10\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>_external\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>_external\DNN10\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\DNNRocketModules\RocketContentAPI\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -149,7 +149,7 @@
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>_external\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>_external\DNN10\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -227,7 +227,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>_external\System.Web.Http.dll</HintPath>
+      <HintPath>_external\DNN10\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
@@ -268,20 +268,11 @@
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
-    <Compile Include="Components\ModuleBase\RocketAdminPanelBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\PageMetaData.cs" />
     <Compile Include="Components\ModuleBase.cs" />
     <Compile Include="Components\AutoLogin.cs" />
     <Compile Include="Components\RazorCacheProvider.cs" />
-    <Compile Include="Components\ModuleBase\RocketPortalModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\SearchUtils.cs" />
-    <Compile Include="Components\ModuleBase\RocketModuleSettingsBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />
@@ -1354,10 +1345,6 @@
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RocketUtils\RocketUtils.csproj">
-      <Project>{dac6b7d6-213e-4ba6-b199-90ab250da69d}</Project>
-      <Name>RocketUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplisity\Simplisity.csproj">
       <Project>{4547e469-243d-4ce8-95de-755b24d78deb}</Project>
       <Name>Simplisity</Name>

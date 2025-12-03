@@ -1,0 +1,18 @@
+
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Abstractions.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Abstractions.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Instrumentation.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Instrumentation.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Web.Client.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Web.Client.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Web.DDRMenu.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Web.DDRMenu.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Web.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Web.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Web.Mvc.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Web.Mvc.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.Web.Razor.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.Web.Razor.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\DotNetNuke.WebUtility.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\DotNetNuke.WebUtility.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\Microsoft.ApplicationBlocks.Data.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\Microsoft.ApplicationBlocks.Data.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\netstandard.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\netstandard.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\Newtonsoft.Json.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\Newtonsoft.Json.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\RazorEngine.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\RazorEngine.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\System.Drawing.Common.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\System.Drawing.Common.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\System.Net.Http.Formatting.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\System.Net.Http.Formatting.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\System.Web.Http.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\System.Web.Http.dll
+copy C:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\System.Web.Mvc.dll  C:\NEVOWEB\Projects\DesktopModules\DNNrocket\API\_external\DNN10\System.Web.Mvc.dll
