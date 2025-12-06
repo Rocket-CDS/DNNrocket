@@ -33,7 +33,10 @@ namespace RocketUtils
         public static void ProcessResizeImage(string inputPath, string outputPath, int width, int height, string imgType = "webp", bool cropcenter = true)
         {
             using (var img = new MagickImage(inputPath))
-            {                
+            {
+                // Apply orientation correction FIRST, before any other processing
+                img.AutoOrient();
+
                 var outputExtension = Path.GetExtension(outputPath).ToLower();
                 decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
 
@@ -85,7 +88,8 @@ namespace RocketUtils
                     }
                 }
                 img.Quality = 85;
-                img.Strip();
+                img.Strip(); // This removes EXIF data, so orientation must be handled before this
+
                 img.Resize((uint)new_width, (uint)new_height);
                     
                 if (cropcenter)
