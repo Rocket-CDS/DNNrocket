@@ -260,6 +260,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 });
             }
             else {
+                simplisity_setParamField("requeststart", new Date().toISOString())
                 var request = jQuery.ajax({
                     type: "POST",
                     url: cmdupdate,
@@ -270,7 +271,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 });
 
                 request.done(function (data) {
-
+                    simplisity_setParamField("requestdone", new Date().toISOString())
                     if (data !== 'noaction') {
                         //if (sreturntype === 'json') {
                         //    alert("rtn : " + data);
