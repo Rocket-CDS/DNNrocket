@@ -260,7 +260,6 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 });
             }
             else {
-                simplisity_setParamField("requeststart", new Date().toISOString())
                 var request = jQuery.ajax({
                     type: "POST",
                     url: cmdupdate,
@@ -271,7 +270,6 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 });
 
                 request.done(function (data) {
-                    simplisity_setParamField("requestdone", new Date().toISOString())
                     if (data !== 'noaction') {
                         //if (sreturntype === 'json') {
                         //    alert("rtn : " + data);
@@ -1062,6 +1060,7 @@ function simplisity_assignevents(cmdurl) {
 
         jQuery(this).unbind("change");
         jQuery(this).change(function () {
+            simplisity_setParamField("simplisity_change", new Date().toISOString())
             simplisity_callserver(this, cmdurl);
             return false;
         });
@@ -1072,6 +1071,7 @@ function simplisity_assignevents(cmdurl) {
 
         jQuery(this).unbind("click");
         jQuery(this).click(function () {
+            simplisity_setParamField("simplisity_click", new Date().toISOString())
             simplisity_callserver(this, cmdurl);
             // add to browser bar and history
             var stateObj = jQuery(this).attr("s-fields");
@@ -1091,6 +1091,7 @@ function simplisity_assignevents(cmdurl) {
         jQuery(this).unbind("click");
         jQuery(this).click(function () {
             if (confirm(jQuery(this).attr("s-confirm"))) {
+                simplisity_setParamField("simplisity_confirmclick", new Date().toISOString())
                 simplisity_callserver(this, cmdurl);
                 return false;
             }

@@ -101,7 +101,7 @@ namespace DNNrocketAPI.Components
         {
             var a = Info.GetRecordListItem("externalapi", "genxml/textbox/apiref", apiref);
             var e = new ExternalApiModel();
-            if (a != null) return e;
+            if (a == null) return e;
             e.ApiUrl = a.GetXmlProperty("genxml/textbox/apiurl");
             e.ApiKey = a.GetXmlProperty("genxml/textbox/apikey");
             e.ApiRef = a.GetXmlProperty("genxml/textbox/apiref");
