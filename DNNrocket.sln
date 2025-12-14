@@ -35,8 +35,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketTools", "RocketTools\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketUtils", "RocketUtils\RocketUtils.csproj", "{DAC6B7D6-213E-4BA6-B199-90AB250DA69D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketMVC", "RocketMVC\RocketMVC.csproj", "{B6EAA9E0-D2F0-42AC-A3F6-AE3E29720C4C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketEndInstall", "RocketEndInstall\RocketEndInstall.csproj", "{F1F4B93A-B860-2B4F-0C0A-672ED27838D1}"
 EndProject
 Global

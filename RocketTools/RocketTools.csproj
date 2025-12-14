@@ -24,6 +24,9 @@
     <Reference Include="DotNetNuke.Web.DDRMenu">
       <HintPath>..\API\_external\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\RocketEndInstall\_external\RazorEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,55 +22,60 @@ namespace DNNrocketAPI.Components
         #region "render razor"
 
         private static RazorProcessResult RazorProcessRunCompile(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
-        {
-            var processResult = new RazorProcessResult();
+   {
+     var processResult = new RazorProcessResult();
             processResult.StatusCode = "00";
-            processResult.RenderedText = "";
-            processResult.ErrorMsg = "";
+  processResult.RenderedText = "";
+      processResult.ErrorMsg = "";
 
             if (String.IsNullOrEmpty(razorTempl)) return processResult;
             var templateKey = GeneralUtils.GetMd5Hash(razorTempl);
-            try
-            {
+       try
+     {
                 if (HttpContext.Current == null) // can be null if ran from scheduler.
-                {
-                    try
-                    {
-                        var config = new TemplateServiceConfiguration();
-                        //config.Debug = debugMode;
-                        config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                        config.DisableTempFileLocking = true;
-                        IRazorEngineService service = RazorEngineService.Create(config);
-                        Engine.Razor = service;
+       {
+        try
+         {
+          var config = new TemplateServiceConfiguration();
+           //config.Debug = debugMode;
+           config.BaseTemplateType = typeof(RazorEngineTokens<>);
+     config.DisableTempFileLocking = true;
+                config.AllowMissingPropertiesOnDynamic = true;
+           
+         IRazorEngineService service = RazorEngineService.Create(config);
+                Engine.Razor = service;
 
-                        LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + templateKey);
-                        processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, templateKey, null, model);
-                        LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + templateKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        processResult.RenderedText = "";
-                        processResult.StatusCode = "01";
-                        processResult.ErrorMsg = ex.ToString();
-                        LogUtils.LogSystem(ex.ToString());
-                        LogUtils.LogException(ex);
-                    }
-                    return processResult;
+       LogUtils.LogSystem("START - (HttpContext.Current == null) RunCompile: " + templateKey);
+       processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, templateKey, null, model);
+    LogUtils.LogSystem("END - (HttpContext.Current == null) RunCompile: " + templateKey);
+ }
+            catch (Exception ex)
+         {
+      processResult.RenderedText = "";
+              processResult.StatusCode = "01";
+          processResult.ErrorMsg = ex.ToString();
+        LogUtils.LogSystem("ERROR - Razor Compilation Error for template: " + templateKey);
+            LogUtils.LogSystem(ex.ToString());
+    LogUtils.LogException(ex);
+          }
+      return processResult;
                 }
-                else
-                {
-                    var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
-                    if (service == null)
-                    {
-                        var config = new TemplateServiceConfiguration();
-                        //config.Debug = debugMode;
-                        config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                        config.DisableTempFileLocking = true;
-                        service = RazorEngineService.Create(config);
-                        HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
-                    }
-                    Engine.Razor = service;
-                    var israzorCached = CacheUtils.GetCache("rzcache_" + templateKey); // get a cache flag for razor compile.
+    else
+          {
+     var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
+         if (service == null)
+  {
+   var config = new TemplateServiceConfiguration();
+//config.Debug = debugMode;
+            config.BaseTemplateType = typeof(RazorEngineTokens<>);
+     config.DisableTempFileLocking = true;
+                config.AllowMissingPropertiesOnDynamic = true;
+     
+          service = RazorEngineService.Create(config);
+  HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
+        }
+Engine.Razor = service;
+               var israzorCached = CacheUtils.GetCache("rzcache_" + templateKey); // get a cache flag for razor compile.
                     if (israzorCached == null || (string)israzorCached != razorTempl)
                     {
                         var t = DateTime.Now;
@@ -213,7 +219,7 @@ namespace DNNrocketAPI.Components
         {
             return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParams, cacheOff);
         }
-        [Obsolete("Use RazorProcessData(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false) instead")]
+        [Obsolete("Use RazorProcessData(string razorTemplate, object obj, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false) instead")]
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             return RazorObjectRender(razorTemplate, obj, null, settings, sessionParams, debugmode);

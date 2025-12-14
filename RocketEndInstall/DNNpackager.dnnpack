@@ -29,7 +29,7 @@
 	<assembly>
 		<value>\_external\Magick.NET.Core.dll</value>
 		<value>\_external\Magick.NET-Q8-AnyCPU.dll</value>
-		<value>\_external\RazorEngine.dll</value>
+		<value>..\..\DNNrocket\API\_external\RazorEngine.dll</value>
 		<value>\_external\ThoughtWorks.QRCode.dll</value>
 		<value>\_external\Magick.Native-Q8-x64.dll</value>
 	</assembly>

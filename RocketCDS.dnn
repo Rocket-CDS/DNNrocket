@@ -77,24 +77,6 @@
 
 				<assembly>
 				  <path>bin</path>
-				  <name>DNNrocketImages.dll</name>
-				  <sourceFileName>DNNrocketImages.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
-				  <path>bin</path>
-				  <name>DNNrocketDocuments.dll</name>
-				  <sourceFileName>DNNrocketDocuments.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
-				  <path>bin</path>
-				  <name>DNNrocketCountry.dll</name>
-				  <sourceFileName>DNNrocketCountry.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
-				  <path>bin</path>
 				  <name>DNNrocketAPI.dll</name>
 				  <sourceFileName>DNNrocketAPI.dll</sourceFileName>
 				</assembly>
@@ -109,12 +91,6 @@
 					<path>bin</path>
 					<name>RocketUtils.dll</name>
 					<sourceFileName>RocketUtils.dll</sourceFileName>
-				</assembly>
-
-				<assembly>
-					<path>bin</path>
-					<name>RocketMVC.dll</name>
-					<sourceFileName>RocketMVC.dll</sourceFileName>
 				</assembly>
 
 			</assemblies>

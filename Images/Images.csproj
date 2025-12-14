@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\RocketUtils\RocketUtils.csproj" />
-    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

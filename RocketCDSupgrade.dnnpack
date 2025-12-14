@@ -20,17 +20,6 @@
     <value>\API\Themes\*</value>
 	<value>\API\CKEditor\*</value>
 
-	  <value>\Country</value>
-    <value>\Country\App_LocalResources</value>
-    <value>\Country\Themes\*</value>
-
-    <value>\Documents</value>
-    <value>\Documents\Themes\*</value>
-
-    <value>\Images</value>
-    <value>\Images\App_LocalResources</value>
-    <value>\Images\Themes\*</value>
-
     <value>\Simplisity</value>
     <value>\Simplisity\js</value>
 	<value>\Simplisity\css</value>
@@ -152,9 +141,6 @@
   </file>
 	<assembly>
         <value>\bin\Simplisity.dll</value>
-        <value>\bin\DNNrocketImages.dll</value>
-        <value>\bin\DNNrocketDocuments.dll</value>
-        <value>\bin\DNNrocketCountry.dll</value>
         <value>\bin\DNNrocketAPI.dll</value>
         <value>\bin\RocketPortal.dll</value>
 	    <value>\bin\RocketTools.dll</value>
