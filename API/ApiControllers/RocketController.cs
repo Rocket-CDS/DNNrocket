@@ -378,7 +378,7 @@ namespace DNNrocketAPI.ApiControllers
                         strOut = ""; // the page will reload after the call
                         break;
                     case "login_register":
-                        strOut = UserUtils.RegisterForm(systemData.SystemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
+                        strOut = UserUtils.RegisterForm(systemData, postInfo, interfacekey, UserUtils.GetCurrentUserId());
                         break;
                     case "login_doregister":
                         strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());

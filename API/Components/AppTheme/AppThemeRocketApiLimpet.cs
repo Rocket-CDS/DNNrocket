@@ -18,12 +18,6 @@ namespace DNNrocketAPI.Components
         {
             SystemKey = "systemapi";
         }
-        [Obsolete("Use AppThemeRocketApiLimpet(int portalid) instead")]
-        public AppThemeRocketApiLimpet() : base(-1, "/DesktopModules/dnnrocket/API/Themes/config-w3", "")
-        {
-            SystemKey = "systemapi";
-        }
-
         public string SystemKey { get; set; }
 
 

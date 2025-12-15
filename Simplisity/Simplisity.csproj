@@ -46,9 +46,10 @@ Simplisity is designed to take data from the html page, pass it to a server side
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\API\_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\RocketEndInstall\_external\RazorEngine.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketRazorEngine\RocketRazorEngine.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

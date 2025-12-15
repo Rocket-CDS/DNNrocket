@@ -1,39 +1,14 @@
-﻿using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
+﻿using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.UserControls;
-using Newtonsoft.Json.Linq;
-using RazorEngine;
-using RazorEngine.Configuration;
-using RazorEngine.Templating;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using System.Xml;
-using static DotNetNuke.Common.Globals;
 
 namespace DNNrocketAPI.Components
 {

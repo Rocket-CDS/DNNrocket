@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketNewsMod", "..\RocketM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketEndInstall", "RocketEndInstall\RocketEndInstall.csproj", "{158DF8B0-3924-4C6B-8696-3CD367A73F05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketRazorEngine", "..\..\Utils\RocketRazorEngine\RocketRazorEngine\RocketRazorEngine.csproj", "{64A5730E-157E-CF4F-A17C-575A0614B7D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Comp All (debug)|Any CPU = Comp All (debug)|Any CPU
@@ -211,11 +213,20 @@ Global
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.CompAll (release)|Any CPU.ActiveCfg = Release|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.CompAll (release)|Any CPU.Build.0 = Release|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Razor|Any CPU.Build.0 = Debug|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Comp All (debug)|Any CPU.ActiveCfg = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Comp All (debug)|Any CPU.Build.0 = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.CompAll (release)|Any CPU.ActiveCfg = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.CompAll (release)|Any CPU.Build.0 = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Razor|Any CPU.Build.0 = Debug|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A5730E-157E-CF4F-A17C-575A0614B7D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

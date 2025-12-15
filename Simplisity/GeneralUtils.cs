@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
@@ -879,24 +880,33 @@ namespace Simplisity
         {
             return GetMd5Hash(input, true);
         }
-        public static string GetMd5Hash(string input, bool uppercase)
+        public static string GetMd5Hash(string input, bool uppercase = true)
         {
-            if (input != "")
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            using (var md5 = MD5.Create())
             {
-                var md5 = MD5.Create();
-                var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                var inputBytes = Encoding.UTF8.GetBytes(input);
                 var hash = md5.ComputeHash(inputBytes);
-                var sb = new StringBuilder();
-                foreach (byte t in hash)
+
+                // Efficient hex conversion for .NET Standard 2.0
+                var chars = new char[32];
+                for (int i = 0; i < 16; i++)
                 {
-                    if (uppercase)
-                        sb.Append(t.ToString("X2"));
-                    else
-                        sb.Append(t.ToString("x2"));
+                    byte b = hash[i];
+                    chars[i * 2] = GetHexChar(b >> 4, uppercase);
+                    chars[i * 2 + 1] = GetHexChar(b & 0xF, uppercase);
                 }
-                return sb.ToString();
+
+                return new string(chars);
             }
-            return "";
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static char GetHexChar(int value, bool uppercase)
+        {
+            return (char)(value < 10 ? value + '0' : value - 10 + (uppercase ? 'A' : 'a'));
         }
 
         public static string Base64Encode(string plainText)

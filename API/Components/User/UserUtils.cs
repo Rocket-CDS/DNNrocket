@@ -1,42 +1,21 @@
-﻿using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
+﻿using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.UserControls;
-using RazorEngine;
-using RazorEngine.Configuration;
-using RazorEngine.Templating;
+using DotNetNuke.Web.DDRMenu;
 using Simplisity;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing.Printing;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using System.Web.Security;
-using System.Web.UI.WebControls;
-using System.Xml;
 
 namespace DNNrocketAPI.Components
 {
@@ -328,30 +307,39 @@ namespace DNNrocketAPI.Components
             if (razorTempl == "")
             {
                 // get default login form
-                var apiAppTheme = new AppThemeRocketApiLimpet();
+                var apiAppTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
                 razorTempl = apiAppTheme.GetTemplate("LoginForm.cshtml");
             }
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
-            return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
+
+            var sRazor = new SimplisityRazor();
+            sRazor.SessionParamsData = new SessionParams(sInfo);
+            var p =  RenderRazorUtils.RazorProcessData(sRazor, razorTempl);
+            return p.RenderedText;
         }
 
-        public static string RegisterForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
+        public static string RegisterForm(SystemLimpet systemData, SimplisityInfo sInfo, string interfacekey, int userid)
         {
-            //if (systemInfo != null)
-            //{
-            //    // clear cookie for cmd.  This could cause a fail login loop.
-            //    // A module MUST always have a tabid and a valid users.  Invalid cookies without tabid could cause a loop.
-            //    DNNrocketUtils.DeleteCookieValue("s-cmd-menu-" + systemInfo.GUIDKey);
-            //    DNNrocketUtils.DeleteCookieValue("s-fields-menu-" + systemInfo.GUIDKey);
-            //}
-
             if (userid > 0)
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = RenderRazorUtils.GetRazorTemplateData("RegisterForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var _appSystemTheme = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemData.SystemKey);
+            var razorTempl = _appSystemTheme.GetTemplate("LoginForm.cshtml");
+            if (razorTempl == "")
+            {
+                // get default login form
+                var apiAppTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+                razorTempl = apiAppTheme.GetTemplate("LoginForm.cshtml");
+            }
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
-            return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
+
+
+            var sRazor = new SimplisityRazor();
+            sRazor.SessionParamsData = new SessionParams(sInfo);
+            var p = RenderRazorUtils.RazorProcessData(sRazor, razorTempl);
+            return p.RenderedText;
+
         }
 
         public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = "")

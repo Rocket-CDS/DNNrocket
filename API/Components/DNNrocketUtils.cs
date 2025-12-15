@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Simplisity;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
-using RazorEngine;
+using RocketRazorEngine.Templating;
+using RocketRazorEngine;
 using System.Security.Cryptography;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Common.Utilities;
@@ -1479,11 +1478,18 @@ namespace DNNrocketAPI.Components
             }
             imageModel.List = imgList;
 
-            var strOut = "<div id='dnnrocket_imageselectwrapper'>";
-            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-            var pr = RenderRazorUtils.RazorProcess(imageModel, razorTempl, false);
-            if (pr.IsValid) strOut = pr.RenderedText;
 
+            var appSystemTheme = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
+            var razorTempl = appSystemTheme.GetTemplate(razorTemplateName);
+            if (razorTempl == "")
+            {
+                var apiAppTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+                razorTempl = apiAppTheme.GetTemplate(razorTemplateName);
+            }
+            var pr = RenderRazorUtils.RazorProcessData(imageModel, razorTempl);
+
+            var strOut = "<div id='dnnrocket_imageselectwrapper'>";
+            if (pr.IsValid) strOut += pr.RenderedText;
             strOut += "</div>";
             return strOut;
         }
@@ -1520,9 +1526,16 @@ namespace DNNrocketAPI.Components
             }
             docModel.List = docList;
 
+            var appSystemTheme = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
+            var razorTempl = appSystemTheme.GetTemplate(razorTemplateName);
+            if (razorTempl == "")
+            {
+                var apiAppTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+                razorTempl = apiAppTheme.GetTemplate(razorTemplateName);
+            }
+            var pr = RenderRazorUtils.RazorProcessData(docModel, razorTempl);
+
             var strOut = "<div id='dnnrocket_documentselectwrapper'>";
-            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            var pr = RenderRazorUtils.RazorProcess(docModel, razorTempl, false);
             if (pr.IsValid) strOut += pr.RenderedText;
             strOut += "</div>";
             return strOut;

@@ -1,16 +1,5 @@
-﻿using DNNrocketAPI;
-using DotNetNuke.Entities.Modules;
-using RazorEngine;
-using Simplisity;
-using System;
+﻿using Simplisity;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Xml;
 
 namespace DNNrocketAPI.Components
 {
