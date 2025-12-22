@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
         private int _moduleid;
         private string _systemKey;
         private RocketInterface _rocketInterface;
-        static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
+        private ConcurrentDictionary<string, bool> _commandSecurity;
         private string _defaultFileRelPath;
         private string _defaultWrapperFileRelPath;
         private SimplisityInfo _info;
