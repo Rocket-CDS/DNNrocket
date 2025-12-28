@@ -74,16 +74,14 @@ namespace DNNrocketAPI.Components
                     {
                         var t = DateTime.Now;
 
-                        LogUtils.LogSystem("START - RunCompile: " + templateKey);
+                        //LogUtils.LogSystem("START - RunCompile: " + templateKey);
                         processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, templateKey, null, model);
                         CacheUtils.SetCache("rzcache_" + templateKey, razorTempl);
-                        if (t.AddSeconds(10) < DateTime.Now)
-                        {
-                            LogUtils.LogSystem("------------------------- Compile over 10s START ---------------------------------------- ");
-                            LogUtils.LogSystem(razorTempl);
-                            LogUtils.LogSystem("------------------------- Compile over 10s END ---------------------------------------- ");
-                        }
-                        LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + templateKey);
+                        //if (t.AddSeconds(10) < DateTime.Now)
+                        //{
+                        //    LogUtils.LogSystem("------------------------- Compile over 10s ---------------------------------------- ");
+                        //}
+                        //LogUtils.LogSystem("END - RunCompile Time: " + DateTime.Now.Subtract(t).TotalSeconds + "s" + templateKey);
 
                     }
                     else
