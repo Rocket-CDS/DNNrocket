@@ -27,7 +27,6 @@ Simplisity is designed to take data from the html page, pass it to a server side
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="js\simplisity.js" />
     <None Include="LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -35,7 +34,7 @@ Simplisity is designed to take data from the html page, pass it to a server side
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="js\simplisity.js" />
+    <Content Include="js\simplisity-jquery.js" />
   </ItemGroup>
 
   <ItemGroup>
