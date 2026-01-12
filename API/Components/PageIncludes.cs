@@ -42,12 +42,12 @@ namespace DNNrocketAPI.Components
                 {
                     if (j.StartsWith(@"/"))
                     {
-                        RegisterJs("GenCSS" + j, j, modulePath, page);
+                        RegisterJs("GenJS" + j, j, modulePath, page);
                     }
                     else
                     {
                         char[] charsToTrim = { '/', '\\', '.', ' ' };
-                        RegisterJs("GenCSS" + j, j, modulePath.TrimEnd(charsToTrim), page);
+                        RegisterJs("GenJS" + j, j, modulePath.TrimEnd(charsToTrim), page);
                     }
 
                 }
