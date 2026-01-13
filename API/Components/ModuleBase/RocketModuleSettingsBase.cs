@@ -17,7 +17,7 @@ namespace DNNrocketAPI.Components
     public abstract class RocketModuleSettingsBase : ModuleSettingsBase
     {
 
-        protected string AdminSkinName = "rocketedit"; // Just the skin name, no path or extension
+        protected string AdminSkinName = "/rocketedit"; // Just the skin name, no path or extension
 
         /// <summary>
         /// Set the admin skin using DNN's built-in cookie system
