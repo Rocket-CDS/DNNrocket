@@ -76,7 +76,9 @@ namespace Simplisity
         }
         public string GetCommand()
         {
-            return Get("s-cmd");
+            var rtn = Get("s-cmd");
+            if (String.IsNullOrEmpty(rtn)) rtn = Get("cmd");
+            return rtn;
         }
         public void Set(string key, string value)
         {
