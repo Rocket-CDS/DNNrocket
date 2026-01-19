@@ -2145,12 +2145,18 @@ namespace DNNrocketAPI.Components
         // Use for WebForms
         public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
         {
+            InjectDependacies(moduleRef, page, appTheme, ecoMode, skinSrc, domainUrl, appThemeSystemFolder, "");
+        }
+        public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder, string displayTemplate)
+        {
             var cssDep = (Dictionary<string, string>)CacheUtils.GetCache("cssdep" + moduleRef, moduleRef);
             var jsDep = (Dictionary<string, string>)CacheUtils.GetCache("jsdep" + moduleRef, moduleRef);
+
             if (cssDep == null)
             {
                 cssDep = new Dictionary<string, string>();
                 jsDep = new Dictionary<string, string>();
+
                 foreach (var dep in DependanciesList(moduleRef, appTheme, domainUrl, appThemeSystemFolder))
                 {
                     var ctrltype = dep.GetXmlProperty("genxml/ctrltype");
@@ -2158,48 +2164,75 @@ namespace DNNrocketAPI.Components
                     var urlstr = dep.GetXmlProperty("genxml/url");
                     var skinignore = dep.GetXmlProperty("genxml/ignoreonskin");
                     var ecofriendly = dep.GetXmlPropertyBool("genxml/ecofriendly");
-                    if (dep.GetXmlProperty("genxml/ecofriendly") == "" || ecofriendly == ecoMode || ecoMode == false)
-                    {
-                        var ignoreFile = PageIncludes.IgnoreOnSkin(skinSrc, skinignore);
-                        if (ctrltype == "css" && !ignoreFile)
-                        {
-                            if (urlstr.ToLower().StartsWith("http"))
-                                cssDep.Add(id, urlstr);
-                            else
-                            {
-                                var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
-                                if (relUrl != "") urlstr = relUrl;
-                                cssDep.Add(id, urlstr);
-                            }
-                        }
+                    var depTemplate = dep.GetXmlProperty("genxml/ignoreontemplate");
 
-                        if (ctrltype == "js" && !ignoreFile)
-                        {
-                            if (urlstr.ToLower().StartsWith("http"))
-                                jsDep.Add(id, urlstr);
-                            else
-                            {
-                                var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
-                                if (relUrl != "") urlstr = relUrl;
-                                jsDep.Add(id, urlstr);
-                            }
-                        }
+                    // Skip if eco mode doesn't match and eco mode is enabled
+                    if (ecofriendly != ecoMode && ecoMode)
+                    {
+                        continue;
+                    }
+
+                    // Skip if template should be ignored
+                    if (!string.IsNullOrEmpty(displayTemplate) &&
+                        !string.IsNullOrEmpty(depTemplate) &&
+                        depTemplate.Split(',').Any(t => t.Trim().Equals(displayTemplate, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    var ignoreFile = PageIncludes.IgnoreOnSkin(skinSrc, skinignore);
+                    if (ignoreFile)
+                    {
+                        continue;
+                    }
+
+                    // Process CSS dependencies
+                    if (ctrltype == "css")
+                    {
+                        var cssUrl = GetDependencyUrl(urlstr, appTheme, moduleRef);
+                        cssDep.Add(id, cssUrl);
+                    }
+                    // Process JS dependencies
+                    else if (ctrltype == "js")
+                    {
+                        var jsUrl = GetDependencyUrl(urlstr, appTheme, moduleRef);
+                        jsDep.Add(id, jsUrl);
                     }
                 }
+
                 CacheUtils.SetCache("cssdep" + moduleRef, cssDep, moduleRef);
                 CacheUtils.SetCache("jsdep" + moduleRef, jsDep, moduleRef);
             }
+
+            // Include CSS files
             foreach (var cDep in cssDep)
             {
                 PageIncludes.IncludeCssFile(page, cDep.Key, cDep.Value);
             }
+
+            // Include JS files
             foreach (var jDep in jsDep)
             {
                 if (jDep.Value == "{jquery}")
+                {
                     JavaScript.RequestRegistration(CommonJs.jQuery);
+                }
                 else
+                {
                     PageIncludes.IncludeJsFile(page, jDep.Key, jDep.Value);
+                }
             }
+        }
+
+        private static string GetDependencyUrl(string urlstr, AppThemeBase appTheme, string moduleRef)
+        {
+            if (urlstr.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                return urlstr;
+            }
+
+            var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
+            return string.IsNullOrEmpty(relUrl) ? urlstr : relUrl;
         }
         public static bool IsModuleDeleted(int moduleId)
         {

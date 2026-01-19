@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketNewsMod", "..\RocketM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketEndInstall", "RocketEndInstall\RocketEndInstall.csproj", "{158DF8B0-3924-4C6B-8696-3CD367A73F05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketCDS.Documentation", "..\..\RocketCDS\Documentation\RocketCDS.Documentation.csproj", "{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Comp All (debug)|Any CPU = Comp All (debug)|Any CPU
@@ -216,6 +218,16 @@ Global
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Razor|Any CPU.Build.0 = Debug|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{158DF8B0-3924-4C6B-8696-3CD367A73F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Comp All (debug)|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Comp All (debug)|Any CPU.Build.0 = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.CompAll (release)|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.CompAll (release)|Any CPU.Build.0 = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Razor|Any CPU.Build.0 = Debug|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A4F8A9-AAF0-8BB7-18DF-A249208720C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
