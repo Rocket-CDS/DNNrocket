@@ -548,7 +548,6 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut);
         }
-
         public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, string quillconfig = "", bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
@@ -575,6 +574,23 @@ namespace DNNrocketAPI.render
             var textarea = TextArea(info, xpath, "style='display:none;'", "",localized, row, listname);
 
             return new RawString(strOut + " " + textarea + " " + scriptQuill);
+        }
+        public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorTipTapDefault.cshtml")
+        {
+            var id = getIdFromXpath(xpath, row, listname);
+            var appTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+            var razorTemplate = appTheme.GetTemplate(editorRazorTemplate);
+            model.SetSetting("editor_richtext", info.GetXmlProperty(xpath).Replace("`",""));
+            model.SetSetting("editor_xpath", xpath);
+            model.SetSetting("editor_id", id);
+            var strOut = "";
+            var pr = RenderRazorUtils.RazorProcessData(razorTemplate, null, model.DataObjects, model.Settings, model.SessionParamsData, true);
+            if (pr.StatusCode == "00")
+                strOut = pr.RenderedText;
+            else
+                strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
+
+            return new RawString(strOut);
         }
 
         #endregion

@@ -50,8 +50,9 @@ namespace RocketPortal.Components
                 rtnInfo.XMLDoc = doc;
                 return rtnInfo.GetXmlProperty("translations/text");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogUtils.LogException(ex);
                 return text;
             }
         }

@@ -397,6 +397,7 @@
     <None Include="Documents\SystemDefaults.md" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
+    <None Include="Themes\config-w3\1.0\default\EditorTipTapDefault.cshtml" />
     <None Include="Installation\01.01.01.SqlDataProvider" />
     <None Include="Installation\01.00.21.SqlDataProvider" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
@@ -1347,6 +1348,7 @@
     <Content Include="Themes\config-w3\1.0\css\littleboyblue-theme.css" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Editor\TipTap\" />
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>

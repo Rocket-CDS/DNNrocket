@@ -1,0 +1,360 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        margin: 20px;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .control-group {
+        margin-bottom: 1rem;
+    }
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    button {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5rem;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.2s;
+        min-width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        button:hover {
+            background-color: #f5f5f5;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button.is-active {
+            background-color: #0d0d0d;
+            color: #fff;
+        }
+
+    /* Basic editor styles */
+    .tiptap {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        min-height: 300px;
+    }
+
+        .tiptap:focus {
+            outline: 2px solid #0066cc;
+        }
+
+        .tiptap :first-child {
+            margin-top: 0;
+        }
+
+        /* List styles */
+        .tiptap ul,
+        .tiptap ol {
+            padding: 0 1rem;
+            margin: 1.25rem 1rem 1.25rem 0.4rem;
+        }
+
+            .tiptap ul li p,
+            .tiptap ol li p {
+                margin-top: 0.25em;
+                margin-bottom: 0.25em;
+            }
+
+        /* Heading styles */
+        .tiptap h1,
+        .tiptap h2,
+        .tiptap h3,
+        .tiptap h4,
+        .tiptap h5,
+        .tiptap h6 {
+            line-height: 1.1;
+            margin-top: 2.5rem;
+            text-wrap: pretty;
+        }
+
+        .tiptap h1,
+        .tiptap h2 {
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tiptap h1 {
+            font-size: 1.4rem;
+        }
+
+        .tiptap h2 {
+            font-size: 1.2rem;
+        }
+
+        .tiptap h3 {
+            font-size: 1.1rem;
+        }
+
+        .tiptap h4,
+        .tiptap h5,
+        .tiptap h6 {
+            font-size: 1rem;
+        }
+
+        /* Code and preformatted text styles */
+        .tiptap code {
+            background-color: rgba(97, 97, 97, 0.1);
+            border-radius: 0.25rem;
+            color: #616161;
+            font-size: 0.85rem;
+            padding: 0.25em 0.3em;
+        }
+
+        .tiptap pre {
+            background: #0d0d0d;
+            border-radius: 0.5rem;
+            color: #fff;
+            font-family: 'JetBrainsMono', monospace;
+            margin: 1.5rem 0;
+            padding: 0.75rem 1rem;
+        }
+
+            .tiptap pre code {
+                background: none;
+                color: inherit;
+                font-size: 0.8rem;
+                padding: 0;
+            }
+
+        .tiptap blockquote {
+            border-left: 3px solid #ccc;
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .tiptap hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2rem 0;
+        }
+
+        /* Text formatting styles */
+        .tiptap strong {
+            font-weight: bold;
+        }
+
+        .tiptap em {
+            font-style: italic;
+        }
+
+        .tiptap s {
+            text-decoration: line-through;
+        }
+</style>
+
+<div class="container">
+
+    <div class="control-group">
+        <div class="button-group" id="toolbar"></div>
+    </div>
+    <div class="element"></div>
+    @HiddenField(new SimplisityInfo(), Model.GetSetting("editor_xpath"), "", Model.GetSetting("editor_richtext"))
+</div>
+
+<script type="module">
+      import { Editor } from 'https://esm.sh/@@tiptap/core'
+      import StarterKit from 'https://esm.sh/@@tiptap/starter-kit'
+
+      const editor = new Editor({
+        element: document.querySelector('.element'),
+        extensions: [StarterKit],
+        editorProps: {
+          attributes: {
+            class: 'tiptap',
+          },
+        },
+        onBlur: ({ editor }) => {
+          // Update hidden field when editor loses focus
+          const hiddenField = document.getElementById('@Model.GetSetting("editor_id")')
+          if (hiddenField) {
+            hiddenField.value = editor.getHTML()
+          }
+        },
+      })
+
+      // Set HTML content
+      const htmlContent = `@HtmlOf(Model.GetSetting("editor_richtext"))`
+      if (htmlContent) {
+        editor.commands.setContent(htmlContent)
+      }
+
+      // Watch for changes in the hidden field and update editor
+      const hiddenField = document.getElementById('@Model.GetSetting("editor_id")')
+      if (hiddenField) {
+        // Use MutationObserver to watch for value changes
+        const observer = new MutationObserver(() => {
+          const newContent = hiddenField.value
+          if (newContent !== editor.getHTML()) {
+            editor.commands.setContent(newContent)
+            console.log('Editor updated from hidden field:', newContent)
+          }
+        })
+        
+        // Observe attribute changes on the hidden field
+        observer.observe(hiddenField, { attributes: true, attributeFilter: ['value'] })
+        
+        // Also listen for input/change events
+        hiddenField.addEventListener('input', (e) => {
+          const newContent = e.target.value
+          if (newContent !== editor.getHTML()) {
+            editor.commands.setContent(newContent)
+            console.log('Editor updated from hidden field:', newContent)
+          }
+        })
+        
+        hiddenField.addEventListener('change', (e) => {
+          const newContent = e.target.value
+          if (newContent !== editor.getHTML()) {
+            editor.commands.setContent(newContent)
+            console.log('Editor updated from hidden field:', newContent)
+          }
+        })
+      }
+
+      // Create toolbar buttons
+      const toolbar = document.getElementById('toolbar')
+
+      // Helper function to create buttons
+      function createButton(icon, title, command, checkActive = null) {
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.innerHTML = icon
+        button.title = title
+        button.addEventListener('click', () => command())
+
+        if (checkActive) {
+          editor.on('selectionUpdate', () => {
+            button.classList.toggle('is-active', checkActive())
+          })
+          editor.on('transaction', () => {
+            button.classList.toggle('is-active', checkActive())
+          })
+        }
+
+        return button
+      }
+
+      // Add toolbar buttons
+      toolbar.appendChild(createButton('<strong>B</strong>', 'Bold',
+        () => editor.chain().focus().toggleBold().run(),
+        () => editor.isActive('bold')
+      ))
+
+      toolbar.appendChild(createButton('<em>I</em>', 'Italic',
+        () => editor.chain().focus().toggleItalic().run(),
+        () => editor.isActive('italic')
+      ))
+
+      toolbar.appendChild(createButton('<s>S</s>', 'Strikethrough',
+        () => editor.chain().focus().toggleStrike().run(),
+        () => editor.isActive('strike')
+      ))
+
+      toolbar.appendChild(createButton('&lt;/&gt;', 'Code',
+        () => editor.chain().focus().toggleCode().run(),
+        () => editor.isActive('code')
+      ))
+
+      toolbar.appendChild(createButton('✖', 'Clear formatting',
+        () => editor.chain().focus().unsetAllMarks().run()
+      ))
+
+      toolbar.appendChild(createButton('¶', 'Paragraph',
+        () => editor.chain().focus().setParagraph().run(),
+        () => editor.isActive('paragraph')
+      ))
+
+      toolbar.appendChild(createButton('H1', 'Heading 1',
+        () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+        () => editor.isActive('heading', { level: 1 })
+      ))
+
+      toolbar.appendChild(createButton('H2', 'Heading 2',
+        () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+        () => editor.isActive('heading', { level: 2 })
+      ))
+
+      toolbar.appendChild(createButton('H3', 'Heading 3',
+        () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+        () => editor.isActive('heading', { level: 3 })
+      ))
+
+      toolbar.appendChild(createButton('H4', 'Heading 4',
+        () => editor.chain().focus().toggleHeading({ level: 4 }).run(),
+        () => editor.isActive('heading', { level: 4 })
+      ))
+
+      toolbar.appendChild(createButton('H5', 'Heading 5',
+        () => editor.chain().focus().toggleHeading({ level: 5 }).run(),
+        () => editor.isActive('heading', { level: 5 })
+      ))
+
+      toolbar.appendChild(createButton('H6', 'Heading 6',
+        () => editor.chain().focus().toggleHeading({ level: 6 }).run(),
+        () => editor.isActive('heading', { level: 6 })
+      ))
+
+      toolbar.appendChild(createButton('•', 'Bullet list',
+        () => editor.chain().focus().toggleBulletList().run(),
+        () => editor.isActive('bulletList')
+      ))
+
+      toolbar.appendChild(createButton('1.', 'Numbered list',
+        () => editor.chain().focus().toggleOrderedList().run(),
+        () => editor.isActive('orderedList')
+      ))
+
+      toolbar.appendChild(createButton('{ }', 'Code block',
+        () => editor.chain().focus().toggleCodeBlock().run(),
+        () => editor.isActive('codeBlock')
+      ))
+
+      toolbar.appendChild(createButton('❝❞', 'Quote',
+        () => editor.chain().focus().toggleBlockquote().run(),
+        () => editor.isActive('blockquote')
+      ))
+
+      toolbar.appendChild(createButton('―', 'Horizontal rule',
+        () => editor.chain().focus().setHorizontalRule().run()
+      ))
+
+      toolbar.appendChild(createButton('↵', 'Line break',
+        () => editor.chain().focus().setHardBreak().run()
+      ))
+
+      toolbar.appendChild(createButton('↶', 'Undo',
+        () => editor.chain().focus().undo().run()
+      ))
+
+      toolbar.appendChild(createButton('↷', 'Redo',
+        () => editor.chain().focus().redo().run()
+      ))
+</script>
