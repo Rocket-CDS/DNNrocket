@@ -154,7 +154,7 @@ namespace DNNrocketAPI.Components
             switch (ctl.ToLower())
             {
                 case "adminpanel": return "/rocketadmin";
-                case "apptheme": return "/rocketadmin";
+                case "apptheme": return "/rocketedit";
                 case "edit": return "/rocketedit";
                 case "module": return "/rocketedit";
                 case "recyclebin": return "/rocketedit";

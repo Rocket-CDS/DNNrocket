@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.5.12">
+		<package name="RocketSystem" type="Library" version="1.6.0">
 			<friendlyName>RocketSystem</friendlyName>
 			<DefinitionName>RocketSystem</DefinitionName>
 			<description>Rocket System</description>
@@ -19,12 +19,33 @@
       </license>
 		<releaseNotes>
 			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
-			# DNNrocket v1.5.12
+			# DNNrocket v1.6.0
 		</releaseNotes>
       <dependencies>
       </dependencies>
       <components>
-        <component type="Script">
+		  <component type="Config">
+			  <config>
+				  <configFile>web.config</configFile>
+				  <install>
+					  <configuration>
+						  <nodes>
+							  <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+								  <add name="HttpModuleRocket" type="DNNrocketAPI.Components.HttpModuleRocket, DNNrocketAPI" preCondition="managedHandler" />
+							  </node>
+						  </nodes>
+					  </configuration>
+				  </install>
+				  <uninstall>
+					  <configuration>
+						  <nodes>
+							  <node path="/configuration/system.webServer/modules/add[@name='HttpModuleRocket']" action="remove" />
+						  </nodes>
+					  </configuration>
+				  </uninstall>
+			  </config>
+		  </component>
+		  <component type="Script">
           <scripts>
             <basePath>DesktopModules\DNNrocket</basePath>
             <script type="Install">
