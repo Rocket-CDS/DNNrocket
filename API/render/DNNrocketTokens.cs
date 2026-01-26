@@ -575,7 +575,7 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut + " " + textarea + " " + scriptQuill);
         }
-        public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorTipTapDefault.cshtml")
+        public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorJoditDefault.cshtml")
         {
             var id = getIdFromXpath(xpath, row, listname);
             var appTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
