@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using DNNrocketAPI.ApiControllers;
+﻿using DNNrocketAPI.ApiControllers;
 using DNNrocketAPI.Components;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Simplisity;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace RocketPortal.Components
 {
@@ -33,10 +34,10 @@ namespace RocketPortal.Components
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
                 client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "DNNrocket v1");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("DeepL-Auth-Key", authKey);
 
                 Dictionary<string, string> data = new Dictionary<string, string>();
                 if (sourceLanguage != "") data.Add("source_lang", sourceLanguage);
-                data.Add("auth_key", authKey);
                 data.Add("text", text.Trim());
                 data.Add("target_lang", destinationLanguage);
 
