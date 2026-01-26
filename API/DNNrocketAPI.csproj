@@ -264,6 +264,7 @@
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
+    <Compile Include="Components\HttpModuleRocket.cs" />
     <Compile Include="Components\ModuleBase\RocketAdminPanelBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

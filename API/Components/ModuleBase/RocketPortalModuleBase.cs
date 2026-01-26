@@ -14,29 +14,5 @@ namespace DNNrocketAPI.Components
     public abstract class RocketPortalModuleBase : PortalModuleBase
     {
 
-        protected void RemoveAdminSkinCookie()
-        {
-            var cookieName = "_SkinSrc" + PortalSettings.PortalId;
-
-            // Create an expired cookie to delete it
-            var expiredCookie = new HttpCookie(cookieName, "")
-            {
-                Path = "/",
-                Expires = DateTime.Now.AddDays(-1)
-            };
-
-            Response.Cookies.Add(expiredCookie);
-
-            // Redirect to revert to normal skin
-            Response.Redirect(Request.RawUrl, false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-
-        protected bool HasAdminSkinCookie()
-        {
-            var cookieName = "_SkinSrc" + PortalSettings.PortalId;
-            var cookie = Request.Cookies[cookieName];
-            return cookie != null && !string.IsNullOrEmpty(cookie.Value);
-        }
     }
 }

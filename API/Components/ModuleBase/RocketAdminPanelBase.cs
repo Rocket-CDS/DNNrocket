@@ -17,58 +17,5 @@ namespace DNNrocketAPI.Components
     public abstract class RocketAdminPanelBase : PortalModuleBase
     {
 
-        protected string AdminSkinName = "/rocketadmin"; // Just the skin name, no path or extension
-
-        /// <summary>
-        /// Set the admin skin using DNN's built-in cookie system
-        /// </summary>
-        protected void ApplyAdminSkinCookie()
-        {
-            var cookieName = "_SkinSrc" + PortalSettings.PortalId;
-            var skinCookie = new HttpCookie(cookieName, AdminSkinName)
-            {
-                Path = "/",
-                HttpOnly = true,
-                Expires = DateTime.Now.AddHours(8) // Cookie expires in 8 hours
-            };
-
-            Response.Cookies.Add(skinCookie);
-
-            // Redirect to apply the new skin
-            Response.Redirect(Request.RawUrl, false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-
-        /// <summary>
-        /// Remove the admin skin cookie to revert to normal skin
-        /// </summary>
-        protected void RemoveAdminSkinCookie()
-        {
-            var cookieName = "_SkinSrc" + PortalSettings.PortalId;
-
-            // Create an expired cookie to delete it
-            var expiredCookie = new HttpCookie(cookieName, "")
-            {
-                Path = "/",
-                Expires = DateTime.Now.AddDays(-1)
-            };
-
-            Response.Cookies.Add(expiredCookie);
-
-            // Redirect to revert to normal skin
-            Response.Redirect(Request.RawUrl, false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-
-        /// <summary>
-        /// Check if admin skin cookie is currently set
-        /// </summary>
-        protected bool HasAdminSkinCookie()
-        {
-            var cookieName = "_SkinSrc" + PortalSettings.PortalId;
-            var cookie = Request.Cookies[cookieName];
-            return cookie != null && !string.IsNullOrEmpty(cookie.Value);
-        }
-
     }
 }
