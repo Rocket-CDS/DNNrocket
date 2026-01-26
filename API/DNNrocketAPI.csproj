@@ -398,9 +398,9 @@
     <None Include="Documents\SystemDefaults.md" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
-    <None Include="Themes\config-w3\1.0\default\EditorQuillDefault.cshtml" />
     <None Include="Themes\config-w3\1.0\default\EditorCKEditor4Default.cshtml" />
     <None Include="Themes\config-w3\1.0\default\EditorJoditDefault.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\EditorQuillDefault.cshtml" />
     <None Include="Themes\config-w3\1.0\default\EditorTipTapDefault.cshtml" />
     <None Include="Installation\01.01.01.SqlDataProvider" />
     <None Include="Installation\01.00.21.SqlDataProvider" />
