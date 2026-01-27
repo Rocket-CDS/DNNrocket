@@ -279,6 +279,7 @@
     <Compile Include="Components\ModuleBase\RocketModuleSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\SecuritySingleton.cs" />
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />

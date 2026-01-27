@@ -81,9 +81,9 @@ namespace DNNrocketAPI.Components
         /// </summary>
         /// <param name="exc"></param>
         /// <returns></returns>
-        public static string LogException(Exception exc)
+        public static string LogException(Exception exc, bool clearCache = false)
         {
-            CacheUtils.ClearAllCache(); // do  not want to repeat the error;
+            if (clearCache) CacheUtils.ClearAllCache(); // do  not want to repeat the error;
             Exceptions.LogException(exc);
             return exc.ToString();
         }
