@@ -507,6 +507,7 @@ namespace DNNrocketAPI.render
         /// <param name="listname"></param>
         /// <param name="langauge"></param>
         /// <returns></returns>
+        [Obsolete("Use: @Editor()")]
         public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false)
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
@@ -531,6 +532,7 @@ namespace DNNrocketAPI.render
             strOut += " <textarea id='" + id + "' title='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
+        [Obsolete("Use: @Editor()")]
         public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
@@ -548,7 +550,7 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut);
         }
-
+        [Obsolete("Use: @Editor()")]
         public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, string quillconfig = "", bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
@@ -575,6 +577,23 @@ namespace DNNrocketAPI.render
             var textarea = TextArea(info, xpath, "style='display:none;'", "",localized, row, listname);
 
             return new RawString(strOut + " " + textarea + " " + scriptQuill);
+        }
+        public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorJoditDefault.cshtml")
+        {
+            var id = getIdFromXpath(xpath, row, listname);
+            var appTheme = new AppThemeRocketApiLimpet(PortalUtils.GetCurrentPortalId());
+            var razorTemplate = appTheme.GetTemplate(editorRazorTemplate);
+            model.SetSetting("editor_richtext", info.GetXmlProperty(xpath).Replace("`",""));
+            model.SetSetting("editor_xpath", xpath);
+            model.SetSetting("editor_id", id);
+            var strOut = "";
+            var pr = RenderRazorUtils.RazorProcessData(razorTemplate, null, model.DataObjects, model.Settings, model.SessionParamsData, true);
+            if (pr.StatusCode == "00")
+                strOut = pr.RenderedText;
+            else
+                strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
+
+            return new RawString(strOut);
         }
 
         #endregion

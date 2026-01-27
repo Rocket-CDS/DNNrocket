@@ -52,7 +52,8 @@ namespace DNNrocketAPI.Components
                         processResult.StatusCode = "01";
                         processResult.ErrorMsg = ex.ToString();
                         LogUtils.LogSystem(ex.ToString());
-                        LogUtils.LogException(ex);
+                        LogUtils.LogException(ex, true); // clear cache so we see the error.
+                        LogUtils.LogSystem("WARNING!!! - Cache cleared for the razor template error.  THIS MAY CAUSE THE SYSTEM TO GO SLOW IF IT KEEPS HAPPENING.");
                     }
                     return processResult;
                 }

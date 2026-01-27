@@ -83,6 +83,15 @@ namespace DNNrocketAPI.Components
                 _defaultFileRelPath = _systemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                 var filenamepath = DNNrocketUtils.MapPath(_defaultFileRelPath);
 
+                var systemWrapperDataSystemRelPath = "";
+                var cacheKey = _defaultFileRelPath;
+                if (wrapperSystemKey != "")
+                {
+                    var systemWrapperData = SystemSingleton.Instance(wrapperSystemKey);
+                    systemWrapperDataSystemRelPath = systemWrapperData.SystemRelPath;
+                    cacheKey = cacheKey + systemWrapperDataSystemRelPath;
+                }
+
                 PortalId = portalId;
 
                 _userId = UserUtils.GetCurrentUserId();
@@ -90,7 +99,7 @@ namespace DNNrocketAPI.Components
                 _tabid = tabid;
                 _rocketInterface = rocketInterface;
                 ValidateUser();
-                _info = (SimplisityInfo)CacheUtils.GetCache(_defaultFileRelPath + _defaultWrapperFileRelPath);
+                _info = (SimplisityInfo)CacheUtils.GetCache(cacheKey);
                 if (_info == null)
                 {
                     var xmlString = FileUtils.ReadFile(filenamepath);
@@ -125,8 +134,7 @@ namespace DNNrocketAPI.Components
                         _defaultWrapperFileRelPath = "";
                         if (wrapperSystemKey != "")
                         {
-                            var systemWrapperData = SystemSingleton.Instance(wrapperSystemKey);
-                            _defaultWrapperFileRelPath = systemWrapperData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                            _defaultWrapperFileRelPath = systemWrapperDataSystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                             if (_defaultWrapperFileRelPath != "" && File.Exists(DNNrocketUtils.MapPath(_defaultWrapperFileRelPath)))
                             {
                                 var xmlStringWrapper = FileUtils.ReadFile(DNNrocketUtils.MapPath(_defaultWrapperFileRelPath));
@@ -144,7 +152,7 @@ namespace DNNrocketAPI.Components
                         }
                     }
 
-                    CacheUtils.SetCache(_defaultFileRelPath + _defaultWrapperFileRelPath, _info);
+                    CacheUtils.SetCache(cacheKey, _info);
                }
                 _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtils.GetCache(_systemKey + "Security" + _userId);
                 if (_commandSecurity == null)

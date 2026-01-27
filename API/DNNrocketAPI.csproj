@@ -279,6 +279,7 @@
     <Compile Include="Components\ModuleBase\RocketModuleSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\SecuritySingleton.cs" />
     <Compile Include="Components\SystemSingleton.cs" />
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />
@@ -398,6 +399,10 @@
     <None Include="Documents\SystemDefaults.md" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
+    <None Include="Themes\config-w3\1.0\default\EditorCKEditor4Default.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\EditorJoditDefault.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\EditorQuillDefault.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\EditorTipTapDefault.cshtml" />
     <None Include="Installation\01.01.01.SqlDataProvider" />
     <None Include="Installation\01.00.21.SqlDataProvider" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
@@ -1348,6 +1353,7 @@
     <Content Include="Themes\config-w3\1.0\css\littleboyblue-theme.css" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Editor\TipTap\" />
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>

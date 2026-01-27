@@ -167,7 +167,7 @@
                                     <div class="w3-display-container" style="min-width:120px;">
                                         <div class="w3-row w3-card" style="height:120px;">
                                             <div class="w3-display-middle ">
-                                                <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@(appTheme.ImageFolderRel.TrimEnd('/') + "/" + imgDict.Key)&amp;w=80&amp;h=80" class="w3-round w3-hover-opacity">
+                                                <img src="@ImageUrl(appTheme.ImageFolderRel.TrimEnd('/') + "/" + imgDict.Key,80,80)" class="w3-round w3-hover-opacity">
                                             </div>
                                             <div class="w3-display-topright simplisity_click" s-cmd="rocketapptheme_deleteimagefile" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@imgDict.Key","selectedproject":"@appTheme.ProjectName","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor: pointer;">
                                                 @ButtonIcon(ButtonTypes.remove)
