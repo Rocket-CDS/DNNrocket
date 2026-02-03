@@ -11,6 +11,7 @@ namespace DNNrocketAPI.Components
     {
         public ArticleDoc(SimplisityInfo info, string fieldId)
         {
+            Exists = false;
             if (info != null)
             {
                 Info = info;
@@ -23,7 +24,6 @@ namespace DNNrocketAPI.Components
                 }
                 if (RelPath == "") Exists = false;
             }
-            Exists = false;
         }
 
         public SimplisityInfo Info { get; private set; }
