@@ -187,10 +187,13 @@ namespace DNNrocketAPI.Components
             else
             {
                 if (ValidCommand(paramCmd) && !HasCommandSecurityAccess(paramCmd))
+                {
+                    LogUtils.LogSystem("HasSecurityAccess FAIL - cmd: " + paramCmd + " return: " + loginCommand);
                     return loginCommand;
+                }
                 else
                 {
-                    LogUtils.LogSystem("INVALID: " + _systemData.SystemKey + " CMD: " + paramCmd);
+                    LogUtils.LogSystem("HasSecurityAccess INVALID - " + _systemData.SystemKey + " CMD: " + paramCmd);
                     return "";
                 }
             }
@@ -238,16 +241,19 @@ namespace DNNrocketAPI.Components
             // if the command is NOT defined, the do not give access.  Commands MUST be defined.
             if (!_commandSecurity.ContainsKey(commandKey))
             {
+                LogUtils.LogSystem("HasCommandSecurityAccess: No Command Defined." + commandKey);
                 return false;
             }
             if (UserUtils.IsSuperUser()) return true;
-            if (ModuleUtils.HasModuleEditRights(_tabid, _moduleid) && _rocketInterface.SecurityCheckUser(PortalId, _userId))
+            var userCheck = _rocketInterface.SecurityCheckUser(PortalId, _userId);
+            if (ModuleUtils.HasModuleEditRights(_tabid, _moduleid) && userCheck)
             {
                 return true;
             }
             else
             {
                 if (!_commandSecurity[commandKey]) return true;  //Command defined to have no security 
+                LogUtils.LogSystem("HasModuleEditRights FAIL: tabid " + _tabid + " moduleid " + _moduleid + " User Check " + userCheck.ToString());
                 return false;
             }
         }
