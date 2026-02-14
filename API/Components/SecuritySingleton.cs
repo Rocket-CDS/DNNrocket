@@ -18,7 +18,7 @@ namespace DNNrocketAPI.Components
         private static object _lock = new object();
         public static SecurityLimpet Instance(int portalId, string systemKey, RocketInterface rocketInterface, int tabid = -1, int moduleid = -1, string wrapperSystemKey = "")
         {
-            var cacheKey = $"{portalId}_{systemKey}_{rocketInterface}_{tabid}_{moduleid}_{wrapperSystemKey}";
+            var cacheKey = $"{portalId}_{systemKey}_{rocketInterface.InterfaceKey}_{tabid}_{moduleid}_{wrapperSystemKey}";
             lock (_lock)
             {
                 if ((_instances == null))

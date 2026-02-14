@@ -20,8 +20,11 @@ namespace DNNrocketAPI.Components
             var globalSettings = new SystemGlobalData();
             if (globalSettings.Log)
             {
-                ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-                tracelLogger.Error($"ROCKET: " + message);
+                ILog traceLogger = LoggerSource.Instance.GetLogger("DNNrocket.Trace");
+                if (traceLogger.IsDebugEnabled)
+                {
+                    traceLogger.Debug($"ROCKET: {message}");
+                }
             }
         }
         public static void LogSystemClear(int daysToKeep)
