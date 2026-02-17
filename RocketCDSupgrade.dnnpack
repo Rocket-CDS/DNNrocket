@@ -19,8 +19,9 @@
     <value>\API\Systems</value>
     <value>\API\Themes\*</value>
 	<value>\API\CKEditor\*</value>
+    <value>\API\Editor\*</value>
 
-    <value>\Simplisity</value>
+	  <value>\Simplisity</value>
     <value>\Simplisity\js</value>
 	<value>\Simplisity\css</value>
 
