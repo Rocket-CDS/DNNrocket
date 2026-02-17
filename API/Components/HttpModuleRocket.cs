@@ -15,13 +15,29 @@ namespace DNNrocketAPI.Components
     {
         public void Init(HttpApplication application)
         {
-            try
+            application.BeginRequest += OnBeginRequest; // Earlier!
+            application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
+        }
+
+        private void OnBeginRequest(object source, EventArgs e)
+        {
+            HttpContext context = HttpContext.Current;
+            var portalSettings = PortalUtils.GetCurrentPortalSettings();
+            if (portalSettings != null)
             {
-                application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
+                string cookieName = "_SkinSrc" + portalSettings.PortalId;
+                if (context.Request.Cookies[cookieName] != null)
+                {
+                    // Remove from request cookies (current request)
+                    context.Request.Cookies.Remove(cookieName);
+                    
+                    // Expire in response (future requests)
+                    HttpCookie cookie = new HttpCookie(cookieName)
+                    {
+                        Expires = DateTime.Now.AddDays(-1)
+                    };
+                    context.Response.Cookies.Add(cookie);
+                }
             }
         }
 
@@ -50,8 +66,20 @@ namespace DNNrocketAPI.Components
                 Page page = (Page)sender;
                 HttpContext context = HttpContext.Current;
 
+                // Clear the SkinSrc cookie set by RocketSkinModelFactory
                 var portalSettings = PortalUtils.GetCurrentPortalSettings();
-                if (portalSettings == null) return;
+                if (portalSettings != null)
+                {
+                    string cookieName = "_SkinSrc" + portalSettings.PortalId;
+                    if (context.Request.Cookies[cookieName] != null)
+                    {
+                        HttpCookie cookie = new HttpCookie(cookieName)
+                        {
+                            Expires = DateTime.Now.AddDays(-1)
+                        };
+                        context.Response.Cookies.Add(cookie);
+                    }
+                }
 
                 // Get ctl parameter
                 var ctl = GetCtlParameter(context);

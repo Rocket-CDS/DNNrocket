@@ -399,10 +399,7 @@
     <None Include="Documents\SystemDefaults.md" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
-    <None Include="Themes\config-w3\1.0\default\EditorCKEditor4Default.cshtml" />
     <None Include="Themes\config-w3\1.0\default\EditorJoditDefault.cshtml" />
-    <None Include="Themes\config-w3\1.0\default\EditorQuillDefault.cshtml" />
-    <None Include="Themes\config-w3\1.0\default\EditorTipTapDefault.cshtml" />
     <None Include="Installation\01.01.01.SqlDataProvider" />
     <None Include="Installation\01.00.21.SqlDataProvider" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
@@ -862,6 +859,8 @@
     <Content Include="CKEditor\scriptClassic.html" />
     <Content Include="CKEditor\scriptClassicCode.html" />
     <Content Include="CKEditor\scriptMin.html" />
+    <Content Include="Editor\Jodit\jodit.min.css" />
+    <Content Include="Editor\Jodit\jodit.min.js" />
     <Content Include="images\action_bottom.svg" />
     <Content Include="images\action_delete.svg" />
     <Content Include="images\action_down.svg" />
@@ -1353,7 +1352,6 @@
     <Content Include="Themes\config-w3\1.0\css\littleboyblue-theme.css" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Editor\TipTap\" />
     <Folder Include="Themes\config-w3\1.0\img\" />
   </ItemGroup>
   <ItemGroup>
