@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.6.1</version>
+	<version>1.7.0</version>
 	<!-- Include only files that match the regular expression -->
   <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.json)$</regexpr>
   <name>RocketCDS</name>
