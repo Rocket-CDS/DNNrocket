@@ -142,7 +142,7 @@ namespace DNNrocket.AppThemes
                             case "rocketapptheme_versionjson":
                                 strOut = "";
                                 var appThemeFolder = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
-                                var projectName = _postInfo.GetXmlProperty("genxml/select/selectedprojectname");
+                                var projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
                                 var appTheme = new AppThemeLimpet(_dataObject.PortalData.PortalId, appThemeFolder, "", projectName);
                                 jsonOut = appTheme.VersionListJson();
                                 break;
