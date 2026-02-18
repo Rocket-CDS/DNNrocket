@@ -28,14 +28,20 @@
 </div>
 
 <script>
+
     function stripHTML(str) {
-        const parsedHTML = new DOMParser().parseFromString(str, "text/html");
-        const text = parsedHTML.body.textContent;
-        if (/(<([^>]+)>)/gi.test(text)) {
-            return stripHTML(text);
-        }
-        return text || "";
+        // Replace common block elements with line breaks before parsing
+        const htmlWithBreaks = str
+            .replace(/<\/p>/gi, '\n')
+            .replace(/<\/div>/gi, '\n')
+            .replace(/<br\s*\/?>/gi, '\n')
+            .replace(/<\/li>/gi, '\n')
+            .replace(/<\/h[1-6]>/gi, '\n');
+
+        const parsedHTML = new DOMParser().parseFromString(htmlWithBreaks, "text/html");
+        return parsedHTML.body.textContent.trim() || "";
     }
+
     function hidesourcetext() {
         $('#deeplsourcetext').hide();
     }
