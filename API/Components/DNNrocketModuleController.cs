@@ -199,9 +199,14 @@ namespace DNNrocketAPI.Components
                     if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
                     {
                         var portalId = moduleInfo.PortalID;
-                        var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "api");
+                        var systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Razor", "api");
                         var systemData = SystemSingleton.Instance(systemKey);
-                        if (!systemData.Exists) // MVC naming convension
+                        if (!systemData.Exists) // Mod naming convension (webforms)
+                        {
+                            systemKey = moduleInfo.DesktopModule.ModuleName.Replace("Mod", "api");
+                            systemData = SystemSingleton.Instance(systemKey);
+                        }
+                        if (!systemData.Exists) // MVC naming convension (legacy)
                         {
                             systemKey = moduleInfo.DesktopModule.ModuleName.Replace("MVC", "api");
                             systemData = SystemSingleton.Instance(systemKey);
