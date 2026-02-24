@@ -6,6 +6,29 @@
 
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Editor/Jodit/jodit.min.css" />
 
+<style>
+    /* Source mode: white background */
+    .jodit-source__mirror {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    /* Remove top margin from bulleted lists in editor */
+    .jodit-wysiwyg ul {
+        margin-top: 0 !important;
+    }
+
+    /* Remove italic preview in toolbar */
+    .jodit-toolbar-button[aria-label*="Italic"] {
+        font-style: normal !important;
+    }
+
+    /* Remove blockquote preview in toolbar */
+    .jodit-toolbar-button[aria-label*="quote"] {
+        font-style: normal !important;
+    }
+</style>
+
 <div class="container">
     <div class="control-group">
         <div id="jodit-editor-@Model.GetSetting("editor_id")"></div>
@@ -49,6 +72,7 @@
 
         // Configure Jodit editor to match CKEditor4/TipTap toolbar
         const config = {
+            language: '@DNNrocketUtils.GetLanguageCode(DNNrocketUtils.GetCurrentCulture())',
             toolbar: true,
             toolbarButtonSize: 'middle',
             toolbarAdaptive: false,
@@ -61,7 +85,8 @@
                 'paragraph', '|',
                 'left', 'center', 'right', 'justify', '|',
                 'link', 'unlink', '|',
-                'hr'
+                'hr', '|',
+                'fullsize'
             ],
             buttonsMD: [
                 'source', '|',
@@ -71,7 +96,8 @@
                 'paragraph', '|',
                 'left', 'center', 'right', 'justify', '|',
                 'link', 'unlink', '|',
-                'hr'
+                'hr', '|',
+                'fullsize'
             ],
             buttonsSM: [
                 'source', '|',
@@ -81,7 +107,8 @@
                 'paragraph', '|',
                 'left', 'center', 'right', 'justify', '|',
                 'link', 'unlink', '|',
-                'hr'
+                'hr', '|',
+                'fullsize'
             ],
             buttonsXS: [
                 'source', '|',
@@ -90,7 +117,8 @@
                 'ul', 'ol', '|',
                 'paragraph', '|',
                 'link', '|',
-                'hr'
+                'hr', '|',
+                'fullsize'
             ],
             controls: {
                 paragraph: {
@@ -101,18 +129,40 @@
                         h3: 'Heading 3',
                         h4: 'Heading 4'
                     }
+                },
+                link: {
+                    formTemplate: function() {
+                        return `<form class="jodit-form">
+                            <div class="jodit-form__group">
+                                <label>URL</label>
+                                <input type="text" name="url" class="jodit-input" />
+                            </div>
+                            <div class="jodit-form__group">
+                                <label>Text</label>
+                                <input type="text" name="text" class="jodit-input" />
+                            </div>
+                            <div class="jodit-form__group">
+                                <label>
+                                    <input type="checkbox" name="target" />
+                                    Open in new tab
+                                </label>
+                            </div>
+                            <div class="jodit-form__buttons">
+                                <button type="submit" class="jodit-ui-button jodit-ui-button_status_primary">Insert</button>
+                                <button type="button" class="jodit-ui-button jodit-ui-button_status_default jodit-dialog__panel-footer-button">Cancel</button>
+                            </div>
+                        </form>`;
+                    }
                 }
             },
             enter: 'P',
             defaultMode: Jodit.MODE_WYSIWYG,
             useSplitMode: false,
-            allowResizeX: false,    // Disable horizontal resize (keeps width fixed)
-            allowResizeY: true,     // Enable vertical resize (user can drag handle)
-            allowResizer: true,     // Show the resize handle at bottom-right
-            minHeight: 300,         // Minimum height in pixels
-            maxHeight: 800,        // Maximum height in pixels (optional)
             minHeight: 300,
-            height: 'auto',
+            height: 400,
+            askBeforePasteHTML: false,
+            askBeforePasteFromWord: false,
+            defaultActionOnPaste: 'insert_clear_html',
             uploader: {
                 insertImageAsBase64URI: false
             },
