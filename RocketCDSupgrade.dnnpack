@@ -139,6 +139,15 @@
 
 	  <value dest='RocketFormsMod'>..\RocketModules\RocketFormsMod\Installation\Resource.zip</value>
 
+	  <!-- RocketEdit Skin Files -->
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\Views\RocketEdit.cshtml</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\Views\RocketAdmin.cshtml</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\Views\web.config</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\RocketAdmin.ascx</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\RocketEdit.ascx</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\RocketAdmin.xml</value>
+	  <value dest='RocketEditSkin.zip'>\RocketPortal\Skins\RocketEdit\RocketEdit.xml</value>
+
   </file>
 	<assembly>
         <value>\bin\Simplisity.dll</value>

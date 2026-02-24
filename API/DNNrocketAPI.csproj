@@ -872,6 +872,7 @@
     <Content Include="images\action_refresh.svg" />
     <Content Include="images\action_rss.svg" />
     <Content Include="images\action_settings.svg" />
+    <Content Include="images\action_settingsdisplay.svg" />
     <Content Include="images\action_source.svg" />
     <Content Include="images\action_sourcecode.svg" />
     <Content Include="images\action_top.svg" />
