@@ -290,6 +290,42 @@
 			</files>
 		</component>
 
+		  <component type="File">
+			  <files>
+				  <basePath>Portals\_default\Skins\RocketEdit</basePath>
+
+				  <file>
+					  <name>Views\RocketEdit.cshtml</name>
+					  <sourceFileName>RocketEdit\Views\RocketEdit.cshtml</sourceFileName>
+				  </file>
+				  <file>
+					  <name>Views\RocketAdmin.cshtml</name>
+					  <sourceFileName>RocketEdit\Views\RocketAdmin.cshtml</sourceFileName>
+				  </file>
+				  <file>
+					  <name>Views\web.config</name>
+					  <sourceFileName>RocketEdit\Views\web.config</sourceFileName>
+				  </file>
+				  <file>
+					  <name>RocketAdmin.ascx</name>
+					  <sourceFileName>RocketEdit\RocketAdmin.ascx</sourceFileName>
+				  </file>
+				  <file>
+					  <name>RocketEdit.ascx</name>
+					  <sourceFileName>RocketEdit\RocketEdit.ascx</sourceFileName>
+				  </file>
+				  <file>
+					  <name>RocketAdmin.xml</name>
+					  <sourceFileName>RocketEdit\RocketAdmin.xml</sourceFileName>
+				  </file>
+				  <file>
+					  <name>RocketEdit.xml</name>
+					  <sourceFileName>RocketEdit\RocketEdit.xml</sourceFileName>
+				  </file>
+
+			  </files>
+		  </component>
+
 	  </components>
     </package>
 

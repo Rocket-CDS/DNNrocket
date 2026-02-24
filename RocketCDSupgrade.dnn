@@ -286,12 +286,48 @@
 					<name>\rocketedit.xml</name>
 					<sourceFileName>rocketedit.xml</sourceFileName>
 				</file>
-				
+
+			</files>
+		</component>
+
+		<component type="File">
+			<files>
+				<basePath>Portals\_default\Skins\RocketEdit</basePath>
+
+				<file>
+					<name>Views\RocketEdit.cshtml</name>
+					<sourceFileName>RocketEdit\Views\RocketEdit.cshtml</sourceFileName>
+				</file>
+				<file>
+					<name>Views\RocketAdmin.cshtml</name>
+					<sourceFileName>RocketEdit\Views\RocketAdmin.cshtml</sourceFileName>
+				</file>
+				<file>
+					<name>Views\web.config</name>
+					<sourceFileName>RocketEdit\Views\web.config</sourceFileName>
+				</file>
+				<file>
+					<name>RocketAdmin.ascx</name>
+					<sourceFileName>RocketEdit\RocketAdmin.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>RocketEdit.ascx</name>
+					<sourceFileName>RocketEdit\RocketEdit.ascx</sourceFileName>
+				</file>
+				<file>
+					<name>RocketAdmin.xml</name>
+					<sourceFileName>RocketEdit\RocketAdmin.xml</sourceFileName>
+				</file>
+				<file>
+					<name>RocketEdit.xml</name>
+					<sourceFileName>RocketEdit\RocketEdit.xml</sourceFileName>
+				</file>
+
 			</files>
 		</component>
 
 	  </components>
-    </package>
+	</package>
 
     <package name="RocketAppTheme" type="Library" version="1.0.31">
       <friendlyName>RocketAppTheme</friendlyName>
@@ -1351,45 +1387,6 @@
 					</desktopModule>
 				</component>
 
-			</components>
-		</package>
-
-		<package name="RocketEditSkin" type="Skin" version="1.0.0">
-			<friendlyName>RocketEdit Skin</friendlyName>
-			<DefinitionName>RocketEditSkin</DefinitionName>
-			<description>RocketEdit MVC Pipeline Skin for DNN</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketEdit Skin uses the DNNRocket MVC Pipeline framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-				<dependency type="Package">RocketPortal</dependency>
-			</dependencies>
-
-			<components>
-				<component type="Skin">
-					<skinFiles>
-						<basePath>Portals\_default\Skins</basePath>
-						<skinFile>
-							<path>RocketEdit</path>
-							<name>RocketEditSkin.zip</name>
-						</skinFile>
-					</skinFiles>
-				</component>
 			</components>
 		</package>
 
