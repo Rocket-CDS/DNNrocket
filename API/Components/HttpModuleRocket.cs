@@ -175,18 +175,25 @@ namespace DNNrocketAPI.Components
             return null;
         }
 
-        private string DetermineSkinToApply(PortalSettings portalSettings, string ctl)
+        private string DetermineSkinToApply(PortalSettings portalSettings, string ctlValue)
         {
-            if (string.IsNullOrEmpty(ctl)) return null;
+            if (string.IsNullOrEmpty(ctlValue)) return null;
 
-            switch (ctl.ToLower())
+            switch (ctlValue.ToLower())
             {
-                case "adminpanel": return "/rocketadmin";
-                case "apptheme": return "/rocketedit";
-                case "edit": return "/rocketedit";
-                case "module": return "/rocketedit";
-                case "recyclebin": return "/rocketedit";
-                default: return null;
+                case "adminpanel":
+                    return "[G]Skins/rocketedit/rocketadmin";
+
+                case "edit":
+                case "rocketedit":
+                case "apptheme":
+                case "module":
+                case "settings":
+                case "recyclebin":
+                    return "[G]Skins/rocketedit/rocketedit";
+
+                default:
+                    return null;
             }
         }
 

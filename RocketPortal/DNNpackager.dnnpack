@@ -3,7 +3,7 @@
   <websitedestrelpath>\DesktopModules\DNNrocket\RocketPortal</websitedestrelpath>
   <websitedestbinrelpath>\bin</websitedestbinrelpath>
   <!-- Include only files that match the regular expression -->
-  <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.inject)$</regexpr>
+  <regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.jpg|\.gif|\.css|\.svg|\.js|\.xml|\.txt|\.md|\.aspx|\.ascx|\.ashx|\.woff|\.woff2|\.ttf|\.rules|\.inject|\.config)$</regexpr>
   <directory include='false'>
 		<!-- All paths should be from the source root (project root) -->
     <value>\.git</value>
@@ -29,6 +29,11 @@
     <value>\WebsiteBuilds\10_Blank.rules</value>
 	  <value>\WebsiteBuilds\SystemDefaults.rules</value>
   </file>
+	<!-- Move directory from installation folder to new folder. -->
+	<movedir>
+		<!-- dest = destination from website root, value = source from Resource zip root. -->
+		<value dest='\Portals\_default\Skins\RocketEdit'>\Skins\RocketEdit</value>
+	</movedir>
   <assembly>
 		<value>RocketPortal.dll</value>
     <value>RocketPortal.pdb</value>
