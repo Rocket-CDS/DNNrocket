@@ -328,4 +328,10 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   <data name="validate.Text" xml:space="preserve">
     <value>Valider</value>
   </data>
+  <data name="exportprebuild.Text" xml:space="preserve">
+    <value>Exporter le site web en préconstruit</value>
+  </data>
+  <data name="importprebuild.Text" xml:space="preserve">
+    <value>Importer le site Web depuis le préconstruit</value>
+  </data>
 </root>

@@ -25,6 +25,23 @@
 		  <action>true</action>
 	  </command>
 
+	  <command>
+		  <cmd>rockettools_exportprebuild</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_exportprebuildexe</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_importprebuild</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_importprebuildexe</cmd>
+		  <action>true</action>
+	  </command>	  
+
   </commands>
   
 </root>

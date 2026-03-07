@@ -2306,6 +2306,94 @@ namespace DNNrocketAPI.Components
 
         #endregion
 
+        #region "Export/Import"
+
+        public static string ExportWebsite(int portalId)
+        {
+            try
+            {
+                var helper = new DnnSiteExportImportHelper();
+
+                // Export portal with ID 0, performed by user with ID 1
+                var exportJob = helper.ExportWebsiteAndWait(
+                    portalId: portalId,
+                    userId: 1,
+                    exportName: "My Website Export",
+                    exportDescription: "Full website backup"
+                );
+
+                return exportJob.Directory;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return "";
+        }
+        public static bool ImportWebsite(int portalId, string importDataMapPath)
+        {
+            try
+            {
+                var helper = new DnnSiteExportImportHelper();
+
+                var packageMapPath = PrepareImportPackage(importDataMapPath);
+                if (String.IsNullOrEmpty(packageMapPath)) return false;
+                var packageId = Path.GetFileNameWithoutExtension(packageMapPath);
+
+                // Export portal with ID 0, performed by user with ID 1
+                var exportJob = helper.ImportWebsiteAndWait(
+                    portalId: portalId,
+                    userId: 1,
+                    packageId: packageId
+                );
+
+                Directory.Delete(packageMapPath);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Prepares an import package by extracting it to the DNN Export/Import directory.
+        /// </summary>
+        /// <param name="packageFilePath">The full file path to the export package (.zip file).</param>
+        /// <returns>The package ID (folder name) to use for import.</returns>
+        private static string PrepareImportPackage(string packageFilePath)
+        {
+            if (!System.IO.File.Exists(packageFilePath))
+            {
+                throw new System.IO.FileNotFoundException($"Import package file not found: {packageFilePath}", packageFilePath);
+            }
+
+            // Generate a unique package ID (folder name)
+            var packageId = System.IO.Path.GetFileNameWithoutExtension(packageFilePath) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+            // Get the DNN Export/Import directory path
+            var exportImportPath = System.IO.Path.Combine(
+                DotNetNuke.Common.Globals.ApplicationMapPath,
+                "App_Data",
+                "ExportImport",
+                packageId
+            );
+
+            // Create the directory if it doesn't exist
+            if (!System.IO.Directory.Exists(exportImportPath))
+            {
+                System.IO.Directory.CreateDirectory(exportImportPath);
+            }
+
+            // Extract the zip file to the export/import directory
+            System.IO.Compression.ZipFile.ExtractToDirectory(packageFilePath, exportImportPath);
+
+            return packageId;
+        }
+
+        #endregion
+
 
         #region "Portal - obsolete"
 

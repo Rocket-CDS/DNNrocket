@@ -62,6 +62,9 @@
     <Reference Include="DotNetNuke.Instrumentation">
       <HintPath>_external\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.SiteExportImport">
+      <HintPath>_external\DotNetNuke.SiteExportImport.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Web">
       <HintPath>_external\DotNetNuke.Web.dll</HintPath>
     </Reference>
@@ -259,6 +262,7 @@
     <Compile Include="Components\CurrencyData.cs" />
     <Compile Include="Components\CurrencyUtils.cs" />
     <Compile Include="Components\DeepLUtils.cs" />
+    <Compile Include="Components\DnnSiteExportImportHelper.cs" />
     <Compile Include="Components\DynamicUtils.cs" />
     <Compile Include="Components\ExternalApiModel.cs" />
     <Compile Include="Components\FastReplacer.cs" />

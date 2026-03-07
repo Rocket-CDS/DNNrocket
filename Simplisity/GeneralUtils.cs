@@ -546,6 +546,32 @@ namespace Simplisity
             else
                 return sb.ToString();
         }
+        public static string SanitizeFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return fileName;
+
+            // Remove accents/diacritics
+            var normalized = fileName.Normalize(System.Text.NormalizationForm.FormD);
+            var sb = new System.Text.StringBuilder();
+            foreach (var c in normalized)
+            {
+                var category = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (category != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+            var withoutAccents = sb.ToString().Normalize(System.Text.NormalizationForm.FormC);
+
+            // Remove invalid filename characters
+            var invalidChars = Path.GetInvalidFileNameChars();
+            foreach (var c in invalidChars)
+            {
+                withoutAccents = withoutAccents.Replace(c.ToString(), "_");
+            }
+
+            return withoutAccents;
+        }
 
         public static string RemapInternationalCharToAscii(char c)
         {

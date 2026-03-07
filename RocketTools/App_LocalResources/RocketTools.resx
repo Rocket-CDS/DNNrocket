@@ -328,4 +328,10 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   <data name="validate.Text" xml:space="preserve">
     <value>Validate Portal Data</value>
   </data>
+  <data name="exportprebuild.Text" xml:space="preserve">
+    <value>Export Website as Prebuild</value>
+  </data>
+  <data name="importprebuild.Text" xml:space="preserve">
+    <value>Import Website from Prebuild</value>
+  </data>
 </root>

@@ -145,6 +145,21 @@ namespace RocketTools.API
                     break;
 
 
+                // =========== Prebuild ============
+
+                case "rockettools_exportprebuild":
+                    strOut = ExportPreBuild();
+                    break;
+                case "rockettools_exportprebuildexe":
+                    strOut = ExportPreBuildExe();
+                    break;
+                case "rockettools_importprebuild":
+                    strOut = ImportPreBuild();
+                    break;
+                case "rockettools_importprebuildexe":
+                    strOut = ImportPreBuildExe();
+                    break;
+
 
 
 
