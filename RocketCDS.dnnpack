@@ -27,8 +27,6 @@
 
 	<value>\css\*</value>
     <value>\js\*</value>
-    <value>\Quill\*</value>
-    <value>\CodeMirror\*</value>
 
     <value>\RocketPortal</value>
     <value>\RocketPortal\App_LocalResources</value>

@@ -394,7 +394,6 @@
     <None Include="Documents\Command Tracking.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\EventsInterface.md" />
-    <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\SystemDefaults.md" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
