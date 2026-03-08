@@ -2347,7 +2347,14 @@ namespace DNNrocketAPI.Components
                     packageId: packageId
                 );
 
-                Directory.Delete(packageMapPath);
+                // Get the DNN Export/Import directory path
+                var exportImportPath = System.IO.Path.Combine(
+                    DotNetNuke.Common.Globals.ApplicationMapPath,
+                    "App_Data",
+                    "ExportImport",
+                    packageId
+                );
+                Directory.Delete(exportImportPath,true);
 
                 return true;
             }

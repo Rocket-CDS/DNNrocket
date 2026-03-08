@@ -58,6 +58,22 @@ public class DnnSiteExportImportHelper
             PortalId = portalId,
             ExportName = exportName ?? $"Export_{portal.PortalName}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}",
             ExportDescription = exportDescription ?? $"Automatic export of {portal.PortalName}",
+
+            // CRITICAL: Must populate ItemsToExport array
+            ItemsToExport = new[]
+            {
+                Constants.Category_Content,      // "CONTENT"
+                Constants.Category_Assets,       // "ASSETS"
+                Constants.Category_Users,        // "USERS"
+                Constants.Category_Roles,        // "ROLES"
+                Constants.Category_Vocabularies, // "VOCABULARIES"
+                Constants.Category_Templates,    // "TEMPLATES"
+                Constants.Category_ProfileProps, // "PROFILE_PROPERTIES"
+                Constants.Category_Packages,     // "PACKAGES"
+                Constants.Category_Workflows     // "WORKFLOW" (if needed)
+            },
+
+            // These flags work in conjunction with ItemsToExport
             IncludeContent = true,
             IncludeFiles = true,
             IncludeUsers = true,
@@ -69,7 +85,17 @@ public class DnnSiteExportImportHelper
             IncludePermissions = true,
             IncludeDeletions = false,
             ExportMode = ExportMode.Full,
-            Pages = new[] { new PageToExport { TabId = -1 } },
+
+            // CRITICAL: Must set CheckedState to CheckedWithAllChildren for full export!
+            Pages = new[]
+            {
+                new PageToExport
+                {
+                    TabId = -1, // All pages
+                    ParentTabId = -1,
+                    CheckedState = TriCheckedState.CheckedWithAllChildren // Export all page content & modules
+                }
+            },
             RunNow = true
         };
 
@@ -261,3 +287,4 @@ public class DnnSiteExportImportHelper
         return EntitiesController.Instance.GetJobById(jobId);
     }
 }
+

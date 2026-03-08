@@ -62,34 +62,30 @@ namespace RocketTools.API
         public string ImportPreBuildExe()
         {
             if (!UserUtils.IsAdministrator()) return "Must be Administrator.";
-            _passSettings.Add("importprebuild","false");
-            _passSettings.Add("importprebuilderr", "");
-            var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
-            var fileuploadbase64 = _postInfo.GetXmlProperty("genxml/hidden/fileuploadbase64");
-            if (fileuploadbase64 != "")
+            var importfileupload = _postInfo.GetXmlProperty("genxml/hidden/importfileupload");
+            if (importfileupload != "" && Path.GetExtension(importfileupload).ToLower() == ".zip")
             {
-                var filenameList = fileuploadlist.Split('*');
-                var filebase64List = fileuploadbase64.Split('*');
-                var destDir = PortalUtils.TempDirectoryMapPath() + "\\Import";
-                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
-                var fileList = DocUtils.UploadBase64fileDict(filenameList, filebase64List, destDir);
-                if (fileList.Count == 0)
+                var importFile = PortalUtils.TempDirectoryMapPath() + "\\" + UserUtils.GetCurrentUserId() + "_" + Path.GetFileName(importfileupload);
+                if (!File.Exists(importFile)) return ImportPreBuild();
+
+                // Remove Workflow, solve DNN bug
+                var sqlcmd = "DELETE ht FROM {databaseOwner}[{objectQualifier}HtmlText] ht INNER JOIN {databaseOwner}[{objectQualifier}Modules] m ON ht.ModuleID = m.ModuleID WHERE m.PortalID = " + _portalData.PortalId;
+                _objCtrl.ExecSql(sqlcmd);
+                _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}ContentWorkflows] where PortalID = " + _portalData.PortalId);
+                _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}DNNrocket] where PortalID = " + _portalData.PortalId);
+                _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketDirectoryAPI] where PortalID = " + _portalData.PortalId);
+                _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketContentAPI] where PortalID = " + _portalData.PortalId);
+
+                PortalUtils.ClearPortalContent(_portalData.PortalId);
+                if (DNNrocketUtils.ImportWebsite(_portalData.PortalId, importFile))
                 {
-                    _passSettings.Add("importprebuilderr", "ERROR: No import file found.");
-                    return ImportPreBuild();
+                    _passSettings.Add("importprebuild", "true");
                 }
-                var docFileMapPath = fileList.First();
-                if (File.Exists(docFileMapPath.Key))
+                else
                 {
-                    if (DNNrocketUtils.ImportWebsite(_portalData.PortalId, docFileMapPath.Key))
-                        _passSettings.Add("importprebuild", "true");
-                    else
-                    {
-                        _passSettings.Add("importprebuild", "false");
-                        _passSettings.Add("importprebuilderr", "ERROR: Import Failed.");
-                    }
-                    File.Delete(docFileMapPath.Key);
+                    _passSettings.Add("importprebuilderr", "ERROR: Import Failed.");
                 }
+                File.Delete(importFile);
             }
             return ImportPreBuild();
         }
