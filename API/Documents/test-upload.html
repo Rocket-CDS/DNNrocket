@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Test</title>
+    
+    <!-- W3.CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .w3-button {
+            border-radius: 3px;
+        }
+        #test-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="w3-container">
+        <h2>File Upload Test</h2>
+        <p>Test file upload to: <code>/Desktopmodules/dnnrocket/api/fileupload/upload</code></p>
+        
+        <div id="sectiondata">
+            <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;">
+
+            <div class="w3-row w3-margin-bottom w3-center">
+                <span class="w3-button w3-teal fileuploadaction" onclick="$('#importfileupload').trigger('click');">
+                    Select File to Upload
+                </span>
+            </div>
+
+            <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:rgba(128,128,128,0.8);display:none;">
+                <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                    <div id="progessaction">Uploading...</div>
+                    <div class="w3-row w3-light-grey" style="margin-top: 10px;">
+                        <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;line-height:24px;text-align:center;">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="test-results" style="display:none;">
+            <h3>Results:</h3>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Maximum file size in bytes (500MB)
+            var maxFileSize = 500 * 1024 * 1024;
+            
+            $('#importfileupload').on('change', function(e) {
+                var files = e.target.files;
+                if (files.length === 0) return;
+                
+                var file = files[0];
+                
+                // Check file size
+                if (file.size > maxFileSize) {
+                    var maxSizeMB = Math.round(maxFileSize / (1024 * 1024));
+                    var fileSizeMB = Math.round(file.size / (1024 * 1024));
+                    alert('File is too large (' + fileSizeMB + 'MB). Maximum allowed size is ' + maxSizeMB + 'MB.');
+                    $(this).val('');
+                    return;
+                }
+                
+                console.log('File selected:', file.name);
+                console.log('File size: ' + Math.round(file.size / (1024 * 1024)) + 'MB');
+                
+                var formData = new FormData();
+                formData.append('files[]', file);
+                
+                // Show progress bar
+                $('#simplisity-file-progress-bar').show();
+                $('.simplisity-file-progress-bar').css('width', '0%').text('0%');
+                $('#test-results').hide();
+                
+                // Create XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+                
+                // Track upload progress
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = Math.round((e.loaded / e.total) * 100);
+                        $('.simplisity-file-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+                        console.log('Upload progress:', percentComplete + '%');
+                    }
+                }, false);
+                
+                // Handle completion
+                xhr.addEventListener('load', function() {
+                    console.log('Upload complete, status:', xhr.status);
+                    console.log('Response:', xhr.responseText);
+                    
+                    $('#simplisity-file-progress-bar').hide();
+                    
+                    var resultHtml = '<p><strong>Status Code:</strong> ' + xhr.status + '</p>';
+                    resultHtml += '<p><strong>Status Text:</strong> ' + xhr.statusText + '</p>';
+                    resultHtml += '<p><strong>Response:</strong></p>';
+                    resultHtml += '<pre>' + xhr.responseText + '</pre>';
+                    
+                    $('#result-content').html(resultHtml);
+                    $('#test-results').show();
+                    
+                    if (xhr.status === 200) {
+                        alert('Upload successful! Check results below.');
+                    } else {
+                        alert('Upload failed with status: ' + xhr.status);
+                    }
+                    
+                    // Reset file input
+                    $('#importfileupload').val('');
+                }, false);
+                
+                // Handle errors
+                xhr.addEventListener('error', function() {
+                    console.error('Upload error');
+                    $('#simplisity-file-progress-bar').hide();
+                    
+                    $('#result-content').html('<p class="w3-text-red">Upload failed due to network error</p>');
+                    $('#test-results').show();
+                    
+                    alert('Upload failed due to network error');
+                    $('#importfileupload').val('');
+                }, false);
+                
+                // Handle abort
+                xhr.addEventListener('abort', function() {
+                    console.log('Upload aborted');
+                    $('#simplisity-file-progress-bar').hide();
+                    
+                    $('#result-content').html('<p class="w3-text-orange">Upload was aborted</p>');
+                    $('#test-results').show();
+                    
+                    $('#importfileupload').val('');
+                }, false);
+                
+                // Send the request
+                xhr.open('POST', '/Desktopmodules/dnnrocket/api/fileupload/upload', true);
+                xhr.send(formData);
+            });
+        });
+    </script>
+
+</body>
+</html>

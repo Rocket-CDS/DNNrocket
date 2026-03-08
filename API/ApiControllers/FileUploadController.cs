@@ -26,6 +26,8 @@ namespace DNNrocketAPI.ApiControllers
         [HttpPost]
         public async Task<IHttpActionResult> Upload(HttpRequestMessage request)
         {
+            if (!UserUtils.IsSuperUser()) return NotFound();
+
             if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
             if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
 
