@@ -86,6 +86,31 @@ namespace RocketTools.API
                 _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketDirectoryAPI] where PortalID = " + _portalData.PortalId);
                 _objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketContentAPI] where PortalID = " + _portalData.PortalId);
 
+                // Clear system file
+                var systemDataMapPath = PortalUtils.HomeDNNrocketDirectoryMapPath(_portalData.PortalId);
+                foreach (var f in Directory.GetFiles(systemDataMapPath))
+                {
+                    try
+                    {
+                        File.Delete(f);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogUtils.LogSystem("WARN on import: " + ex.ToString());
+                    }
+                }
+                foreach (var d in Directory.GetDirectories(systemDataMapPath))
+                {
+                    try
+                    {
+                        Directory.Delete(d, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogUtils.LogSystem("WARN on import: " + ex.ToString());
+                    }
+                }
+
                 PortalUtils.ClearPortalContent(_portalData.PortalId);
                 if (DNNrocketUtils.ImportWebsite(_portalData.PortalId, importFile))
                 {
