@@ -2308,7 +2308,7 @@ namespace DNNrocketAPI.Components
 
         #region "Export/Import"
 
-        public static string ExportWebsite(int portalId)
+        public static string ExportWebsite(int portalId, SimplisityRecord extraExportSettings = null)
         {
             try
             {
@@ -2318,8 +2318,9 @@ namespace DNNrocketAPI.Components
                 var exportJob = helper.ExportWebsiteAndWait(
                     portalId: portalId,
                     userId: 1,
-                    exportName: "My Website Export",
-                    exportDescription: "Full website backup"
+                    exportName: "Rocket PreBuild Export",
+                    exportDescription: "Full website backup",
+                    extraExportSettings
                 );
 
                 return exportJob.Directory;

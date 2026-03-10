@@ -28,10 +28,20 @@ namespace RocketTools.API
             try
             {
                 if (!UserUtils.IsAdministrator()) return "Must be Administrator.";
-                var exportFolder = DNNrocketUtils.ExportWebsite(_portalData.PortalId);
+
+                var extraExportSettings = new SimplisityRecord();
+                extraExportSettings.SetXmlProperty("genxml/hometab/hometabid", PortalUtils.GetCurrentPortalSettings().HomeTabId.ToString());
+
+                var exportFolder = DNNrocketUtils.ExportWebsite(_portalData.PortalId, extraExportSettings);
                 if (!String.IsNullOrEmpty(exportFolder))
                 {
                     var exportDataFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportFolder);
+
+                    var directoryExportMapPath = PortalUtils.HomeDNNrocketDirectoryMapPath(_portalData.PortalId) + "\\ImportExportDirectory";
+                    if (File.Exists(directoryExportMapPath))
+                    {
+                        File.Move(directoryExportMapPath, exportDataFolder + "\\export_directorydata.zip");
+                    }
 
                     var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
                     if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);

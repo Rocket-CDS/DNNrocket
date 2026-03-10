@@ -865,16 +865,32 @@ namespace DNNrocketAPI.Components
                 // Get special/system tabs that should not be deleted
                 var portal = PortalController.Instance.GetPortal(portalId);
                 var systemTabIds = new List<int>
+        {
+            portal.SplashTabId,
+            // Removed portal.HomeTabId - we want to delete it
+            portal.LoginTabId,
+            portal.RegisterTabId,
+            portal.UserTabId,
+            portal.SearchTabId,
+            portal.AdminTabId,
+            portal.SuperTabId
+        };
+
+                // Clear PortalLocalization HomeTabId references before deleting the home tab
+                if (portal.HomeTabId > 0)
                 {
-                    portal.SplashTabId,
-                    portal.HomeTabId,
-                    portal.LoginTabId,
-                    portal.RegisterTabId,
-                    portal.UserTabId,
-                    portal.SearchTabId,
-                    portal.AdminTabId,
-                    portal.SuperTabId
-                };
+                    try
+                    {
+                        var objCtrl = new DNNrocketController();
+                        var sql = $"UPDATE {{databaseOwner}}[{{objectQualifier}}PortalLocalization] SET HomeTabId = NULL WHERE PortalId = {portalId} AND HomeTabId = {portal.HomeTabId}";
+                        objCtrl.ExecSql(sql);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log but continue
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
 
                 // Delete modules from all tabs first
                 foreach (var tab in allTabs)
@@ -895,13 +911,13 @@ namespace DNNrocketAPI.Components
                     }
                 }
 
-                // Now delete tabs (excluding system tabs)
+                // Now delete tabs (excluding system tabs, but including home tab)
                 // Start from the bottom of the hierarchy to avoid parent-child issues
                 var sortedTabs = allTabs.OrderByDescending(t => t.Level).ThenByDescending(t => t.TabID);
 
                 foreach (var tab in sortedTabs)
                 {
-                    // Skip system tabs
+                    // Skip system tabs (but not home tab)
                     if (systemTabIds.Contains(tab.TabID) || tab.IsSystem)
                     {
                         continue;

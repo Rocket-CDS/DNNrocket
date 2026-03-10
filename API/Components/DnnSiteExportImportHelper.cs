@@ -1,11 +1,20 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
+using DNNrocketAPI.Components;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using Simplisity;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 /// <summary>
 /// Provides helper methods for automatic export and import of DNN websites.
@@ -30,11 +39,115 @@ public class DnnSiteExportImportHelper
         int userId,
         string exportName = null,
         string exportDescription = null,
+        SimplisityRecord extraExportSettings = null,
         int timeoutMinutes = DefaultTimeoutMinutes,
         int pollingIntervalMs = DefaultPollingIntervalMs)
     {
         var jobId = ExportWebsite(portalId, userId, exportName, exportDescription);
-        return WaitForJobCompletion(jobId, timeoutMinutes, pollingIntervalMs);
+        var exportImportJob = WaitForJobCompletion(jobId, timeoutMinutes, pollingIntervalMs);
+        if (extraExportSettings != null)
+        {
+            var homeTabId = extraExportSettings.GetXmlPropertyInt("genxml/hometab/hometabid");
+            if (homeTabId > 0)
+            {
+                var homeTabInfo = DNNrocketUtils.GetTabInfo(homeTabId, true);
+                if (homeTabInfo != null)
+                {
+                    extraExportSettings.SetXmlProperty("genxml/hometab/name", homeTabInfo.TabName);
+                    extraExportSettings.SetXmlProperty("genxml/hometab/description", homeTabInfo.Description);
+                    extraExportSettings.SetXmlProperty("genxml/hometab/title", homeTabInfo.Title);
+                }
+            }
+
+            var systemListData = new SystemLimpetList();
+            foreach (var systemData in systemListData.GetSystemActiveList())
+            {
+                if (systemData.Exists && systemData.BaseSystemKey.ToLower() == "rocketdirectoryapi")
+                {
+                    foreach (var rocketInterface in systemData.ProviderList)
+                    {
+                        if (rocketInterface.IsProvider("exportmodule"))
+                        {
+                            if (rocketInterface.Exists)
+                            {
+                                var postInfo = new SimplisityInfo();
+                                var paramInfo = new SimplisityInfo();
+                                try
+                                {
+                                    var exportZipMapPath = "";
+                                    paramInfo.SetXmlPropertyInt("genxml/hidden/portalid", portalId);
+                                    paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
+
+                                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketdirectoryapi_exportdata", systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                    if (returnDictionary.ContainsKey("outputhtml")) exportZipMapPath = (string)returnDictionary["outputhtml"];
+
+                                    if (!string.IsNullOrEmpty(exportZipMapPath) && File.Exists(exportZipMapPath))
+                                    {
+                                        // Create a temporary folder for extraction
+                                        var tempExtractFolder = Path.Combine(PortalUtils.TempDirectoryMapPath(), "rocketdirectoryapi_exportdata");
+                                        if (Directory.Exists(tempExtractFolder)) Directory.Delete(tempExtractFolder, true);
+                                        Directory.CreateDirectory(tempExtractFolder);
+
+                                        try
+                                        {
+                                            // Extract the zip file to temp folder
+                                            ZipFile.ExtractToDirectory(exportZipMapPath, tempExtractFolder);
+
+                                            // Get the target export directory
+                                            var exportDirectory = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJob.Directory);
+
+                                            // Copy all files from temp folder to export directory
+                                            foreach (var file in Directory.GetFiles(tempExtractFolder, "*.*", SearchOption.AllDirectories))
+                                            {
+                                                var relativePath = file.Substring(tempExtractFolder.Length + 1);
+                                                var targetFile = Path.Combine(exportDirectory, relativePath);
+
+                                                // Create subdirectories if needed
+                                                var targetDir = Path.GetDirectoryName(targetFile);
+                                                if (!Directory.Exists(targetDir))
+                                                {
+                                                    Directory.CreateDirectory(targetDir);
+                                                }
+
+                                                // Copy the file
+                                                File.Copy(file, targetFile, true);
+                                            }
+                                        }
+                                        finally
+                                        {
+                                            // Clean up temp folder
+                                            if (Directory.Exists(tempExtractFolder))
+                                            {
+                                                try
+                                                {
+                                                    Directory.Delete(tempExtractFolder, true);
+                                                }
+                                                catch (Exception cleanupEx)
+                                                {
+                                                    // Log but don't fail if cleanup fails
+                                                    LogUtils.LogException(cleanupEx);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogUtils.LogException(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+            var fName = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJob.Directory + "/RocketSettings.xml");
+            extraExportSettings.XMLDoc.Save(fName);
+        }
+        return exportImportJob;
     }
 
     /// <summary>
@@ -122,7 +235,78 @@ public class DnnSiteExportImportHelper
         int pollingIntervalMs = DefaultPollingIntervalMs)
     {
         var jobId = ImportWebsite(portalId, userId, packageId, collisionResolution);
-        return WaitForJobCompletion(jobId, timeoutMinutes, pollingIntervalMs);
+        var exportImportJob = WaitForJobCompletion(jobId, timeoutMinutes, pollingIntervalMs);
+        var importMapPathFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJob.Directory);
+        if (exportImportJob != null)
+        {
+            var rocketSettings = new SimplisityRecord();
+            var fName = importMapPathFolder + "\\RocketSettings.xml";
+            if (File.Exists(fName))
+            {
+                rocketSettings.XMLData = FileUtils.ReadFile(fName);
+                var homeTabId = GetHomeTabIdByName(portalId, rocketSettings.GetXmlProperty("genxml/hometab/name"), rocketSettings.GetXmlProperty("genxml/hometab/title"));
+                if (homeTabId > 0)
+                {
+                    foreach (var l in DNNrocketUtils.GetCultureCodeList(portalId))
+                    {
+                        var portalInfo = PortalController.Instance.GetPortal(portalId, l);
+                        if (portalInfo != null)
+                        {
+                            portalInfo.HomeTabId = homeTabId;
+                            PortalController.Instance.UpdatePortalInfo(portalInfo);
+                        }
+                    }
+                }
+
+            }
+
+            var systemListData = new SystemLimpetList();
+            foreach (var systemData in systemListData.GetSystemActiveList())
+            {
+                if (systemData.Exists)
+                {
+                    foreach (var rocketInterface in systemData.ProviderList)
+                    {
+                        if (rocketInterface.IsProvider("exportmodule"))
+                        {
+                            if (rocketInterface.Exists)
+                            {
+                                var postInfo = new SimplisityInfo();
+                                var paramInfo = new SimplisityInfo();
+                                try
+                                {
+                                    paramInfo.SetXmlPropertyInt("genxml/hidden/portalid", portalId);
+                                    paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
+                                    paramInfo.SetXmlProperty("genxml/hidden/extractfolder", importMapPathFolder);
+                                    var exportZipMapPath = "";
+                                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketdirectoryapi_importdata", systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                    if (returnDictionary.ContainsKey("outputhtml")) exportZipMapPath = (string)returnDictionary["outputhtml"];
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogUtils.LogException(ex);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        return exportImportJob;
+    }
+    private int GetHomeTabIdByName(int portalId, string tabname, string tabtitle)
+    {
+        var l = TabController.Instance.GetTabsByPortal(portalId);
+        foreach (var t in l)
+        {
+            if (t.Value.TabName == tabname & t.Value.Title == tabtitle) return t.Value.TabID;
+        }
+        return -1;
     }
 
     /// <summary>
