@@ -2,6 +2,7 @@
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Exceptions;
+using Rocket.AppThemes.Components;
 using RocketPortal.Components;
 using RocketTools.Components;
 using Simplisity;
@@ -123,7 +124,18 @@ namespace RocketTools.API
                 File.Delete(importFile);
 
                 // Download public Apptheme
-
+                var appThemeProjectData = new AppThemeProjectLimpet();
+                foreach (var at in appThemeProjectData.List)
+                {
+                    try
+                    {
+                        appThemeProjectData.DownloadGitHubProject(at.GetXmlProperty("genxml/textbox/name"));
+                    }
+                    catch (Exception)
+                    {
+                        // ignore
+                    }
+                }
 
                 CacheFileUtils.ClearAllCache(_portalData.PortalId);
             }
