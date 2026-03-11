@@ -1,0 +1,122 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div id="sectiondata">
+
+    @if (Model.GetSettingBool("importprebuild"))
+    {
+        <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round">
+            <h3 class="w3-text-green">@ResourceKey("RocketTools.importcomplete")</h3>
+            <p>@ResourceKey("RocketTools.importsuccessmessage")</p>
+        </div>
+    }
+    else
+    {
+        <div class="w3-panel w3-pale-blue w3-border w3-border-blue w3-round">
+            <h3>@ResourceKey("RocketTools.importprebuild")</h3>
+            <p>@ResourceKey("RocketTools.importdescription")</p>
+            <p class="w3-text-orange"><strong>@ResourceKey("RocketTools.importtimewarning")</strong></p>
+            <p class="w3-text-red"><strong>@ResourceKey("RocketTools.importwebconfigwarning")</strong></p>
+        </div>
+
+        <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;" accept=".zip">
+
+        <div class="w3-row w3-margin-bottom w3-center">
+            <span class="w3-button w3-teal fileuploadaction" onclick="$('#importfileupload').trigger('click');">
+                @ButtonText(ButtonTypes.upload) @ResourceKey("RocketTools.selectimportfile")
+            </span>
+        </div>
+
+        <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey;display:none;">
+            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                <div class="w3-center">
+                    <h4 id="progessaction">@ResourceKey("RocketTools.uploadingfile")</h4>
+                    <div class="w3-row w3-light-grey w3-margin-top">
+                        <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;line-height:24px;text-align:center;">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="simplisity-import-progress" class="w3-modal w3-padding w3-hide" style="z-index:9999;background-color:grey;">
+            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                <div class="w3-center">
+                    <h4>@ResourceKey("RocketTools.importprogress")</h4>
+                    <p>@ResourceKey("RocketTools.pleasewait")</p>
+                    <div class="w3-margin">
+                        <i class="fas fa-spinner fa-spin fa-3x w3-text-blue"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="processimportupload" s-cmd="rockettools_importprebuildexe" s-post="#sectiondata" s-return="#toolsmodalcontainer" class="w3-hide"></div>
+    }
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#importfileupload').on('change', function(e) {
+            var files = e.target.files;
+            if (files.length === 0) return;
+            
+            var file = files[0];
+            var formData = new FormData();
+            formData.append('files[]', file);
+            
+            // Show progress bar
+            $('#simplisity-file-progress-bar').show();
+            $('.simplisity-file-progress-bar').css('width', '0%').text('0%');
+            
+            // Create XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            
+            // Track upload progress
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    var percentComplete = Math.round((e.loaded / e.total) * 100);
+                    $('.simplisity-file-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+                }
+            }, false);
+            
+            // Handle completion
+            xhr.addEventListener('load', function() {
+                console.log('Upload complete, status:', xhr.status);
+                $('#simplisity-file-progress-bar').hide();
+                
+                if (xhr.status === 200) {
+                    // Upload successful, trigger the server command
+                    console.log('Upload successful, triggering command...');
+                    simplisity_callserver($('#processimportupload'));
+                } else {
+                    alert('Upload failed with status: ' + xhr.status);
+                }
+            }, false);
+            
+            // Handle errors
+            xhr.addEventListener('error', function() {
+                console.error('Upload error');
+                $('#simplisity-file-progress-bar').hide();
+                alert('Upload failed');
+            }, false);
+            
+            // Handle abort
+            xhr.addEventListener('abort', function() {
+                console.log('Upload aborted');
+                $('#simplisity-file-progress-bar').hide();
+            }, false);
+            
+            // Send the request
+            xhr.open('POST', '/Desktopmodules/dnnrocket/api/fileupload/upload', true);
+            xhr.send(formData);
+        });
+    });
+</script>

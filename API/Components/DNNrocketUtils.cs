@@ -796,12 +796,49 @@ namespace DNNrocketAPI.Components
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
-
+        public static SimplisityRecord GetTabInfoRecord(int tabid, bool ignoreCache = false)
+        {
+            var tI = GetTabInfo(tabid, ignoreCache);
+            if (tI == null) return new SimplisityRecord();
+            return ConvertTabInfoToRecord(tI);
+        }
         public static Dictionary<int, string> GetTreeTabList(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
             return GetTreeTabList(rtnList, tabList, 0, 0,"", showAllTabs);
+        }
+        public static List<SimplisityRecord> GetTabList(int portalId)
+        {
+            var rtnList = new List<SimplisityRecord>();
+            var l = TabController.Instance.GetTabsByPortal(portalId);
+            foreach (var t in l)
+            {
+                rtnList.Add(ConvertTabInfoToRecord(t.Value));
+            }
+            return rtnList;
+        }
+        private static SimplisityRecord ConvertTabInfoToRecord(TabInfo tabInfo)
+        {
+            var record = new SimplisityRecord();
+            record.ItemID = tabInfo.TabID;
+            record.SetXmlProperty("genxml/tabid", tabInfo.TabID.ToString());
+            record.SetXmlProperty("genxml/tabname", tabInfo.TabName);
+            record.SetXmlProperty("genxml/title", tabInfo.Title);
+            record.SetXmlProperty("genxml/description", tabInfo.Description);
+            record.SetXmlProperty("genxml/parentid", tabInfo.ParentId.ToString());
+            record.SetXmlProperty("genxml/portalid", tabInfo.PortalID.ToString());
+            record.SetXmlProperty("genxml/url", tabInfo.Url);
+            record.SetXmlProperty("genxml/tabpath", tabInfo.TabPath);
+            record.SetXmlProperty("genxml/isdeleted", tabInfo.IsDeleted.ToString());
+            record.SetXmlProperty("genxml/issecure", tabInfo.IsSecure.ToString());
+            record.SetXmlProperty("genxml/isvisible", tabInfo.IsVisible.ToString());
+            record.SetXmlProperty("genxml/cultureCode", tabInfo.CultureCode);
+            record.SetXmlProperty("genxml/skinsrc", tabInfo.SkinSrc);
+            record.SetXmlProperty("genxml/containersrc", tabInfo.ContainerSrc);
+            record.SetXmlProperty("genxml/level", tabInfo.Level.ToString());
+            
+            return record;
         }
 
         private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
@@ -2303,6 +2340,102 @@ namespace DNNrocketAPI.Components
             objCtrl.ExecSql("delete from [DNNrocketTemp] where TypeCode = 'ACTIONRETURN' and isnull(XMLData.value('(genxml/keepdatetime)[1]','datetime'),GETDATE()) <= GETDATE()");
         }
 
+
+        #endregion
+
+        #region "Export/Import"
+
+        public static string ExportWebsite(int portalId, SimplisityRecord extraExportSettings = null)
+        {
+            try
+            {
+                var helper = new DnnSiteExportImportHelper();
+
+                // Export portal with ID 0, performed by user with ID 1
+                var exportJob = helper.ExportWebsiteAndWait(
+                    portalId: portalId,
+                    userId: 1,
+                    exportName: "Rocket PreBuild Export",
+                    exportDescription: "Full website backup",
+                    extraExportSettings
+                );
+
+                return exportJob.Directory;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return "";
+        }
+        public static bool ImportWebsite(int portalId, string importDataMapPath)
+        {
+            try
+            {
+                var helper = new DnnSiteExportImportHelper();
+
+                var packageMapPath = PrepareImportPackage(importDataMapPath);
+                if (String.IsNullOrEmpty(packageMapPath)) return false;
+                var packageId = Path.GetFileNameWithoutExtension(packageMapPath);
+
+                // Export portal with ID 0, performed by user with ID 1
+                var exportJob = helper.ImportWebsiteAndWait(
+                    portalId: portalId,
+                    userId: 1,
+                    packageId: packageId
+                );
+
+                // Get the DNN Export/Import directory path
+                var exportImportPath = System.IO.Path.Combine(
+                    DotNetNuke.Common.Globals.ApplicationMapPath,
+                    "App_Data",
+                    "ExportImport",
+                    packageId
+                );
+                Directory.Delete(exportImportPath,true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Prepares an import package by extracting it to the DNN Export/Import directory.
+        /// </summary>
+        /// <param name="packageFilePath">The full file path to the export package (.zip file).</param>
+        /// <returns>The package ID (folder name) to use for import.</returns>
+        private static string PrepareImportPackage(string packageFilePath)
+        {
+            if (!System.IO.File.Exists(packageFilePath))
+            {
+                throw new System.IO.FileNotFoundException($"Import package file not found: {packageFilePath}", packageFilePath);
+            }
+
+            // Generate a unique package ID (folder name)
+            var packageId = System.IO.Path.GetFileNameWithoutExtension(packageFilePath) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+            // Get the DNN Export/Import directory path
+            var exportImportPath = System.IO.Path.Combine(
+                DotNetNuke.Common.Globals.ApplicationMapPath,
+                "App_Data",
+                "ExportImport",
+                packageId
+            );
+
+            // Create the directory if it doesn't exist
+            if (!System.IO.Directory.Exists(exportImportPath))
+            {
+                System.IO.Directory.CreateDirectory(exportImportPath);
+            }
+
+            // Extract the zip file to the export/import directory
+            System.IO.Compression.ZipFile.ExtractToDirectory(packageFilePath, exportImportPath);
+
+            return packageId;
+        }
 
         #endregion
 

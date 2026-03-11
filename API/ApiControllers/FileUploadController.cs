@@ -2,6 +2,7 @@
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
+using RocketUtils;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -19,74 +20,51 @@ namespace DNNrocketAPI.ApiControllers
 {
     public class FileUploadController : DnnApiController
     {
-
+       
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
         public async Task<IHttpActionResult> Upload(HttpRequestMessage request)
         {
+            if (!UserUtils.IsSuperUser()) return NotFound();
+
             if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
             if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
 
-            if (request.IsChunkUpload())
+            if (UserUtils.IsSuperUser())
             {
-                var uploadFileService = new UploadFileService();
-                UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
-
-                if (uploadResult.IsComplete)
+                if (request.IsChunkUpload())
                 {
-                    // do other stuff here after file upload complete    
+                    var uploadFileService = new UploadFileService();
+                    UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
+
+                    if (uploadResult.IsComplete)
+                    {
+                        // do other stuff here after file upload complete    
+                        return Ok();
+                    }
+
+                    return Ok(HttpStatusCode.Continue);
+                }
+                else
+                {
+                    var data = await Request.Content.ParseMultipartAsync();
+                    var userid = UserUtils.GetCurrentUserId();
+                    foreach (var f in data.Files)
+                    {
+                        if (f.Value.File.Length > 0)
+                        {
+                            var fileName = f.Value.Filename;
+                            FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
+                        }
+                    }
                     return Ok();
                 }
-
-                return Ok(HttpStatusCode.Continue);
             }
-            else
-            {
-                var data = await Request.Content.ParseMultipartAsync();
-                var userid = UserUtils.GetCurrentUserId();
-                foreach (var f in data.Files)
-                {
-                    if (f.Value.File.Length > 0)
-                    {
-                        var fileName = f.Value.Filename;
-                        FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
-                    }
-                }
-                return Ok();
-            }
-
+            return NotFound();
         }
 
     }
-
-    //public async Task<HttpResponseMessage> Upload(HttpRequestMessage request)
-    //    {
-    //        if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
-    //        if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
-    //        var fileuploadPath = PortalUtils.TempDirectoryMapPath();
-
-    //        if (!request.Content.IsMimeMultipartContent()) throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-
-    //            var data = await Request.Content.ParseMultipartAsync();
-    //            var userid = UserUtils.GetCurrentUserId();
-
-    //            foreach (var f in data.Files)
-    //            {
-    //                if (f.Value.File.Length > 0)
-    //                {
-    //                    var fileName = f.Value.Filename;
-    //                    FileUtils.SaveFile(fileuploadPath + "\\" + userid + "_" + fileName, f.Value.File);
-    //                }
-    //            }
-
-    //        return new HttpResponseMessage(HttpStatusCode.OK);
-    //    }
-
-
-   // }
-    
-
 
     public class UploadFileService
     {

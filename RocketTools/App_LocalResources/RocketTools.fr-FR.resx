@@ -328,4 +328,58 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   <data name="validate.Text" xml:space="preserve">
     <value>Valider</value>
   </data>
+  <data name="exportprebuild.Text" xml:space="preserve">
+    <value>Exporter le site web en préconstruit</value>
+  </data>
+  <data name="importprebuild.Text" xml:space="preserve">
+    <value>Importer le site Web depuis le préconstruit</value>
+  </data>
+  <data name="exportcomplete.Text" xml:space="preserve">
+    <value>Exportation terminée</value>
+  </data>
+  <data name="exportsuccessmessage.Text" xml:space="preserve">
+    <value>Votre exportation préconstruite a été effectuée avec succès.</value>
+  </data>
+  <data name="downloadprebuild.Text" xml:space="preserve">
+    <value>Télécharger le préconstruit</value>
+  </data>
+  <data name="exportdescription.Text" xml:space="preserve">
+    <value>Ce processus exportera un paquet préconstruit de votre site Web actuel, y compris toutes les configurations, les données et les paramètres.</value>
+  </data>
+  <data name="exporttimewarning.Text" xml:space="preserve">
+    <value>Remarque : Cette opération peut prendre plusieurs minutes en fonction de la taille de votre portail.</value>
+  </data>
+  <data name="exportportal.Text" xml:space="preserve">
+    <value>Exporter le portail</value>
+  </data>
+  <data name="exportprogress.Text" xml:space="preserve">
+    <value>Exportation du portail en cours...</value>
+  </data>
+  <data name="pleasewait.Text" xml:space="preserve">
+    <value>Veuillez patienter pendant que l'exportation se termine.</value>
+  </data>
+  <data name="importcomplete.Text" xml:space="preserve">
+    <value>Importation terminée</value>
+  </data>
+  <data name="importsuccessmessage.Text" xml:space="preserve">
+    <value>Votre importation préconstruite a été effectuée avec succès. Le portail a été restauré avec les données importées.</value>
+  </data>
+  <data name="importdescription.Text" xml:space="preserve">
+    <value>Ce processus importera un paquet préconstruit et restaurera votre site Web avec toutes les configurations, données et paramètres. ATTENTION : Cela remplacera toutes les données actuelles du portail.</value>
+  </data>
+  <data name="importtimewarning.Text" xml:space="preserve">
+    <value>Remarque : Cette opération peut prendre plusieurs minutes en fonction de la taille du fichier d'importation.</value>
+  </data>
+  <data name="importwebconfigwarning.Text" xml:space="preserve">
+    <value>IMPORTANT : Si l'importation expire ou si le fichier est trop volumineux, vous devrez peut-être augmenter les valeurs executionTimeout et maxRequestLength dans votre fichier web.config pour DNN.</value>
+  </data>
+  <data name="selectimportfile.Text" xml:space="preserve">
+    <value>Sélectionner le fichier d'importation</value>
+  </data>
+  <data name="uploadingfile.Text" xml:space="preserve">
+    <value>Téléchargement du fichier...</value>
+  </data>
+  <data name="importprogress.Text" xml:space="preserve">
+    <value>Importation des données du portail...</value>
+  </data>
 </root>
