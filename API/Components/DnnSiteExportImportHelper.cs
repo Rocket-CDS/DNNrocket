@@ -280,6 +280,7 @@ public class DnnSiteExportImportHelper
                 var objCtrl = new DNNrocketController();
 
                 rocketSettings.XMLData = FileUtils.ReadFile(fName);
+                DNNrocketUtils.SetTempRecordStorage(rocketSettings, portalId + "RocketSettings.xml");
                 var homeTabId = GetHomeTabIdByName(portalId, rocketSettings.GetXmlProperty("genxml/hometab/name"), rocketSettings.GetXmlProperty("genxml/hometab/title"));
                 if (homeTabId > 0)
                 {
