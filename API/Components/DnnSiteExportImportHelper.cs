@@ -149,6 +149,21 @@ public class DnnSiteExportImportHelper
                                             }
                                         }
                                     }
+                                    // Do TabPath (Directory Systems)
+                                    var detailTabIdSQL = "select XMLData.value('(genxml/detailpage)[1]','nvarchar(max)') from [dbo].[RocketDirectoryAPI] where portalid = " + portalId + " and TypeCode = '" + systemData.SystemKey + "PortalCatalog'";
+                                    var detailTabId = objCtrl.ExecSql(detailTabIdSQL);
+                                    if (GeneralUtils.IsNumeric(detailTabId))
+                                    {
+                                        var detailTabInfo = DNNrocketUtils.GetTabInfo(Convert.ToInt32(detailTabId), true);
+                                        if (detailTabInfo != null) extraExportSettings.SetXmlProperty("genxml/" + systemData.SystemKey + "/detailtabpath", detailTabInfo.TabPath);
+                                    }
+                                    var listTabIdSQL = "select XMLData.value('(genxml/listpage)[1]','nvarchar(max)') from [dbo].[RocketDirectoryAPI] where portalid = " + portalId + " and TypeCode = '" + systemData.SystemKey + "PortalCatalog'";
+                                    var listTabId = objCtrl.ExecSql(listTabIdSQL);
+                                    if (GeneralUtils.IsNumeric(listTabId))
+                                    {
+                                        var listTabInfo = DNNrocketUtils.GetTabInfo(Convert.ToInt32(listTabId), true);
+                                        if (listTabInfo != null) extraExportSettings.SetXmlProperty("genxml/" + systemData.SystemKey + "/listtabpath", listTabInfo.TabPath);
+                                    }
 
                                 }
                                 catch (Exception ex)
