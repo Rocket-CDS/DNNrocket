@@ -20,7 +20,7 @@ namespace RocketTools.API
         public string ExportPreBuild()
         {
             var razorTempl = _appThemeTools.GetTemplate("prebuildexport.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, null, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
         }
@@ -53,9 +53,11 @@ namespace RocketTools.API
                     {
                         ZipFile.CreateFromDirectory(exportDataFolder, exportZipMapPath);
                         Directory.Delete(exportDataFolder, true);
+                        _passSettings.Add("exportprebuild", "true");
+                        _passSettings.Add("exportfilename", exportZipMapPath);
                     }
                 }
-                return exportFolder;
+                return ExportPreBuild();
             }
             catch (Exception ex)
             {

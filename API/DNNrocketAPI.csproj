@@ -391,16 +391,14 @@
     <None Include="CKEditor\ckeditor4.21.0\skins\moono-lisa\readme.md" />
     <None Include="CKEditor\ReadMe_CKEditor.md" />
     <None Include="DNNpackager.dnnpack" />
+    <None Include="Documents\AI_Localization.md" />
     <None Include="Documents\AutoLogin.md" />
     <None Include="Documents\ChangeLanguage_Code.md" />
     <None Include="Documents\DebugAPI.md" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Command Tracking.docx" />
-    <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\EventsInterface.md" />
-    <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\SystemDefaults.md" />
-    <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
     <None Include="Themes\config-w3\1.0\default\EditorJoditDefault.cshtml" />
     <None Include="Installation\01.01.01.SqlDataProvider" />
@@ -863,6 +861,7 @@
     <Content Include="CKEditor\scriptClassic.html" />
     <Content Include="CKEditor\scriptClassicCode.html" />
     <Content Include="CKEditor\scriptMin.html" />
+    <Content Include="Documents\test-upload.html" />
     <Content Include="Editor\Jodit\jodit.min.css" />
     <Content Include="Editor\Jodit\jodit.min.js" />
     <Content Include="images\action_bottom.svg" />

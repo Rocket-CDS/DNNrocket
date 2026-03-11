@@ -12,21 +12,47 @@
 
     @if (Model.GetSettingBool("importprebuild"))
     {
-        <div>Import completed.</div>
+        <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round">
+            <h3 class="w3-text-green">@ResourceKey("RocketTools.importcomplete")</h3>
+            <p>@ResourceKey("RocketTools.importsuccessmessage")</p>
+        </div>
     }
     else
     {
-        <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;">
+        <div class="w3-panel w3-pale-blue w3-border w3-border-blue w3-round">
+            <h3>@ResourceKey("RocketTools.importprebuild")</h3>
+            <p>@ResourceKey("RocketTools.importdescription")</p>
+            <p class="w3-text-orange"><strong>@ResourceKey("RocketTools.importtimewarning")</strong></p>
+            <p class="w3-text-red"><strong>@ResourceKey("RocketTools.importwebconfigwarning")</strong></p>
+        </div>
+
+        <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;" accept=".zip">
 
         <div class="w3-row w3-margin-bottom w3-center">
-            <span class="w3-button w3-teal fileuploadaction" onclick="$('#importfileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+            <span class="w3-button w3-teal fileuploadaction" onclick="$('#importfileupload').trigger('click');">
+                @ButtonText(ButtonTypes.upload) @ResourceKey("RocketTools.selectimportfile")
+            </span>
         </div>
 
         <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey;display:none;">
-            <div class="w3-modal-content w3-card-4  w3-display-middle w3-padding" style="width: 60%;">
-                <div id="progessaction">Uploading...</div>
-                <div class="w3-row w3-light-grey">
-                    <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;">0%</div>
+            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                <div class="w3-center">
+                    <h4 id="progessaction">@ResourceKey("RocketTools.uploadingfile")</h4>
+                    <div class="w3-row w3-light-grey w3-margin-top">
+                        <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;line-height:24px;text-align:center;">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="simplisity-import-progress" class="w3-modal w3-padding w3-hide" style="z-index:9999;background-color:grey;">
+            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                <div class="w3-center">
+                    <h4>@ResourceKey("RocketTools.importprogress")</h4>
+                    <p>@ResourceKey("RocketTools.pleasewait")</p>
+                    <div class="w3-margin">
+                        <i class="fas fa-spinner fa-spin fa-3x w3-text-blue"></i>
+                    </div>
                 </div>
             </div>
         </div>
