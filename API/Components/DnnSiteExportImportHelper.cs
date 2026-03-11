@@ -76,6 +76,20 @@ public class DnnSiteExportImportHelper
             {
                 extraExportSettings.AddRecordListItem("portallocalization", ps);
             }
+            var sqlCmd3 = "select XMLData from {databaseOwner}[{objectQualifier}DNNrocket] where guidkey = 'APPTHEMEPROJECTS'";
+            var appThemeXmlData = objCtrl.ExecSql(sqlCmd3);
+            if (!String.IsNullOrEmpty(appThemeXmlData))
+            {
+                var sRec = new SimplisityRecord();
+                sRec.XMLData = appThemeXmlData;
+                foreach (var at in sRec.GetRecordList("appthemeprojects"))
+                {
+                    if (at.GetXmlProperty("genxml/textbox/githubtoken") == "") // do not export seucirty tokens
+                    {
+                        extraExportSettings.AddRecordListItem("appthemeprojects", at);
+                    }
+                }
+            }
 
             // Export Directory systems.
             var systemListData = new SystemLimpetList();
@@ -336,6 +350,22 @@ public class DnnSiteExportImportHelper
 
                     objCtrl.ExecSql(sqlCmd);
 
+                }
+
+                //Import appthemeprojects
+                var importProjects = rocketSettings.GetRecordList("appthemeprojects");
+                var appThemeProjectRecord = objCtrl.GetRecordByGuidKey(-1, -1, "APPTHEMEPROJECTS", "APPTHEMEPROJECTS");
+                if (appThemeProjectRecord != null)
+                {
+                    foreach (var at in importProjects)
+                    {
+                        var appthemeProjects = appThemeProjectRecord.GetRecordListItem("appthemeprojects", "genxml/textbox/githubrepourl", at.GetXmlProperty("genxml/textbox/githubrepourl"));
+                        if (appthemeProjects == null && at.GetXmlProperty("genxml/textbox/githubtoken") == "") // do not import security tokens.
+                        {
+                            appThemeProjectRecord.AddRecordListItem("appthemeprojects", at);
+                        }
+                    }
+                    objCtrl.Update(appThemeProjectRecord);
                 }
 
             }
