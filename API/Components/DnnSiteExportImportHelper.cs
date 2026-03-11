@@ -2,7 +2,9 @@
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
+using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using Simplisity;
@@ -47,6 +49,7 @@ public class DnnSiteExportImportHelper
         var exportImportJob = WaitForJobCompletion(jobId, timeoutMinutes, pollingIntervalMs);
         if (extraExportSettings != null)
         {
+            // Export HomeTab
             var homeTabId = extraExportSettings.GetXmlPropertyInt("genxml/hometab/hometabid");
             if (homeTabId > 0)
             {
@@ -59,6 +62,22 @@ public class DnnSiteExportImportHelper
                 }
             }
 
+            // Export All PortalSettings.
+            var objCtrl = new DNNrocketController();
+            var sqlCmd = "select * from {databaseOwner}[{objectQualifier}PortalSettings] where portalid = " + portalId + " for xml raw";
+            var portalSettingsList = objCtrl.ExecSqlXmlList(sqlCmd);
+            foreach (var ps in portalSettingsList)
+            {
+                extraExportSettings.AddRecordListItem("portalsettings",ps);
+            }
+            var sqlCmd2 = "select * from {databaseOwner}[{objectQualifier}PortalLocalization] where portalid = " + portalId + " for xml raw";
+            var portalLocalizationList = objCtrl.ExecSqlXmlList(sqlCmd2);
+            foreach (var ps in portalLocalizationList)
+            {
+                extraExportSettings.AddRecordListItem("portallocalization", ps);
+            }
+
+            // Export Directory systems.
             var systemListData = new SystemLimpetList();
             foreach (var systemData in systemListData.GetSystemActiveList())
             {
@@ -243,6 +262,8 @@ public class DnnSiteExportImportHelper
             var fName = importMapPathFolder + "\\RocketSettings.xml";
             if (File.Exists(fName))
             {
+                var objCtrl = new DNNrocketController();
+
                 rocketSettings.XMLData = FileUtils.ReadFile(fName);
                 var homeTabId = GetHomeTabIdByName(portalId, rocketSettings.GetXmlProperty("genxml/hometab/name"), rocketSettings.GetXmlProperty("genxml/hometab/title"));
                 if (homeTabId > 0)
@@ -257,9 +278,47 @@ public class DnnSiteExportImportHelper
                         }
                     }
                 }
+                // Import Portal Localization
+                var plz = rocketSettings.GetRecordList("portallocalization");
+                foreach (var pz in plz)
+                {
+                    var sqlCmd = "update [dbo].[PortalLocalization] set PortalName = '" + pz.GetXmlProperty("row/@PortalName") + "' where portalid = " + portalId + " and CultureCode = '" + pz.GetXmlProperty("row/@CultureCode") + "' ";
+                    objCtrl.ExecSql(sqlCmd);
+                    sqlCmd = "update [dbo].[PortalLocalization] set FooterText = '" + pz.GetXmlProperty("row/@FooterText") + "' where portalid = " + portalId + " and CultureCode = '" + pz.GetXmlProperty("row/@CultureCode") + "' ";
+                    objCtrl.ExecSql(sqlCmd);
+                    sqlCmd = "update [dbo].[PortalLocalization] set LogoFile = '" + pz.GetXmlProperty("row/@LogoFile") + "' where portalid = " + portalId + " and CultureCode = '" + pz.GetXmlProperty("row/@CultureCode") + "' ";
+                    objCtrl.ExecSql(sqlCmd);
+                }
+
+                // Import portal Setitngs
+                var pl = rocketSettings.GetRecordList("portalsettings");
+                foreach (var ps in pl)
+                {
+                    var settingName = ps.GetXmlProperty("row/@SettingName");
+                    var settingValue = ps.GetXmlProperty("row/@SettingValue");
+                    var cultureCode = ps.GetXmlProperty("row/@CultureCode");
+
+                    var sqlCmd = $@"
+                MERGE INTO {{databaseOwner}}[{{objectQualifier}}PortalSettings] AS target
+                USING (SELECT {portalId} AS PortalID, '{settingName}' AS SettingName) AS source
+                ON target.PortalID = source.PortalID AND target.SettingName = source.SettingName
+                WHEN MATCHED THEN
+                    UPDATE SET 
+                        SettingValue = '{settingValue}',
+                        LastModifiedByUserID = {userId},
+                        LastModifiedOnDate = GETDATE()
+                WHEN NOT MATCHED THEN
+                    INSERT (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode)
+                    VALUES ({portalId}, '{settingName}', '{settingValue}', {userId}, GETDATE(), -1, GETDATE(), {(string.IsNullOrEmpty(cultureCode) ? "NULL" : $"'{cultureCode}'")});";
+
+                    objCtrl.ExecSql(sqlCmd);
+
+                }
 
             }
 
+
+            // Import System Directory data
             var systemListData = new SystemLimpetList();
             foreach (var systemData in systemListData.GetSystemActiveList())
             {

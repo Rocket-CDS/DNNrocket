@@ -121,6 +121,7 @@ namespace RocketTools.API
                     _passSettings.Add("importprebuilderr", "ERROR: Import Failed.");
                 }
                 File.Delete(importFile);
+                CacheFileUtils.ClearAllCache(_portalData.PortalId);
             }
             return ImportPreBuild();
         }

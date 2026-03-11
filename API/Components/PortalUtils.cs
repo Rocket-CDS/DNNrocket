@@ -858,6 +858,7 @@ namespace DNNrocketAPI.Components
                 var portalSettings = GetPortalSettings(portalId);
                 var tabController = TabController.Instance;
                 var moduleController = ModuleController.Instance;
+                var objCtrl = new DNNrocketController();
 
                 // Get all tabs for the portal
                 var allTabs = tabController.GetTabsByPortal(portalId).AsList();
@@ -867,7 +868,6 @@ namespace DNNrocketAPI.Components
                 var systemTabIds = new List<int>
         {
             portal.SplashTabId,
-            // Removed portal.HomeTabId - we want to delete it
             portal.LoginTabId,
             portal.RegisterTabId,
             portal.UserTabId,
@@ -876,68 +876,118 @@ namespace DNNrocketAPI.Components
             portal.SuperTabId
         };
 
+                // Remove -1 values from system tabs
+                systemTabIds.RemoveAll(id => id <= 0);
+
                 // Clear PortalLocalization HomeTabId references before deleting the home tab
                 if (portal.HomeTabId > 0)
                 {
                     try
                     {
-                        var objCtrl = new DNNrocketController();
                         var sql = $"UPDATE {{databaseOwner}}[{{objectQualifier}}PortalLocalization] SET HomeTabId = NULL WHERE PortalId = {portalId} AND HomeTabId = {portal.HomeTabId}";
                         objCtrl.ExecSql(sql);
                     }
                     catch (Exception ex)
                     {
-                        // Log but continue
                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     }
                 }
 
-                // Delete modules from all tabs first
+                // Build a list of tabs to delete (excluding system tabs and admin children)
+                var tabsToDelete = new List<TabInfo>();
                 foreach (var tab in allTabs)
                 {
-                    var modules = moduleController.GetTabModules(tab.TabID);
-                    foreach (var module in modules.Values)
-                    {
-                        try
-                        {
-                            // Hard delete the module
-                            moduleController.DeleteTabModule(tab.TabID, module.ModuleID, false);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Log but continue
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                    }
-                }
-
-                // Now delete tabs (excluding system tabs, but including home tab)
-                // Start from the bottom of the hierarchy to avoid parent-child issues
-                var sortedTabs = allTabs.OrderByDescending(t => t.Level).ThenByDescending(t => t.TabID);
-
-                foreach (var tab in sortedTabs)
-                {
-                    // Skip system tabs (but not home tab)
+                    // Skip system tabs
                     if (systemTabIds.Contains(tab.TabID) || tab.IsSystem)
                     {
                         continue;
                     }
 
+                    // Skip admin child tabs
+                    if (tab.ParentId == portal.AdminTabId && portal.AdminTabId > 0)
+                    {
+                        continue;
+                    }
+
+                    tabsToDelete.Add(tab);
+                }
+
+                // Delete modules from tabs that aren't URL-only tabs
+                foreach (var tab in tabsToDelete.Where(t => string.IsNullOrEmpty(t.Url) || t.Url.StartsWith("/#")))
+                {
                     try
                     {
-                        // Check if it's an admin tab
-                        if (tab.ParentId == portal.AdminTabId)
+                        var modules = moduleController.GetTabModules(tab.TabID);
+                        foreach (var module in modules.Values)
                         {
-                            continue; // Skip admin child tabs
+                            try
+                            {
+                                moduleController.DeleteTabModule(tab.TabID, module.ModuleID, false);
+                            }
+                            catch (Exception ex)
+                            {
+                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
+
+                // Sort tabs from bottom of hierarchy to top to handle parent-child relationships
+                var sortedTabs = tabsToDelete.OrderByDescending(t => t.Level).ThenByDescending(t => t.TabID).ToList();
+
+                // First pass: Try to delete tabs using DNN API
+                foreach (var tab in sortedTabs)
+                {
+                    try
+                    {
+                        // For tabs with URLs (including anchor links), clear them first
+                        if (!string.IsNullOrEmpty(tab.Url))
+                        {
+                            tab.Url = string.Empty;
+                            tabController.UpdateTab(tab);
                         }
 
-                        // Hard delete the tab (not soft delete)
+                        // Try soft delete first (moves to recycle bin)
+                        tabController.SoftDeleteTab(tab.TabID, portalSettings);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
+
+                // Second pass: Hard delete from recycle bin and force delete any remaining tabs
+                foreach (var tab in sortedTabs)
+                {
+                    try
+                    {
+                        // Try hard delete
                         tabController.DeleteTab(tab.TabID, portalId, false);
                     }
                     catch (Exception ex)
                     {
-                        // Log but continue
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        // If DNN API fails, use direct SQL delete as last resort
+                        try
+                        {
+                            // Delete child records first
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}TabSettings] WHERE TabID = {tab.TabID}");
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}TabPermission] WHERE TabID = {tab.TabID}");
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}TabUrls] WHERE TabID = {tab.TabID}");
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}TabModules] WHERE TabID = {tab.TabID}");
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}TabAliasSkins] WHERE TabID = {tab.TabID}");
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}ContentItems_Tags] WHERE ContentItemID IN (SELECT ContentItemID FROM {{databaseOwner}}[{{objectQualifier}}Tabs] WHERE TabID = {tab.TabID})");
+
+                            // Finally delete the tab itself
+                            objCtrl.ExecSql($"DELETE FROM {{databaseOwner}}[{{objectQualifier}}Tabs] WHERE TabID = {tab.TabID} AND PortalID = {portalId}");
+                        }
+                        catch (Exception ex2)
+                        {
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex2);
+                        }
                     }
                 }
 

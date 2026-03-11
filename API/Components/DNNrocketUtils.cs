@@ -796,12 +796,49 @@ namespace DNNrocketAPI.Components
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
-
+        public static SimplisityRecord GetTabInfoRecord(int tabid, bool ignoreCache = false)
+        {
+            var tI = GetTabInfo(tabid, ignoreCache);
+            if (tI == null) return new SimplisityRecord();
+            return ConvertTabInfoToRecord(tI);
+        }
         public static Dictionary<int, string> GetTreeTabList(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
             return GetTreeTabList(rtnList, tabList, 0, 0,"", showAllTabs);
+        }
+        public static List<SimplisityRecord> GetTabList(int portalId)
+        {
+            var rtnList = new List<SimplisityRecord>();
+            var l = TabController.Instance.GetTabsByPortal(portalId);
+            foreach (var t in l)
+            {
+                rtnList.Add(ConvertTabInfoToRecord(t.Value));
+            }
+            return rtnList;
+        }
+        private static SimplisityRecord ConvertTabInfoToRecord(TabInfo tabInfo)
+        {
+            var record = new SimplisityRecord();
+            record.ItemID = tabInfo.TabID;
+            record.SetXmlProperty("genxml/tabid", tabInfo.TabID.ToString());
+            record.SetXmlProperty("genxml/tabname", tabInfo.TabName);
+            record.SetXmlProperty("genxml/title", tabInfo.Title);
+            record.SetXmlProperty("genxml/description", tabInfo.Description);
+            record.SetXmlProperty("genxml/parentid", tabInfo.ParentId.ToString());
+            record.SetXmlProperty("genxml/portalid", tabInfo.PortalID.ToString());
+            record.SetXmlProperty("genxml/url", tabInfo.Url);
+            record.SetXmlProperty("genxml/tabpath", tabInfo.TabPath);
+            record.SetXmlProperty("genxml/isdeleted", tabInfo.IsDeleted.ToString());
+            record.SetXmlProperty("genxml/issecure", tabInfo.IsSecure.ToString());
+            record.SetXmlProperty("genxml/isvisible", tabInfo.IsVisible.ToString());
+            record.SetXmlProperty("genxml/cultureCode", tabInfo.CultureCode);
+            record.SetXmlProperty("genxml/skinsrc", tabInfo.SkinSrc);
+            record.SetXmlProperty("genxml/containersrc", tabInfo.ContainerSrc);
+            record.SetXmlProperty("genxml/level", tabInfo.Level.ToString());
+            
+            return record;
         }
 
         private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
