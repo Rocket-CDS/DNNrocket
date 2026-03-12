@@ -78,7 +78,7 @@ namespace RocketTools.API
             var importfileupload = _postInfo.GetXmlProperty("genxml/hidden/importfileupload");
             if (importfileupload != "" && Path.GetExtension(importfileupload).ToLower() == ".zip")
             {
-                var importFile = PortalUtils.TempDirectoryMapPath() + "\\" + UserUtils.GetCurrentUserId() + "_" + Path.GetFileName(importfileupload);
+                var importFile = PortalUtils.TempDirectoryMapPath() + "\\" + UserUtils.GetCurrentUserId() + "_" + Path.GetFileNameWithoutExtension(importfileupload);
                 if (!File.Exists(importFile)) return ImportPreBuild();
 
                 // Remove Workflow, solve DNN bug
@@ -124,6 +124,18 @@ namespace RocketTools.API
                     _passSettings.Add("importprebuilderr", "ERROR: Import Failed.");
                 }
                 File.Delete(importFile);
+
+                // Check portal alias, incase extra language added.
+                var aliasList = PortalUtils.GetPortalAliases(_portalData.PortalId);
+                foreach (var lang in DNNrocketUtils.GetCultureCodeList(_portalData.PortalId))
+                {
+                    var aliasUrl = PortalUtils.DefaultPortalAlias(_portalData.PortalId) + "/" + lang.ToLower();
+                    if (!aliasList.Contains(aliasUrl))
+                    {
+                        //[TODO: setup portal alias for languages]
+                        //PortalUtils.AddPortalAlias(_portalData.PortalId, aliasUrl, lang);
+                    }
+                }
 
                 // Download public Apptheme
                 var appThemeProjectData = new AppThemeProjectLimpet();

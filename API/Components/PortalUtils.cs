@@ -522,6 +522,11 @@ namespace DNNrocketAPI.Components
                 }
             }
             if (String.IsNullOrEmpty(portalalias)) portalalias = PortalSettings.Current.DefaultPortalAlias;
+            if (String.IsNullOrEmpty(portalalias))
+            {
+                var alias = GetPortalAliases(portalId);
+                if (alias.Count > 0) portalalias = alias.First();
+            }
             return portalalias;
         }
 
