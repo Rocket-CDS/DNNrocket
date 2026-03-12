@@ -126,14 +126,24 @@ namespace RocketTools.API
                 File.Delete(importFile);
 
                 // Check portal alias, incase extra language added.
-                var aliasList = PortalUtils.GetPortalAliases(_portalData.PortalId);
-                foreach (var lang in DNNrocketUtils.GetCultureCodeList(_portalData.PortalId))
+                var currentUrl = _sessionParams.Get("requesturl");
+                if (GeneralUtils.IsAbsoluteUrl(currentUrl))
                 {
-                    var aliasUrl = PortalUtils.DefaultPortalAlias(_portalData.PortalId) + "/" + lang.ToLower();
-                    if (!aliasList.Contains(aliasUrl))
+                    var aliasList = PortalUtils.GetPortalAliases(_portalData.PortalId);
+                    foreach (var pa in aliasList)
                     {
-                        //[TODO: setup portal alias for languages]
-                        //PortalUtils.AddPortalAlias(_portalData.PortalId, aliasUrl, lang);
+                        PortalUtils.DeletePortalAlias(_portalData.PortalId, pa);
+                    }
+                    var newPortAliases = new Dictionary<string, string>();
+                    PortalUtils.AddPortalAlias(_portalData.PortalId, PortalUtils.GetDomainFromUrl(currentUrl), "");
+                    foreach (var lang in DNNrocketUtils.GetCultureCodeList(_portalData.PortalId))
+                    {
+                        var aliasUrl = PortalUtils.GetDomainFromUrl(currentUrl) + "/" + lang.ToLower();
+                        if (!newPortAliases.ContainsKey(lang)) newPortAliases.Add(lang, aliasUrl);
+                    }
+                    foreach (var pa in newPortAliases)
+                    {
+                        PortalUtils.AddPortalAlias(_portalData.PortalId, pa.Value, pa.Key);
                     }
                 }
 
