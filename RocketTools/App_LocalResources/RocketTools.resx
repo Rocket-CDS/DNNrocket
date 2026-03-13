@@ -371,7 +371,10 @@ The selected “Copy Language” will replace the “Destination Language”.  A
     <value>Please note: This operation may take several minutes to complete depending on the size of the import file.</value>
   </data>
   <data name="importwebconfigwarning.Text" xml:space="preserve">
-    <value>IMPORTANT: If the import times out or the file is too large, you may need to increase the executionTimeout and maxRequestLength values in your web.config file for DNN.</value>
+    <value>WARNING: Ensure your web.config allows large file uploads. Add or update these settings: 
+  &amp;lt;system.web&amp;gt;&amp;lt;httpRuntime maxRequestLength="102400" executionTimeout="3600" /&amp;gt;&amp;lt;/system.web&amp;gt; 
+  &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
+  The application will restart after web.config changes.</value>
   </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Select Import File</value>

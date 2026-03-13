@@ -540,15 +540,16 @@ namespace Simplisity
             {
                 while (lp < sFields.Count())
                 {
-                    strOut += "\"" + sFields[lp] + "\":";
+                    var key = GeneralUtils.EscapeJsonString(sFields[lp]);
                     lp += 1;
-                    strOut += "\"" + sFields[lp] + "\",";
+                    var value = GeneralUtils.EscapeJsonString(sFields[lp]);
                     lp += 1;
+                    strOut += "\"" + key + "\":\"" + value + "\",";
                 }
             }
             else
             {
-                strOut = "Key does not contain a value.  Parameters must be even containing a Key and Value";
+                strOut = "\"error\":\"Key does not contain a value. Parameters must be even containing a Key and Value\"";
             }
             if (strOut != "") strOut = "s-fields='{" + strOut.TrimEnd(',') + "}'";
             return new RawString(strOut);

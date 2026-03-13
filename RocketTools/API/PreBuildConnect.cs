@@ -46,7 +46,7 @@ namespace RocketTools.API
 
                     var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
                     if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);
-                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name).Replace(".", "_") + ".zip";
+                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name).Replace(".", "_");
 
                     if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
                     if (Directory.Exists(exportDataFolder))
@@ -54,7 +54,7 @@ namespace RocketTools.API
                         ZipFile.CreateFromDirectory(exportDataFolder, exportZipMapPath);
                         Directory.Delete(exportDataFolder, true);
                         _passSettings.Add("exportprebuild", "true");
-                        _passSettings.Add("exportfilename", exportZipMapPath);
+                        _passSettings.Add("exportfilename", Path.GetFileName(exportZipMapPath));
                     }
                 }
                 return ExportPreBuild();
@@ -166,6 +166,15 @@ namespace RocketTools.API
             return ImportPreBuild();
         }
 
+        public Dictionary<string, object> DownloadPrebuild()
+        {
+            var docKey = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/dockey"));
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
+            var rtnDic = new Dictionary<string, object>();
+            rtnDic.Add("filenamepath", exportZipMapPath + "\\" + docKey);
+            rtnDic.Add("downloadname", docKey + ".zip");
+            return rtnDic;
+        }
     }
 
 }

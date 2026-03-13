@@ -2354,7 +2354,7 @@ namespace DNNrocketAPI.Components
                 // Export portal with ID 0, performed by user with ID 1
                 var exportJob = helper.ExportWebsiteAndWait(
                     portalId: portalId,
-                    userId: 1,
+                    userId: UserUtils.GetCurrentUserId(),
                     exportName: "Rocket PreBuild Export",
                     exportDescription: "Full website backup",
                     extraExportSettings
@@ -2381,7 +2381,7 @@ namespace DNNrocketAPI.Components
                 // Export portal with ID 0, performed by user with ID 1
                 var exportJob = helper.ImportWebsiteAndWait(
                     portalId: portalId,
-                    userId: 1,
+                    userId: UserUtils.GetCurrentUserId(),
                     packageId: packageId
                 );
 

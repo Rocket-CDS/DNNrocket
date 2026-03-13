@@ -371,7 +371,10 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
     <value>Remarque : Cette opération peut prendre plusieurs minutes en fonction de la taille du fichier d'importation.</value>
   </data>
   <data name="importwebconfigwarning.Text" xml:space="preserve">
-    <value>IMPORTANT : Si l'importation expire ou si le fichier est trop volumineux, vous devrez peut-être augmenter les valeurs executionTimeout et maxRequestLength dans votre fichier web.config pour DNN.</value>
+    <value>ATTENTION : Assurez-vous que votre web.config autorise les téléchargements de fichiers volumineux. Ajoutez ou mettez à jour ces paramètres : 
+  &amp;lt;system.web&amp;gt;&amp;lt;httpRuntime maxRequestLength="102400" executionTimeout="3600" /&amp;gt;&amp;lt;/system.web&amp;gt; 
+  &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
+  L'application redémarrera après les modifications du web.config.</value>
   </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Sélectionner le fichier d'importation</value>

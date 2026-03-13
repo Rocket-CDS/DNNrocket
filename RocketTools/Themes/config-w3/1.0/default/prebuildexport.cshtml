@@ -9,6 +9,7 @@
 
 <div id="sectiondata">
 
+
     @if (Model.GetSettingBool("exportprebuild"))
     {
         <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round">
@@ -19,7 +20,7 @@
         if (Model.GetSetting("exportfilename") != "")
         {
             <div class="w3-row w3-margin-bottom w3-center">
-                <a href="@Model.GetSetting("exportfilename")" class="w3-button w3-green" download>
+                <a class="w3-button w3-green simplisity_filedownload" s-cmd="rockettools_downloadprebuild" @SFields("dockey",Model.GetSetting("exportfilename"))>
                     @ButtonText(ButtonTypes.download) @ResourceKey("RocketTools.downloadprebuild")
                 </a>
             </div>

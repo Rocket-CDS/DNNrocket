@@ -158,10 +158,7 @@ namespace RocketTools.API
                     break;
                 case "rockettools_importprebuildexe":
                     strOut = ImportPreBuildExe();
-                    break;
-
-
-
+                    break;                 
 
                 default:
                         strOut = "INVALID CMD";
@@ -169,7 +166,12 @@ namespace RocketTools.API
 
                 }
 
-            rtnDic.Add("outputhtml", strOut);
+                if (paramCmd == "rockettools_downloadprebuild" && UserUtils.IsAdministrator())
+                {
+                    return DownloadPrebuild();
+                }
+
+                rtnDic.Add("outputhtml", strOut);
             return rtnDic;
 
         }
