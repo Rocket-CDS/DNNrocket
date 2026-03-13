@@ -158,7 +158,11 @@ namespace RocketTools.API
                     break;
                 case "rockettools_importprebuildexe":
                     strOut = ImportPreBuildExe();
-                    break;                 
+                    break;
+                case "rockettools_savewebconfigsettings":
+                    strOut = SaveWebConfig();
+                    break;
+                    
 
                 default:
                         strOut = "INVALID CMD";

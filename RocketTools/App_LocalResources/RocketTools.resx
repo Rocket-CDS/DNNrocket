@@ -376,6 +376,30 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
   The application will restart after web.config changes.</value>
   </data>
+  <data name="webconfigsettings.Text" xml:space="preserve">
+    <value>Web.Config Upload Settings</value>
+  </data>
+  <data name="webconfigrequirement.Text" xml:space="preserve">
+    <value>Large file uploads require web.config settings to be configured. Enter the maximum upload size and execution timeout, then save to update your web.config file.</value>
+  </data>
+  <data name="maxuploadsizemb.Text" xml:space="preserve">
+    <value>Maximum Upload Size (MB)</value>
+  </data>
+  <data name="maxuploadsizehelp.Text" xml:space="preserve">
+    <value>Maximum file size allowed for uploads.</value>
+  </data>
+  <data name="executiontimeoutminutes.Text" xml:space="preserve">
+    <value>Execution Timeout (Minutes)</value>
+  </data>
+  <data name="executiontimeouthelp.Text" xml:space="preserve">
+    <value>Maximum time a request can run.</value>
+  </data>
+  <data name="savewebconfigsettings.Text" xml:space="preserve">
+    <value>Save Web.Config Settings</value>
+  </data>
+  <data name="webconfigrestart.Text" xml:space="preserve">
+    <value>⚠ The application will restart after saving web.config changes.</value>
+  </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Select Import File</value>
   </data>

@@ -376,6 +376,30 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
   L'application redémarrera après les modifications du web.config.</value>
   </data>
+  <data name="webconfigsettings.Text" xml:space="preserve">
+    <value>Paramètres de téléchargement Web.Config</value>
+  </data>
+  <data name="webconfigrequirement.Text" xml:space="preserve">
+    <value>Les téléchargements de fichiers volumineux nécessitent la configuration des paramètres web.config. Entrez la taille maximale de téléchargement et le délai d'exécution, puis enregistrez pour mettre à jour votre fichier web.config.</value>
+  </data>
+  <data name="maxuploadsizemb.Text" xml:space="preserve">
+    <value>Taille maximale de téléchargement (Mo)</value>
+  </data>
+  <data name="maxuploadsizehelp.Text" xml:space="preserve">
+    <value>Taille de fichier maximale autorisée pour les téléchargements.</value>
+  </data>
+  <data name="executiontimeoutminutes.Text" xml:space="preserve">
+    <value>Délai d'exécution (Minutes)</value>
+  </data>
+  <data name="executiontimeouthelp.Text" xml:space="preserve">
+    <value>Durée maximale d'exécution d'une requête.</value>
+  </data>
+  <data name="savewebconfigsettings.Text" xml:space="preserve">
+    <value>Enregistrer les paramètres Web.Config</value>
+  </data>
+  <data name="webconfigrestart.Text" xml:space="preserve">
+    <value>⚠ L'application redémarrera après l'enregistrement des modifications du web.config.</value>
+  </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Sélectionner le fichier d'importation</value>
   </data>

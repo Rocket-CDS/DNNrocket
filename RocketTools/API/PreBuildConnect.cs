@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI.Components;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Exceptions;
@@ -174,6 +175,85 @@ namespace RocketTools.API
             rtnDic.Add("filenamepath", exportZipMapPath + "\\" + docKey);
             rtnDic.Add("downloadname", docKey + ".zip");
             return rtnDic;
+        }
+        public string SaveWebConfig()
+        {
+            if (UserUtils.IsSuperUser())
+            {
+                var maxuploadsizemb = _postInfo.GetXmlProperty("genxml/textbox/maxuploadsizemb");
+                var executiontimeoutminutes = _postInfo.GetXmlProperty("genxml/textbox/executiontimeoutminutes");
+
+                var webConfigPath = Globals.ApplicationMapPath + "\\web.config";
+                
+                if (!string.IsNullOrEmpty(maxuploadsizemb) || !string.IsNullOrEmpty(executiontimeoutminutes))
+                {
+                    var xmlDoc = new System.Xml.XmlDocument();
+                    xmlDoc.Load(webConfigPath);
+
+                    // Update maxRequestLength and executionTimeout in system.web/httpRuntime
+                    if (!string.IsNullOrEmpty(maxuploadsizemb) || !string.IsNullOrEmpty(executiontimeoutminutes))
+                    {
+                        var systemWeb = xmlDoc.SelectSingleNode("//configuration/system.web") as System.Xml.XmlElement;
+                        if (systemWeb != null)
+                        {
+                            var httpRuntime = systemWeb.SelectSingleNode("httpRuntime") as System.Xml.XmlElement;
+                            if (httpRuntime == null)
+                            {
+                                httpRuntime = xmlDoc.CreateElement("httpRuntime");
+                                systemWeb.AppendChild(httpRuntime);
+                            }
+
+                            if (!string.IsNullOrEmpty(maxuploadsizemb) && int.TryParse(maxuploadsizemb, out var uploadSizeMB))
+                            {
+                                var maxRequestLengthKB = uploadSizeMB * 1024;
+                                httpRuntime.SetAttribute("maxRequestLength", maxRequestLengthKB.ToString());
+                            }
+
+                            if (!string.IsNullOrEmpty(executiontimeoutminutes) && int.TryParse(executiontimeoutminutes, out var timeoutMinutes))
+                            {
+                                var executionTimeoutSeconds = timeoutMinutes * 60;
+                                httpRuntime.SetAttribute("executionTimeout", executionTimeoutSeconds.ToString());
+                            }
+                        }
+                    }
+
+                    // Update maxAllowedContentLength in system.webServer/security/requestFiltering/requestLimits
+                    if (!string.IsNullOrEmpty(maxuploadsizemb) && int.TryParse(maxuploadsizemb, out var uploadMB))
+                    {
+                        var systemWebServer = xmlDoc.SelectSingleNode("//configuration/system.webServer") as System.Xml.XmlElement;
+                        if (systemWebServer != null)
+                        {
+                            var security = systemWebServer.SelectSingleNode("security") as System.Xml.XmlElement;
+                            if (security == null)
+                            {
+                                security = xmlDoc.CreateElement("security");
+                                systemWebServer.AppendChild(security);
+                            }
+
+                            var requestFiltering = security.SelectSingleNode("requestFiltering") as System.Xml.XmlElement;
+                            if (requestFiltering == null)
+                            {
+                                requestFiltering = xmlDoc.CreateElement("requestFiltering");
+                                security.AppendChild(requestFiltering);
+                            }
+
+                            var requestLimits = requestFiltering.SelectSingleNode("requestLimits") as System.Xml.XmlElement;
+                            if (requestLimits == null)
+                            {
+                                requestLimits = xmlDoc.CreateElement("requestLimits");
+                                requestFiltering.AppendChild(requestLimits);
+                            }
+
+                            var maxAllowedContentLengthBytes = (long)uploadMB * 1024 * 1024;
+                            requestLimits.SetAttribute("maxAllowedContentLength", maxAllowedContentLengthBytes.ToString());
+                        }
+                    }
+
+                    RetryableAction.Retry5TimesWith2SecondsDelay(() => xmlDoc.Save(webConfigPath), "Saving web.config");
+                }
+
+            }
+            return "";
         }
     }
 
