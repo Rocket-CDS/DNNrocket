@@ -153,6 +153,12 @@ namespace RocketTools.API
                 case "rockettools_exportprebuildexe":
                     strOut = ExportPreBuildExe();
                     break;
+                case "rockettools_checkexportstatus":
+                    strOut = CheckExportStatus();
+                    break;
+                case "rockettools_exportprebuildcomplete":
+                    strOut = ExportPreBuildComplete();
+                    break;
                 case "rockettools_importprebuild":
                     strOut = ImportPreBuild();
                     break;

@@ -1,0 +1,27 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
+
+<div id="sectiondata">
+
+
+        <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round">
+            <h3 class="w3-text-green">@ResourceKey("RocketTools.exportcomplete")</h3>
+            <p>@ResourceKey("RocketTools.exportsuccessmessage")</p>
+        </div>
+        
+        if (Model.GetSetting("exportfilename") != "")
+        {
+            <div class="w3-row w3-margin-bottom w3-center">
+                <a class="w3-button w3-green simplisity_filedownload" s-cmd="rockettools_downloadprebuild" @SFields("dockey",Model.GetSetting("exportfilename"))>
+                    @ButtonText(ButtonTypes.download) @ResourceKey("RocketTools.downloadprebuild")
+                </a>
+            </div>
+        }
+
+</div>
