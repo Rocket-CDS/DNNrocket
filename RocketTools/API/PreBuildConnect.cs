@@ -47,7 +47,7 @@ namespace RocketTools.API
 
                     var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
                     if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);
-                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name).Replace(".", "_");
+                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
 
                     if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
                     if (Directory.Exists(exportDataFolder))
@@ -126,26 +126,41 @@ namespace RocketTools.API
                 }
                 File.Delete(importFile);
 
-                // Check portal alias, incase extra language added.
+                // Check portal alias, in case extra language added.
                 var currentUrl = _sessionParams.Get("requesturl");
                 if (GeneralUtils.IsAbsoluteUrl(currentUrl))
                 {
+                    var domain = PortalUtils.GetDomainFromUrl(currentUrl);
+                    var defaultUrl = PortalUtils.DefaultPortalAlias(_portalData.PortalId);
+                    var cultureCodeList = DNNrocketUtils.GetCultureCodeList(_portalData.PortalId).ToList();
+                    var defaultCultureCode = _portalData.DefaultLanguage();
                     var aliasList = PortalUtils.GetPortalAliases(_portalData.PortalId);
+
                     foreach (var pa in aliasList)
                     {
-                        PortalUtils.DeletePortalAlias(_portalData.PortalId, pa);
-                    }
-                    var newPortAliases = new Dictionary<string, string>();
-                    PortalUtils.AddPortalAlias(_portalData.PortalId, PortalUtils.GetDomainFromUrl(currentUrl), "");
-                    foreach (var lang in DNNrocketUtils.GetCultureCodeList(_portalData.PortalId))
+                        if (pa != defaultUrl) PortalUtils.DeletePortalAlias(_portalData.PortalId, pa);
+                    }                   
+                    
+                    if (cultureCodeList.Count == 1)
                     {
-                        var aliasUrl = PortalUtils.GetDomainFromUrl(currentUrl) + "/" + lang.ToLower();
-                        if (!newPortAliases.ContainsKey(lang)) newPortAliases.Add(lang, aliasUrl);
+                        // Only one language - assign it to the root domain
+                        PortalUtils.AddPortalAlias(_portalData.PortalId, domain, cultureCodeList[0]);
                     }
-                    foreach (var pa in newPortAliases)
+                    else if (cultureCodeList.Count > 1)
                     {
-                        PortalUtils.AddPortalAlias(_portalData.PortalId, pa.Value, pa.Key);
+                        // Multiple languages - root domain gets default language
+                        PortalUtils.AddPortalAlias(_portalData.PortalId, domain, defaultCultureCode);
+                        
+                        // Add other languages with culture code in URL path
+                        foreach (var lang in cultureCodeList)
+                        {
+                            var aliasUrl = domain + "/" + lang.ToLower();
+                            PortalUtils.AddPortalAlias(_portalData.PortalId, aliasUrl, lang);
+                        }
                     }
+                    // ensure we have a portalalias
+                    aliasList = PortalUtils.GetPortalAliases(_portalData.PortalId);
+                    if (aliasList.Count == 0) PortalUtils.AddPortalAlias(_portalData.PortalId, domain, "");
                 }
 
                 // Download public Apptheme

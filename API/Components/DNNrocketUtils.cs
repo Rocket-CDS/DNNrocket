@@ -791,14 +791,22 @@ namespace DNNrocketAPI.Components
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, portalid, ignoreCache);
         }
+        [Obsolete("Use GetTabInfo(int portalid, int tabid, bool ignoreCache = false) instead")]
         public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
         {
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
+        [Obsolete("Use GetTabInfoRecord(int portalId,int tabid, bool ignoreCache = false) instead")]
         public static SimplisityRecord GetTabInfoRecord(int tabid, bool ignoreCache = false)
         {
             var tI = GetTabInfo(tabid, ignoreCache);
+            if (tI == null) return new SimplisityRecord();
+            return ConvertTabInfoToRecord(tI);
+        }
+        public static SimplisityRecord GetTabInfoRecord(int portalId,int tabid, bool ignoreCache = false)
+        {
+            var tI = GetTabInfo(portalId, tabid, ignoreCache);
             if (tI == null) return new SimplisityRecord();
             return ConvertTabInfoToRecord(tI);
         }
@@ -2351,7 +2359,6 @@ namespace DNNrocketAPI.Components
             {
                 var helper = new DnnSiteExportImportHelper();
 
-                // Export portal with ID 0, performed by user with ID 1
                 var exportJob = helper.ExportWebsiteAndWait(
                     portalId: portalId,
                     userId: UserUtils.GetCurrentUserId(),
