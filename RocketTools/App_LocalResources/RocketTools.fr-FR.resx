@@ -409,4 +409,7 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   <data name="importprogress.Text" xml:space="preserve">
     <value>Importation des données du portail...</value>
   </data>
+  <data name="downloadexitingprebuild.Text" xml:space="preserve">
+    <value>Télécharger l'exportation préconstruite existante</value>
+  </data>
 </root>

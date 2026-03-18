@@ -17,6 +17,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RocketTools.API
 {
@@ -24,6 +26,12 @@ namespace RocketTools.API
     {
         public string ExportPreBuild()
         {
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
+            foreach (var f in Directory.GetFiles(exportZipMapPath))
+            {
+                _passSettings.Add("exportfilename", Path.GetFileName(f));
+            }
+
             var razorTempl = _appThemeTools.GetTemplate("prebuildexport.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
@@ -31,6 +39,36 @@ namespace RocketTools.API
         }
         public string ExportPreBuildComplete()
         {
+            var jobId = _paramInfo.GetXmlPropertyInt("genxml/hidden/jobid");
+            var helper = new DnnSiteExportImportHelper();
+            var job = helper.GetJobStatus(jobId);
+            if (job == null) return "ERROR: Job not found " + jobId;
+
+            var exportDataFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + job.Directory);
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
+            if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);
+            foreach (var f in Directory.GetFiles(exportZipMapPath))
+            {
+                try
+                {
+                    File.Delete(f);
+                }
+                catch (Exception)
+                {
+                    // ignore
+                }
+            }
+            exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
+
+            if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
+            if (Directory.Exists(exportDataFolder))
+            {
+                ZipFile.CreateFromDirectory(exportDataFolder, exportZipMapPath);
+                Directory.Delete(exportDataFolder, true);
+                _passSettings.Add("exportprebuild", "true");
+                _passSettings.Add("exportfilename", Path.GetFileName(exportZipMapPath));
+            }
+
             var razorTempl = _appThemeTools.GetTemplate("prebuildexportcomplete.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
@@ -38,7 +76,7 @@ namespace RocketTools.API
         }
         public string ExportPreBuildProcess()
         {
-            var razorTempl = _appThemeTools.GetTemplate("prebuildexport.cshtml");
+            var razorTempl = _appThemeTools.GetTemplate("prebuildexportprocess.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObjects, _passSettings, _sessionParams, true);
             if (!pr.IsValid) return pr.ErrorMsg;
             return pr.RenderedText;
@@ -52,7 +90,7 @@ namespace RocketTools.API
                 var extraExportSettings = new SimplisityRecord();
                 extraExportSettings.SetXmlProperty("genxml/hometab/hometabid", PortalUtils.GetCurrentPortalSettings().HomeTabId.ToString());
 
-                // Start the export but DON'T wait (this is the key change)
+                // Start the export but DON'T wait.
                 var helper = new DnnSiteExportImportHelper();
                 var jobId = helper.ExportWebsite(_portalData.PortalId, UserUtils.GetCurrentUserId(), "Rocket PreBuild Export", "Full website backup");
 
@@ -71,6 +109,7 @@ namespace RocketTools.API
                 // Return message immediately
                 _passSettings.Add("exportstarted", "true");
                 _passSettings.Add("jobid", jobId.ToString());
+                
                 return ExportPreBuildProcess();
             }
             catch (Exception ex)
@@ -84,101 +123,32 @@ namespace RocketTools.API
             try
             {
                 var jobId = _paramInfo.GetXmlPropertyInt("genxml/hidden/jobid");
-
                 var helper = new DnnSiteExportImportHelper();
                 var job = helper.GetJobStatus(jobId);
-
-                if (job == null)
-                {
-                    return "ERROR|Job not found";
-                }
+                if (job == null) return "ERROR|Job not found";
 
                 // Use ToString() - works without enum reference
                 var statusString = job.JobStatus.ToString();
 
                 if (statusString == "Successful")
                 {
-                    // Job complete - build the final zip
-                    var exportDataFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + job.Directory);
-
-                    var directoryExportMapPath = PortalUtils.HomeDNNrocketDirectoryMapPath(_portalData.PortalId) + "\\ImportExportDirectory";
-                    if (File.Exists(directoryExportMapPath))
-                    {
-                        File.Move(directoryExportMapPath, exportDataFolder + "\\export_directorydata.zip");
-                    }
-
-                    var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
-                    if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);
-                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
-
-                    if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
-                    if (Directory.Exists(exportDataFolder))
-                    {
-                        ZipFile.CreateFromDirectory(exportDataFolder, exportZipMapPath);
-                        Directory.Delete(exportDataFolder, true);
-                        _passSettings.Add("exportprebuild", "true");
-                        _passSettings.Add("exportfilename", Path.GetFileName(exportZipMapPath));
-                    }
-
-                    return ExportPreBuild(); // Show success message with download button
+                    return "true";
                 }
                 else if (statusString == "Failed")
                 {
-                    return "FAILED|Export job failed";
+                    return "false: " + statusString;
                 }
                 else
                 {
-                    return "INPROGRESS|" + statusString;
+                    return "";
                 }
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
-                return "ERROR|" + ex.Message;
+                return "false: " + ex.ToString();
             }
         }
-        public string ExportPreBuildExeOLD()
-        {
-            try
-            {
-                if (!UserUtils.IsAdministrator()) return "Must be Administrator.";
-
-                var extraExportSettings = new SimplisityRecord();
-                extraExportSettings.SetXmlProperty("genxml/hometab/hometabid", PortalUtils.GetCurrentPortalSettings().HomeTabId.ToString());
-
-                var exportFolder = DNNrocketUtils.ExportWebsite(_portalData.PortalId, extraExportSettings);
-                if (!String.IsNullOrEmpty(exportFolder))
-                {
-                    var exportDataFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportFolder);
-
-                    var directoryExportMapPath = PortalUtils.HomeDNNrocketDirectoryMapPath(_portalData.PortalId) + "\\ImportExportDirectory";
-                    if (File.Exists(directoryExportMapPath))
-                    {
-                        File.Move(directoryExportMapPath, exportDataFolder + "\\export_directorydata.zip");
-                    }
-
-                    var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\PreBuilds";
-                    if (!Directory.Exists(exportZipMapPath)) Directory.CreateDirectory(exportZipMapPath);
-                    exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
-
-                    if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
-                    if (Directory.Exists(exportDataFolder))
-                    {
-                        ZipFile.CreateFromDirectory(exportDataFolder, exportZipMapPath);
-                        Directory.Delete(exportDataFolder, true);
-                        _passSettings.Add("exportprebuild", "true");
-                        _passSettings.Add("exportfilename", Path.GetFileName(exportZipMapPath));
-                    }
-                }
-                return ExportPreBuild();
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return ex.ToString();
-            }
-        }
-
         public void ExportExtraData(int portalId, string exportImportJobDirectory, SimplisityRecord extraExportSettings)
         {
             if (extraExportSettings != null)
@@ -223,6 +193,12 @@ namespace RocketTools.API
                             extraExportSettings.AddRecordListItem("appthemeprojects", at);
                         }
                     }
+                }
+                var sqlCmd4 = "select TabId, TabPath FROM {databaseOwner}[{objectQualifier}Tabs] where portalid = " + portalId + " for xml raw";
+                var tabinfoList = objCtrl.ExecSqlXmlList(sqlCmd4);
+                foreach (var at in tabinfoList)
+                {
+                    extraExportSettings.AddRecordListItem("tabpath", at);
                 }
 
                 // Export Directory systems.
@@ -327,6 +303,8 @@ namespace RocketTools.API
 
                 var fName = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJobDirectory + "/RocketSettings.xml");
                 extraExportSettings.XMLDoc.Save(fName);
+
+                Thread.Sleep(2000);  // wait for zip to register.
             }
 
         }

@@ -409,4 +409,7 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   <data name="importprogress.Text" xml:space="preserve">
     <value>Importing Portal Data...</value>
   </data>
+  <data name="downloadexitingprebuild.Text" xml:space="preserve">
+    <value>Download Existing Prebuild Export</value>
+  </data>
 </root>

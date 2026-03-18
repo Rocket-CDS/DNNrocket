@@ -22,6 +22,16 @@
             </div>
         </div>
 
+        @if (Model.GetSetting("exportfilename") != "")
+        {
+            <div class="w3-row w3-margin-bottom w3-right">
+                <a class="w3-button w3-blue simplisity_filedownload" s-cmd="rockettools_downloadprebuild" @SFields("dockey",Model.GetSetting("exportfilename"))>
+                    @ButtonText(ButtonTypes.download) @ResourceKey("RocketTools.downloadexitingprebuild")
+                </a>
+            </div>
+        }
+
+
 </div>
 
 <script>

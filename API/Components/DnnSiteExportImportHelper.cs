@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using System.Xml;
 using System.Xml.Linq;
 
 /// <summary>
@@ -235,11 +236,11 @@ public class DnnSiteExportImportHelper
                 Constants.Category_Assets,       // "ASSETS"
                 Constants.Category_Users,        // "USERS"
                 Constants.Category_Roles,        // "ROLES"
+                // Constants.Category_Packages,  // Uncomment to explicitly control packages
                 Constants.Category_Vocabularies, // "VOCABULARIES"
                 Constants.Category_Templates,    // "TEMPLATES"
                 Constants.Category_ProfileProps, // "PROFILE_PROPERTIES"
-                Constants.Category_Packages,     // "PACKAGES"
-                Constants.Category_Workflows     // "WORKFLOW" (if needed)
+                Constants.Category_Workflows     // "WORKFLOW" (if needed)                
             },
 
             // These flags work in conjunction with ItemsToExport
@@ -250,7 +251,7 @@ public class DnnSiteExportImportHelper
             IncludeVocabularies = true,
             IncludeTemplates = true,
             IncludeProperfileProperties = true,
-            IncludeExtensions = true,
+            IncludeExtensions = false,
             IncludePermissions = true,
             IncludeDeletions = false,
             ExportMode = ExportMode.Full,
@@ -368,72 +369,108 @@ public class DnnSiteExportImportHelper
                     objCtrl.Update(appThemeProjectRecord);
                 }
 
-            }
-
-            // Import System Directory data
-            var systemListData = new SystemLimpetList();
-            foreach (var systemData in systemListData.GetSystemActiveList())
-            {
-                if (systemData.Exists)
+                // Import System Directory data
+                var systemListData = new SystemLimpetList();
+                foreach (var systemData in systemListData.GetSystemActiveList())
                 {
-                    foreach (var rocketInterface in systemData.ProviderList)
+                    if (systemData.Exists)
                     {
-                        if (rocketInterface.IsProvider("exportmodule"))
+                        foreach (var rocketInterface in systemData.ProviderList)
                         {
-                            if (rocketInterface.Exists)
+                            if (rocketInterface.IsProvider("exportmodule"))
                             {
-                                var postInfo = new SimplisityInfo();
-                                var paramInfo = new SimplisityInfo();
-                                try
+                                if (rocketInterface.Exists)
                                 {
-                                    paramInfo.SetXmlPropertyInt("genxml/hidden/portalid", portalId);
-                                    paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
-                                    paramInfo.SetXmlProperty("genxml/hidden/extractfolder", importMapPathFolder);
-                                    var exportZipMapPath = "";
-                                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketdirectoryapi_importdata", systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
-                                    if (returnDictionary.ContainsKey("outputhtml")) exportZipMapPath = (string)returnDictionary["outputhtml"];
-                                }
-                                catch (Exception ex)
-                                {
-                                    LogUtils.LogException(ex);
+                                    var postInfo = new SimplisityInfo();
+                                    var paramInfo = new SimplisityInfo();
+                                    try
+                                    {
+                                        paramInfo.SetXmlPropertyInt("genxml/hidden/portalid", portalId);
+                                        paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
+                                        paramInfo.SetXmlProperty("genxml/hidden/extractfolder", importMapPathFolder);
+                                        var exportZipMapPath = "";
+                                        var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketdirectoryapi_importdata", systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                        if (returnDictionary.ContainsKey("outputhtml")) exportZipMapPath = (string)returnDictionary["outputhtml"];
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogUtils.LogException(ex);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            // Do module settings tab ID.
-            var moduleSettingsList = objCtrl.GetList(portalId, -1, "MODSETTINGS");
-            foreach (var mRec in moduleSettingsList)
-            {
-                // Update moduleref to new moduleref, to link API moduules.
-                if (mRec.GetXmlProperty("genxml/settings/apimoduleref") != "")
+                // Do module settings tab ID.
+                var moduleSettingsList = objCtrl.GetList(portalId, -1, "MODSETTINGS");
+                foreach (var mRec in moduleSettingsList)
                 {
-                    var lm = mRec.GetXmlProperty("genxml/settings/apimoduleref").Split('_');
-                    if (lm.Length == 3)
+                    // Update moduleref to new moduleref, to link API moduules.
+                    if (mRec.GetXmlProperty("genxml/settings/apimoduleref") != "")
                     {
-                        var legacyModuleId = lm[2];
-                        if (GeneralUtils.IsNumeric(legacyModuleId))
+                        var lm = mRec.GetXmlProperty("genxml/settings/apimoduleref").Split('_');
+                        if (lm.Length == 3)
                         {
-                            var newModuleId = GetNewModuleId(portalId, Convert.ToInt32(legacyModuleId));
-                            if (newModuleId > 0)
+                            var legacyModuleId = lm[2];
+                            if (GeneralUtils.IsNumeric(legacyModuleId))
                             {
-                                var newModuleRef = portalId + "_ModuleID_" + newModuleId;
-                                mRec.SetXmlProperty("genxml/settings/apimoduleref", newModuleRef);
-                                objCtrl.Update(mRec);
+                                var newModuleId = GetNewModuleId(portalId, Convert.ToInt32(legacyModuleId));
+                                if (newModuleId > 0)
+                                {
+                                    var newModuleRef = portalId + "_ModuleID_" + newModuleId;
+                                    mRec.SetXmlProperty("genxml/settings/apimoduleref", newModuleRef);
+                                    objCtrl.Update(mRec);
+                                }
                             }
                         }
                     }
+                    RemapInternalLinks(portalId, mRec.ModuleId, rocketSettings);
                 }
+
             }
-
-
 
         }
 
         return exportImportJob;
     }
+    private void RemapInternalLinks(int portalId, int moduleId, SimplisityRecord rocketSettings)
+    {
+        var objCtrl = new DNNrocketController();
+        var moduleRef = portalId + "_ModuleID_" + moduleId;
+
+        var artRec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "ART", moduleRef, "", "RocketContentAPI");
+        if (artRec != null)
+        {
+            var upd = false;
+            var rows = artRec.GetRecordList("rows");
+            var rowlp = 1;
+            foreach (var row in rows)
+            {
+                var l = row.GetRecordList("linklist");
+                var lklp = 1;
+                foreach (var lk in l)
+                {
+                    var oldTabId = lk.GetXmlPropertyInt("genxml/select/internallinkarticlelink");
+                    if (oldTabId > 0)
+                    {
+                        var oldTabPath = rocketSettings.GetXmlProperty("genxml/tabpath/row[@TabId=" + oldTabId + "]/@TabPath");
+                        if (oldTabPath != "")
+                        {
+                            var sqlCmd = "select TabId FROM {databaseOwner}[{objectQualifier}Tabs] where portalid = " + portalId + " and tabpath = '" + oldTabPath + "'";
+                            var newTabId = objCtrl.ExecSql(sqlCmd);
+                            artRec.SetXmlPropertyInt("genxml/rows/genxml[" + rowlp + "]/linklist/genxml[" + lklp + "]/select/internallinkarticlelink", newTabId);
+                            upd = true;
+                        }
+                    }
+                    lklp += 1;
+                }
+                rowlp += 1;
+            }
+            if (upd) objCtrl.Update(artRec, "RocketContentAPI");
+        }
+    }
+
     private int GetHomeTabIdByName(int portalId, string tabname, string tabtitle)
     {
         var l = TabController.Instance.GetTabsByPortal(portalId);
