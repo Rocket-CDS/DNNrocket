@@ -51,6 +51,10 @@
             <p>@ResourceKey("RocketTools.importdescription")</p>
             <p class="w3-text-orange"><strong>@ResourceKey("RocketTools.importtimewarning")</strong></p>
         </div>
+        <div class="w3-panel w3-pale-yellow w3-border w3-border-blue w3-round">
+            <h4 class="w3-text-yellow">@ResourceKey("RocketTools.workflownotsupported")</h4>
+            <p>@ResourceKey("RocketTools.workflownotsupporteddescription")</p>
+        </div>
 
         if (UserUtils.IsSuperUser())
         {
@@ -161,12 +165,9 @@
                     console.log('Upload successful, triggering command...');
                     simplisity_callserver($('#processimportupload'));
                 } else if (xhr.status === 413) {
-                    alert('Upload failed: File is too large!\n\n' +
-                          'The file size exceeds the maximum allowed by the server.\n' +
-                          'Please increase the "Maximum Upload Size" setting above and click Save, then try uploading again.');
+                    alert('@ResourceKey("RocketTools.uploadfailedtoolarge")');
                 } else {
-                    alert('Upload failed with status: ' + xhr.status + '\n\n' +
-                          'Please check your network connection and try again.');
+                    alert('@ResourceKey("RocketTools.uploadfailedstatus")'.replace('{0}', xhr.status));
                 }
             }, false);
             
@@ -174,7 +175,7 @@
             xhr.addEventListener('error', function() {
                 console.error('Upload error');
                 $('#simplisity-file-progress-bar').hide();
-                alert('Upload failed');
+                alert('@ResourceKey("RocketTools.uploadfailed")');
             }, false);
             
             // Handle abort

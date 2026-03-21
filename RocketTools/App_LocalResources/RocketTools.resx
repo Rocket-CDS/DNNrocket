@@ -412,4 +412,19 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   <data name="downloadexitingprebuild.Text" xml:space="preserve">
     <value>Download Existing Prebuild Export</value>
   </data>
+  <data name="workflownotsupported.Text" xml:space="preserve">
+    <value>WORKFLOW not supported</value>
+  </data>
+  <data name="workflownotsupporteddescription.Text" xml:space="preserve">
+    <value>Compatibility limitations between the DNN Workflow feature and website export functionality mean that Workflow is not supported during import.  Modules that rely on Workflow - such as the HTML/Text module - may be imported with errors or may not function as expected after import.</value>
+  </data>
+  <data name="uploadfailedtoolarge.Text" xml:space="preserve">
+    <value>Upload failed: File is too large!\n\nThe file size exceeds the maximum allowed by the server.\nPlease increase the "Maximum Upload Size" setting above and click Save, then try uploading again.</value>
+  </data>
+  <data name="uploadfailedstatus.Text" xml:space="preserve">
+    <value>Upload failed with status: {0}\n\nPlease check your network connection and try again.</value>
+  </data>
+  <data name="uploadfailed.Text" xml:space="preserve">
+    <value>Upload failed</value>
+  </data>
 </root>

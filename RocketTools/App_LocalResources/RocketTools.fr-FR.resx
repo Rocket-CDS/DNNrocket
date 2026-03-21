@@ -412,4 +412,19 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   <data name="downloadexitingprebuild.Text" xml:space="preserve">
     <value>Télécharger l'exportation préconstruite existante</value>
   </data>
+  <data name="workflownotsupported.Text" xml:space="preserve">
+    <value>WORKFLOW non pris en charge</value>
+  </data>
+  <data name="workflownotsupporteddescription.Text" xml:space="preserve">
+    <value>Les limitations de compatibilité entre la fonctionnalité DNN Workflow et la fonctionnalité d'exportation de site Web signifient que Workflow n'est pas pris en charge lors de l'importation. Les modules qui dépendent de Workflow - tels que le module HTML/Text - peuvent être importés avec des erreurs ou peuvent ne pas fonctionner comme prévu après l'importation.</value>
+  </data>
+  <data name="uploadfailedtoolarge.Text" xml:space="preserve">
+    <value>Échec du téléchargement : Fichier trop volumineux !\n\nLa taille du fichier dépasse le maximum autorisé par le serveur.\nVeuillez augmenter le paramètre "Taille maximale de téléchargement" ci-dessus et cliquer sur Enregistrer, puis réessayer de télécharger.</value>
+  </data>
+  <data name="uploadfailedstatus.Text" xml:space="preserve">
+    <value>Échec du téléchargement avec le statut : {0}\n\nVeuillez vérifier votre connexion réseau et réessayer.</value>
+  </data>
+  <data name="uploadfailed.Text" xml:space="preserve">
+    <value>Échec du téléchargement</value>
+  </data>
 </root>
