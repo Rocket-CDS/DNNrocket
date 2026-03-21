@@ -118,13 +118,12 @@
                     <h4>@ResourceKey("RocketTools.importprogress")</h4>
                     <p>@ResourceKey("RocketTools.pleasewait")</p>
                     <div class="w3-margin">
-                        <i class="fas fa-spinner fa-spin fa-3x w3-text-blue"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="processimportupload" s-cmd="rockettools_importprebuildexe" s-post="#sectiondata" s-return="#toolsmodalcontainer" class="w3-hide"></div>
+        <div id="processimportupload" s-cmd="rockettools_importprebuildexe" s-timeout="900000" s-post="#sectiondata" s-return="#toolsmodalcontainer" class="w3-hide"></div>
     }
 
 </div>
