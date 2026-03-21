@@ -1,9 +1,13 @@
-﻿using DNNrocketAPI.Components;
+﻿using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Entities;
+using DNNrocketAPI.Components;
 using DNNrocketAPI.Interfaces;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
@@ -16,6 +20,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
@@ -1347,7 +1352,25 @@ namespace DNNrocketAPI.Components
             }
             return interfacekey;
         }
+        public static List<int> GetAllModulesInPortal(int portalId)
+        {
+            var rtn = new List<int>();
+            var modules = ModuleController.Instance.GetModules(portalId);
 
+            if (modules != null)
+            {
+                foreach (object obj in modules)
+                {
+                    var module = obj as ModuleInfo;
+                    if (module != null && !module.IsDeleted)
+                    {
+                        rtn.Add(module.ModuleID);
+                    }
+                }
+            }
+
+            return rtn;
+        }
         public static List<int> GetAllModulesOnPage(int tabId)
         {
             var rtn = new List<int>();
@@ -2353,61 +2376,31 @@ namespace DNNrocketAPI.Components
 
         #region "Export/Import"
 
-        public static string ExportWebsite(int portalId, SimplisityRecord extraExportSettings = null)
+        public static ExportImportJob ImportWebsite(int portalId, string importDataMapPath)
         {
             try
             {
                 var helper = new DnnSiteExportImportHelper();
-
-                var exportJob = helper.ExportWebsiteAndWait(
-                    portalId: portalId,
-                    userId: UserUtils.GetCurrentUserId(),
-                    exportName: "Rocket PreBuild Export",
-                    exportDescription: "Full website backup",
-                    extraExportSettings
-                );
-
-                return exportJob.Directory;
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-            }
-            return "";
-        }
-        public static bool ImportWebsite(int portalId, string importDataMapPath)
-        {
-            try
-            {
-                var helper = new DnnSiteExportImportHelper();
+                var userId = UserUtils.GetCurrentUserId();
 
                 var packageMapPath = PrepareImportPackage(importDataMapPath);
-                if (String.IsNullOrEmpty(packageMapPath)) return false;
+                if (String.IsNullOrEmpty(packageMapPath)) return null;
                 var packageId = Path.GetFileNameWithoutExtension(packageMapPath);
 
                 // Export portal with ID 0, performed by user with ID 1
                 var exportJob = helper.ImportWebsiteAndWait(
                     portalId: portalId,
-                    userId: UserUtils.GetCurrentUserId(),
+                    userId: userId,
                     packageId: packageId
                 );
 
-                // Get the DNN Export/Import directory path
-                var exportImportPath = System.IO.Path.Combine(
-                    DotNetNuke.Common.Globals.ApplicationMapPath,
-                    "App_Data",
-                    "ExportImport",
-                    packageId
-                );
-                Directory.Delete(exportImportPath,true);
-
-                return true;
+                return exportJob;
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
             }
-            return false;
+            return null;
         }
         /// <summary>
         /// Prepares an import package by extracting it to the DNN Export/Import directory.
@@ -2443,7 +2436,6 @@ namespace DNNrocketAPI.Components
 
             return packageId;
         }
-
         #endregion
 
 
