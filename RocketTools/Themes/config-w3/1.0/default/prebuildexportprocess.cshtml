@@ -1,0 +1,111 @@
+﻿@inherits RocketTools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
+
+<div id="sectiondata">
+
+    JobId: @Model.GetSettingInt("jobid")
+
+        <div id="simplisity-export-progress" class="w3-padding">
+            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                <div class="w3-center">
+                    <h4>@ResourceKey("RocketTools.exportprogress")</h4>
+                    <p>@ResourceKey("RocketTools.pleasewait")</p>
+                </div>
+            </div>
+        </div>
+</div>
+
+<style>
+    .simplisity_loader_inner2:before {
+        width: 50%;
+        height: 50%;
+        background: #d6d6d6;
+        border-radius: 100% 0 0 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+    }
+    .simplisity_loader_inner2:after {
+        background: white;
+        width: 75%;
+        height: 75%;
+        border-radius: 50%;
+        content: '';
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+    @@keyframes load3 {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div style="position: fixed; top: 0; left: 0; height: 100%; width: 100%; background: #fff; opacity: 80%; z-index: 9999; display: flex; justify-content: center; align-items: center;">
+    <div class="simplisity_loader_inner2" style="font-size: 10px; margin: 50px auto; text-indent: -9999em; width: 11em; height: 11em; border-radius: 50%; background: linear-gradient(to right, #d6d6d6 10%, rgba(214, 214, 214, 0) 42%); position: relative; animation: load3 1.4s infinite linear; transform: translateZ(0);"></div>
+</div>
+
+<div id="exportcompleted"></div>
+
+<script>
+$(document).ready(function () {
+
+    var maxAttempts = 60;
+    var attempts = 0;
+    var isChecking = false;
+
+    var checkInterval = setInterval(function () {
+        var status = $('#exportcompleted').text().trim();
+        console.log('Export status:', status, 'Attempt:', attempts, 'isChecking:', isChecking);
+        
+        if (status != '') {
+            clearInterval(checkInterval);
+            if (status === 'true') {
+                onExportComplete();
+            }
+            return;
+        }
+        
+        if (attempts >= maxAttempts) {
+            clearInterval(checkInterval);
+            alert('Export timeout - please check the logs');
+            return;
+        }
+        
+        if (!isChecking) {
+            attempts++;
+            checkExportStatus();
+        }
+    }, 5000);
+  
+    // Initial check
+    checkExportStatus();
+});
+
+function ischeckingfalse() {
+    isChecking = false;
+}
+function checkExportStatus() {
+    isChecking = true;
+    $('#exportcompleted').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rockettools_checkexportstatus', '{"jobid":"@Model.GetSettingInt("jobid")"}','ischeckingfalse');
+}
+
+function onExportComplete() {
+    $('#toolsmodalcontainer').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rockettools_exportprebuildcomplete', '{"jobid":"@Model.GetSettingInt("jobid")"}','');
+}
+
+</script>

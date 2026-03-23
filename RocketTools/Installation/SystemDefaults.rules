@@ -40,7 +40,25 @@
 	  <command>
 		  <cmd>rockettools_importprebuildexe</cmd>
 		  <action>true</action>
-	  </command>	  
+	  </command>
+	  <command>
+		  <cmd>rockettools_downloadprebuild</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_savewebconfigsettings</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_checkexportstatus</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rockettools_exportprebuildcomplete</cmd>
+		  <action>true</action>
+	  </command>
+	  
+
 
   </commands>
   

@@ -371,7 +371,34 @@ The selected “Copy Language” will replace the “Destination Language”.  A
     <value>Please note: This operation may take several minutes to complete depending on the size of the import file.</value>
   </data>
   <data name="importwebconfigwarning.Text" xml:space="preserve">
-    <value>IMPORTANT: If the import times out or the file is too large, you may need to increase the executionTimeout and maxRequestLength values in your web.config file for DNN.</value>
+    <value>WARNING: Ensure your web.config allows large file uploads. Add or update these settings: 
+  &amp;lt;system.web&amp;gt;&amp;lt;httpRuntime maxRequestLength="102400" executionTimeout="3600" /&amp;gt;&amp;lt;/system.web&amp;gt; 
+  &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
+  The application will restart after web.config changes.</value>
+  </data>
+  <data name="webconfigsettings.Text" xml:space="preserve">
+    <value>Web.Config Upload Settings</value>
+  </data>
+  <data name="webconfigrequirement.Text" xml:space="preserve">
+    <value>Large file uploads require web.config settings to be configured. Enter the maximum upload size and execution timeout, then save to update your web.config file.</value>
+  </data>
+  <data name="maxuploadsizemb.Text" xml:space="preserve">
+    <value>Maximum Upload Size (MB)</value>
+  </data>
+  <data name="maxuploadsizehelp.Text" xml:space="preserve">
+    <value>Maximum file size allowed for uploads.</value>
+  </data>
+  <data name="executiontimeoutminutes.Text" xml:space="preserve">
+    <value>Execution Timeout (Minutes)</value>
+  </data>
+  <data name="executiontimeouthelp.Text" xml:space="preserve">
+    <value>Maximum time a request can run.</value>
+  </data>
+  <data name="savewebconfigsettings.Text" xml:space="preserve">
+    <value>Save Web.Config Settings</value>
+  </data>
+  <data name="webconfigrestart.Text" xml:space="preserve">
+    <value>⚠ The application will restart after saving web.config changes.</value>
   </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Select Import File</value>
@@ -381,5 +408,23 @@ The selected “Copy Language” will replace the “Destination Language”.  A
   </data>
   <data name="importprogress.Text" xml:space="preserve">
     <value>Importing Portal Data...</value>
+  </data>
+  <data name="downloadexitingprebuild.Text" xml:space="preserve">
+    <value>Download Existing Prebuild Export</value>
+  </data>
+  <data name="workflownotsupported.Text" xml:space="preserve">
+    <value>WORKFLOW not supported</value>
+  </data>
+  <data name="workflownotsupporteddescription.Text" xml:space="preserve">
+    <value>Compatibility limitations between the DNN Workflow feature and website export functionality mean that Workflow is not supported during import.  Modules that rely on Workflow - such as the HTML/Text module - may be imported with errors or may not function as expected after import.</value>
+  </data>
+  <data name="uploadfailedtoolarge.Text" xml:space="preserve">
+    <value>Upload failed: File is too large!\n\nThe file size exceeds the maximum allowed by the server.\nPlease increase the "Maximum Upload Size" setting above and click Save, then try uploading again.</value>
+  </data>
+  <data name="uploadfailedstatus.Text" xml:space="preserve">
+    <value>Upload failed with status: {0}\n\nPlease check your network connection and try again.</value>
+  </data>
+  <data name="uploadfailed.Text" xml:space="preserve">
+    <value>Upload failed</value>
   </data>
 </root>

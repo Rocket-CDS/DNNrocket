@@ -1,59 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Simplisity;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
-using RazorEngine;
-using System.Security.Cryptography;
-using DotNetNuke.Entities.Users;
+﻿using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Entities;
+using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-using System.Xml;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Entities.Modules;
-using System.Net;
-using System.IO;
-using DotNetNuke.Common.Lists;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using System.Threading;
-using System.Globalization;
-using DNNrocketAPI.Components;
-using DotNetNuke.Common;
-using System.IO.Compression;
-using Simplisity.TemplateEngine;
-using DotNetNuke.Services.Exceptions;
-using System.Collections;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules.Definitions;
-using System.Drawing;
-using DotNetNuke.Services.Scheduling;
-using System.Xml.Serialization;
-using System.Collections.Specialized;
-using DotNetNuke.UI.Skins;
-using Encoding = System.Text.Encoding;
-using System.Web.Hosting;
-using DotNetNuke.Services.ClientCapability;
-using DNNrocketAPI.Interfaces;
-using DotNetNuke.Web.DDRMenu;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
-using static DotNetNuke.Security.PortalSecurity;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Services.Search.Entities;
-using System.Web.Http;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.ClientCapability;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Log;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Scheduling;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.Web.DDRMenu;
+using RazorEngine;
+using RazorEngine.Configuration;
+using RazorEngine.Templating;
+using Simplisity;
+using Simplisity.TemplateEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Hosting;
+using System.Web.Http;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using static DotNetNuke.Security.PortalSecurity;
+using Encoding = System.Text.Encoding;
 
 namespace DNNrocketAPI.Components
 {
@@ -791,14 +797,22 @@ namespace DNNrocketAPI.Components
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, portalid, ignoreCache);
         }
+        [Obsolete("Use GetTabInfo(int portalid, int tabid, bool ignoreCache = false) instead")]
         public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
         {
             if (tabid <= 0) return null;
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
+        [Obsolete("Use GetTabInfoRecord(int portalId,int tabid, bool ignoreCache = false) instead")]
         public static SimplisityRecord GetTabInfoRecord(int tabid, bool ignoreCache = false)
         {
             var tI = GetTabInfo(tabid, ignoreCache);
+            if (tI == null) return new SimplisityRecord();
+            return ConvertTabInfoToRecord(tI);
+        }
+        public static SimplisityRecord GetTabInfoRecord(int portalId,int tabid, bool ignoreCache = false)
+        {
+            var tI = GetTabInfo(portalId, tabid, ignoreCache);
             if (tI == null) return new SimplisityRecord();
             return ConvertTabInfoToRecord(tI);
         }
@@ -1338,7 +1352,25 @@ namespace DNNrocketAPI.Components
             }
             return interfacekey;
         }
+        public static List<int> GetAllModulesInPortal(int portalId)
+        {
+            var rtn = new List<int>();
+            var modules = ModuleController.Instance.GetModules(portalId);
 
+            if (modules != null)
+            {
+                foreach (object obj in modules)
+                {
+                    var module = obj as ModuleInfo;
+                    if (module != null && !module.IsDeleted)
+                    {
+                        rtn.Add(module.ModuleID);
+                    }
+                }
+            }
+
+            return rtn;
+        }
         public static List<int> GetAllModulesOnPage(int tabId)
         {
             var rtn = new List<int>();
@@ -1369,7 +1401,6 @@ namespace DNNrocketAPI.Components
             }
             return systemInfo;
         }
-
         public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, RocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
@@ -2345,62 +2376,31 @@ namespace DNNrocketAPI.Components
 
         #region "Export/Import"
 
-        public static string ExportWebsite(int portalId, SimplisityRecord extraExportSettings = null)
+        public static ExportImportJob ImportWebsite(int portalId, string importDataMapPath)
         {
             try
             {
                 var helper = new DnnSiteExportImportHelper();
-
-                // Export portal with ID 0, performed by user with ID 1
-                var exportJob = helper.ExportWebsiteAndWait(
-                    portalId: portalId,
-                    userId: 1,
-                    exportName: "Rocket PreBuild Export",
-                    exportDescription: "Full website backup",
-                    extraExportSettings
-                );
-
-                return exportJob.Directory;
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-            }
-            return "";
-        }
-        public static bool ImportWebsite(int portalId, string importDataMapPath)
-        {
-            try
-            {
-                var helper = new DnnSiteExportImportHelper();
+                var userId = UserUtils.GetCurrentUserId();
 
                 var packageMapPath = PrepareImportPackage(importDataMapPath);
-                if (String.IsNullOrEmpty(packageMapPath)) return false;
+                if (String.IsNullOrEmpty(packageMapPath)) return null;
                 var packageId = Path.GetFileNameWithoutExtension(packageMapPath);
 
                 // Export portal with ID 0, performed by user with ID 1
                 var exportJob = helper.ImportWebsiteAndWait(
                     portalId: portalId,
-                    userId: 1,
+                    userId: userId,
                     packageId: packageId
                 );
 
-                // Get the DNN Export/Import directory path
-                var exportImportPath = System.IO.Path.Combine(
-                    DotNetNuke.Common.Globals.ApplicationMapPath,
-                    "App_Data",
-                    "ExportImport",
-                    packageId
-                );
-                Directory.Delete(exportImportPath,true);
-
-                return true;
+                return exportJob;
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
             }
-            return false;
+            return null;
         }
         /// <summary>
         /// Prepares an import package by extracting it to the DNN Export/Import directory.
@@ -2436,7 +2436,6 @@ namespace DNNrocketAPI.Components
 
             return packageId;
         }
-
         #endregion
 
 

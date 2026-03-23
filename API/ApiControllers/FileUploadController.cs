@@ -44,7 +44,7 @@ namespace DNNrocketAPI.ApiControllers
                         return Ok();
                     }
 
-                    return Ok(HttpStatusCode.Continue);
+                    return StatusCode(HttpStatusCode.Accepted);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace DNNrocketAPI.ApiControllers
                         if (f.Value.File.Length > 0)
                         {
                             var fileName = f.Value.Filename;
-                            FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
+                            FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + Path.GetFileNameWithoutExtension(fileName), f.Value.File);
                         }
                     }
                     return Ok();
@@ -107,10 +107,12 @@ namespace DNNrocketAPI.ApiControllers
 
         private async Task<UploadProcessingResult> ProcessChunk(HttpRequestMessage request)
         {
-            //use the unique identifier sent from client to identify the file
             var userid = UserUtils.GetCurrentUserId();
             FileChunkMetaData chunkMetaData = request.GetChunkMetaData();
-            string filePath = Path.Combine(_uploadPath, string.Format("{0}", userid + "_" + chunkMetaData.ChunkIdentifier));
+
+            // Use original filename (without extension) to match non-chunk naming convention
+            var fileName = Path.GetFileNameWithoutExtension(OriginalFileName);
+            string filePath = Path.Combine(_uploadPath, userid + "_" + fileName);
 
             //append chunks to construct original file
             using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate | FileMode.Append))

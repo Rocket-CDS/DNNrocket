@@ -3,6 +3,10 @@
     "outputFileName": "js/simplisity.min.js",
     "inputFiles": [
       "js/simplisity.js"
-    ]
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
   }
 ]

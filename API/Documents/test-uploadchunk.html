@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chunk File Upload Test</title>
+    
+    <!-- W3.CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .w3-button {
+            border-radius: 3px;
+        }
+        #test-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="w3-container">
+        <h2>Chunk File Upload Test</h2>
+        <p>Test <strong>chunked</strong> file upload to: <code>/Desktopmodules/dnnrocket/api/fileupload/upload</code></p>
+        <p class="w3-pale-yellow w3-padding">This test splits files into chunks and uploads them with Content-Range headers to test the chunk upload path.</p>
+
+        <div class="w3-margin-bottom">
+            <label><strong>Chunk Size (MB):</strong> </label>
+            <input type="number" id="chunkSizeMB" value="5" min="1" max="50" class="w3-input" style="width: 120px; display: inline-block;">
+        </div>
+
+        <div id="sectiondata">
+            <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;">
+
+            <div class="w3-row w3-margin-bottom w3-center">
+                <span class="w3-button w3-teal fileuploadaction" onclick="$('#importfileupload').trigger('click');">
+                    Select File to Upload
+                </span>
+            </div>
+
+            <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:rgba(128,128,128,0.8);display:none;">
+                <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
+                    <div id="progessaction">Uploading...</div>
+                    <div class="w3-row w3-light-grey" style="margin-top: 10px;">
+                        <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;line-height:24px;text-align:center;">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="test-results" style="display:none;">
+            <h3>Results:</h3>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Maximum file size in bytes (500MB)
+            var maxFileSize = 500 * 1024 * 1024;
+
+            $('#importfileupload').on('change', function(e) {
+                var files = e.target.files;
+                if (files.length === 0) return;
+
+                var file = files[0];
+
+                // Check file size
+                if (file.size > maxFileSize) {
+                    var maxSizeMB = Math.round(maxFileSize / (1024 * 1024));
+                    var fileSizeMB = Math.round(file.size / (1024 * 1024));
+                    alert('File is too large (' + fileSizeMB + 'MB). Maximum allowed size is ' + maxSizeMB + 'MB.');
+                    $(this).val('');
+                    return;
+                }
+
+                console.log('=== CHUNK UPLOAD STARTED ===');
+                console.log('File selected:', file.name);
+                console.log('File size: ' + (file.size / (1024 * 1024)).toFixed(2) + 'MB');
+
+                // Get chunk size from input (convert MB to bytes)
+                var chunkSizeMB = parseInt($('#chunkSizeMB').val()) || 5;
+                var chunkSize = chunkSizeMB * 1024 * 1024;
+                console.log('Chunk size: ' + chunkSizeMB + 'MB (' + chunkSize + ' bytes)');
+
+                // Generate unique identifier for this upload
+                var fileIdentifier = 'chunk_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+                console.log('File identifier:', fileIdentifier);
+
+                // Calculate number of chunks
+                var totalChunks = Math.ceil(file.size / chunkSize);
+                console.log('Total chunks to upload:', totalChunks);
+
+                // Show progress bar
+                $('#simplisity-file-progress-bar').show();
+                $('.simplisity-file-progress-bar').css('width', '0%').text('0%');
+                $('#test-results').hide();
+                $('#progessaction').text('Uploading chunk 0 of ' + totalChunks + '...');
+
+                // Start uploading chunks
+                uploadChunk(0, file, fileIdentifier, chunkSize, totalChunks);
+            });
+
+            function uploadChunk(chunkIndex, file, fileIdentifier, chunkSize, totalChunks) {
+                var start = chunkIndex * chunkSize;
+                var end = Math.min(start + chunkSize, file.size);
+                var chunk = file.slice(start, end);
+                var isLastChunk = (chunkIndex + 1) >= totalChunks;
+
+                console.log('--- Chunk ' + (chunkIndex + 1) + ' of ' + totalChunks + ' ---');
+                console.log('Chunk range: bytes ' + start + '-' + (end - 1) + '/' + file.size);
+                console.log('Chunk size: ' + chunk.size + ' bytes');
+                console.log('Is last chunk:', isLastChunk);
+
+                var formData = new FormData();
+                formData.append('files[]', chunk, file.name);
+
+                var xhr = new XMLHttpRequest();
+
+                // Track upload progress for this chunk
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        // Calculate overall progress
+                        var chunkProgress = (e.loaded / e.total);
+                        var overallProgress = ((chunkIndex + chunkProgress) / totalChunks) * 100;
+                        var percentComplete = Math.round(overallProgress);
+
+                        $('.simplisity-file-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+                        $('#progessaction').text('Uploading chunk ' + (chunkIndex + 1) + ' of ' + totalChunks + '...');
+                    }
+                }, false);
+
+                // Handle completion
+                xhr.addEventListener('load', function() {
+                    console.log('Chunk ' + (chunkIndex + 1) + ' response status:', xhr.status);
+                    console.log('Chunk ' + (chunkIndex + 1) + ' response:', xhr.responseText);
+
+                    if (xhr.status === 200) {
+                        // HTTP 200 - File complete (should be last chunk)
+                        console.log('=== UPLOAD COMPLETE (HTTP 200) ===');
+                        $('#simplisity-file-progress-bar').hide();
+
+                        var resultHtml = '<p class="w3-text-green"><strong>✓ Success! File uploaded in chunks</strong></p>';
+                        resultHtml += '<p><strong>Total Chunks:</strong> ' + totalChunks + '</p>';
+                        resultHtml += '<p><strong>Chunk Size:</strong> ' + (chunkSize / (1024 * 1024)).toFixed(2) + 'MB</p>';
+                        resultHtml += '<p><strong>File Identifier:</strong> <code>' + fileIdentifier + '</code></p>';
+                        resultHtml += '<p><strong>Total File Size:</strong> ' + (file.size / (1024 * 1024)).toFixed(2) + 'MB</p>';
+                        resultHtml += '<p><strong>Final Response:</strong></p>';
+                        resultHtml += '<pre>' + xhr.responseText + '</pre>';
+
+                        $('#result-content').html(resultHtml);
+                        $('#test-results').show();
+                        alert('All ' + totalChunks + ' chunks uploaded successfully!');
+                        $('#importfileupload').val('');
+
+                    } else if (xhr.status === 202 || xhr.status === 100) {
+                        // HTTP 202/100 - Continue with next chunk
+                        console.log('Chunk accepted, continuing to next chunk...');
+                        uploadChunk(chunkIndex + 1, file, fileIdentifier, chunkSize, totalChunks);
+
+                    } else {
+                        // Upload failed
+                        console.error('Upload failed at chunk ' + (chunkIndex + 1));
+                        $('#simplisity-file-progress-bar').hide();
+
+                        var resultHtml = '<p class="w3-text-red"><strong>✗ Upload Failed at Chunk ' + (chunkIndex + 1) + ' of ' + totalChunks + '</strong></p>';
+                        resultHtml += '<p><strong>Status Code:</strong> ' + xhr.status + '</p>';
+                        resultHtml += '<p><strong>Status Text:</strong> ' + xhr.statusText + '</p>';
+                        resultHtml += '<p><strong>Response:</strong></p>';
+                        resultHtml += '<pre>' + xhr.responseText + '</pre>';
+
+                        $('#result-content').html(resultHtml);
+                        $('#test-results').show();
+                        alert('Upload failed at chunk ' + (chunkIndex + 1) + ' with status: ' + xhr.status);
+                        $('#importfileupload').val('');
+                    }
+                }, false);
+
+                // Handle errors
+                xhr.addEventListener('error', function() {
+                    console.error('Network error at chunk ' + (chunkIndex + 1));
+                    $('#simplisity-file-progress-bar').hide();
+
+                    $('#result-content').html('<p class="w3-text-red">Upload failed at chunk ' + (chunkIndex + 1) + ' due to network error</p>');
+                    $('#test-results').show();
+
+                    alert('Upload failed at chunk ' + (chunkIndex + 1) + ' due to network error');
+                    $('#importfileupload').val('');
+                }, false);
+
+                // Handle abort
+                xhr.addEventListener('abort', function() {
+                    console.log('Upload aborted at chunk ' + (chunkIndex + 1));
+                    $('#simplisity-file-progress-bar').hide();
+
+                    $('#result-content').html('<p class="w3-text-orange">Upload was aborted at chunk ' + (chunkIndex + 1) + '</p>');
+                    $('#test-results').show();
+
+                    $('#importfileupload').val('');
+                }, false);
+
+                // Prepare the request
+                xhr.open('POST', '/Desktopmodules/dnnrocket/api/fileupload/upload', true);
+
+                // CRITICAL: Set chunk-specific headers AFTER xhr.open()
+                // Content-Range format: bytes start-end/total
+                var contentRange = 'bytes ' + start + '-' + (end - 1) + '/' + file.size;
+                xhr.setRequestHeader('Content-Range', contentRange);
+                xhr.setRequestHeader('X-File-Identifier', fileIdentifier);
+
+                console.log('Sending chunk with headers:');
+                console.log('  Content-Range:', contentRange);
+                console.log('  X-File-Identifier:', fileIdentifier);
+
+                // Send the chunk
+                xhr.send(formData);
+            }
+        });
+    </script>
+
+</body>
+</html>

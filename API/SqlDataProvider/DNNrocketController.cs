@@ -486,12 +486,13 @@ namespace DNNrocketAPI
         /// <returns></returns>
         public SimplisityInfo SaveData(SimplisityInfo sInfo, string tableName = "DNNrocket")
         {
+            if (sInfo == null) sInfo = new SimplisityInfo();
             var requiredLang =  sInfo.Lang;
             if (String.IsNullOrEmpty(requiredLang)) requiredLang = DNNrocketUtils.GetEditCulture();
 
             var info = GetInfo(sInfo.ItemID, requiredLang, tableName);
             if (info == null) info = sInfo;
-            if (info != null)
+            if (info != null && sInfo.XMLDoc != null)
             {
                 info.PortalId = sInfo.PortalId;
                 info.ModuleId = sInfo.ModuleId;

@@ -861,6 +861,7 @@
     <Content Include="CKEditor\scriptClassic.html" />
     <Content Include="CKEditor\scriptClassicCode.html" />
     <Content Include="CKEditor\scriptMin.html" />
+    <Content Include="Documents\test-uploadchunk.html" />
     <Content Include="Documents\test-upload.html" />
     <Content Include="Editor\Jodit\jodit.min.css" />
     <Content Include="Editor\Jodit\jodit.min.js" />

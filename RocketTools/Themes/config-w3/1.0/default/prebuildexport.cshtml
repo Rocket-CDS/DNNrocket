@@ -9,24 +9,7 @@
 
 <div id="sectiondata">
 
-    @if (Model.GetSettingBool("exportprebuild"))
-    {
-        <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round">
-            <h3 class="w3-text-green">@ResourceKey("RocketTools.exportcomplete")</h3>
-            <p>@ResourceKey("RocketTools.exportsuccessmessage")</p>
-        </div>
-        
-        if (Model.GetSetting("exportfilename") != "")
-        {
-            <div class="w3-row w3-margin-bottom w3-center">
-                <a href="@Model.GetSetting("exportfilename")" class="w3-button w3-green" download>
-                    @ButtonText(ButtonTypes.download) @ResourceKey("RocketTools.downloadprebuild")
-                </a>
-            </div>
-        }
-    }
-    else
-    {
+
         <div class="w3-panel w3-pale-blue w3-border w3-border-blue w3-round">
             <h3>@ResourceKey("RocketTools.exportprebuild")</h3>
             <p>@ResourceKey("RocketTools.exportdescription")</p>
@@ -39,26 +22,19 @@
             </div>
         </div>
 
-        <div id="simplisity-export-progress" class="w3-modal w3-padding w3-hide" style="z-index:9999;background-color:grey;">
-            <div class="w3-modal-content w3-card-4 w3-display-middle w3-padding" style="width: 60%;">
-                <div class="w3-center">
-                    <h4>@ResourceKey("RocketTools.exportprogress")</h4>
-                    <p>@ResourceKey("RocketTools.pleasewait")</p>
-                    <div class="w3-margin">
-                        <i class="fas fa-spinner fa-spin fa-3x w3-text-blue"></i>
-                    </div>
-                </div>
+        @if (Model.GetSetting("exportfilename") != "")
+        {
+            <div class="w3-row w3-margin-bottom w3-right">
+                <a class="w3-button w3-blue simplisity_filedownload" s-cmd="rockettools_downloadprebuild" @SFields("dockey",Model.GetSetting("exportfilename"))>
+                    @ButtonText(ButtonTypes.download) @ResourceKey("RocketTools.downloadexitingprebuild")
+                </a>
             </div>
-        </div>
-    }
+        }
+
 
 </div>
 
 <script>
     $(document).ready(function () {
-        // Show progress modal when export button is clicked
-        $('.simplisity_click[s-cmd="rockettools_exportprebuildexe"]').on('click', function() {
-            $('#simplisity-export-progress').removeClass('w3-hide').show();
-        });
     });
 </script>

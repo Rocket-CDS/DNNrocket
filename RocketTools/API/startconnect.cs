@@ -153,15 +153,22 @@ namespace RocketTools.API
                 case "rockettools_exportprebuildexe":
                     strOut = ExportPreBuildExe();
                     break;
+                case "rockettools_checkexportstatus":
+                    strOut = CheckExportStatus();
+                    break;
+                case "rockettools_exportprebuildcomplete":
+                    strOut = ExportPreBuildComplete();
+                    break;
                 case "rockettools_importprebuild":
                     strOut = ImportPreBuild();
                     break;
                 case "rockettools_importprebuildexe":
                     strOut = ImportPreBuildExe();
                     break;
-
-
-
+                case "rockettools_savewebconfigsettings":
+                    strOut = SaveWebConfig();
+                    break;
+                    
 
                 default:
                         strOut = "INVALID CMD";
@@ -169,7 +176,12 @@ namespace RocketTools.API
 
                 }
 
-            rtnDic.Add("outputhtml", strOut);
+                if (paramCmd == "rockettools_downloadprebuild" && UserUtils.IsAdministrator())
+                {
+                    return DownloadPrebuild();
+                }
+
+                rtnDic.Add("outputhtml", strOut);
             return rtnDic;
 
         }

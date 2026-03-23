@@ -9,7 +9,7 @@ var debugmode = false;
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
             console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields, spost);
         }
-        simplisityPost(cmdurl, scmd, spost, '#' + this.attr('id'), '', false, 0, sfields, true, safter, '', '', '', '');
+        simplisityPost(cmdurl, scmd, spost, '#' + this.attr('id'), '', false, 0, sfields, true, safter, '', '', '', '', '');
     };
 
 }(jQuery));
@@ -159,7 +159,7 @@ function simplisity_nbxgetCompleted(e) {
 
 }
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields, stimeout) {
 
     if (debugmode === true) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
@@ -167,6 +167,16 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     }
 
     if (typeof scmd !== 'undefined' && scmd !== '') {
+
+        // Set default timeout to 2 minutes if not specified
+        if (typeof stimeout === 'undefined' || stimeout === '' || stimeout === null) {
+            stimeout = 120000; // 2 minutes default
+        } else {
+            stimeout = parseInt(stimeout);
+            if (isNaN(stimeout)) {
+                stimeout = 120000; // fallback to default if invalid
+            }
+        }
 
         if (paramfields == '') {
             // NOTE: simplisity_sessionpost(); populates the "paramfields".  The parameter "paramfields" is left for legacy.
@@ -207,7 +217,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 cache: false,
                 async: true,
                 dataType: 'json',
-                timeout: 120000,
+                timeout: stimeout,
                 data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
                 success: function (json) {
                     jQuery(sdropdownlist).html('');
@@ -242,7 +252,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                     cache: false,
                     async: true,
                     dataType: 'json',
-                    timeout: 120000,
+                    timeout: stimeout,
                     data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
                     success: function (json) {
                         window.sessionStorage.setItem(sreturn, JSON.stringify(json)); // use session storage, idependant of browser.
@@ -265,7 +275,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                     url: cmdupdate,
                     async: true,
                     cache: false,
-                    timeout: 120000,
+                    timeout: stimeout,
                     data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
                 });
 
@@ -407,6 +417,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                 var shideloader = jQuery(element).attr("s-hideloader");
                 var sdropdownlist = jQuery(element).attr("s-dropdownlist");
                 var sreturntype = jQuery(element).attr("s-returntype");
+                var stimeout = jQuery(element).attr("s-timeout");
 
                 if (typeof scmd === 'undefined') {
                     scmd = '';
@@ -437,7 +448,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                 simplisity_setSessionField("simplisity_return", sreturn);
                 await simplisity_callSessionFields(element);
 
-                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, '');
+                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, '', stimeout);
             }
             else {
                 jQuery(element).attr('s-stop', '');
@@ -935,7 +946,7 @@ function simplisity_getSessionField(fieldkey) {
 }
 
 function simplisity_requestjson(scmdurl, scmd, spost, id, sfields, safter) {
-        simplisityPost(scmdurl, scmd, spost, id, '', false, 0, sfields, true, safter, '', false, 'json');
+        simplisityPost(scmdurl, scmd, spost, id, '', false, 0, sfields, true, safter, '', false, 'json', '');
 }
 
 function simplisity_parsejson(json) {

@@ -2,11 +2,38 @@
 @using System
 @using System.Linq
 @using System.Xml
+@using System.Web.Configuration
 @using Simplisity;
 @using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketTools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+@{
+    // Read current web.config values
+    int maxUploadSizeMB = 100; // Default
+    int executionTimeoutMinutes = 60; // Default
+
+    try
+    {
+        var config = WebConfigurationManager.OpenWebConfiguration("~");
+        var httpRuntimeSection = (HttpRuntimeSection)config.GetSection("system.web/httpRuntime");
+
+        if (httpRuntimeSection != null)
+        {
+            // maxRequestLength is in KB, convert to MB
+            maxUploadSizeMB = httpRuntimeSection.MaxRequestLength / 1024;
+
+            // executionTimeout is in seconds, convert to minutes
+            executionTimeoutMinutes = (int)httpRuntimeSection.ExecutionTimeout.TotalSeconds / 60;
+        }
+    }
+    catch (Exception ex)
+    {
+        // Log error but use defaults
+        LogUtils.LogException(ex);
+    }
+}
 
 <div id="sectiondata">
 
@@ -23,8 +50,48 @@
             <h3>@ResourceKey("RocketTools.importprebuild")</h3>
             <p>@ResourceKey("RocketTools.importdescription")</p>
             <p class="w3-text-orange"><strong>@ResourceKey("RocketTools.importtimewarning")</strong></p>
-            <p class="w3-text-red"><strong>@ResourceKey("RocketTools.importwebconfigwarning")</strong></p>
         </div>
+        <div class="w3-panel w3-pale-yellow w3-border w3-border-blue w3-round">
+            <h4 class="w3-text-yellow">@ResourceKey("RocketTools.workflownotsupported")</h4>
+            <p>@ResourceKey("RocketTools.workflownotsupporteddescription")</p>
+        </div>
+
+        if (UserUtils.IsSuperUser())
+        {
+        <div class="w3-panel w3-pale-red w3-border w3-border-red w3-round">
+            <h4 class="w3-text-red">@ResourceKey("RocketTools.webconfigsettings")</h4>
+            <p>@ResourceKey("RocketTools.webconfigrequirement")</p>
+
+            <div id="webconfigsettings" class="w3-margin-top w3-margin-bottom">
+                <div class="w3-row w3-margin-bottom">
+                    <div class="w3-col" style="width:250px">
+                        <label class="w3-text-grey" style="text-align:right;display:block;padding-top:8px;"><b>@ResourceKey("RocketTools.maxuploadsizemb")</b></label>
+                    </div>
+                    <div class="w3-rest">
+                        <input class="w3-input w3-border" type="number" id="maxuploadsizemb" value="@maxUploadSizeMB"  s-xpath="genxml/textbox/maxuploadsizemb" s-update="save" min="1" max="2048" style="width:80px;display:inline-block;">
+                        <small class="w3-text-grey" style="margin-left:10px;">@ResourceKey("RocketTools.maxuploadsizehelp")</small>
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-bottom">
+                    <div class="w3-col" style="width:250px">
+                        <label class="w3-text-grey" style="text-align:right;display:block;padding-top:8px;"><b>@ResourceKey("RocketTools.executiontimeoutminutes")</b></label>
+                    </div>
+                    <div class="w3-rest">
+                        <input class="w3-input w3-border" type="number" id="executiontimeoutminutes" s-xpath="genxml/textbox/executiontimeoutminutes" s-update="save" value="@executionTimeoutMinutes" min="1" max="1440" style="width:80px;display:inline-block;">
+                        <small class="w3-text-grey" style="margin-left:10px;">@ResourceKey("RocketTools.executiontimeouthelp")</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-margin-top w3-margin-bottom">
+                <button class="w3-button w3-red simplisity_click" id="saveWebConfigBtn" s-cmd="rockettools_savewebconfigsettings" s-post="#webconfigsettings" s-reload="true">
+                    @ButtonText(ButtonTypes.save) @ResourceKey("RocketTools.savewebconfigsettings")
+                </button>
+                <small class="w3-text-red w3-margin-left"><strong>@ResourceKey("RocketTools.webconfigrestart")</strong></small>
+            </div>
+
+        </div>
+        }
 
         <input id="importfileupload" class="w3-hide" type="file" name="files[]" style="display:none;" accept=".zip">
 
@@ -51,19 +118,19 @@
                     <h4>@ResourceKey("RocketTools.importprogress")</h4>
                     <p>@ResourceKey("RocketTools.pleasewait")</p>
                     <div class="w3-margin">
-                        <i class="fas fa-spinner fa-spin fa-3x w3-text-blue"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="processimportupload" s-cmd="rockettools_importprebuildexe" s-post="#sectiondata" s-return="#toolsmodalcontainer" class="w3-hide"></div>
+        <div id="processimportupload" s-cmd="rockettools_importprebuildexe" s-timeout="900000" s-post="#sectiondata" s-return="#toolsmodalcontainer" class="w3-hide"></div>
     }
 
 </div>
 
 <script>
     $(document).ready(function() {
+
         $('#importfileupload').on('change', function(e) {
             var files = e.target.files;
             if (files.length === 0) return;
@@ -91,13 +158,15 @@
             xhr.addEventListener('load', function() {
                 console.log('Upload complete, status:', xhr.status);
                 $('#simplisity-file-progress-bar').hide();
-                
+
                 if (xhr.status === 200) {
                     // Upload successful, trigger the server command
                     console.log('Upload successful, triggering command...');
                     simplisity_callserver($('#processimportupload'));
+                } else if (xhr.status === 413) {
+                    alert('@ResourceKey("RocketTools.uploadfailedtoolarge")');
                 } else {
-                    alert('Upload failed with status: ' + xhr.status);
+                    alert('@ResourceKey("RocketTools.uploadfailedstatus")'.replace('{0}', xhr.status));
                 }
             }, false);
             
@@ -105,7 +174,7 @@
             xhr.addEventListener('error', function() {
                 console.error('Upload error');
                 $('#simplisity-file-progress-bar').hide();
-                alert('Upload failed');
+                alert('@ResourceKey("RocketTools.uploadfailed")');
             }, false);
             
             // Handle abort

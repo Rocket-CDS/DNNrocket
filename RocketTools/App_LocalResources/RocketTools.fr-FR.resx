@@ -371,7 +371,34 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
     <value>Remarque : Cette opération peut prendre plusieurs minutes en fonction de la taille du fichier d'importation.</value>
   </data>
   <data name="importwebconfigwarning.Text" xml:space="preserve">
-    <value>IMPORTANT : Si l'importation expire ou si le fichier est trop volumineux, vous devrez peut-être augmenter les valeurs executionTimeout et maxRequestLength dans votre fichier web.config pour DNN.</value>
+    <value>ATTENTION : Assurez-vous que votre web.config autorise les téléchargements de fichiers volumineux. Ajoutez ou mettez à jour ces paramètres : 
+  &amp;lt;system.web&amp;gt;&amp;lt;httpRuntime maxRequestLength="102400" executionTimeout="3600" /&amp;gt;&amp;lt;/system.web&amp;gt; 
+  &amp;lt;system.webServer&amp;gt;&amp;lt;security&amp;gt;&amp;lt;requestFiltering&amp;gt;&amp;lt;requestLimits maxAllowedContentLength="104857600" /&amp;gt;&amp;lt;/requestFiltering&amp;gt;&amp;lt;/security&amp;gt;&amp;lt;/system.webServer&amp;gt; 
+  L'application redémarrera après les modifications du web.config.</value>
+  </data>
+  <data name="webconfigsettings.Text" xml:space="preserve">
+    <value>Paramètres de téléchargement Web.Config</value>
+  </data>
+  <data name="webconfigrequirement.Text" xml:space="preserve">
+    <value>Les téléchargements de fichiers volumineux nécessitent la configuration des paramètres web.config. Entrez la taille maximale de téléchargement et le délai d'exécution, puis enregistrez pour mettre à jour votre fichier web.config.</value>
+  </data>
+  <data name="maxuploadsizemb.Text" xml:space="preserve">
+    <value>Taille maximale de téléchargement (Mo)</value>
+  </data>
+  <data name="maxuploadsizehelp.Text" xml:space="preserve">
+    <value>Taille de fichier maximale autorisée pour les téléchargements.</value>
+  </data>
+  <data name="executiontimeoutminutes.Text" xml:space="preserve">
+    <value>Délai d'exécution (Minutes)</value>
+  </data>
+  <data name="executiontimeouthelp.Text" xml:space="preserve">
+    <value>Durée maximale d'exécution d'une requête.</value>
+  </data>
+  <data name="savewebconfigsettings.Text" xml:space="preserve">
+    <value>Enregistrer les paramètres Web.Config</value>
+  </data>
+  <data name="webconfigrestart.Text" xml:space="preserve">
+    <value>⚠ L'application redémarrera après l'enregistrement des modifications du web.config.</value>
   </data>
   <data name="selectimportfile.Text" xml:space="preserve">
     <value>Sélectionner le fichier d'importation</value>
@@ -381,5 +408,23 @@ La "Langue de copie" sélectionnée remplacera la "Langue de destination".  TOUT
   </data>
   <data name="importprogress.Text" xml:space="preserve">
     <value>Importation des données du portail...</value>
+  </data>
+  <data name="downloadexitingprebuild.Text" xml:space="preserve">
+    <value>Télécharger l'exportation préconstruite existante</value>
+  </data>
+  <data name="workflownotsupported.Text" xml:space="preserve">
+    <value>WORKFLOW non pris en charge</value>
+  </data>
+  <data name="workflownotsupporteddescription.Text" xml:space="preserve">
+    <value>Les limitations de compatibilité entre la fonctionnalité DNN Workflow et la fonctionnalité d'exportation de site Web signifient que Workflow n'est pas pris en charge lors de l'importation. Les modules qui dépendent de Workflow - tels que le module HTML/Text - peuvent être importés avec des erreurs ou peuvent ne pas fonctionner comme prévu après l'importation.</value>
+  </data>
+  <data name="uploadfailedtoolarge.Text" xml:space="preserve">
+    <value>Échec du téléchargement : Fichier trop volumineux !\n\nLa taille du fichier dépasse le maximum autorisé par le serveur.\nVeuillez augmenter le paramètre "Taille maximale de téléchargement" ci-dessus et cliquer sur Enregistrer, puis réessayer de télécharger.</value>
+  </data>
+  <data name="uploadfailedstatus.Text" xml:space="preserve">
+    <value>Échec du téléchargement avec le statut : {0}\n\nVeuillez vérifier votre connexion réseau et réessayer.</value>
+  </data>
+  <data name="uploadfailed.Text" xml:space="preserve">
+    <value>Échec du téléchargement</value>
   </data>
 </root>

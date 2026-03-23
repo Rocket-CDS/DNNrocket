@@ -1009,6 +1009,21 @@ namespace Simplisity
 
             return text;
         }
+        public static string EscapeJsonString(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+
+            return value
+                .Replace("\\", "\\\\")
+                .Replace("\"", "\\\"")
+                .Replace("\n", "\\n")
+                .Replace("\r", "\\r")
+                .Replace("\t", "\\t")
+                .Replace("\b", "\\b")
+                .Replace("\f", "\\f");
+        }
+
+
     }
 
 }

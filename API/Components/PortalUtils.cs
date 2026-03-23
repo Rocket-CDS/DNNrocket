@@ -470,7 +470,25 @@ namespace DNNrocketAPI.Components
             if (rtn == null) rtn = GetPortalSettings(0);
             return rtn;
         }
+        public static string GetDomainFromUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return string.Empty;
 
+            // Remove protocol if present
+            var cleanUrl = url.Replace("https://", "").Replace("http://", "");
+
+            // Remove querystring if present
+            var queryIndex = cleanUrl.IndexOf('?');
+            if (queryIndex > -1)
+                cleanUrl = cleanUrl.Substring(0, queryIndex);
+
+            // Remove path and get just domain
+            var pathIndex = cleanUrl.IndexOf('/');
+            if (pathIndex > -1)
+                cleanUrl = cleanUrl.Substring(0, pathIndex);
+
+            return cleanUrl;
+        }
         public static Dictionary<string, string> GetPortalAliasesWithCultureCode(int portalId)
         {
             var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
@@ -522,6 +540,11 @@ namespace DNNrocketAPI.Components
                 }
             }
             if (String.IsNullOrEmpty(portalalias)) portalalias = PortalSettings.Current.DefaultPortalAlias;
+            if (String.IsNullOrEmpty(portalalias))
+            {
+                var alias = GetPortalAliases(portalId);
+                if (alias.Count > 0) portalalias = alias.First();
+            }
             return portalalias;
         }
 

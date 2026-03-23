@@ -21,6 +21,9 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\API\_external\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.SiteExportImport">
+      <HintPath>..\API\_external\DotNetNuke.SiteExportImport.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
       <HintPath>..\API\_external\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
