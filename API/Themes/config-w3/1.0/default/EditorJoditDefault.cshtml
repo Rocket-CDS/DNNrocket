@@ -13,9 +13,9 @@
         color: #000000 !important;
     }
 
-    /* Remove top margin from bulleted lists in editor */
-    .jodit-wysiwyg ul {
-        margin-top: 0 !important;
+    /* Editor area padding */
+    .jodit-container:not(.jodit_inline) .jodit-wysiwyg {
+        padding: 20px;
     }
 
     /* Ensure italic elements display correctly in editor */
@@ -92,32 +92,63 @@
             showCharsCounter: true,
             showWordsCounter: true,
             showXPathInStatusbar: false,
-            // Full toolbar like the demo
             buttons: [
                 'source', '|',
-                'bold', 'strikethrough', 'underline', 'italic', '|',
-                'superscript', 'subscript', '|',
+                'undo', 'redo', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
                 'ul', 'ol', '|',
-                'outdent', 'indent', '|',
-                'font', 'fontsize', 'brush', 'paragraph', '|',
-                'table', 'link', '|',
-                'align', 'undo', 'redo', '|',
-                'selectall', 'cut', 'copy', 'paste', '|',
-                'copyformat', 'hr', '|',
-                'symbol', 'fullsize', 'preview', 'print', 'about'
+                'hr', '|',
+                'align', '|',
+                'link', '|',
+                'paragraph'
             ],
+            popup: {
+                a: Jodit.atom([
+                    {
+                        name: 'open_link',
+                        icon: 'eye',
+                        exec: function (editor, current, close) {
+                            const href = current.getAttribute('href');
+                            if (href) { window.open(href, '_blank'); }
+                            close();
+                        }
+                    },
+                    '|',
+                    {
+                        name: 'link',
+                        icon: 'pencil',
+                        exec: function (editor, current, close) {
+                            editor.selection.select(current);
+                            editor.execCommand('link');
+                            close();
+                        }
+                    },
+                    '|',
+                    'unlink'
+                ])
+            },
             controls: {
                 paragraph: {
-                    list: {
+                    list: Jodit.atom({
                         p: 'Normal',
                         h1: 'Heading 1',
                         h2: 'Heading 2',
                         h3: 'Heading 3',
                         h4: 'Heading 4',
-                        h5: 'Heading 5',
-                        h6: 'Heading 6',
-                        blockquote: 'Quote',
-                    }
+                        blockquote: 'Quote'
+                    })
+                },
+                ul: {
+                    list: Jodit.atom({
+                        default: 'Default',
+                        disc: 'Dot'
+                    })
+                },
+                ol: {
+                    list: Jodit.atom({
+                        default: 'Default',
+                        'lower-alpha': 'a, b, c'
+                    })
                 }
             },
             enter: 'P',
@@ -125,10 +156,10 @@
             useSplitMode: false,
             minHeight: 300,
             height: 500,
-            askBeforePasteHTML: true,
-            askBeforePasteFromWord: true,
-            defaultActionOnPaste: 'insert_clear_html',
-            processPasteHTML: true,
+            pasteHTMLActionList: [
+                { value: Jodit.constants.INSERT_CLEAR_HTML, text: 'Nettoyer' },
+                { value: Jodit.constants.INSERT_ONLY_TEXT, text: 'Coller le texte seulement' }
+            ],
             cleanHTML: {
                 fillEmptyParagraph: false,
                 removeEmptyElements: false,
@@ -136,6 +167,10 @@
                 replaceOldTags: false
             },
             beautifyHTML: true,
+            pasteFromWordActionList: [
+                { value: Jodit.constants.INSERT_AS_TEXT, text: 'Nettoyer' },
+                { value: Jodit.constants.INSERT_ONLY_TEXT, text: 'Coller le texte seulement' }
+            ],
             useSearch: true,
             enableDragAndDropFileToEditor: true,
             uploader: {
