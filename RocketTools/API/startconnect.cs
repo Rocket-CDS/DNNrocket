@@ -125,7 +125,7 @@ namespace RocketTools.API
                         RocketToolsUtils.ValidateMeta();
                         strOut = PLSettingsPopup();
                         break;
-                    case "rocketpl_validate":
+                    case "rocketpl_validate":                    
                         RocketToolsUtils.ValidateMeta();
                         RocketToolsUtils.ValidateUrls();
                         strOut = PLSettingsPopup();

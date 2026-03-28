@@ -9,20 +9,24 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.DDRMenu;
 using RazorEngine;
+using RocketTools;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
+using System.Xml.Linq;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace DNNrocketAPI.Components
@@ -680,6 +684,7 @@ namespace DNNrocketAPI.Components
                 var disablecanonical = false;
                 var articleDefaultTabId = 0;
                 var articleListTabId = 0;
+                var productJsonLd = "";
 
                 foreach (var paramDict in paramidList)
                 {
@@ -727,15 +732,102 @@ namespace DNNrocketAPI.Components
                                         string[] urlparams = { articleParamKey, articleid.ToString(), DNNrocketUtils.UrlFriendly(metatitle) };
                                         var ogurl = DNNrocketUtils.NavigateURL(articleDefaultTabId, dataRecordTemp.Lang, urlparams);
 
-                                        metaList.Add("og:type", "article");
-                                        metaList.Add("og:title", metatitle.Truncate(200).Replace("\"", ""));
-                                        metaList.Add("og:description", metadescription.Truncate(260).Replace("\"", ""));
-                                        metaList.Add("og:url", ogurl);
-                                        var imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
-                                        if (imgRelPath == "") imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
-                                        if (imgRelPath != "") metaList.Add("og:image", requestUri.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/'));
+                                        var metaType = paramDict.Value.metatype;
+                                        if (metaType != "none")
+                                        {
+                                            // Product SEO here
+                                            if (string.IsNullOrEmpty(metaType)) metaType = "article";
 
-                                        articleMeta = true;
+                                            metaList.Add("og:type", metaType);
+                                            metaList.Add("og:title", metatitle.Truncate(200).Replace("\"", ""));
+                                            metaList.Add("og:description", metadescription.Truncate(260).Replace("\"", ""));
+                                            metaList.Add("og:url", ogurl);
+
+                                            var imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
+                                            if (imgRelPath == "") imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepathproductimage").ToString();
+
+                                            var imageUrl = "";
+                                            if (imgRelPath != "")
+                                            {
+                                                imageUrl = requestUri.GetLeftPart(UriPartial.Authority).TrimEnd('/') + "/" + imgRelPath.TrimStart('/');
+                                                metaList.Add("og:image", imageUrl);
+                                            }
+
+                                            metaList.Add("twitter:title", metatitle.Truncate(200).Replace("\"", ""));
+                                            metaList.Add("twitter:description", metadescription.Truncate(260).Replace("\"", ""));
+                                            metaList.Add("twitter:card", imageUrl == "" ? "summary" : "summary_large_image");
+                                            if (imageUrl != "") metaList.Add("twitter:image", imageUrl);
+
+                                            if (metaType == "product")
+                                            {
+
+                                                // product fields
+                                                var sku = dataRecordTemp.GetXmlProperty("genxml/textbox/articleref");
+                                                if (sku == "") sku = dataRecordTemp.GetXmlProperty("genxml/textbox/productref");
+                                                if (sku != "") metaList.Add("product:retailer_item_id", sku);
+
+                                                var barcode = dataRecordTemp.GetXmlProperty("genxml/textbox/barcode");
+                                                if (barcode == "") barcode = dataRecordTemp.GetXmlProperty("genxml/modellist/genxml[1]/textbox/barcode");
+                                                if (barcode != "") metaList.Add("product:barcode", barcode);
+
+                                                var priceMinCents = dataRecordTemp.GetXmlPropertyInt("genxml/priceminimum");
+                                                var priceMaxCents = dataRecordTemp.GetXmlPropertyInt("genxml/pricemaximum");
+                                                var bestPriceCents = dataRecordTemp.GetXmlPropertyInt("genxml/bestprice");
+
+                                                decimal bestPrice = bestPriceCents > 0 ? (bestPriceCents / 100.0m) : 0m;
+                                                decimal lowPrice = priceMinCents > 0 ? (priceMinCents / 100.0m) : 0m;
+                                                decimal highPrice = priceMaxCents > 0 ? (priceMaxCents / 100.0m) : 0m;
+
+
+                                                var currency = portalContentRec.GetXmlProperty("genxml/currencycode");
+                                                if (currency == "") currency = "EUR";
+                                                try
+                                                {
+                                                    if (!String.IsNullOrEmpty(dataRecordTemp.Lang))
+                                                    {
+                                                        currency = new System.Globalization.RegionInfo(dataRecordTemp.Lang).ISOCurrencySymbol;
+                                                    }
+                                                }
+                                                catch { }
+
+                                                if (bestPrice > 0)
+                                                {
+                                                    metaList.Add("product:price:amount", bestPrice.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+                                                    metaList.Add("product:price:currency", currency);
+                                                }
+                                                if (lowPrice > 0) metaList.Add("product:price:min", lowPrice.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+                                                if (highPrice > 0) metaList.Add("product:price:max", highPrice.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
+
+                                                // JSON-LD
+                                                Func<string, string> j = s => (s ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", " ").Replace("\n", " ").Trim();
+
+                                                var json = new List<string>();
+                                                json.Add("{");
+                                                json.Add("\"@context\":\"https://schema.org\",");
+                                                json.Add("\"@type\":\"Product\",");
+                                                json.Add("\"name\":\"" + j(metatitle) + "\"");
+                                                if (metadescription != "") json.Add(",\"description\":\"" + j(metadescription) + "\"");
+                                                if (imageUrl != "") json.Add(",\"image\":[\"" + j(imageUrl) + "\"]");
+                                                if (sku != "") json.Add(",\"sku\":\"" + j(sku) + "\"");
+                                                if (barcode != "") json.Add(",\"gtin\":\"" + j(barcode) + "\"");
+                                                if (bestPrice > 0)
+                                                {
+                                                    json.Add(",\"offers\":{");
+                                                    json.Add("\"@type\":\"Offer\",");
+                                                    json.Add("\"priceCurrency\":\"" + j(currency) + "\",");
+                                                    json.Add("\"price\":\"" + bestPrice.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "\",");
+                                                    json.Add("\"url\":\"" + j(ogurl) + "\"");
+                                                    json.Add("}");
+                                                }
+                                                json.Add("}");
+                                                productJsonLd = string.Join("", json);
+
+                                                if (!String.IsNullOrEmpty(productJsonLd)) page.JsonLd = productJsonLd;
+                                            }
+                                            articleMeta = true;
+
+                                        }
+
                                     }
                                     else
                                     {
@@ -853,8 +945,24 @@ namespace DNNrocketAPI.Components
         public static HtmlMeta BuildMeta(string name, string property, string content)
         {
             HtmlMeta meta = new HtmlMeta();
-            meta.Name = name;
-            if (!String.IsNullOrEmpty(property)) meta.Attributes.Add("property", property);
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                meta.Name = name;
+            }
+            else if (!String.IsNullOrEmpty(property))
+            {
+                // Twitter tags should be name="twitter:*"
+                if (property.StartsWith("twitter:", StringComparison.OrdinalIgnoreCase))
+                {
+                    meta.Name = property;
+                }
+                else
+                {
+                    meta.Attributes.Add("property", property);
+                }
+            }
+
             meta.Content = content;
             return meta;
         }

@@ -2112,6 +2112,7 @@ namespace DNNrocketAPI.Components
                             var datatype = mp.GetXmlProperty("genxml/select/datatype");
                             if (String.IsNullOrEmpty(datatype)) datatype = "article"; // legacy with no datatype
                             queryParamsData.datatype = datatype;
+                            queryParamsData.metatype = mp.GetXmlProperty("genxml/select/metatype");
                             queryParamsData.queryparamvalue = "";
                             paramidList.Add(qkey, queryParamsData);                            
                         }

@@ -26,6 +26,7 @@ namespace DNNrocketAPI.Components
         public Dictionary<string, string> HtmlMeta { get; set; }
         public bool Redirect404 { get; set; }
         public List<string> CssRemovalPattern { get; set; }
+        public string JsonLd { get; set; }
 
     }
 }

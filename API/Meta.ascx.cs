@@ -91,7 +91,11 @@ namespace RocketTools
                     var meta = PagesUtils.BuildMeta("", metaDict.Key, metaDict.Value);
                     page.Header.Controls.Add(meta);
                 }
-
+                if (!String.IsNullOrEmpty(metaPageData.JsonLd))
+                {
+                    var jsonLdScript = new LiteralControl("<script type=\"application/ld+json\">" + metaPageData.JsonLd + "</script>");
+                    page.Header.Controls.Add(jsonLdScript);
+                }
                 foreach (var sPattern in metaPageData.CssRemovalPattern)
                 {
                     if (sPattern != "" && !UserUtils.IsAdministrator()) PageIncludes.RemoveCssFile(this.Page, sPattern);

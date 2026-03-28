@@ -52,13 +52,13 @@
 
 <div class="w3-container">
     <div class="w3-row w3-padding datapostsection">
-        <div class="w3-button simplisity_click" s-cmd="rocketpl_urlmenu" s-return="#toolsmodalcontainer">
+        <div class="w3-button simplisity_click" s-cmd="rocketpl_urlmenu" s-return="#toolsmodalcontainer" @SFields("menutype",Model.GetSetting("menutype"))>
             @ButtonIcon(ButtonTypes.refresh)
         </div>
-        <div class="w3-button w3-right w3-green simplisity_click" s-cmd="rocketpl_savesettings" s-list=".menuprovider,.queryparams,.removecss" s-post="#settingsdata" s-return="#toolsmodalcontainer">
+        <div class="w3-button w3-right w3-green simplisity_click" s-cmd="rocketpl_savesettings" s-list=".menuprovider,.queryparams,.removecss" s-post="#settingsdata" s-return="#toolsmodalcontainer" @SFields("menutype",Model.GetSetting("menutype"))>
             @ButtonText(ButtonTypes.save)
         </div>
-        <div class="w3-button w3-right w3-blue w3-margin-right simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.validate") ?" s-cmd="rocketpl_validate" s-return="#toolsmodalcontainer">
+        <div class="w3-button w3-right w3-blue w3-margin-right simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.validate") ?" s-cmd="rocketpl_validate" s-return="#toolsmodalcontainer" @SFields("menutype",Model.GetSetting("menutype"))>
             <span class="material-icons">
                 fact_check
             </span>
@@ -147,21 +147,25 @@
 
                         <div class="w3-display-container w3-padding w3-card">
                             <div class="w3-row">
-                                <div class="w3-quarter w3-padding">
+                                <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("RocketTools.queryparam")</label>
                                 @TextBox(mp, "genxml/textbox/queryparam", " class='w3-input w3-border " + warningClass + "' ", "", false, lp2)
                                 </div>
-                                <div class="w3-quarter w3-padding">
+                                <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("RocketTools.datatype")</label>
                                 @DropDownList(mp, "genxml/select/datatype", "article,category", "Article,Category", " class='w3-input w3-border' ", "", false, lp2)
                                 </div>
-                                <div class="w3-quarter w3-padding">
+                                <div class="w3-col m2 w3-padding">
                                     <label>@ResourceKey("DNNrocket.systemkey")</label>
                                     @TextBox(mp, "genxml/textbox/systemkey", " class='w3-input w3-border' ", "", false, lp)
                                 </div>
-                                <div class="w3-quarter w3-padding">
+                                <div class="w3-col m2 w3-padding">
                                     <label>@ResourceKey("DNNrocket.system")</label>
                                     @DropDownList(mp,"genxml/select/tablename","rocketdirectoryapi,rocketecommerceapi", "Directory,Ecommerce"," class='w3-input w3-border' ","",false,lp2)
+                                </div>
+                                <div class="w3-col m2 w3-padding">
+                                    <label>og:metatype</label>
+                                    @DropDownList(mp,"genxml/select/metatype",",article,product,none", ",article,product,none"," class='w3-input w3-border' ","",false,lp2)
                                 </div>
                                 <div class="simplisity_removelistitem w3-display-topright" s-removelist=".queryparams" s-recylebin="queryparamsbin" style="cursor: pointer;">
                                     @ButtonIcon(ButtonTypes.remove)

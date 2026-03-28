@@ -38,6 +38,7 @@ namespace DNNrocketAPI.Components
         public string tablename { get; set; }
         public string systemkey { get; set; }
         public string datatype { get; set; }
+        public string metatype { get; set; }
         public string queryparamvalue { get; set; }
     }
     public class MenuProviderData
