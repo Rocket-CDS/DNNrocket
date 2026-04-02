@@ -510,30 +510,14 @@ namespace DNNrocketAPI.render
         [Obsolete("Use: @Editor()")]
         public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false)
         {
-            if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
-
-            var filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
-            if (scriptFileName.StartsWith("/")) filePath = DNNrocketUtils.MapPath(scriptFileName);
-                
-            var strOut = FileUtils.ReadFile(filePath);
-
-            var id = getIdFromXpath(xpath, row, listname);
-
-            strOut = strOut.Replace("{textareaid}", id);
-            strOut = strOut.Replace("{language}", langauge);   
-
-            var value = info.GetXmlProperty(xpath);
-            if (localized && !xpath.StartsWith("genxml/lang/"))
-            {
-                value = info.GetXmlProperty("genxml/lang/" + xpath);
-            }
-            var codedtext = "";
-            if (coded) codedtext = " s-datatype='coded' ";
-            strOut += " <textarea id='" + id + "' title='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
-            return new RawString(strOut);
+            return new RawString("CKEditor is no longer supported use: @Editor()");
         }
         [Obsolete("Use: @Editor()")]
         public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
+        {
+            return Editor(info, xpath, new SimplisityRazor(), row, listname);
+        }
+        public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
             var id = getIdFromXpath(xpath, row, listname);

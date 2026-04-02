@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="addlanguage.Text" xml:space="preserve">
+    <value>Ajouter une langue</value>
+  </data>
+  <data name="admintemplate.Text" xml:space="preserve">
+    <value>Modèle d'administration</value>
+  </data>
   <data name="appstore.Text" xml:space="preserve">
     <value>App Store</value>
   </data>
@@ -186,6 +192,12 @@
   <data name="deleteversion.Text" xml:space="preserve">
     <value>Supprimer la version</value>
   </data>
+  <data name="dependancies.Note" xml:space="preserve">
+    <value>REMARQUE : les dépendances ne sont utilisées que dans la vue frontale du site web.  Pour l'administration, utilisez "AdminFirstHeader.cshtml".</value>
+  </data>
+  <data name="dependancies.Text" xml:space="preserve">
+    <value>Dépendances</value>
+  </data>
   <data name="details.Text" xml:space="preserve">
     <value>Détails AppTheme!</value>
   </data>
@@ -207,11 +219,23 @@
   <data name="edit.Text" xml:space="preserve">
     <value>Modifier</value>
   </data>
+  <data name="editmodelapptheme.Text" xml:space="preserve">
+    <value>Niveau du module</value>
+  </data>
   <data name="editmsg.Text" xml:space="preserve">
     <value>Modifier un AppTheme.! existant</value>
   </data>
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
+  </data>
+  <data name="editportalapptheme.Text" xml:space="preserve">
+    <value>Niveau du portail</value>
+  </data>
+  <data name="editportalappthemes.Text" xml:space="preserve">
+    <value>Modifier le portail AppThemes</value>
+  </data>
+  <data name="edittemplates.Text" xml:space="preserve">
+    <value>Modifier les modèles</value>
   </data>
   <data name="enablesettings.Text" xml:space="preserve">
     <value>Activer les réglages ?</value>
@@ -263,6 +287,9 @@
   </data>
   <data name="installed.Text" xml:space="preserve">
     <value>Installé</value>
+  </data>
+  <data name="invalidversion.Text" xml:space="preserve">
+    <value>REMARQUE : Toutes les AppThemes ne sont pas compatibles avec la version de RocketCDS.</value>
   </data>
   <data name="isonlist.Text" xml:space="preserve">
     <value>Nommer votre liste</value>
@@ -372,6 +399,9 @@
   <data name="systemlevel.Text" xml:space="preserve">
     <value>Niveau système</value>
   </data>
+  <data name="systemleveleditmsg.Text" xml:space="preserve">
+    <value>Les modèles de niveau système ne peuvent être édités que dans le repo GitHub et téléchargés sur cette installation.</value>
+  </data>
   <data name="templates.Text" xml:space="preserve">
     <value>Modèles</value>
   </data>
@@ -404,33 +434,6 @@
   </data>
   <data name="versionmsg.Text" xml:space="preserve">
     <value>Créez une nouvelle version de cet AppTheme.!</value>
-  </data>
-  <data name="addlanguage.Text" xml:space="preserve">
-    <value>Ajouter une langue</value>
-  </data>
-  <data name="dependancies.Note" xml:space="preserve">
-    <value>REMARQUE : les dépendances ne sont utilisées que dans la vue frontale du site web.  Pour l'administration, utilisez "AdminFirstHeader.cshtml".</value>
-  </data>
-  <data name="dependancies.Text" xml:space="preserve">
-    <value>Dépendances</value>
-  </data>
-  <data name="editportalappthemes.Text" xml:space="preserve">
-    <value>Modifier le portail AppThemes</value>
-  </data>
-  <data name="editmodelapptheme.Text" xml:space="preserve">
-    <value>Niveau du module</value>
-  </data>
-  <data name="editportalapptheme.Text" xml:space="preserve">
-    <value>Niveau du portail</value>
-  </data>
-  <data name="admintemplate.Text" xml:space="preserve">
-    <value>Modèle d'administration</value>
-  </data>
-  <data name="edittemplates.Text" xml:space="preserve">
-    <value>Modifier les modèles</value>
-  </data>
-  <data name="systemleveleditmsg.Text" xml:space="preserve">
-    <value>Les modèles de niveau système ne peuvent être édités que dans le repo GitHub et téléchargés sur cette installation.</value>
   </data>
   <data name="viewtemplate.Text" xml:space="preserve">
     <value>Voir le modèle</value>

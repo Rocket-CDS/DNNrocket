@@ -33,7 +33,7 @@
             systemDict.Add(systemKey, systemKey);
         }            
     }
-
+    var versionFlag = false;
 }
 
 [INJECT:appthemesystem,Popups.cshtml]
@@ -52,6 +52,7 @@
         </div>
         <input class="w3-bar-item w3-input w3-right w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
     </div>
+    <div id="versionmsg" class="w3-text-red w3-large"></div>
 
     <div id="datalist" class="w3-container w3-margin-top">
 
@@ -64,12 +65,20 @@
             </thead>
             @foreach (AppThemeLimpet appTheme in projectThemeList)
             {
+                var minVersion = appTheme.MinimumVersion();
                 <tr class="searchdiv simplisity_click " s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"appthemefolder":"@(appTheme.AppThemeFolder)","appversionfolder":"@(appTheme.LatestVersionFolder)"}'>
                     <td>
                         <div class="w3-tiny">@appTheme.SystemKey</div>
                         <b>@appTheme.Name</b>
                     </td>
                     <td>@appTheme.LastUpdated</td>
+                    <td>
+                        @if (minVersion != "")
+                        {
+                            versionFlag = true;
+                            <div class="w3-text-red">@minVersion</div>
+                        }
+                    </td>
                 </tr>
             }
         </table>
@@ -96,6 +105,15 @@
         });
         
         selectMenu('appstore');
+
+
+        @if (versionFlag)
+        {
+            <text>
+            $('#versionmsg').text('@ResourceKey("AppThemes.invalidversion")')
+            </text>
+        }
+
 
     });
 

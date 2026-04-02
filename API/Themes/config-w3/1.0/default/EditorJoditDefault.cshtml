@@ -92,6 +92,8 @@
             showCharsCounter: true,
             showWordsCounter: true,
             showXPathInStatusbar: false,
+            uploader: false,
+            filebrowser: false,
             buttons: [
                 'source', '|',
                 'undo', 'redo', '|',
@@ -157,8 +159,8 @@
             minHeight: 300,
             height: 500,
             pasteHTMLActionList: [
-                { value: Jodit.constants.INSERT_CLEAR_HTML, text: 'Nettoyer' },
-                { value: Jodit.constants.INSERT_ONLY_TEXT, text: 'Coller le texte seulement' }
+                { value: Jodit.constants.INSERT_CLEAR_HTML, text: '@ResourceKey("DNNrocket.jodittidy")' },
+                { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
             ],
             cleanHTML: {
                 fillEmptyParagraph: false,
@@ -168,11 +170,11 @@
             },
             beautifyHTML: true,
             pasteFromWordActionList: [
-                { value: Jodit.constants.INSERT_AS_TEXT, text: 'Nettoyer' },
-                { value: Jodit.constants.INSERT_ONLY_TEXT, text: 'Coller le texte seulement' }
+                { value: Jodit.constants.INSERT_AS_TEXT, text: '@ResourceKey("DNNrocket.jodittidy")' },
+                { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
             ],
             useSearch: true,
-            enableDragAndDropFileToEditor: true,
+            enableDragAndDropFileToEditor: false,
             uploader: {
                 insertImageAsBase64URI: true,
                 imagesExtensions: ['jpg', 'png', 'jpeg', 'gif', 'svg', 'webp']

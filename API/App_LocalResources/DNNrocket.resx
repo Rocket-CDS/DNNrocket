@@ -1071,4 +1071,10 @@
   <data name="imagewidth.Text" xml:space="preserve">
     <value>Image Width</value>
   </data>
+  <data name="jodittidy.Text" xml:space="preserve">
+    <value>Formatted</value>
+  </data>
+  <data name="jodittextonly.Text" xml:space="preserve">
+    <value>Text Only</value>
+  </data>
 </root>

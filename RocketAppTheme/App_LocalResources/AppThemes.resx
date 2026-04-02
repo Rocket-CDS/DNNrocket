@@ -198,10 +198,7 @@
   <data name="dependancies.Text" xml:space="preserve">
     <value>Dependencies</value>
   </data>
-    <data name="dependencies.Text" xml:space="preserve">
-    <value>Dependencies</value>
-  </data>
-	<data name="details.Text" xml:space="preserve">
+  <data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
   </data>
   <data name="displayname.Text" xml:space="preserve">
@@ -290,6 +287,9 @@
   </data>
   <data name="installed.Text" xml:space="preserve">
     <value>Installed</value>
+  </data>
+  <data name="invalidversion.Text" xml:space="preserve">
+    <value>WARNING: Not all AppThemes are compatible with the RocketCDS version.</value>
   </data>
   <data name="isonlist.Text" xml:space="preserve">
     <value>On List</value>

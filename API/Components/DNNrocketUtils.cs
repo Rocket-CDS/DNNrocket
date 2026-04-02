@@ -534,6 +534,17 @@ namespace DNNrocketAPI.Components
             }
             return strVersion;
         }
+        public static string GetLibraryVersion(string packageName)
+        {
+            var strVersion = "";
+            var packageController = new PackageController();
+            var package = packageController.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+            if (package != null)
+            {
+                strVersion = package.Version.ToString();
+            }
+            return strVersion;
+        }
 
         public static void CreateFolder(string fullfolderPath)
         {

@@ -117,44 +117,338 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="accountemail.Text" xml:space="preserve">
-    <value>Compte Email</value>
+  <data name="add.Text" xml:space="preserve">
+    <value>Ajouter</value>
   </data>
-  <data name="accountkey.Text" xml:space="preserve">
-    <value>Clé du Compte</value>
+  <data name="delete.confirm" xml:space="preserve">
+    <value>Supprimer ?</value>
   </data>
-  <data name="accountpassword.Text" xml:space="preserve">
-    <value>Compte Mot de Passe</value>
+  <data name="reset.Text" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="save.Text" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="select.Text" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
+  <data name="upload.Text" xml:space="preserve">
+    <value>Charger</value>
+  </data>
+  <data name="return.Text" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="export.Text" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="ok.Text" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="active.Text" xml:space="preserve">
     <value>Actif</value>
   </data>
-  <data name="add.Text" xml:space="preserve">
-    <value>Ajouter</value>
+  <data name="default.Text" xml:space="preserve">
+    <value>Défaut</value>
   </data>
-  <data name="admin.Text" xml:space="preserve">
-    <value>Admin</value>
-  </data>
-  <data name="adminurl.Text" xml:space="preserve">
-    <value>Admin URL</value>
-  </data>
-  <data name="allowempty.Text" xml:space="preserve">
-    <value>Autoriser vide</value>
+  <data name="undo.Text" xml:space="preserve">
+    <value>Annuler</value>
   </data>
   <data name="apiurl.Text" xml:space="preserve">
     <value>API url</value>
   </data>
-  <data name="appthemeadmin.Text" xml:space="preserve">
-    <value>AppTheme Administration</value>
+  <data name="adminurl.Text" xml:space="preserve">
+    <value>Admin URL</value>
+  </data>
+  <data name="signout.Text" xml:space="preserve">
+    <value>Se déconnecter</value>
+  </data>
+  <data name="admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="dropdocument.Text" xml:space="preserve">
+    <value>Déposez vos documents ici</value>
+  </data>
+  <data name="dropfile.Text" xml:space="preserve">
+    <value>Déposez vos fichiers ici</value>
+  </data>
+  <data name="dropimage.Text" xml:space="preserve">
+    <value>Déposez ici</value>
+  </data>
+  <data name="docs.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="documents.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="remove.Text" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="pagingtext.Text" xml:space="preserve">
+    <value>5,10,20,50,100,Tout</value>
+  </data>
+  <data name="pagingvalues.Text" xml:space="preserve">
+    <value>5,10,20,50,100,0</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Taille Page</value>
+  </data>
+  <data name="nosettings.Text" xml:space="preserve">
+    <value>Pas de paramètres</value>
+  </data>
+  <data name="config.Text" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="settings.Text" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="use.Text" xml:space="preserve">
+    <value>Utiliser</value>
+  </data>
+  <data name="print.Text" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
+  <data name="clearallcache.Text" xml:space="preserve">
+    <value>Effacer tout le cache</value>
+  </data>
+  <data name="clearmodcache.Text" xml:space="preserve">
+    <value>Effacer le cache du Module</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="rocketadmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="drophere.Text" xml:space="preserve">
+    <value>Déposez ici</value>
+  </data>
+  <data name="documentsfolder.Text" xml:space="preserve">
+    <value>Documents Dossier</value>
+  </data>
+  <data name="imagesfolder.Text" xml:space="preserve">
+    <value>Images Dossier</value>
+  </data>
+  <data name="download.Text" xml:space="preserve">
+    <value>Télécharger</value>
+  </data>
+  <data name="rocketadmintab.Text" xml:space="preserve">
+    <value>Admin Fenêtre</value>
+  </data>
+  <data name="localized.Text" xml:space="preserve">
+    <value>Localisé</value>
+  </data>
+  <data name="type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="label.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="size.Text" xml:space="preserve">
+    <value>Taille</value>
   </data>
   <data name="attributes.Text" xml:space="preserve">
     <value>Attributs</value>
   </data>
+  <data name="defaultvalue.Text" xml:space="preserve">
+    <value>Valeur par Défaut</value>
+  </data>
+  <data name="height.Text" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="width.Text" xml:space="preserve">
+    <value>Largeur</value>
+  </data>
+  <data name="allowempty.Text" xml:space="preserve">
+    <value>Autoriser vide</value>
+  </data>
+  <data name="close.Text" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="invalid.Text" xml:space="preserve">
+    <value>Invalide</value>
+  </data>
   <data name="back.Text" xml:space="preserve">
     <value>Retour</value>
   </data>
+  <data name="next.Text" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="delete.Text" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="links.Text" xml:space="preserve">
+    <value>Liens</value>
+  </data>
+  <data name="column.Text" xml:space="preserve">
+    <value>Colonne</value>
+  </data>
+  <data name="import.Text" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="resizeonupload.Text" xml:space="preserve">
+    <value>Redimensionner au chargement</value>
+  </data>
+  <data name="more.Text" xml:space="preserve">
+    <value>Plus</value>
+  </data>
+  <data name="removemoduletemplate.Text" xml:space="preserve">
+    <value>Remove Module Level Template</value>
+  </data>
+  <data name="refresh.Text" xml:space="preserve">
+    <value>Rafraichir</value>
+  </data>
+  <data name="serverdetails.Text" xml:space="preserve">
+    <value>Serveur Details</value>
+  </data>
+  <data name="license.Text" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="domainurl.Text" xml:space="preserve">
+    <value>URL domaine</value>
+  </data>
+  <data name="systemkey.Text" xml:space="preserve">
+    <value>System Key</value>
+  </data>
+  <data name="email.Text" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="certificate.Text" xml:space="preserve">
+    <value>Certificat</value>
+  </data>
+  <data name="certificatekey.Text" xml:space="preserve">
+    <value>Clé Certificat</value>
+  </data>
+  <data name="update.Text" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="system.Text" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="cancel.Text" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="setup.Text" xml:space="preserve">
+    <value>Paramètrage</value>
+  </data>
+  <data name="getlicense.Help" xml:space="preserve">
+    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
+  </data>
+  <data name="getlicense.Text" xml:space="preserve">
+    <value>Obtenir une Licence Professionelle</value>
+  </data>
+  <data name="register.Text" xml:space="preserve">
+    <value>S'enregistrer</value>
+  </data>
+  <data name="sitekey.Text" xml:space="preserve">
+    <value>SiteKey</value>
+  </data>
+  <data name="licenseredirect.Help" xml:space="preserve">
+    <value>Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
+  </data>
+  <data name="accountemail.Text" xml:space="preserve">
+    <value>Compte Email</value>
+  </data>
+  <data name="accountpassword.Text" xml:space="preserve">
+    <value>Compte Mot de Passe</value>
+  </data>
+  <data name="expiredate.Text" xml:space="preserve">
+    <value>Date d'expiration</value>
+  </data>
+  <data name="debugmode.Text" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="off.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="on.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="create.Text" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="prolicense.Text" xml:space="preserve">
+    <value>License Professionelle</value>
+  </data>
+  <data name="checkkey.Text" xml:space="preserve">
+    <value>Verification de la Clé</value>
+  </data>
+  <data name="entercertificatekey.Text" xml:space="preserve">
+    <value>Entrer Certificat Clé Licence</value>
+  </data>
+  <data name="appthemeadmin.Text" xml:space="preserve">
+    <value>AppTheme Administration</value>
+  </data>
+  <data name="downloadallappthemes.Text" xml:space="preserve">
+    <value>Télécharger tous Public AppThemes</value>
+  </data>
+  <data name="nolocalappthemes.Text" xml:space="preserve">
+    <value>Vous n'avez pas assez de local AppThemes installé. Vous pouvez installer et créer AppThemes depuis l'Appthemes administration ou télécharger directement AppThemes public et gratuit. </value>
+  </data>
+  <data name="checkall.Text" xml:space="preserve">
+    <value>Vérifier tout</value>
+  </data>
+  <data name="uncheckall.Text" xml:space="preserve">
+    <value>Désactiver Tout</value>
+  </data>
+  <data name="modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="roles.Text" xml:space="preserve">
+    <value>Rôles</value>
+  </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="clone.Text" xml:space="preserve">
+    <value>Cloner</value>
+  </data>
+  <data name="history.Text" xml:space="preserve">
+    <value>Historique</value>
+  </data>
   <data name="backup.Text" xml:space="preserve">
     <value>BackUp</value>
+  </data>
+  <data name="date.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="restore.Text" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="sortorder.Text" xml:space="preserve">
+    <value>Ordre de Tri</value>
+  </data>
+  <data name="deletethemeerror.Text" xml:space="preserve">
+    <value>Une erreur s'est produite avec le système fichier. Ceci peut être causé par des fichiers verouillés. Redémarrer AppPool and Essayer à nouveau.</value>
+  </data>
+  <data name="accountkey.Text" xml:space="preserve">
+    <value>Clé du Compte</value>
+  </data>
+  <data name="enabled.Text" xml:space="preserve">
+    <value>Activé</value>
+  </data>
+  <data name="install.Text" xml:space="preserve">
+    <value>Installer</value>
+  </data>
+  <data name="installed.Text" xml:space="preserve">
+    <value>Installé</value>
+  </data>
+  <data name="uninstall.Text" xml:space="preserve">
+    <value>Désinstaller</value>
   </data>
   <data name="backupdata.Text" xml:space="preserve">
     <value>Donnée BackUp</value>
@@ -165,329 +459,53 @@
   <data name="backuptemplates.Text" xml:space="preserve">
     <value>Template BackUp</value>
   </data>
-  <data name="cancel.Text" xml:space="preserve">
-    <value>Annuler</value>
-  </data>
   <data name="cancelsearch.Text" xml:space="preserve">
     <value>Annuler la recherche</value>
-  </data>
-  <data name="certificate.Text" xml:space="preserve">
-    <value>Certificat</value>
-  </data>
-  <data name="certificatekey.Text" xml:space="preserve">
-    <value>Clé Certificat</value>
-  </data>
-  <data name="checkall.Text" xml:space="preserve">
-    <value>Vérifier tout</value>
-  </data>
-  <data name="checkkey.Text" xml:space="preserve">
-    <value>Verification de la Clé</value>
-  </data>
-  <data name="clearallcache.Text" xml:space="preserve">
-    <value>Effacer tout le cache</value>
-  </data>
-  <data name="clearmodcache.Text" xml:space="preserve">
-    <value>Effacer le cache du Module</value>
-  </data>
-  <data name="clone.Text" xml:space="preserve">
-    <value>Cloner</value>
-  </data>
-  <data name="close.Text" xml:space="preserve">
-    <value>Fermer</value>
-  </data>
-  <data name="column.Text" xml:space="preserve">
-    <value>Colonne</value>
-  </data>
-  <data name="config.Text" xml:space="preserve">
-    <value>Configuration</value>
-  </data>
-  <data name="contactus.Text" xml:space="preserve">
-    <value>Nous contacter</value>
-  </data>
-  <data name="copy.Text" xml:space="preserve">
-    <value>Copie</value>
-  </data>
-  <data name="create.Text" xml:space="preserve">
-    <value>Créer</value>
-  </data>
-  <data name="date.Text" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="debugmode.Text" xml:space="preserve">
-    <value>Debug Mode</value>
-  </data>
-  <data name="default.Text" xml:space="preserve">
-    <value>Défaut</value>
-  </data>
-  <data name="defaultvalue.Text" xml:space="preserve">
-    <value>Valeur par Défaut</value>
-  </data>
-  <data name="delete.confirm" xml:space="preserve">
-    <value>Supprimer ?</value>
-  </data>
-  <data name="delete.Text" xml:space="preserve">
-    <value>Supprimer</value>
-  </data>
-  <data name="deletethemeerror.Text" xml:space="preserve">
-    <value>Une erreur s'est produite avec le système fichier. Ceci peut être causé par des fichiers verouillés. Redémarrer AppPool and Essayer à nouveau.</value>
-  </data>
-  <data name="disactive.Text" xml:space="preserve">
-    <value>Désactivé</value>
-  </data>
-  <data name="docs.Text" xml:space="preserve">
-    <value>Documents</value>
-  </data>
-  <data name="documents.Text" xml:space="preserve">
-    <value>Documents</value>
-  </data>
-  <data name="documentsfolder.Text" xml:space="preserve">
-    <value>Documents Dossier</value>
-  </data>
-  <data name="domainurl.Text" xml:space="preserve">
-    <value>URL domaine</value>
-  </data>
-  <data name="download.Text" xml:space="preserve">
-    <value>Télécharger</value>
-  </data>
-  <data name="downloadallappthemes.Text" xml:space="preserve">
-    <value>Télécharger tous Public AppThemes</value>
-  </data>
-  <data name="dropdocument.Text" xml:space="preserve">
-    <value>Déposez vos documents ici</value>
-  </data>
-  <data name="dropfile.Text" xml:space="preserve">
-    <value>Déposez vos fichiers ici</value>
-  </data>
-  <data name="drophere.Text" xml:space="preserve">
-    <value>Déposez ici</value>
-  </data>
-  <data name="dropimage.Text" xml:space="preserve">
-    <value>Déposez ici</value>
-  </data>
-  <data name="edit.Text" xml:space="preserve">
-    <value>Modifier</value>
-  </data>
-  <data name="email.Text" xml:space="preserve">
-    <value>E-mail</value>
-  </data>
-  <data name="enabled.Text" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="entercertificatekey.Text" xml:space="preserve">
-    <value>Entrer Certificat Clé Licence</value>
-  </data>
-  <data name="expiredate.Text" xml:space="preserve">
-    <value>Date d'expiration</value>
-  </data>
-  <data name="export.Text" xml:space="preserve">
-    <value>Exporter</value>
-  </data>
-  <data name="getlicense.Help" xml:space="preserve">
-    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
-  </data>
-  <data name="getlicense.Text" xml:space="preserve">
-    <value>Obtenir une Licence Professionelle</value>
-  </data>
-  <data name="height.Text" xml:space="preserve">
-    <value>Hauteur</value>
-  </data>
-  <data name="hide.Text" xml:space="preserve">
-    <value>Cacher</value>
-  </data>
-  <data name="history.Text" xml:space="preserve">
-    <value>Historique</value>
-  </data>
-  <data name="image.Text" xml:space="preserve">
-    <value>Image</value>
-  </data>
-  <data name="images.Text" xml:space="preserve">
-    <value>Images</value>
-  </data>
-  <data name="imagesfolder.Text" xml:space="preserve">
-    <value>Images Dossier</value>
-  </data>
-  <data name="import.Text" xml:space="preserve">
-    <value>Importer</value>
-  </data>
-  <data name="install.Text" xml:space="preserve">
-    <value>Installer</value>
-  </data>
-  <data name="installed.Text" xml:space="preserve">
-    <value>Installé</value>
-  </data>
-  <data name="invalid.Text" xml:space="preserve">
-    <value>Invalide</value>
   </data>
   <data name="key.Text" xml:space="preserve">
     <value>Clé</value>
   </data>
-  <data name="label.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="lastupdated.Text" xml:space="preserve">
-    <value>Dernière modification</value>
-  </data>
-  <data name="license.Text" xml:space="preserve">
-    <value>License</value>
-  </data>
-  <data name="licenseredirect.Help" xml:space="preserve">
-    <value>Vous serez rediriger vers DNNrocket license website, où vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
-  </data>
-  <data name="links.Text" xml:space="preserve">
-    <value>Liens</value>
-  </data>
-  <data name="localized.Text" xml:space="preserve">
-    <value>Localisé</value>
-  </data>
-  <data name="modules.Text" xml:space="preserve">
-    <value>Modules</value>
-  </data>
-  <data name="more.Text" xml:space="preserve">
-    <value>Plus</value>
-  </data>
-  <data name="next.Text" xml:space="preserve">
-    <value>Suivant</value>
-  </data>
-  <data name="nolocalappthemes.Text" xml:space="preserve">
-    <value>Vous n'avez pas assez de local AppThemes installé. Vous pouvez installer et créer AppThemes depuis l'Appthemes administration ou télécharger directement AppThemes public et gratuit. </value>
-  </data>
-  <data name="nosettings.Text" xml:space="preserve">
-    <value>Pas de paramètres</value>
-  </data>
-  <data name="off.Text" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="ok.Text" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="on.Text" xml:space="preserve">
-    <value>On</value>
-  </data>
-  <data name="page.Text" xml:space="preserve">
-    <value>Page</value>
-  </data>
-  <data name="pages.Text" xml:space="preserve">
-    <value>Pages</value>
-  </data>
-  <data name="pagesize.Text" xml:space="preserve">
-    <value>Taille Page</value>
-  </data>
-  <data name="pagingtext.Text" xml:space="preserve">
-    <value>5,10,20,50,100,Tout</value>
-  </data>
-  <data name="pagingvalues.Text" xml:space="preserve">
-    <value>5,10,20,50,100,0</value>
-  </data>
-  <data name="previous.Text" xml:space="preserve">
-    <value>Précédent</value>
-  </data>
-  <data name="print.Text" xml:space="preserve">
-    <value>Imprimer</value>
-  </data>
-  <data name="prolicense.Text" xml:space="preserve">
-    <value>License Professionelle</value>
-  </data>
-  <data name="refresh.Text" xml:space="preserve">
-    <value>Rafraichir</value>
-  </data>
-  <data name="register.Text" xml:space="preserve">
-    <value>S'enregistrer</value>
-  </data>
-  <data name="remove.Text" xml:space="preserve">
-    <value>Retirer</value>
-  </data>
-  <data name="removemoduletemplate.Text" xml:space="preserve">
-    <value>Remove Module Level Template</value>
-  </data>
-  <data name="reset.Text" xml:space="preserve">
-    <value>Réinitialiser</value>
-  </data>
-  <data name="resizeonupload.Text" xml:space="preserve">
-    <value>Redimensionner au chargement</value>
-  </data>
-  <data name="restore.Text" xml:space="preserve">
-    <value>Restaurer</value>
-  </data>
-  <data name="return.Text" xml:space="preserve">
-    <value>Retour</value>
-  </data>
-  <data name="rocketadmin.Text" xml:space="preserve">
-    <value>Admin</value>
-  </data>
-  <data name="rocketadmintab.Text" xml:space="preserve">
-    <value>Admin Fenêtre</value>
-  </data>
-  <data name="roles.Text" xml:space="preserve">
-    <value>Rôles</value>
-  </data>
-  <data name="save.Text" xml:space="preserve">
-    <value>Enregistrer</value>
-  </data>
-  <data name="search.Text" xml:space="preserve">
-    <value>Rechercher</value>
-  </data>
-  <data name="select.Text" xml:space="preserve">
-    <value>Sélectionner</value>
+  <data name="value.Text" xml:space="preserve">
+    <value>Valeur</value>
   </data>
   <data name="send.Text" xml:space="preserve">
     <value>Envoyer</value>
   </data>
-  <data name="serverdetails.Text" xml:space="preserve">
-    <value>Serveur Details</value>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Cacher</value>
   </data>
-  <data name="settings.Text" xml:space="preserve">
-    <value>Paramètres</value>
+  <data name="disactive.Text" xml:space="preserve">
+    <value>Désactivé</value>
   </data>
-  <data name="setup.Text" xml:space="preserve">
-    <value>Paramètrage</value>
+  <data name="previous.Text" xml:space="preserve">
+    <value>Précédent</value>
   </data>
-  <data name="signout.Text" xml:space="preserve">
-    <value>Se déconnecter</value>
+  <data name="lastupdated.Text" xml:space="preserve">
+    <value>Dernière modification</value>
   </data>
-  <data name="sitekey.Text" xml:space="preserve">
-    <value>SiteKey</value>
+  <data name="html.Text" xml:space="preserve">
+    <value>HTML</value>
   </data>
-  <data name="size.Text" xml:space="preserve">
-    <value>Taille</value>
+  <data name="text.Text" xml:space="preserve">
+    <value>Texte</value>
   </data>
-  <data name="sortorder.Text" xml:space="preserve">
-    <value>Ordre de Tri</value>
+  <data name="content.Text" xml:space="preserve">
+    <value>Contenu</value>
   </data>
-  <data name="system.Text" xml:space="preserve">
-    <value>Système</value>
+  <data name="remote.Text" xml:space="preserve">
+    <value>Isolé</value>
   </data>
-  <data name="systemkey.Text" xml:space="preserve">
-    <value>System Key</value>
+  <data name="no.Text" xml:space="preserve">
+    <value>Non</value>
   </data>
-  <data name="type.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="yes.Text" xml:space="preserve">
+    <value>Oui</value>
   </data>
-  <data name="uncheckall.Text" xml:space="preserve">
-    <value>Désactiver Tout</value>
+  <data name="copy.Text" xml:space="preserve">
+    <value>Copie</value>
   </data>
-  <data name="undo.Text" xml:space="preserve">
-    <value>Annuler</value>
-  </data>
-  <data name="uninstall.Text" xml:space="preserve">
-    <value>Désinstaller</value>
-  </data>
-  <data name="update.Text" xml:space="preserve">
-    <value>Mise à jour</value>
-  </data>
-  <data name="upload.Text" xml:space="preserve">
-    <value>Charger</value>
-  </data>
-  <data name="use.Text" xml:space="preserve">
-    <value>Utiliser</value>
-  </data>
-  <data name="validate.Text" xml:space="preserve">
-    <value>Valider</value>
-  </data>
-  <data name="value.Text" xml:space="preserve">
-    <value>Valeur</value>
-  </data>
-  <data name="width.Text" xml:space="preserve">
-    <value>Largeur</value>
+  <data name="fail.Text" xml:space="preserve">
+    <value>Échec</value>
   </data>
   <data name="paste.Text" xml:space="preserve">
     <value>Coller</value>
@@ -540,26 +558,8 @@
   <data name="documentupload.Text" xml:space="preserve">
     <value>Télécharger le document</value>
   </data>
-  <data name="html.Text" xml:space="preserve">
-    <value>HTML</value>
-  </data>
-  <data name="text.Text" xml:space="preserve">
-    <value>Texte</value>
-  </data>
-  <data name="content.Text" xml:space="preserve">
-    <value>Contenu</value>
-  </data>
-  <data name="remote.Text" xml:space="preserve">
-    <value>Isolé</value>
-  </data>
-  <data name="no.Text" xml:space="preserve">
-    <value>Non</value>
-  </data>
-  <data name="yes.Text" xml:space="preserve">
-    <value>Oui</value>
-  </data>
-  <data name="fail.Text" xml:space="preserve">
-    <value>Échec</value>
+  <data name="hidden.Text" xml:space="preserve">
+    <value>Caché</value>
   </data>
   <data name="keywords.Text" xml:space="preserve">
     <value>Mots clé</value>
@@ -578,6 +578,9 @@
   </data>
   <data name="recycleapppool.Text" xml:space="preserve">
     <value>Recycle AppPool</value>
+  </data>
+  <data name="contactus.Text" xml:space="preserve">
+    <value>Nous contacter</value>
   </data>
   <data name="emailon.Text" xml:space="preserve">
     <value>Envoyer le message</value>
@@ -602,6 +605,9 @@
   </data>
   <data name="services.Text" xml:space="preserve">
     <value>Services</value>
+  </data>
+  <data name="locked.Text" xml:space="preserve">
+    <value>Verrouillé</value>
   </data>
   <data name="unlocked.text" xml:space="preserve">
     <value>Déverrouillé</value>
@@ -642,11 +648,11 @@
   <data name="task.Text" xml:space="preserve">
     <value>Tâche</value>
   </data>
-  <data name="dataname.Text" xml:space="preserve">
-    <value>Nom de données</value>
-  </data>
   <data name="manager.Text" xml:space="preserve">
     <value>Directeur</value>
+  </data>
+  <data name="dataname.Text" xml:space="preserve">
+    <value>Nom de données</value>
   </data>
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
@@ -690,6 +696,9 @@
   <data name="tools.Text" xml:space="preserve">
     <value>Outils</value>
   </data>
+  <data name="users.Text" xml:space="preserve">
+    <value>Utilisateurs</value>
+  </data>
   <data name="providers.Text" xml:space="preserve">
     <value>Plugins premium et utiles</value>
   </data>
@@ -732,15 +741,6 @@
   <data name="template.Text" xml:space="preserve">
     <value>Modèle</value>
   </data>
-  <data name="hidden.Text" xml:space="preserve">
-    <value>Caché</value>
-  </data>
-  <data name="users.Text" xml:space="preserve">
-    <value>Utilisateurs</value>
-  </data>
-  <data name="locked.Text" xml:space="preserve">
-    <value>Verrouillé</value>
-  </data>
   <data name="disablecache.Text" xml:space="preserve">
     <value>Désactiver le cache</value>
   </data>
@@ -765,15 +765,6 @@
   <data name="translation.Text" xml:space="preserve">
     <value>Traduction</value>
   </data>
-  <data name="category.Text" xml:space="preserve">
-    <value>Catégorie</value>
-  </data>
-  <data name="companyName.Text" xml:space="preserve">
-    <value>Nom de l'entreprise</value>
-  </data>
-  <data name="question.Text" xml:space="preserve">
-    <value>Question</value>
-  </data>
   <data name="adress.Text" xml:space="preserve">
     <value>Adresse</value>
   </data>
@@ -789,11 +780,17 @@
   <data name="backgroundimage.Text" xml:space="preserve">
     <value>Image de fond</value>
   </data>
+  <data name="category.Text" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
   <data name="citation.Text" xml:space="preserve">
     <value>Citation</value>
   </data>
   <data name="codegooglemap.Text" xml:space="preserve">
     <value>Iframe Google Map</value>
+  </data>
+  <data name="companyName.Text" xml:space="preserve">
+    <value>Nom de l'entreprise</value>
   </data>
   <data name="contact.Text" xml:space="preserve">
     <value>Contact</value>
@@ -861,6 +858,9 @@
   <data name="openfancy.Text" xml:space="preserve">
     <value>Ouvrir dans une popup</value>
   </data>
+  <data name="question.Text" xml:space="preserve">
+    <value>Question</value>
+  </data>
   <data name="redirectlink.Text" xml:space="preserve">
     <value>Lien de redirection</value>
   </data>
@@ -896,6 +896,15 @@
   </data>
   <data name="video.Text" xml:space="preserve">
     <value>Vidéo</value>
+  </data>
+  <data name="videocode.Text" xml:space="preserve">
+    <value>Vidéo youtube Iframe</value>
+  </data>
+  <data name="editor.Text" xml:space="preserve">
+    <value>Éditeur</value>
+  </data>
+  <data name="processing.Text" xml:space="preserve">
+    <value>Traitement</value>
   </data>
   <data name="link.Text" xml:space="preserve">
     <value>Lien</value>
@@ -938,18 +947,6 @@
   </data>
   <data name="newspaperlinkrbl.Text" xml:space="preserve">
     <value>Interne,URL</value>
-  </data>
-  <data name="imagealt.Text" xml:space="preserve">
-    <value>Texte alternatif</value>
-  </data>
-  <data name="videocode.Text" xml:space="preserve">
-    <value>Vidéo youtube Iframe</value>
-  </data>
-  <data name="editor.Text" xml:space="preserve">
-    <value>Éditeur</value>
-  </data>
-  <data name="processing.Text" xml:space="preserve">
-    <value>Traitement</value>
   </data>
   <data name="recyclebin.Text" xml:space="preserve">
     <value>Corbeille</value>
@@ -1004,6 +1001,9 @@
   </data>
   <data name="reviewcount.Text" xml:space="preserve">
     <value>Compte rendu</value>
+  </data>
+  <data name="imagealt.Text" xml:space="preserve">
+    <value>Texte alternatif</value>
   </data>
   <data name="open.Text" xml:space="preserve">
     <value>Ouvrir</value>
@@ -1070,5 +1070,11 @@
   </data>
   <data name="imagewidth.Text" xml:space="preserve">
     <value>Largeur de l'image</value>
+  </data>
+  <data name="jodittidy.Text" xml:space="preserve">
+    <value>Nettoyer</value>
+  </data>
+  <data name="jodittextonly.Text" xml:space="preserve">
+    <value>Coller le texte seulement</value>
   </data>
 </root>

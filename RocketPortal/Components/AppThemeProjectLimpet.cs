@@ -181,7 +181,8 @@ namespace Rocket.AppThemes.Components
                 var name = app.GetXmlProperty("genxml/textbox/name");
                 if (name == projectName)
                 {
-                    foreach (var d2 in Directory.GetDirectories(DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName)))
+                    var projectDir = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName);
+                    foreach (var d2 in Directory.GetDirectories(projectDir))
                     {
                         string dirName = new DirectoryInfo(d2).Name;
                         if (dirName != "")
@@ -294,9 +295,23 @@ namespace Rocket.AppThemes.Components
                             var rDir = d + "\\" + dirName;
                             var dest = DNNrocketUtils.MapPath(_rocketThemesPath + "\\" + projectName + "\\" + dirName);
                             if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
-                            Directory.Delete(dest, true);
-                            Directory.Move(rDir, dest);
-                            LogUtils.LogSystem("MOVE: " + rDir + " --> " + dest);
+                            var minVersion = VersionDependancyOK(rDir);
+                            if (minVersion == "")
+                            {
+                                Directory.Delete(dest, true);
+                                Directory.Move(rDir, dest);
+                                LogUtils.LogSystem("MOVE: " + rDir + " --> " + dest);
+                                var versioncontrol = Path.Combine(dest, "versioncontrol");
+                                if (File.Exists(versioncontrol)) File.Delete(versioncontrol);
+                            }
+                            else
+                            {
+                                // write flag XML file, to display message.
+                                var sRec = new SimplisityRecord();
+                                sRec.SetXmlProperty("genxml/minversion", minVersion);
+                                FileUtils.SaveFile(Path.Combine(dest, "versioncontrol"), sRec.XMLData);
+                                LogUtils.LogSystem("Version NOT compatible, RocketCDS upgrade needed: " + rDir );
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -318,6 +333,62 @@ namespace Rocket.AppThemes.Components
                 DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
             }
 
+        }
+        private string VersionDependancyOK(string appThemeFolder)
+        {
+            var depFileMapPath = Path.Combine(appThemeFolder, "versioncontrol.xml");
+            var minVersion = "";
+            var xmlData = FileUtils.ReadFile(depFileMapPath);
+            if (!string.IsNullOrEmpty(xmlData))
+            {
+                var depRec = new SimplisityRecord();
+                depRec.XMLData = xmlData;
+                var minrocketversion = depRec.GetXmlProperty("genxml/rocketversion");
+                if (!String.IsNullOrEmpty(minrocketversion)) minVersion = GetHighestVersion(minVersion, minrocketversion);
+            }
+            if (minVersion == "") return "";
+            var currentRocketVersion = DNNrocketUtils.GetLibraryVersion("RocketSystem");
+            if (currentRocketVersion == "") return "";
+            if (GetHighestVersion(minVersion, currentRocketVersion) == currentRocketVersion) return "";
+
+            return minVersion;
+        }
+        private string GetHighestVersion(string v1, string v2)
+        {
+            if (string.IsNullOrEmpty(v1)) return v2;
+            if (string.IsNullOrEmpty(v2)) return v1;
+
+            var parts1 = v1.Split('.');
+            var parts2 = v2.Split('.');
+
+            int maxLength = Math.Max(parts1.Length, parts2.Length);
+
+            for (int i = 0; i < maxLength; i++)
+            {
+                int num1 = 0;
+                int num2 = 0;
+
+                if (i < parts1.Length)
+                {
+                    int.TryParse(parts1[i], out num1);
+                }
+
+                if (i < parts2.Length)
+                {
+                    int.TryParse(parts2[i], out num2);
+                }
+
+                if (num1 > num2)
+                {
+                    return v1;
+                }
+                if (num2 > num1)
+                {
+                    return v2;
+                }
+            }
+
+            return v1; // versions are equal, return either one
         }
 
         public List<SimplisityRecord> List { get { return Record.GetRecordList(_listName); } }

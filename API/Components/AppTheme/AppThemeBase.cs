@@ -857,6 +857,19 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        public string MinimumVersion()
+        {
+            var versionControlMapPath = Path.Combine(AppThemeFolderMapPath, "versioncontrol");
+            if (File.Exists(versionControlMapPath))
+            {
+                var xmlData = FileUtils.ReadFile(versionControlMapPath);
+                var vRec = new SimplisityRecord();
+                vRec.XMLData = xmlData;
+                return vRec.GetXmlProperty("genxml/minversion");
+            }
+            return "";
+        }
+
         #region "properties"
 
         public List<SimplisityRecord> SettingsXml { get; set; }
