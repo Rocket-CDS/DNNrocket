@@ -63,8 +63,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketContentRazor", "..\Ro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketDirectoryRazor", "..\RocketModules\RocketDirectoryRazor\RocketDirectoryRazor.csproj", "{6A2F5734-7E71-4874-B732-49A01472F4C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppThemes-W3-CSS", "..\..\..\Websites\dev.rocketcds.me\Website\DesktopModules\RocketThemes\AppThemes-W3-CSS\AppThemes-W3-CSS.csproj", "{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		D All|Any CPU = D All|Any CPU
@@ -240,16 +238,6 @@ Global
 		{6A2F5734-7E71-4874-B732-49A01472F4C1}.Razor|Any CPU.Build.0 = Debug|Any CPU
 		{6A2F5734-7E71-4874-B732-49A01472F4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A2F5734-7E71-4874-B732-49A01472F4C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.D All|Any CPU.ActiveCfg = Release|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.D All|Any CPU.Build.0 = Release|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.R All|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.R All|Any CPU.Build.0 = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Razor|Any CPU.Build.0 = Debug|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC6A5DB5-BC4F-9335-93B3-2B2EE2CA8C34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

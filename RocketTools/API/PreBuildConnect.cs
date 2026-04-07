@@ -716,15 +716,27 @@ namespace RocketTools.API
         }
         public string RemoveWorkflowFromPortal()
         {
-            if (!UserUtils.IsAdministrator()) return "Must be Administrator.";
+            if (!UserUtils.IsAdministrator())
+            {
+                return "Must be Administrator.";
+            }
 
             try
             {
                 var portalId = _portalData.PortalId;
 
-                // 1. Remove workflow state from all Tabs (set StateID to -1)
-                var sql1 = "UPDATE {databaseOwner}[{objectQualifier}Tabs] SET StateID = -1 WHERE PortalID = " + portalId + " AND StateID IS NOT NULL AND StateID != -1";
-                _objCtrl.ExecSql(sql1);
+                // 1. Remove workflow state from all Tabs (set StateID to -1) - only if column exists
+                var checkStateIdColumn = @"SELECT COUNT(*) 
+                                   FROM INFORMATION_SCHEMA.COLUMNS 
+                                   WHERE TABLE_NAME = '{objectQualifier}Tabs' 
+                                   AND COLUMN_NAME = 'StateID'";
+                var stateIdExists = _objCtrl.ExecSql(checkStateIdColumn);
+
+                if (stateIdExists == "1")
+                {
+                    var sql1 = "UPDATE {databaseOwner}[{objectQualifier}Tabs] SET StateID = -1 WHERE PortalID = " + portalId + " AND StateID IS NOT NULL AND StateID != -1";
+                    _objCtrl.ExecSql(sql1);
+                }
 
                 // 2. Mark all TabVersions as published and set to the latest version
                 var sql2 = @"UPDATE tv SET tv.IsPublished = 1 
