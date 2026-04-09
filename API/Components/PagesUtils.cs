@@ -679,6 +679,8 @@ namespace DNNrocketAPI.Components
                 var articleTable = "";
                 var metatitle = "";
                 var metadescription = "";
+                var ogtitle = "";
+                var ogdescription = "";                
                 var metatagwords = "";
                 var disablealternate = false;
                 var disablecanonical = false;
@@ -710,14 +712,23 @@ namespace DNNrocketAPI.Components
                                     if (metatitle == "") metatitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productname");
                                     metatitle = metatitle.Truncate(200);
 
+                                    // Do NOT use the seo fileds for OG:
+                                    ogtitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/name");
+                                    if (ogtitle == "") ogtitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlename");
+                                    if (ogtitle == "") ogtitle = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productname");
+                                    ogtitle = ogtitle.Truncate(200);
+
                                     metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
                                     if (metadescription == "") metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
                                     if (metadescription == "") metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
                                     if (metadescription == "") metadescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productsummary");
                                     metadescription = metadescription.Truncate(260);
 
-                                    metatagwords = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seokeyword");
-                                    metatagwords = metatagwords.Truncate(260);
+                                    ogdescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+                                    if (ogdescription == "") ogdescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+                                    if (ogdescription == "") ogdescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/articlesummary");
+                                    if (ogdescription == "") ogdescription = dataRecordTemp.GetXmlProperty("genxml/lang/genxml/textbox/productsummary");
+                                    ogdescription = ogdescription.Truncate(260);
 
                                     var portalContentRec = DNNrocketUtils.GetPortalContentRecByRefId(dataRecordTemp.PortalId, paramDict.Value.systemkey, articleTable);
                                     if (portalContentRec == null) portalContentRec = new SimplisityRecord();
@@ -739,8 +750,8 @@ namespace DNNrocketAPI.Components
                                             if (string.IsNullOrEmpty(metaType)) metaType = "article";
 
                                             metaList.Add("og:type", metaType);
-                                            metaList.Add("og:title", metatitle.Truncate(200).Replace("\"", ""));
-                                            metaList.Add("og:description", metadescription.Truncate(260).Replace("\"", ""));
+                                            metaList.Add("og:title", ogtitle.Truncate(200).Replace("\"", ""));
+                                            metaList.Add("og:description", ogdescription.Truncate(260).Replace("\"", ""));
                                             metaList.Add("og:url", ogurl);
 
                                             var imgRelPath = dataRecordTemp.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepatharticleimage").ToString();
@@ -753,8 +764,8 @@ namespace DNNrocketAPI.Components
                                                 metaList.Add("og:image", imageUrl);
                                             }
 
-                                            metaList.Add("twitter:title", metatitle.Truncate(200).Replace("\"", ""));
-                                            metaList.Add("twitter:description", metadescription.Truncate(260).Replace("\"", ""));
+                                            metaList.Add("twitter:title", ogtitle.Truncate(200).Replace("\"", ""));
+                                            metaList.Add("twitter:description", ogdescription.Truncate(260).Replace("\"", ""));
                                             metaList.Add("twitter:card", imageUrl == "" ? "summary" : "summary_large_image");
                                             if (imageUrl != "") metaList.Add("twitter:image", imageUrl);
 
@@ -805,8 +816,8 @@ namespace DNNrocketAPI.Components
                                                 json.Add("{");
                                                 json.Add("\"@context\":\"https://schema.org\",");
                                                 json.Add("\"@type\":\"Product\",");
-                                                json.Add("\"name\":\"" + j(metatitle) + "\"");
-                                                if (metadescription != "") json.Add(",\"description\":\"" + j(metadescription) + "\"");
+                                                json.Add("\"name\":\"" + j(ogtitle) + "\"");
+                                                if (metadescription != "") json.Add(",\"description\":\"" + j(ogdescription) + "\"");
                                                 if (imageUrl != "") json.Add(",\"image\":[\"" + j(imageUrl) + "\"]");
                                                 if (sku != "") json.Add(",\"sku\":\"" + j(sku) + "\"");
                                                 if (barcode != "") json.Add(",\"gtin\":\"" + j(barcode) + "\"");

@@ -45,9 +45,10 @@ namespace DNNrocketAPI.Components
                 PortalId = PortalUtils.GetPortalId();
             else
                 PortalId = portalid;
-            AppThemeFolderPortalMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder;
-            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
-            PortalFileDirectoryRel = "/" + PortalUtils.DNNrocketThemesDirectoryRel(portalid).TrimEnd('/') + "/" + projectName + "/" + AppThemeFolder + "/" + AppVersionFolder + "/";
+            if (!PortalUtils.PortalExists(PortalId)) PortalId = PortalUtils.GetPortalId();
+            AppThemeFolderPortalMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(PortalId).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder;
+            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(PortalId).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
+            PortalFileDirectoryRel = "/" + PortalUtils.DNNrocketThemesDirectoryRel(PortalId).TrimEnd('/') + "/" + projectName + "/" + AppThemeFolder + "/" + AppVersionFolder + "/";
             AssignVersionFolders();
             ImportConfig();
 
