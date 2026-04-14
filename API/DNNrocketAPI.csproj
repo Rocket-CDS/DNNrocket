@@ -1345,8 +1345,6 @@
     <None Include="Themes\config-w3\1.0\css\teal.css" />
     <None Include="Themes\config-w3\1.0\css\NavyPeony.css" />
     <Content Include="Themes\config-w3\1.0\css\rocketcds-theme.css" />
-    <Content Include="Themes\config-w3\1.0\js\ckeditor4startup1.js" />
-    <Content Include="Themes\config-w3\1.0\js\ckeditor4config1.js" />
     <Content Include="Themes\config-w3\1.0\js\SideMenu.js" />
     <None Include="Themes\config-w3\1.0\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\sailorblue-theme.css" />
