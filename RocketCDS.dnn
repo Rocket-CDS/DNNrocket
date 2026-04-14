@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.8.4">
+		<package name="RocketSystem" type="Library" version="1.8.5">
 			<friendlyName>RocketSystem</friendlyName>
 			<DefinitionName>RocketSystem</DefinitionName>
 			<description>Rocket System</description>
@@ -19,7 +19,7 @@
       </license>
 		<releaseNotes>
 			DNNrocket is a DNN wrapper framework that extends DNN and is designed to build eco-friendly websites and help migration to .NetCore
-			# DNNrocket v1.8.4
+			# DNNrocket v1.8.5
 		</releaseNotes>
       <dependencies>
       </dependencies>
@@ -59,6 +59,10 @@
 			  <script type="Install">
 				  <name>01.01.01.SqlDataProvider</name>
 				  <version>01.01.01</version>
+			  </script>
+			  <script type="Install">
+				  <name>01.08.05.SqlDataProvider</name>
+				  <version>01.08.05</version>
 			  </script>
 			  <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
