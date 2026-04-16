@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RocketAppTheme", "RocketApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketFormsRazor", "..\RocketModules\RocketFormsRazor\RocketFormsRazor.csproj", "{0642BA63-ABC3-422A-BB89-86FDA6211312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketBlogRazor", "..\RocketModules\RocketBlogRazor\RocketBlogRazor.csproj", "{EF937554-CAA6-4996-8E16-EC676D4BA018}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		D All|Any CPU = D All|Any CPU
@@ -704,6 +706,36 @@ Global
 		{0642BA63-ABC3-422A-BB89-86FDA6211312}.Release|x64.Build.0 = Release|Any CPU
 		{0642BA63-ABC3-422A-BB89-86FDA6211312}.Release|x86.ActiveCfg = Release|Any CPU
 		{0642BA63-ABC3-422A-BB89-86FDA6211312}.Release|x86.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|Any CPU.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|Any CPU.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|x64.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|x64.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|x86.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.D All|x86.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|x64.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Debug|x86.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|Any CPU.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|x64.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|x64.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|x86.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.R All|x86.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|Any CPU.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|x64.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|x64.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|x86.ActiveCfg = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Razor|x86.Build.0 = Debug|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|x64.Build.0 = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|x86.ActiveCfg = Release|Any CPU
+		{EF937554-CAA6-4996-8E16-EC676D4BA018}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

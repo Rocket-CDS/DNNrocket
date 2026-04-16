@@ -357,7 +357,7 @@ namespace RocketTools.API
             var importfileupload = _postInfo.GetXmlProperty("genxml/hidden/importfileupload");
             if (importfileupload != "" && Path.GetExtension(importfileupload).ToLower() == ".zip")
             {
-                var importFile = PortalUtils.TempDirectoryMapPath() + "\\" + UserUtils.GetCurrentUserId() + "_" + Path.GetFileNameWithoutExtension(importfileupload);
+                var importFile = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + UserUtils.GetCurrentUserId() + "_" + Path.GetFileNameWithoutExtension(importfileupload);
                 if (!File.Exists(importFile)) return ImportPreBuild();
 
                 // Remove Workflow for HtmlText, solve DNN bug
@@ -455,6 +455,7 @@ namespace RocketTools.API
                 {
                     var objCtrl = new DNNrocketController();
                     var importMapPathFolder = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJob.Directory);
+                    _oldTabIdTabPathDict = new Dictionary<string, string>();
 
                     var rocketSettings = new SimplisityRecord();
                     var fName = importMapPathFolder + "\\RocketSettings.xml";
@@ -463,7 +464,6 @@ namespace RocketTools.API
                         rocketSettings.XMLData = FileUtils.ReadFile(fName);
 
                         // build TabPathDict
-                        _oldTabIdTabPathDict = new Dictionary<string, string>();
                         foreach (var row in rocketSettings.GetRecordList("tabpath"))
                         {
                             _oldTabIdTabPathDict.Add(row.GetXmlProperty("row/@TabId"), row.GetXmlProperty("row/@TabPath"));
@@ -565,7 +565,7 @@ namespace RocketTools.API
                             {
                                 foreach (var rocketInterface in systemData.ProviderList)
                                 {
-                                    if (rocketInterface.IsProvider("exportmodule"))
+                                    if (rocketInterface.IsProvider("importmodule"))
                                     {
                                         if (rocketInterface.Exists)
                                         {

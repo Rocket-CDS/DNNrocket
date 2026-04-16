@@ -83,7 +83,8 @@ namespace DNNrocketAPI.Components
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleref", moduleSettings.ModuleRef);
                                 paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemData.SystemKey);
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                systemData.Record.PortalId = portalId;  // used to run on shcheduler.  
+                                paramInfo.SetXmlProperty("genxml/hidden/schedulerportalid", portalId.ToString());
+                                systemData.Record.PortalId = portalId;  // used to run on scheduler.  
 
                                 var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
                                 paramInfo.SetXmlProperty("genxml/hidden/securitykey", securityKey);
@@ -152,6 +153,7 @@ namespace DNNrocketAPI.Components
                                     paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                     paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);
                                     paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemKey);
+                                    paramInfo.SetXmlProperty("genxml/hidden/schedulerportalid", portalId.ToString());
                                     systemData.Record.PortalId = portalId;  // import run on shcheduler,
 
                                     var securityKey = DNNrocketUtils.SetTempStorage(new SimplisityInfo());
