@@ -332,6 +332,7 @@ namespace DNNrocketAPI.Components
 
                                 var rtn = "";
                                 if (startIndex > -1) rtn = injectTemplate.Substring(startIndex);
+                                rtn = rtn.Replace(searchStr, "");
                                 fr.Replace("[INJECT:" + token + "]", rtn);
                             }
                         }

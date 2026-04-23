@@ -46,11 +46,17 @@ namespace DNNrocketAPI.Components
             try
             {
                 HttpContext context = HttpContext.Current;
+                if (!(context.Handler is Page page))
+                {
+                    return;
+                }
 
-                // Only process Page requests
-                if (!(context.Handler is Page page)) return;
+                if (context.Items["HttpModuleRocket_InitCompleteHooked"] != null)
+                {
+                    return;
+                }
 
-                // Hook into PreRender - just before rendering               
+                context.Items["HttpModuleRocket_InitCompleteHooked"] = true;
                 page.InitComplete += Page_InitComplete;
             }
             catch (Exception ex)
