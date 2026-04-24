@@ -45,6 +45,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -2195,6 +2196,16 @@ namespace DNNrocketAPI.Components
                             urlstr = urlstr.Replace("{domainurl}", domainUrl);
                             urlstr = urlstr.Replace("{appthemefolder}", appTheme.AppThemeVersionFolderRel);
                             urlstr = urlstr.Replace("{appthemesystemfolder}", appThemeSystemFolder);
+                            if (urlstr.Contains("{appthemeshareddirectory}"))
+                            {
+                                var appThemeShared = new AppThemeLimpet(appTheme.PortalId, "rocketdirectoryapi.01shared", "1.0", appTheme.ProjectName);
+                                if (appThemeShared != null && appThemeShared.Exists) urlstr = urlstr.Replace("{appthemeshareddirectory}", appThemeShared.AppThemeVersionFolderRel);
+                            }
+                            if (urlstr.Contains("{appthemesharedcontent}"))
+                            {
+                                var appThemeShared = new AppThemeLimpet(appTheme.PortalId, "rocketcontentapi.01shared", "1.0", appTheme.ProjectName);
+                                if (appThemeShared != null && appThemeShared.Exists) urlstr = urlstr.Replace("{appthemesharedcontent}", appThemeShared.AppThemeVersionFolderRel);
+                            }
                         }
                         r.SetXmlProperty("genxml/id", CacheUtils.Md5HashCalc(urlstr));
                         r.SetXmlProperty("genxml/url", urlstr);

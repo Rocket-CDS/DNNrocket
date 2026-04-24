@@ -55,10 +55,9 @@ namespace DNNrocketAPI.Components
             LastUpdated = Directory.GetLastWriteTime(AppThemeFolderMapPath);
 
             Exists = false;
-            if (File.Exists(RazorFolderMapPath + "\\view.cshtml") || File.Exists(AppThemeFolderMapPath + "\\apptheme.config")) Exists = true;
-
+            if (Directory.Exists(RazorFolderMapPath + "\\view.cshtml") || File.Exists(AppThemeFolderMapPath + "\\apptheme.config")) Exists = true;
+            if (!Exists && (Directory.GetFiles(RazorFolderMapPath).Length > 0)) Exists = true;
             Populate();
-
         }
 
         private void ImportConfig()
@@ -877,6 +876,8 @@ namespace DNNrocketAPI.Components
         public List<SimplisityRecord> ViewXml { get; set; }
         public string AppThemeFolder { get; set; }
         public string Name { get { var l = AppThemeFolder.Split('.'); if (l.Length >= 2) return l[1]; else return AppThemeFolder; } }
+        public string SystemKey { get { var l = AppThemeFolder.Split('.'); if (l.Length >= 2) return l[0]; else return AppThemeFolder; } }
+        public string PrefixName { get { return Name.ToLower(); } }
         public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
         public string AppVersionFolder { get; set; }
@@ -912,6 +913,8 @@ namespace DNNrocketAPI.Components
         public Dictionary<string, string> FileNameList { get; set; }
         public Dictionary<string, string> PortalFileNameList { get; set; }
         public DateTime LastUpdated { get; set; }
+        public string ProjectName { get { return _projectName; } }
+
         #endregion
 
 

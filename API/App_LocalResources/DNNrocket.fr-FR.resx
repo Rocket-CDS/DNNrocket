@@ -1072,9 +1072,9 @@
     <value>Largeur de l'image</value>
   </data>
   <data name="jodittidy.Text" xml:space="preserve">
-    <value>Nettoyer</value>
+    <value>Conserver le formatage</value>
   </data>
   <data name="jodittextonly.Text" xml:space="preserve">
-    <value>Coller le texte seulement</value>
+    <value>Coller le texte brut</value>
   </data>
 </root>
