@@ -108,7 +108,7 @@ namespace DNNrocketAPI.Components
         /// Gets or sets a value indicating whether ECOMode is activated for the module. 
         /// The module settings should have a value with the xpath of "genxml/settings/ecomode", default is true.
         /// </summary>
-        public bool ECOMode { get {
+        public bool ECOMode { get { if (_record == null) return false; 
                 if (_record.GetXmlProperty("genxml/settings/ecomode") == "") return true;
                 return _record.GetXmlPropertyBool("genxml/settings/ecomode"); 
             } set { _record.SetXmlProperty("genxml/settings/ecomode", value.ToString()); } }

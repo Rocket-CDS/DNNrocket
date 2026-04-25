@@ -56,7 +56,7 @@ namespace DNNrocketAPI.Components
 
             Exists = false;
             if (Directory.Exists(RazorFolderMapPath + "\\view.cshtml") || File.Exists(AppThemeFolderMapPath + "\\apptheme.config")) Exists = true;
-            if (!Exists && (Directory.GetFiles(RazorFolderMapPath).Length > 0)) Exists = true;
+            if (!Exists && Directory.Exists(RazorFolderMapPath) && (Directory.GetFiles(RazorFolderMapPath).Length > 0)) Exists = true;
             Populate();
         }
 
