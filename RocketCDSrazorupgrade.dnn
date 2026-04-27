@@ -74,7 +74,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules\DNNrocket</basePath>
 						<resourceFile>
-							<name>ResourceDNNrocket.zip</name>
+							<name>Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -420,7 +420,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules\DNNrocketModules\RocketContentAPI</basePath>
 						<resourceFile>
-							<name>RocketContentAPI\ResourceRocketContentAPI.zip</name>
+							<name>RocketContentAPI\Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -438,6 +438,266 @@
 
 			</components>
 		</package>
+
+		<package name="RocketDirectoryAPI" type="Library" version="1.2.7">
+			<friendlyName>RocketDirectoryAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketDirectoryAPI</DefinitionName>
+			<description>RocketDirectoryAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketDirectoryAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.11.00</dependency>
+			</dependencies>
+
+			<components>
+				<component type="Script">
+					<scripts>
+						<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI\Installation</basePath>
+						<script type="Install">
+							<name>RocketDirectoryAPI\01.00.00.SqlDataProvider</name>
+							<version>01.00.00</version>
+						</script>
+						<script type="UnInstall">
+							<name>RocketDirectoryAPI\Uninstall.SqlDataProvider</name>
+							<version>01.00.00</version>
+						</script>
+					</scripts>
+				</component>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI</basePath>
+						<resourceFile>
+							<name>RocketDirectoryAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketDirectoryAPI.dll</name>
+							<sourceFileName>RocketDirectoryAPI.dll</sourceFileName>
+						</assembly>
+
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketBlogAPI" type="Library" version="1.0.0">
+			<friendlyName>RocketBlogAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketBlogAPI</DefinitionName>
+			<description>RocketBlogAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketBlogAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.11.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketBlogAPI</basePath>
+						<resourceFile>
+							<name>RocketBlogAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketBlogAPI.dll</name>
+							<sourceFileName>RocketBlogAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketEventsAPI" type="Library" version="1.1.1">
+			<friendlyName>RocketEventsAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketEventsAPI</DefinitionName>
+			<description>RocketEventsAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketEventsAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.11.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketEventsAPI</basePath>
+						<resourceFile>
+							<name>RocketEventsAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketEventsAPI.dll</name>
+							<sourceFileName>RocketEventsAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketNewsAPI" type="Library" version="1.0.0">
+			<friendlyName>RocketNewsAPI by Nevoweb</friendlyName>
+			<DefinitionName>RocketNewsAPI</DefinitionName>
+			<description>RocketNewsAPI</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketNewsAPI uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.11.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketNewsAPI</basePath>
+						<resourceFile>
+							<name>RocketNewsAPI\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketNewsAPI.dll</name>
+							<sourceFileName>RocketNewsAPI.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
+		<package name="RocketForms" type="Library" version="1.0.5">
+			<friendlyName>RocketForms by Nevoweb</friendlyName>
+			<DefinitionName>RocketForms</DefinitionName>
+			<description>RocketForms</description>
+			<iconFile></iconFile>
+			<owner>
+				<name>David Lee</name>
+				<organization>Nevoweb</organization>
+				<url>www.nevoweb.com</url>
+				<email>support@nevoweb.com</email>
+			</owner>
+			<license>
+				Copyright (c) 2020, www.nevoweb.com
+				All rights reserved.
+
+				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+			</license>
+			<releaseNotes>
+				RocketForms uses the DNNRocket framework
+			</releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.11.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocketModules\RocketForms</basePath>
+						<resourceFile>
+							<name>RocketForms\Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>RocketForms.dll</name>
+							<sourceFileName>RocketForms.dll</sourceFileName>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+		</package>
+
 
 		<package name="RocketContentRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketContent [Razor]</friendlyName>
@@ -468,7 +728,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketContentRazor</basePath>
 						<resourceFile>
-							<name>RocketContentRazor/ResourceRocketContentRazor.zip</name>
+							<name>RocketContentRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -566,69 +826,6 @@
 			</components>
 		</package>
 
-		<package name="RocketDirectoryAPI" type="Library" version="1.2.7">
-			<friendlyName>RocketDirectoryAPI by Nevoweb</friendlyName>
-			<DefinitionName>RocketDirectoryAPI</DefinitionName>
-			<description>RocketDirectoryAPI</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketDirectoryAPI uses the DNNRocket framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-			</dependencies>
-
-			<components>
-				<component type="Script">
-					<scripts>
-						<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI\Installation</basePath>
-						<script type="Install">
-							<name>RocketDirectoryAPI\01.00.00.SqlDataProvider</name>
-							<version>01.00.00</version>
-						</script>
-						<script type="UnInstall">
-							<name>RocketDirectoryAPI\Uninstall.SqlDataProvider</name>
-							<version>01.00.00</version>
-						</script>
-					</scripts>
-				</component>
-
-				<component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocketModules\RocketDirectoryAPI</basePath>
-						<resourceFile>
-							<name>RocketDirectoryAPI\ResourceRocketDirectoryAPI.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-
-				<component type="Assembly">
-					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>RocketDirectoryAPI.dll</name>
-							<sourceFileName>RocketDirectoryAPI.dll</sourceFileName>
-						</assembly>
-
-					</assemblies>
-				</component>
-
-			</components>
-		</package>
-
 		<package name="RocketDirectoryRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketDirectory [Razor]</friendlyName>
 			<DefinitionName>RocketDirectoryRazor</DefinitionName>
@@ -658,7 +855,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketDirectoryRazor</basePath>
 						<resourceFile>
-							<name>RocketDirectoryRazor/ResourceRocketDirectoryRazor.zip</name>
+							<name>RocketDirectoryRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -756,55 +953,6 @@
 			</components>
 		</package>
 
-		<package name="RocketBlogAPI" type="Library" version="1.0.0">
-			<friendlyName>RocketBlogAPI by Nevoweb</friendlyName>
-			<DefinitionName>RocketBlogAPI</DefinitionName>
-			<description>RocketBlogAPI</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketBlogAPI uses the DNNRocket framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-			</dependencies>
-
-			<components>
-
-				<component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocketModules\RocketBlogAPI</basePath>
-						<resourceFile>
-							<name>RocketBlogAPI\ResourceRocketBlogAPI.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-
-				<component type="Assembly">
-					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>RocketBlogAPI.dll</name>
-							<sourceFileName>RocketBlogAPI.dll</sourceFileName>
-						</assembly>
-					</assemblies>
-				</component>
-
-			</components>
-		</package>
-
 		<package name="RocketBlogRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketBlog [Razor]</friendlyName>
 			<DefinitionName>RocketBlogRazor</DefinitionName>
@@ -834,7 +982,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketBlogRazor</basePath>
 						<resourceFile>
-							<name>RocketBlogRazor/ResourceRocketBlogRazor.zip</name>
+							<name>RocketBlogRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -923,55 +1071,6 @@
 			</components>
 		</package>
 
-		<package name="RocketEventsAPI" type="Library" version="1.1.1">
-			<friendlyName>RocketEventsAPI by Nevoweb</friendlyName>
-			<DefinitionName>RocketEventsAPI</DefinitionName>
-			<description>RocketEventsAPI</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketEventsAPI uses the DNNRocket framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-			</dependencies>
-
-			<components>
-
-				<component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocketModules\RocketEventsAPI</basePath>
-						<resourceFile>
-							<name>RocketEventsAPI\ResourceRocketEventsAPI.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-
-				<component type="Assembly">
-					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>RocketEventsAPI.dll</name>
-							<sourceFileName>RocketEventsAPI.dll</sourceFileName>
-						</assembly>
-					</assemblies>
-				</component>
-
-			</components>
-		</package>
-
 		<package name="RocketEventsRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketEvents [Razor]</friendlyName>
 			<DefinitionName>RocketEventsRazor</DefinitionName>
@@ -1000,7 +1099,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketEventsRazor</basePath>
 						<resourceFile>
-							<name>RocketEventsRazor/ResourceRocketEventsRazor.zip</name>
+							<name>RocketEventsRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -1088,55 +1187,6 @@
 			</components>
 		</package>
 
-		<package name="RocketNewsAPI" type="Library" version="1.0.0">
-			<friendlyName>RocketNewsAPI by Nevoweb</friendlyName>
-			<DefinitionName>RocketNewsAPI</DefinitionName>
-			<description>RocketNewsAPI</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketNewsAPI uses the DNNRocket framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-			</dependencies>
-
-			<components>
-
-				<component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocketModules\RocketNewsAPI</basePath>
-						<resourceFile>
-							<name>RocketNewsAPI\ResourceRocketNewsAPI.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-
-				<component type="Assembly">
-					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>RocketNewsAPI.dll</name>
-							<sourceFileName>RocketNewsAPI.dll</sourceFileName>
-						</assembly>
-					</assemblies>
-				</component>
-
-			</components>
-		</package>
-
 		<package name="RocketNewsRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketNews [Razor]</friendlyName>
 			<DefinitionName>RocketNewsRazor</DefinitionName>
@@ -1166,7 +1216,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketNewsRazor</basePath>
 						<resourceFile>
-							<name>RocketNewsRazor/ResourceRocketNewsRazor.zip</name>
+							<name>RocketNewsRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
@@ -1255,55 +1305,6 @@
 			</components>
 		</package>
 
-		<package name="RocketForms" type="Library" version="1.0.5">
-			<friendlyName>RocketForms by Nevoweb</friendlyName>
-			<DefinitionName>RocketForms</DefinitionName>
-			<description>RocketForms</description>
-			<iconFile></iconFile>
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>support@nevoweb.com</email>
-			</owner>
-			<license>
-				Copyright (c) 2020, www.nevoweb.com
-				All rights reserved.
-
-				THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes>
-				RocketForms uses the DNNRocket framework
-			</releaseNotes>
-
-			<dependencies>
-				<dependency type="CoreVersion">09.11.00</dependency>
-			</dependencies>
-
-			<components>
-
-				<component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocketModules\RocketForms</basePath>
-						<resourceFile>
-							<name>RocketForms\ResourceRocketForms.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-
-				<component type="Assembly">
-					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>RocketForms.dll</name>
-							<sourceFileName>RocketForms.dll</sourceFileName>
-						</assembly>
-					</assemblies>
-				</component>
-
-			</components>
-		</package>
-
 		<package name="RocketFormsRazor" type="Module" version="01.00.00">
 			<friendlyName> RocketForm [Razor]</friendlyName>
 			<DefinitionName>RocketFormsRazor</DefinitionName>
@@ -1332,7 +1333,7 @@
 					<resourceFiles>
 						<basePath>DesktopModules/RocketModules/RocketFormsRazor</basePath>
 						<resourceFile>
-							<name>RocketFormsRazor/ResourceRocketFormsRazor.zip</name>
+							<name>RocketFormsRazor/Resource.zip</name>
 						</resourceFile>
 					</resourceFiles>
 				</component>
