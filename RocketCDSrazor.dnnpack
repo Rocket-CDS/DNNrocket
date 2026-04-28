@@ -100,43 +100,42 @@
 	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\01.00.00.SqlDataProvider</value>
 	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\Uninstall.SqlDataProvider</value>
 	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\SystemDefaults.rules</value>
-	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\ResourceRocketContentAPI.zip</value>
+	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\Installation\Resource.zip</value>
 	  <value dest='RocketContentAPI'>..\DNNRocketModules\RocketContentAPI\system.rules</value>
 
-	  <value dest='RocketContentRazor'>..\RocketModules\RocketContentRazor\Installation\ResourceRocketContentRazor.zip</value>
 
 	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\01.00.00.SqlDataProvider</value>
 	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\Uninstall.SqlDataProvider</value>
 	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\SystemDefaults.rules</value>
 	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\SystemInit.rules</value>
-	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\ResourceRocketDirectoryAPI.zip</value>
+	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\Installation\Resource.zip</value>
 	  <value dest='RocketDirectoryAPI'>..\DNNRocketModules\RocketDirectoryAPI\system.rules</value>
 
-	  <value dest='RocketDirectoryRazor'>..\RocketModules\RocketDirectoryRazor\Installation\ResourceRocketDirectoryRazor.zip</value>
-
 	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\Installation\SystemInit.rules</value>
-	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\Installation\ResourceRocketBlogAPI.zip</value>
+	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\Installation\Resource.zip</value>
 	  <value dest='RocketBlogAPI'>..\DNNRocketModules\RocketBlogAPI\system.rules</value>
 
-	  <value dest='RocketBlogRazor'>..\RocketModules\RocketBlogRazor\Installation\ResourceRocketBlogRazor.zip</value>
-
 	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\Installation\SystemInit.rules</value>
-	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\Installation\ResourceRocketEventsAPI.zip</value>
+	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\Installation\Resource.zip</value>
 	  <value dest='RocketEventsAPI'>..\DNNRocketModules\RocketEventsAPI\system.rules</value>
 
-	  <value dest='RocketEventsRazor'>..\RocketModules\RocketEventsRazor\Installation\ResourceRocketEventsRazor.zip</value>
 
 	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\Installation\SystemInit.rules</value>
-	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\Installation\ResourceRocketNewsAPI.zip</value>
+	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\Installation\Resource.zip</value>
 	  <value dest='RocketNewsAPI'>..\DNNRocketModules\RocketNewsAPI\system.rules</value>
 
-	  <value dest='RocketNewsRazor'>..\RocketModules\RocketNewsRazor\Installation\ResourceRocketNewsRazor.zip</value>
 
 	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\Installation\SystemDefaults.rules</value>
-	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\Installation\ResourceRocketForms.zip</value>
+	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\Installation\Resource.zip</value>
 	  <value dest='RocketForms'>..\DNNRocketModules\RocketForms\system.rules</value>
+  
+	  <value dest='RocketContentRazor'>..\RocketModules\RocketContentRazor\Installation\Resource.zip</value>
+	  <value dest='RocketDirectoryRazor'>..\RocketModules\RocketDirectoryRazor\Installation\Resource.zip</value>
+	  <value dest='RocketBlogRazor'>..\RocketModules\RocketBlogRazor\Installation\Resource.zip</value>
+	  <value dest='RocketEventsRazor'>..\RocketModules\RocketEventsRazor\Installation\Resource.zip</value>
+	  <value dest='RocketNewsRazor'>..\RocketModules\RocketNewsRazor\Installation\Resource.zip</value>
+	  <value dest='RocketFormsRazor'>..\RocketModules\RocketFormsRazor\Installation\Resource.zip</value>
 
-	  <value dest='RocketFormsRazor'>..\RocketModules\RocketFormsRazor\Installation\ResourceRocketFormsRazor.zip</value>
 
 	  <!-- RocketEdit Skin Files -->
 	  <value dest='RocketEdit\Views'>\RocketPortal\Skins\RocketEdit\Views\RocketEdit.cshtml</value>
