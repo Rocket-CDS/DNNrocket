@@ -1042,6 +1042,21 @@ namespace DNNrocketAPI.Components
                 return "";
             }
         }
+
+        public static string GetCurrentPortalCssPath()
+        {
+            try
+            {
+                var ps = PortalUtils.GetPortalSettings();
+                if (ps == null) return "";
+                return "/Portals/" + ps.PortalId + "/portal.css";
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return "";
+            }
+        }
         public static string GetEffectiveSkinSrcForCurrentPage()
         {
             var ps = PortalUtils.GetCurrentPortalSettings();

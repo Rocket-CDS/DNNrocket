@@ -8,6 +8,7 @@
 - User prefers old-style Razor formatting with all if statements using multi-line braces (no single-line if statements).
 - Fixes for MVC pipeline code should only use members actually available in `RazorModuleControlBase`; avoid suggesting invalid members like `Response` directly.
 - In this codebase, w3.css should always be loaded and Font Awesome should not be loaded.
+- In this codebase, portal.css is always located at the portal root path (/Portals/{portalId}/portal.css) and should not be derived from the active skin path.
 - When troubleshooting, ask targeted verification questions before proposing full fixes.
 
 ## HTML Standards

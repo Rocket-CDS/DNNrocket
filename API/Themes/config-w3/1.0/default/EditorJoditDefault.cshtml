@@ -277,7 +277,7 @@
             },
             iframe: true,
             iframeDefaultSrc: 'about:blank',
-            iframeCSSLinks: ['@PortalUtils.GetCurrentPageSkinCssPath()'].filter(function (x) { return x; }),
+            iframeCSSLinks: ['@PortalUtils.GetCurrentPortalCssPath()','@PortalUtils.GetCurrentPageSkinCssPath()'],
             iframeStyle: 'html,body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;}'
         };
 
@@ -330,4 +330,4 @@
         }
     });
 })();
-</script></script>
+</script>
