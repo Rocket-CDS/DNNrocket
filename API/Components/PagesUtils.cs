@@ -1065,5 +1065,6 @@ public static bool UpdatePageDetails(int portalId, int tabId, string pageName = 
         return false;
     }
 }
+
     }
 }

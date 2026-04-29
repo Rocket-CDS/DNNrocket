@@ -1026,5 +1026,84 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static string GetCurrentPageSkinCssPath()
+        {
+            try
+            {
+                var ps = PortalUtils.GetPortalSettings();
+                if (ps == null) return "";
+                var portalId = ps.PortalId;
+                var skinSrc = GetEffectiveSkinSrcForCurrentPage();
+                return ConvertSkinSrcToSkinCssPath(portalId, skinSrc);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return "";
+            }
+        }
+        public static string GetEffectiveSkinSrcForCurrentPage()
+        {
+            var ps = PortalUtils.GetCurrentPortalSettings();
+            if (ps == null)
+            {
+                return "";
+            }
+
+            var tabSkin = ps.ActiveTab != null ? ps.ActiveTab.SkinSrc : "";
+            if (!string.IsNullOrWhiteSpace(tabSkin))
+            {
+                return tabSkin;
+            }
+
+            return GetPortalThemeSkinSrc(ps.PortalId);
+        }
+        public static string GetPortalThemeSkinSrc(int portalId)
+        {
+            var settings = PortalController.Instance.GetPortalSettings(portalId);
+            if (settings == null)
+            {
+                return "";
+            }
+
+            var skinSrc = Convert.ToString(settings["DefaultPortalSkin"]);
+            return skinSrc ?? "";
+        }
+
+        private static string ConvertSkinSrcToSkinCssPath(int portalId, string skinSrc)
+        {
+            if (string.IsNullOrWhiteSpace(skinSrc))
+            {
+                return "";
+            }
+
+            var normalized = skinSrc.Replace("\\", "/").Trim();
+
+            // Convert DNN tokenized skin path to portal-relative URL
+            if (normalized.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized = "/Portals/_default/" + normalized.Substring(3).TrimStart('/');
+            }
+            else if (normalized.StartsWith("[L]", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized = "/Portals/" + portalId + "/" + normalized.Substring(3).TrimStart('/');
+            }
+            else if (!normalized.StartsWith("/"))
+            {
+                normalized = "/" + normalized.TrimStart('/');
+            }
+
+            // Remove skin file name (e.g. Home.ascx) and append skin.css
+            var lastSlash = normalized.LastIndexOf('/');
+            if (lastSlash < 0)
+            {
+                return "";
+            }
+
+            var skinFolder = normalized.Substring(0, lastSlash);
+            return skinFolder + "/skin.css";
+        }
+
+
     }
 }

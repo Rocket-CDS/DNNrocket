@@ -184,7 +184,7 @@
             },
             iframe: true,
             iframeDefaultSrc: 'about:blank',
-            iframeCSSLinks: [],
+            iframeCSSLinks: ['@PortalUtils.GetCurrentPageSkinCssPath()'].filter(function (x) { return x; }),
             iframeStyle: 'html,body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;}'
         };
 
