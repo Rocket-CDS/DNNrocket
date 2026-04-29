@@ -13,23 +13,6 @@
         color: #000000 !important;
     }
 
-    /* Editor area padding */
-    .jodit-container:not(.jodit_inline) .jodit-wysiwyg {
-        padding: 20px;
-    }
-
-    /* Ensure italic elements display correctly in editor */
-    .jodit-wysiwyg em,
-    .jodit-wysiwyg i {
-        font-style: italic !important;
-    }
-
-    /* Ensure bold elements display correctly in editor */
-    .jodit-wysiwyg strong,
-    .jodit-wysiwyg b {
-        font-weight: bold !important;
-    }
-
     /* Remove italic preview in toolbar button only */
     .jodit-toolbar-button[aria-label*="Italic"] {
         font-style: normal !important;
@@ -198,7 +181,11 @@
                 afterInit: function(instance) {
                     console.log('Jodit editor initialized for:', editorId);
                 }
-            }
+            },
+            iframe: true,
+            iframeDefaultSrc: 'about:blank',
+            iframeCSSLinks: [],
+            iframeStyle: 'html,body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;}'
         };
 
         // Initialize Jodit editor with unique container
