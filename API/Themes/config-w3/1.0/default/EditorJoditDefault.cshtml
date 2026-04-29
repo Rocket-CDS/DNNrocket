@@ -151,6 +151,9 @@
         const config = {
             language: '@DNNrocketUtils.GetLanguageCode(DNNrocketUtils.GetCurrentCulture())',
             toolbar: true,
+            textIcons: function (key) {
+                return key === 'paragraph';
+            },
             toolbarButtonSize: 'middle',
             toolbarAdaptive: false,
             toolbarSticky: false,
