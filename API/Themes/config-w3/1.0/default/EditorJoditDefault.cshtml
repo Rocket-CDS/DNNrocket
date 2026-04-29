@@ -59,6 +59,88 @@
         const editorContainer = '#jodit-editor-' + editorId;
         const initialContent = `@HtmlOf(Model.GetSetting("editor_richtext"))`;
 
+        function normalizeSemanticHtml(html) {
+            if (!html) {
+                return html;
+            }
+
+            return html
+                .replace(/<o:p[^>]*>(?:\s|&nbsp;)*<\/o:p>/gi, '')
+                .replace(/<\/?o:p[^>]*>/gi, '')
+                .replace(/<\s*b(\s|>)/gi, '<strong$1')
+                .replace(/<\s*\/\s*b\s*>/gi, '</strong>')
+                .replace(/<\s*i(\s|>)/gi, '<em$1')
+                .replace(/<\s*\/\s*i\s*>/gi, '</em>');
+        }
+
+        function unwrapHeadingInlineWrappers(html) {
+            if (!html) {
+                return html;
+            }
+
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString('<div id="jodit-normalize-root">' + html + '</div>', 'text/html');
+                const root = doc.getElementById('jodit-normalize-root');
+
+                if (!root) {
+                    return html;
+                }
+
+                root.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(function (heading) {
+                    heading.querySelectorAll('span,font').forEach(function (node) {
+                        const parent = node.parentNode;
+
+                        if (!parent) {
+                            return;
+                        }
+
+                        while (node.firstChild) {
+                            parent.insertBefore(node.firstChild, node);
+                        }
+
+                        parent.removeChild(node);
+                    });
+                });
+
+                root.querySelectorAll('*').forEach(function (node) {
+                    const tagName = node.tagName ? node.tagName.toLowerCase() : '';
+
+                    if (tagName === 'span' || tagName === 'font') {
+                        const parent = node.parentNode;
+
+                        if (!parent) {
+                            return;
+                        }
+
+                        while (node.firstChild) {
+                            parent.insertBefore(node.firstChild, node);
+                        }
+
+                        parent.removeChild(node);
+                        return;
+                    }
+
+                    node.removeAttribute('style');
+                    node.removeAttribute('class');
+                    node.removeAttribute('lang');
+                    node.removeAttribute('align');
+                    node.removeAttribute('face');
+                    node.removeAttribute('size');
+                    node.removeAttribute('color');
+                });
+
+                return root.innerHTML;
+            } catch (e) {
+                return html;
+            }
+        }
+
+        function normalizeEditorHtml(html) {
+            const semanticHtml = normalizeSemanticHtml(html);
+            return unwrapHeadingInlineWrappers(semanticHtml);
+        }
+
         // Check if editor already exists for this ID
         if (hiddenField && hiddenField.joditInstance) {
             console.log('Jodit editor already initialized for:', editorId);
@@ -145,11 +227,15 @@
                 { value: Jodit.constants.INSERT_CLEAR_HTML, text: '@ResourceKey("DNNrocket.jodittidy")' },
                 { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
             ],
+            askBeforePasteHTML: false,
+            askBeforePasteFromWord: false,
+            defaultActionOnPaste: Jodit.constants.INSERT_CLEAR_HTML,
+            processPasteHTML: true,
             cleanHTML: {
                 fillEmptyParagraph: false,
                 removeEmptyElements: false,
                 replaceNBSP: false,
-                replaceOldTags: false
+                replaceOldTags: true
             },
             beautifyHTML: true,
             pasteFromWordActionList: [
@@ -168,9 +254,13 @@
                 }
             },
             events: {
+                beforePaste: function (html) {
+                    return normalizeEditorHtml(html);
+                },
                 change: function(value) {
                     if (hiddenField) {
-                        hiddenField.value = value;
+                        const normalizedValue = normalizeEditorHtml(value);
+                        hiddenField.value = normalizedValue;
                         // Trigger change event for form dirty tracking
                         const isDirtyField = document.getElementById('isdirty');
                         if (isDirtyField) {
@@ -198,7 +288,7 @@
 
         // Set initial content
         if (initialContent) {
-            editor.value = initialContent;
+            editor.value = normalizeEditorHtml(initialContent);
         }
 
         // Watch for changes in the hidden field and update editor
@@ -206,9 +296,10 @@
             // Use MutationObserver to watch for value changes
             const observer = new MutationObserver(() => {
                 const newContent = hiddenField.value;
-                if (newContent !== editor.value) {
-                    editor.value = newContent;
-                    console.log('Jodit editor updated from hidden field:', newContent);
+                const normalizedContent = normalizeEditorHtml(newContent);
+                if (normalizedContent !== editor.value) {
+                    editor.value = normalizedContent;
+                    console.log('Jodit editor updated from hidden field:', normalizedContent);
                 }
             });
 
@@ -218,20 +309,22 @@
             // Also listen for input/change events
             hiddenField.addEventListener('input', (e) => {
                 const newContent = e.target.value;
-                if (newContent !== editor.value) {
-                    editor.value = newContent;
-                    console.log('Jodit editor updated from hidden field:', newContent);
+                const normalizedContent = normalizeEditorHtml(newContent);
+                if (normalizedContent !== editor.value) {
+                    editor.value = normalizedContent;
+                    console.log('Jodit editor updated from hidden field:', normalizedContent);
                 }
             });
 
             hiddenField.addEventListener('change', (e) => {
                 const newContent = e.target.value;
-                if (newContent !== editor.value) {
-                    editor.value = newContent;
-                    console.log('Jodit editor updated from hidden field:', newContent);
+                const normalizedContent = normalizeEditorHtml(newContent);
+                if (normalizedContent !== editor.value) {
+                    editor.value = normalizedContent;
+                    console.log('Jodit editor updated from hidden field:', normalizedContent);
                 }
             });
         }
     });
 })();
-</script>
+</script></script>

@@ -10,6 +10,12 @@
 - In this codebase, w3.css should always be loaded and Font Awesome should not be loaded.
 - When troubleshooting, ask targeted verification questions before proposing full fixes.
 
+## HTML Standards
+- User prefers strict semantic HTML for Jodit pasted content, converting `<b>`/`<i>` to `<strong>`/`<em>`.
+- For Jodit pasted content, headings (h1-h6) must not contain span wrappers; keep only heading content.
+- Remove Microsoft Word Office tags like `<o:p>` from Jodit content; they should not be present in saved HTML.
+- For Jodit pasted content, remove Word formatting globally across all elements: no class/style Word attributes and no span/font wrappers in saved HTML.
+
 ## Template Improvements
 - For the AppThemes-W3-CSS workspace, display template improvements must use W3 CSS.
 - Apply blog-style design to other ListView.cshtml files.
