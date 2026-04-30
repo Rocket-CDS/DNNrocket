@@ -178,6 +178,7 @@
 
         // Configure Jodit editor to match https://xdsoft.net/jodit/play.html demo
         const config = {
+            disablePlugins: ['add-new-line'],
             language: '@DNNrocketUtils.GetLanguageCode(DNNrocketUtils.GetCurrentCulture())',
             toolbar: true,
             textIcons: function (key) {
