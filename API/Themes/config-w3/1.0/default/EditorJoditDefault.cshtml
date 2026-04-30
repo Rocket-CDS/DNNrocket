@@ -259,8 +259,8 @@
                 { value: Jodit.constants.INSERT_CLEAR_HTML, text: '@ResourceKey("DNNrocket.jodittidy")' },
                 { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
             ],
-            askBeforePasteHTML: false,
-            askBeforePasteFromWord: false,
+            askBeforePasteHTML: true,
+            askBeforePasteFromWord: true,
             defaultActionOnPaste: Jodit.constants.INSERT_CLEAR_HTML,
             processPasteHTML: true,
             cleanHTML: {
@@ -271,7 +271,7 @@
             },
             beautifyHTML: true,
             pasteFromWordActionList: [
-                { value: Jodit.constants.INSERT_AS_TEXT, text: '@ResourceKey("DNNrocket.jodittidy")' },
+                { value: Jodit.constants.INSERT_CLEAR_HTML, text: '@ResourceKey("DNNrocket.jodittidy")' },
                 { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
             ],
             useSearch: true,

@@ -1,0 +1,1 @@
+    25 : error : System.IO.IOException: The process cannot access the file 'D:\NEVOWEB\Websites\dev.rocketcds.me\Website\bin\Magick.Native-Q8-x64.dll' because it is being used by another process. [D:\NEVOWEB\Project\DesktopModules\DNNrocket\RocketEndInstall\RocketEndInstall.csproj]
