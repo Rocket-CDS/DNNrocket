@@ -255,6 +255,8 @@
             useSplitMode: false,
             minHeight: 300,
             height: 500,
+            showPlaceholder: false,
+            placeholder: '',
             pasteHTMLActionList: [
                 { value: Jodit.constants.INSERT_CLEAR_HTML, text: '@ResourceKey("DNNrocket.jodittidy")' },
                 { value: Jodit.constants.INSERT_ONLY_TEXT, text: '@ResourceKey("DNNrocket.jodittextonly")' }
@@ -320,8 +322,8 @@
             },
             iframe: true,
             iframeDefaultSrc: 'about:blank',
-            iframeCSSLinks: ['@PortalUtils.GetCurrentPortalCssPath()','@PortalUtils.GetCurrentPageSkinCssPath()'],
-            iframeStyle: 'html,body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;}'
+            iframeCSSLinks: ['@PortalUtils.GetCurrentPageSkinCssPath()','@PortalUtils.GetCurrentPortalCssPath()'],
+            iframeStyle: 'body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;}'
         };
 
         // Initialize Jodit editor with unique container
