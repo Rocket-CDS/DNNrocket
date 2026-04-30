@@ -73,6 +73,35 @@
                 .replace(/<\s*\/\s*i\s*>/gi, '</em>');
         }
 
+        function isLikelyWordHtml(html) {
+            if (!html) {
+                return false;
+            }
+
+            const text = String(html);
+            return /<o:p[\s>]|class\s*=\s*["'][^"']*\bmso|style\s*=\s*["'][^"']*\bmso-|w:WordDocument|urn:schemas-microsoft-com:office/i.test(text);
+        }
+
+        function extractPasteHtml(payload) {
+            if (typeof payload === 'string') {
+                return payload;
+            }
+
+            if (!payload || typeof payload !== 'object') {
+                return '';
+            }
+
+            if (typeof payload.html === 'string') {
+                return payload.html;
+            }
+
+            if (typeof payload.value === 'string') {
+                return payload.value;
+            }
+
+            return '';
+        }
+
         function unwrapHeadingInlineWrappers(html) {
             if (!html) {
                 return html;
@@ -257,13 +286,27 @@
                 }
             },
             events: {
-                beforePaste: function (html) {
-                    return normalizeEditorHtml(html);
+                beforePaste: function (payload) {
+                    const html = extractPasteHtml(payload);
+
+                    if (isLikelyWordHtml(html)) {
+                        return normalizeEditorHtml(html);
+                    }
+
+                    return payload;
                 },
                 change: function(value) {
                     if (hiddenField) {
-                        const normalizedValue = normalizeEditorHtml(value);
-                        hiddenField.value = normalizedValue;
+                        let outputValue = value;
+
+                        if (isLikelyWordHtml(outputValue)) {
+                            outputValue = normalizeEditorHtml(outputValue);
+                            if (outputValue !== value && outputValue !== editor.value) {
+                                editor.value = outputValue;
+                            }
+                        }
+
+                        hiddenField.value = outputValue;
                         // Trigger change event for form dirty tracking
                         const isDirtyField = document.getElementById('isdirty');
                         if (isDirtyField) {
@@ -291,7 +334,7 @@
 
         // Set initial content
         if (initialContent) {
-            editor.value = normalizeEditorHtml(initialContent);
+            editor.value = initialContent;
         }
 
         // Watch for changes in the hidden field and update editor
@@ -299,10 +342,9 @@
             // Use MutationObserver to watch for value changes
             const observer = new MutationObserver(() => {
                 const newContent = hiddenField.value;
-                const normalizedContent = normalizeEditorHtml(newContent);
-                if (normalizedContent !== editor.value) {
-                    editor.value = normalizedContent;
-                    console.log('Jodit editor updated from hidden field:', normalizedContent);
+                if (newContent !== editor.value) {
+                    editor.value = newContent;
+                    console.log('Jodit editor updated from hidden field:', newContent);
                 }
             });
 
@@ -312,19 +354,17 @@
             // Also listen for input/change events
             hiddenField.addEventListener('input', (e) => {
                 const newContent = e.target.value;
-                const normalizedContent = normalizeEditorHtml(newContent);
-                if (normalizedContent !== editor.value) {
-                    editor.value = normalizedContent;
-                    console.log('Jodit editor updated from hidden field:', normalizedContent);
+                if (newContent !== editor.value) {
+                    editor.value = newContent;
+                    console.log('Jodit editor updated from hidden field:', newContent);
                 }
             });
 
             hiddenField.addEventListener('change', (e) => {
                 const newContent = e.target.value;
-                const normalizedContent = normalizeEditorHtml(newContent);
-                if (normalizedContent !== editor.value) {
-                    editor.value = normalizedContent;
-                    console.log('Jodit editor updated from hidden field:', normalizedContent);
+                if (newContent !== editor.value) {
+                    editor.value = newContent;
+                    console.log('Jodit editor updated from hidden field:', newContent);
                 }
             });
         }

@@ -16,6 +16,7 @@
 - For Jodit pasted content, headings (h1-h6) must not contain span wrappers; keep only heading content.
 - Remove Microsoft Word Office tags like `<o:p>` from Jodit content; they should not be present in saved HTML.
 - For Jodit pasted content, remove Word formatting globally across all elements: no class/style Word attributes and no span/font wrappers in saved HTML.
+- For Jodit in this workspace, `normalizeEditorHtml()` should run only for Word-originated paste cleanup, not on general editor changes or content syncing.
 
 ## Template Improvements
 - For the AppThemes-W3-CSS workspace, display template improvements must use W3 CSS.
