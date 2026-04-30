@@ -102,6 +102,14 @@
             return '';
         }
 
+        function replaceNbspSpanWithSpace(html) {
+            if (!html) {
+                return html;
+            }
+
+            return html.replace(/<span(?:\s+[^>]*)?>\s*(?:&nbsp;|&amp;nbsp;|&#160;|\u00A0|\s)*\s*<\/span>/gi, ' ');
+        }
+
         function unwrapHeadingInlineWrappers(html) {
             if (!html) {
                 return html;
@@ -292,31 +300,55 @@
                 beforePaste: function (payload) {
                     const html = extractPasteHtml(payload);
 
-                    if (isLikelyWordHtml(html)) {
-                        return normalizeEditorHtml(html);
+                    if (!html) {
+                        return payload;
+                    }
+
+                    const cleanedHtml = replaceNbspSpanWithSpace(html);
+
+                    if (isLikelyWordHtml(cleanedHtml)) {
+                        return normalizeEditorHtml(cleanedHtml);
+                    }
+
+                    if (cleanedHtml !== html) {
+                        return cleanedHtml;
                     }
 
                     return payload;
+                },
+                afterPaste: function () {
+                    const cleanedValue = replaceNbspSpanWithSpace(editor.value);
+                    if (cleanedValue !== editor.value) {
+                        editor.value = cleanedValue;
+                    }
                 },
                 change: function(value) {
                     if (hiddenField) {
                         let outputValue = value;
 
-                        if (isLikelyWordHtml(outputValue)) {
-                            outputValue = normalizeEditorHtml(outputValue);
-                            if (outputValue !== value && outputValue !== editor.value) {
+                        const cleanedSpanNbspValue = replaceNbspSpanWithSpace(outputValue);
+                        if (cleanedSpanNbspValue !== outputValue) {
+                            outputValue = cleanedSpanNbspValue;
+                            if (outputValue !== editor.value) {
                                 editor.value = outputValue;
                             }
                         }
 
-                        hiddenField.value = outputValue;
-                        // Trigger change event for form dirty tracking
-                        const isDirtyField = document.getElementById('isdirty');
-                        if (isDirtyField) {
-                            isDirtyField.value = 'true';
-                        }
-                    }
-                },
+                         if (isLikelyWordHtml(outputValue)) {
+                             outputValue = normalizeEditorHtml(outputValue);
+                             if (outputValue !== value && outputValue !== editor.value) {
+                                 editor.value = outputValue;
+                             }
+                         }
+ 
+                         hiddenField.value = outputValue;
+                         // Trigger change event for form dirty tracking
+                         const isDirtyField = document.getElementById('isdirty');
+                         if (isDirtyField) {
+                             isDirtyField.value = 'true';
+                         }
+                     }
+                 },
                 afterInit: function(instance) {
                     console.log('Jodit editor initialized for:', editorId);
                 }
