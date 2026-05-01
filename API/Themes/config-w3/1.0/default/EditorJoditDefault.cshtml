@@ -275,7 +275,7 @@
             defaultActionOnPaste: Jodit.constants.INSERT_CLEAR_HTML,
             processPasteHTML: true,
             cleanHTML: {
-                fillEmptyParagraph: false,
+                fillEmptyParagraph: true,
                 removeEmptyElements: false,
                 replaceNBSP: false,
                 replaceOldTags: true
@@ -356,7 +356,7 @@
             iframe: true,
             iframeDefaultSrc: 'about:blank',
             iframeCSSLinks: ['@PortalUtils.GetCurrentPageSkinCssPath()','@PortalUtils.GetCurrentPortalCssPath()'],
-            iframeStyle: 'body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;} ::selection {background:#3297fd;}h1, h2, h3, h4, h5, h6, p {margin-block-start:1em;margin-block-end:1em;}ul, ol {margin-block-start:1em;margin-block-end:1em;padding-inline-start:40px;}blockquote {margin-block-start:1em;margin-block-end:1em;margin-inline-start:40px;margin-inline-end:40px;}'        };
+            iframeStyle: 'body{margin:0;padding:20px;background:#fff;color:#000;} em,i{font-style:italic;} strong,b{font-weight:bold;} ::selection {background:#3297fd;}p {margin-block-start:1em;margin-block-end:1em;}ul, ol {margin-block-start:1em;margin-block-end:1em;padding-inline-start:40px;}blockquote {margin-block-start:1em;margin-block-end:1em;margin-inline-start:40px;margin-inline-end:40px;}'        };
 
         // Initialize Jodit editor with unique container
         const editor = Jodit.make(editorContainer, config);
