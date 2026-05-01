@@ -25,6 +25,22 @@ namespace DNNrocketAPI.Components
                 {
                     traceLogger.Debug($"ROCKET: {message}");
                 }
+                else if (traceLogger.IsInfoEnabled)
+                {
+                    traceLogger.Info($"ROCKET: {message}");
+                }
+                else if (traceLogger.IsWarnEnabled)
+                {
+                    traceLogger.Warn($"ROCKET: {message}");
+                }
+                else if (traceLogger.IsErrorEnabled)
+                {
+                    traceLogger.Error($"ROCKET: {message}");
+                }
+                else if (traceLogger.IsFatalEnabled)
+                {
+                    traceLogger.Fatal($"ROCKET: {message}");
+                }
             }
         }
         public static void LogSystemClear(int daysToKeep)
