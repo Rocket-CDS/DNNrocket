@@ -42,49 +42,64 @@ if not exist "%PACKAGER%" goto :packager_not_found
 echo Using packager: "%PACKAGER%"
 echo.
 
-call :run_pack "%ROOT%RocketCDS.dnnpack" "RocketCDS.dnnpack"
-if errorlevel 1 exit /b 1
+rem ============================================================
+rem HARD-CODED PACKAGE CALLS (one per .dnnpack)
+rem ============================================================
 
-call :run_pack "%ROOT%RocketCDSupgrade.dnnpack" "RocketCDSupgrade.dnnpack"
-if errorlevel 1 exit /b 1
+set "PACKNAME=RocketCDS.dnnpack"
+if not exist "%ROOT%RocketCDS.dnnpack" goto :pack_file_missing
+echo ---- Packaging: %PACKNAME%
+"%PACKAGER%" "%ROOT%RocketCDS.dnnpack"
+if errorlevel 1 goto :pack_failed
+echo ---- Packaging OK: %PACKNAME%
+echo.
 
-call :run_pack "%ROOT%RocketCDSrazor.dnnpack" "RocketCDSrazor.dnnpack"
-if errorlevel 1 exit /b 1
+set "PACKNAME=RocketCDSupgrade.dnnpack"
+if not exist "%ROOT%RocketCDSupgrade.dnnpack" goto :pack_file_missing
+echo ---- Packaging: %PACKNAME%
+"%PACKAGER%" "%ROOT%RocketCDSupgrade.dnnpack"
+if errorlevel 1 goto :pack_failed
+echo ---- Packaging OK: %PACKNAME%
+echo.
 
-call :run_pack "%ROOT%RocketCDSrazorupgrade.dnnpack" "RocketCDSrazorupgrade.dnnpack"
-if errorlevel 1 exit /b 1
+set "PACKNAME=RocketCDSrazor.dnnpack"
+if not exist "%ROOT%RocketCDSrazor.dnnpack" goto :pack_file_missing
+echo ---- Packaging: %PACKNAME%
+"%PACKAGER%" "%ROOT%RocketCDSrazor.dnnpack"
+if errorlevel 1 goto :pack_failed
+echo ---- Packaging OK: %PACKNAME%
+echo.
+
+set "PACKNAME=RocketCDSrazorupgrade.dnnpack"
+if not exist "%ROOT%RocketCDSrazorupgrade.dnnpack" goto :pack_file_missing
+echo ---- Packaging: %PACKNAME%
+"%PACKAGER%" "%ROOT%RocketCDSrazorupgrade.dnnpack"
+if errorlevel 1 goto :pack_failed
+echo ---- Packaging OK: %PACKNAME%
+echo.
 
 echo.
 echo ============================================================
 echo ================ ALL PACKAGES SUCCEEDED ===================
 echo ============================================================
 echo.
-exit /b 0
+goto :done_ok
 
-:run_pack
-set "PACKFILE=%~1"
-set "PACKNAME=%~2"
-
-if not exist "%PACKFILE%" (
-    echo.
-    echo ************************************************************
-    echo *** ERROR: PACK FILE NOT FOUND: %PACKNAME%
-    echo ************************************************************
-    exit /b 1
-)
-
-echo ---- Packaging: %PACKNAME%
-"%PACKAGER%" "%PACKFILE%"
-if errorlevel 1 (
-    echo.
-    echo ************************************************************
-    echo *** PACKAGING FAILED: %PACKNAME%
-    echo ************************************************************
-    exit /b 1
-)
-echo ---- Packaging OK: %PACKNAME%
+:pack_file_missing
 echo.
-exit /b 0
+echo ************************************************************
+echo *** ERROR: PACK FILE NOT FOUND: %PACKNAME%
+echo ************************************************************
+echo.
+goto :done_fail
+
+:pack_failed
+echo.
+echo ************************************************************
+echo *** PACKAGING FAILED: %PACKNAME%
+echo ************************************************************
+echo.
+goto :done_fail
 
 :build_failed
 echo.
@@ -102,7 +117,7 @@ echo.
 echo Full log:
 echo "%BUILDLOG%"
 echo.
-exit /b 1
+goto :done_fail
 
 :packager_not_found
 echo.
@@ -110,7 +125,7 @@ echo ************************************************************
 echo *** ERROR: DNNpackager.exe not found: %PACKAGER%
 echo ************************************************************
 echo.
-exit /b 1
+goto :done_fail
 
 :msbuild_not_found
 echo.
@@ -118,6 +133,12 @@ echo ************************************************************
 echo *** ERROR: MSBuild not found
 echo ************************************************************
 echo.
-exit /b 1
+goto :done_fail
 
+:done_ok
 popd
+exit /b 0
+
+:done_fail
+popd
+exit /b 1

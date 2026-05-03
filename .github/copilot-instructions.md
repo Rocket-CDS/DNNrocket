@@ -3,6 +3,7 @@
 ## General Guidelines
 - User authorizes editing any file in projects in this solution without asking per-file permission.
 - User wants autonomous template edits.
+- User does not want modernization suggestions and wants direct investigation/fixes focused strictly on the requested .bat packaging issue.
 
 ## Project Guidelines
 - User prefers old-style Razor formatting with all if statements using multi-line braces (no single-line if statements).
