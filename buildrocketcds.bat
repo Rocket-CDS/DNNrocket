@@ -2,6 +2,11 @@
 setlocal EnableExtensions
 
 set "ROOT=%~dp0"
+pushd "%ROOT%" || (
+    echo ERROR: Cannot switch to solution directory: "%ROOT%"
+    exit /b 1
+)
+
 set "SLN=%ROOT%RocketCDS.sln"
 set "CONFIG=R All"
 set "PLATFORM=Any CPU"
@@ -114,3 +119,5 @@ echo *** ERROR: MSBuild not found
 echo ************************************************************
 echo.
 exit /b 1
+
+popd
