@@ -67,7 +67,7 @@ namespace RocketTools.API
                     // ignore
                 }
             }
-            exportZipMapPath += "\\prebuild" + _portalData.PortalId + "_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
+            exportZipMapPath += "\\DNN_Prebuild_" + GeneralUtils.SanitizeFileName(_portalData.Name.Trim().Replace(".", "_").Replace(" ", "_"));
 
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             if (Directory.Exists(exportDataFolder))
@@ -96,24 +96,24 @@ namespace RocketTools.API
             {
                 if (!UserUtils.IsAdministrator()) return "Must be Administrator.";
 
+                RemoveWorkflowFromPortal();
+
+                ClearPendingPrebuildExportJobs(_portalData.PortalId);
+
                 // Start the export but DON'T wait.
                 var helper = new DnnSiteExportImportHelper();
                 var jobId = helper.ExportWebsite(_portalData.PortalId, UserUtils.GetCurrentUserId(), "Rocket PreBuild Export", "Full website backup");
 
                 var entitiesController = EntitiesController.Instance;
                 var job = entitiesController.GetJobById(jobId);
-                if (job == null) return "ERROR: No Export JobId found";
+                if (job == null)
+                {
+                    return "ERROR: No Export JobId found";
+                }
 
-                RemoveWorkflowFromPortal();
+                // IMPORTANT:
+                // Do NOT call ExportExtraData here. The scheduler export is async and job.Directory can be stale at this point.
 
-                var extraExportSettings = ExportExtraData(_portalData.PortalId, job.Directory);
-
-                // Save info for later
-                var jobInfo = new SimplisityInfo();
-                jobInfo.SetXmlProperty("genxml/jobid", jobId.ToString());
-                jobInfo.SetXmlProperty("genxml/extrasettings", extraExportSettings.XMLData);
-
-                // Return message immediately
                 _passSettings.Add("exportstarted", "true");
                 _passSettings.Add("jobid", jobId.ToString());
 
@@ -132,28 +132,70 @@ namespace RocketTools.API
                 var jobId = _paramInfo.GetXmlPropertyInt("genxml/hidden/jobid");
                 var helper = new DnnSiteExportImportHelper();
                 var job = helper.GetJobStatus(jobId);
-                if (job == null) return "ERROR|Job not found";
+                if (job == null)
+                {
+                    return "ERROR|Job not found";
+                }
 
-                // Use ToString() - works without enum reference
                 var statusString = job.JobStatus.ToString();
 
                 if (statusString == "Successful")
                 {
-                    return "true";
+                    var exportDirectory = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + job.Directory);
+                    var rocketSettingsFile = Path.Combine(exportDirectory, "RocketSettings.xml");
+
+                    // Run extra export only after DNN export is complete, and only if not already done.
+                    if (Directory.Exists(exportDirectory) && !File.Exists(rocketSettingsFile))
+                    {
+                        ExportExtraData(_portalData.PortalId, job.Directory);
+                    }
+
+                    // Return true only when RocketSettings.xml exists.
+                    if (File.Exists(rocketSettingsFile))
+                    {
+                        return "true";
+                    }
+
+                    // Keep polling until extra export creates RocketSettings.xml.
+                    return "";
                 }
-                else if (statusString == "Failed")
+
+                if (statusString == "Failed")
                 {
                     return "false: " + statusString;
                 }
-                else
-                {
-                    return "";
-                }
+
+                return "";
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
                 return "false: " + ex.ToString();
+            }
+        }
+        private void ClearPendingPrebuildExportJobs(int portalId)
+        {
+            try
+            {
+                var objCtrl = new DNNrocketController();
+
+                // Keep history; remove only queued/running export jobs for this portal.
+                // JobType 0 = Site Export (based on your table data)
+                // JobStatus 0/1 = Submitted/InProgress
+                var sql = @"
+            delete from {databaseOwner}[{objectQualifier}ExportImportJobs]
+            where PortalId = " + portalId + @"
+              and JobType = 0
+              and JobStatus in (0,1)
+              and Name = 'Rocket PreBuild Export'";
+
+                objCtrl.ExecSql(sql);
+
+                LogUtils.LogSystem("Cleared pending Rocket PreBuild export jobs for portal " + portalId) ;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
             }
         }
         public SimplisityRecord ExportExtraData(int portalId, string exportImportJobDirectory)
@@ -321,10 +363,15 @@ namespace RocketTools.API
 
             }
 
-            Thread.Sleep(2000);  // wait for zip to register.
-
             var fName = DNNrocketUtils.MapPath("/App_Data/ExportImport/" + exportImportJobDirectory + "/RocketSettings.xml");
             extraExportSettings.XMLDoc.Save(fName);
+
+            // FIX 3: Verify the file was actually written rather than a blind sleep.
+            var writeTimeout = DateTime.Now.AddSeconds(10);
+            while (!File.Exists(fName) && DateTime.Now < writeTimeout)
+            {
+                Thread.Sleep(500);
+            }
 
             return extraExportSettings;
         }
