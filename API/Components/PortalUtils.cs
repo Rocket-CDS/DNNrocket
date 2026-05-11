@@ -1045,17 +1045,25 @@ namespace DNNrocketAPI.Components
 
         public static string GetCurrentPortalCssPath()
         {
-            try
+            var ps = PortalUtils.GetPortalSettings();
+            if (ps == null) return "";
+
+            var homeDirectory = ps.HomeDirectory;
+            if (string.IsNullOrWhiteSpace(homeDirectory))
             {
-                var ps = PortalUtils.GetPortalSettings();
-                if (ps == null) return "";
-                return "/Portals/" + ps.PortalId + "/portal.css";
+                homeDirectory = "/Portals/" + ps.PortalId + "/";
             }
-            catch (Exception ex)
+
+            homeDirectory = homeDirectory.Replace("\\", "/");
+            if (!homeDirectory.StartsWith("/"))
             {
-                LogUtils.LogException(ex);
-                return "";
+                homeDirectory = "/" + homeDirectory;
             }
+
+            var cssPath = homeDirectory.TrimEnd('/') + "/portal.css";
+            var physicalPath = DNNrocketUtils.MapPath(cssPath);
+            if (!File.Exists(physicalPath)) return "";
+            return cssPath;
         }
         public static string GetEffectiveSkinSrcForCurrentPage()
         {
