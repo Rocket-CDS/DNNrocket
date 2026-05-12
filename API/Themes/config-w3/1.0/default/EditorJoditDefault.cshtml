@@ -110,6 +110,46 @@
             return html.replace(/<span(?:\s+[^>]*)?>\s*(?:&nbsp;|&amp;nbsp;|&#160;|\u00A0|\s)*\s*<\/span>/gi, ' ');
         }
 
+        function trimLeadingEmptyParagraphs(html) {
+            if (!html) {
+                return html;
+            }
+
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString('<div id="jodit-boundary-root">' + html + '</div>', 'text/html');
+                const root = doc.getElementById('jodit-boundary-root');
+
+                if (!root) {
+                    return html;
+                }
+
+                const isEmptyParagraph = function(node) {
+                    if (!node || node.nodeType !== Node.ELEMENT_NODE || node.tagName.toLowerCase() !== 'p') {
+                        return false;
+                    }
+
+                    const normalizedHtml = node.innerHTML
+                        .replace(/<br\b[^>]*\/?>(?:\s*)/gi, '')
+                        .replace(/&nbsp;|&#160;|\u00A0/gi, '')
+                        .replace(/\s+/g, '');
+
+                    return normalizedHtml.length === 0;
+                };
+
+                let changed = false;
+
+                while (root.firstElementChild && isEmptyParagraph(root.firstElementChild)) {
+                    root.removeChild(root.firstElementChild);
+                    changed = true;
+                }
+
+                return changed ? root.innerHTML : html;
+            } catch (e) {
+                return html;
+            }
+        }
+
         function unwrapHeadingInlineWrappers(html) {
             if (!html) {
                 return html;
@@ -317,9 +357,8 @@
                     return payload;
                 },
                 afterPaste: function () {
-                    const cleanedValue = replaceNbspSpanWithSpace(editor.value);
-                    if (cleanedValue !== editor.value) {
-                        editor.value = cleanedValue;
+                    if (hiddenField) {
+                        hiddenField.value = trimLeadingEmptyParagraphs(replaceNbspSpanWithSpace(editor.value));
                     }
                 },
                 change: function(value) {
@@ -329,26 +368,20 @@
                         const cleanedSpanNbspValue = replaceNbspSpanWithSpace(outputValue);
                         if (cleanedSpanNbspValue !== outputValue) {
                             outputValue = cleanedSpanNbspValue;
-                            if (outputValue !== editor.value) {
-                                editor.value = outputValue;
-                            }
                         }
 
-                         if (isLikelyWordHtml(outputValue)) {
-                             outputValue = normalizeEditorHtml(outputValue);
-                             if (outputValue !== value && outputValue !== editor.value) {
-                                 editor.value = outputValue;
-                             }
-                         }
- 
-                         hiddenField.value = outputValue;
-                         // Trigger change event for form dirty tracking
-                         const isDirtyField = document.getElementById('isdirty');
-                         if (isDirtyField) {
-                             isDirtyField.value = 'true';
-                         }
-                     }
-                 },
+                        if (isLikelyWordHtml(outputValue)) {
+                            outputValue = normalizeEditorHtml(outputValue);
+                        }
+
+                        hiddenField.value = trimLeadingEmptyParagraphs(outputValue);
+                        // Trigger change event for form dirty tracking
+                        const isDirtyField = document.getElementById('isdirty');
+                        if (isDirtyField) {
+                            isDirtyField.value = 'true';
+                        }
+                    }
+                },
                 afterInit: function(instance) {
                     console.log('Jodit editor initialized for:', editorId);
                 }
@@ -368,14 +401,14 @@
 
         // Set initial content
         if (initialContent) {
-            editor.value = initialContent;
+            editor.value = trimLeadingEmptyParagraphs(initialContent);
         }
 
         // Watch for changes in the hidden field and update editor
         if (hiddenField) {
             // Use MutationObserver to watch for value changes
             const observer = new MutationObserver(() => {
-                const newContent = hiddenField.value;
+                const newContent = trimLeadingEmptyParagraphs(hiddenField.value);
                 if (newContent !== editor.value) {
                     editor.value = newContent;
                     console.log('Jodit editor updated from hidden field:', newContent);
@@ -387,7 +420,7 @@
 
             // Also listen for input/change events
             hiddenField.addEventListener('input', (e) => {
-                const newContent = e.target.value;
+                const newContent = trimLeadingEmptyParagraphs(e.target.value);
                 if (newContent !== editor.value) {
                     editor.value = newContent;
                     console.log('Jodit editor updated from hidden field:', newContent);
@@ -395,7 +428,7 @@
             });
 
             hiddenField.addEventListener('change', (e) => {
-                const newContent = e.target.value;
+                const newContent = trimLeadingEmptyParagraphs(e.target.value);
                 if (newContent !== editor.value) {
                     editor.value = newContent;
                     console.log('Jodit editor updated from hidden field:', newContent);
