@@ -1,0 +1,230 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+<div class="container">
+    <div class="control-group">
+        @TextArea(new SimplisityInfo(), Model.GetSetting("editor_xpath"), "class='ckeditor4-textarea' style='width:100%;' rows='10'", Model.GetSetting("editor_richtext"))
+    </div>
+</div>
+
+<script>
+(function () {
+    function loadCkEditor(callback) {
+        if (typeof CKEDITOR !== 'undefined') {
+            callback();
+            return;
+        }
+
+        var script = document.createElement('script');
+        script.src = '/DesktopModules/DNNrocket/API/CKEditor/ckeditor4.21.0/ckeditor.js';
+        script.onload = function () {
+            callback();
+        };
+        script.onerror = function () {
+            console.error('Failed to load CKEditor4 script');
+        };
+        document.head.appendChild(script);
+    }
+
+    function initEditor(editorId) {
+        var textAreaElement = document.getElementById(editorId);
+        if (!textAreaElement) {
+            return false;
+        }
+
+        var existingInstance = CKEDITOR.instances[editorId];
+        if (existingInstance) {
+            var existingElement = existingInstance.element ? existingInstance.element.$ : null;
+            var isSameElement = existingElement === textAreaElement;
+            var hasVisibleUi = existingInstance.container && existingInstance.container.$ && document.body.contains(existingInstance.container.$);
+
+            if (isSameElement && hasVisibleUi) {
+                return true;
+            }
+
+            try {
+                existingInstance.destroy(true);
+            } catch (e) {
+            }
+        }
+
+        var editor = CKEDITOR.replace(editorId, {
+            language: '@DNNrocketUtils.GetLanguageCode(DNNrocketUtils.GetCurrentCulture())',
+            height: 500,
+            enterMode: CKEDITOR.ENTER_P,
+            shiftEnterMode: CKEDITOR.ENTER_BR,
+            allowedContent: true,
+            removeButtons: 'Subscript,Superscript',
+            toolbar: [
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+                { name: 'tools', items: ['Source', 'Maximize', 'Undo', 'Redo'] }
+            ]
+        });
+
+        function normalizeSemanticHtml(html) {
+            if (!html) {
+                return html;
+            }
+
+            return html
+                .replace(/<o:p[^>]*>(?:\s|&nbsp;)*<\/o:p>/gi, '')
+                .replace(/<\/?o:p[^>]*>/gi, '')
+                .replace(/<\s*b(\s|>)/gi, '<strong$1')
+                .replace(/<\s*\/\s*b\s*>/gi, '</strong>')
+                .replace(/<\s*i(\s|>)/gi, '<em$1')
+                .replace(/<\s*\/\s*i\s*>/gi, '</em>');
+        }
+
+        function isLikelyWordHtml(html) {
+            if (!html) {
+                return false;
+            }
+
+            var text = String(html);
+            return /<o:p[\s>]|class\s*=\s*["'][^"']*\bmso|style\s*=\s*["'][^"']*\bmso-|w:WordDocument|urn:schemas-microsoft-com:office/i.test(text);
+        }
+
+        function unwrapWordFormatting(html) {
+            if (!html) {
+                return html;
+            }
+
+            try {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString('<div id="ckeditor-normalize-root">' + html + '</div>', 'text/html');
+                var root = doc.getElementById('ckeditor-normalize-root');
+
+                if (!root) {
+                    return html;
+                }
+
+                root.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(function (heading) {
+                    heading.querySelectorAll('span,font').forEach(function (node) {
+                        var parent = node.parentNode;
+
+                        if (!parent) {
+                            return;
+                        }
+
+                        while (node.firstChild) {
+                            parent.insertBefore(node.firstChild, node);
+                        }
+
+                        parent.removeChild(node);
+                    });
+                });
+
+                root.querySelectorAll('*').forEach(function (node) {
+                    var tagName = node.tagName ? node.tagName.toLowerCase() : '';
+
+                    if (tagName === 'span' || tagName === 'font') {
+                        var parent = node.parentNode;
+
+                        if (!parent) {
+                            return;
+                        }
+
+                        while (node.firstChild) {
+                            parent.insertBefore(node.firstChild, node);
+                        }
+
+                        parent.removeChild(node);
+                        return;
+                    }
+
+                    node.removeAttribute('style');
+                    node.removeAttribute('class');
+                    node.removeAttribute('lang');
+                    node.removeAttribute('align');
+                    node.removeAttribute('face');
+                    node.removeAttribute('size');
+                    node.removeAttribute('color');
+                });
+
+                return root.innerHTML;
+            } catch (e) {
+                return html;
+            }
+        }
+
+        function normalizeWordHtml(html) {
+            var semanticHtml = normalizeSemanticHtml(html);
+            return unwrapWordFormatting(semanticHtml);
+        }
+
+        function normalizePastedHtml(html) {
+            var semanticHtml = normalizeSemanticHtml(html);
+            return unwrapWordFormatting(semanticHtml);
+        }
+
+        function syncEditor() {
+            editor.updateElement();
+
+            var isDirtyField = document.getElementById('isdirty');
+            if (isDirtyField) {
+                isDirtyField.value = 'true';
+            }
+        }
+
+        editor.on('paste', function (evt) {
+            var pastedHtml = evt && evt.data ? evt.data.dataValue : '';
+
+            if (!pastedHtml) {
+                return;
+            }
+
+            evt.data.dataValue = normalizePastedHtml(pastedHtml);
+        });
+
+        editor.on('key', syncEditor);
+        editor.on('change', syncEditor);
+
+        return true;
+    }
+
+    loadCkEditor(function () {
+        var editorId = '@Model.GetSetting("editor_id")';
+        var initAttempts = 0;
+
+        function tryInitEditor() {
+            var isInitialized = initEditor(editorId);
+            if (isInitialized) {
+                return;
+            }
+
+            if (initAttempts < 20) {
+                initAttempts = initAttempts + 1;
+                window.setTimeout(tryInitEditor, 100);
+            }
+        }
+
+        tryInitEditor();
+
+        window[editorId + 'Save'] = function () {
+            if (CKEDITOR.instances[editorId]) {
+                CKEDITOR.instances[editorId].updateElement();
+            }
+        };
+
+        window[editorId + 'sourceDialog'] = function () {
+            var editor = CKEDITOR.instances[editorId];
+            if (!editor) {
+                return;
+            }
+
+            if (editor.mode === 'source') {
+                editor.setMode('wysiwyg');
+            } else {
+                editor.setMode('source');
+            }
+        };
+    });
+})();
+</script>
+

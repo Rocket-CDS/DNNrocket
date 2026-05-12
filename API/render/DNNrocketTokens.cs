@@ -515,7 +515,7 @@ namespace DNNrocketAPI.render
         [Obsolete("Use: @Editor()")]
         public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
-            return Editor(info, xpath, new SimplisityRazor(), row, listname);
+            return Editor(info, xpath, new SimplisityRazor(), row, listname, "EditorCKEditor4Default.cshtml");
         }
         public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
