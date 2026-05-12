@@ -57,6 +57,16 @@
             enterMode: CKEDITOR.ENTER_P,
             shiftEnterMode: CKEDITOR.ENTER_BR,
             allowedContent: true,
+            contentsCss: [
+                '@PortalUtils.GetCurrentPageSkinCssPath()',
+                '@PortalUtils.GetCurrentPortalCssPath()'
+            ].filter(function (cssPath) {
+                if (!cssPath) {
+                    return false;
+                }
+
+                return true;
+            }),
             removeButtons: 'Subscript,Superscript',
             toolbar: [
                 { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },

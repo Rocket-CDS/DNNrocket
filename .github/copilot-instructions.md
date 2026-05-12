@@ -11,6 +11,7 @@
 - In this codebase, w3.css should always be loaded and Font Awesome should not be loaded.
 - In this codebase, portal.css is always located at the portal root path (/Portals/{portalId}/portal.css) and should not be derived from the active skin path.
 - When troubleshooting, ask targeted verification questions before proposing full fixes.
+- User wants CKEditor iframe to load CSS files similarly to Jodit.
 
 ## HTML Standards
 - User prefers strict semantic HTML for Jodit pasted content, converting `<b>`/`<i>` to `<strong>`/`<em>`.
