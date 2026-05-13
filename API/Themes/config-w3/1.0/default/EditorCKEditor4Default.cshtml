@@ -58,6 +58,7 @@
             shiftEnterMode: CKEDITOR.ENTER_BR,
             allowedContent: true,
             contentsCss: [
+                '/DesktopModules/DNNrocket/css/w3.css',
                 '@PortalUtils.GetCurrentPageSkinCssPath()',
                 '@PortalUtils.GetCurrentPortalCssPath()'
             ].filter(function (cssPath) {
@@ -69,11 +70,12 @@
             }),
             removeButtons: 'Subscript,Superscript',
             toolbar: [
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'document', items: ['Source'] },
+                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'HorizontalRule', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
                 { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
-                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
-                { name: 'tools', items: ['Source', 'Maximize', 'Undo', 'Redo'] }
+                { name: 'styles', items: ['Format'] }
             ]
         });
 
