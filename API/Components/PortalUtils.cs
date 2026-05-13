@@ -17,6 +17,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Web.UI.WebControls;
 using Newtonsoft.Json.Linq;
 using RazorEngine;
 using RazorEngine.Configuration;
@@ -314,6 +315,21 @@ namespace DNNrocketAPI.Components
         {
             return new PortalSettings(portalId);
         }
+        public static string EditorTemplate()
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            var cacheKey = "Portal" + portalId;
+            var portalDataRec = (SimplisityRecord)CacheUtils.GetCache(cacheKey, portalId.ToString());
+            if (portalDataRec == null)
+            {
+                var objCtrl = new DNNrocketController();
+                var uInfo = objCtrl.GetByType(portalId, -1, "PORTAL");
+                if (uInfo != null) portalDataRec = objCtrl.GetRecord(uInfo.ItemID);
+                if (portalDataRec == null || portalDataRec.ItemID <= 0) return "";
+            }
+            return portalDataRec.GetXmlProperty("genxml/select/globaleditor");
+        }
+
         public static int LoginTabId(int portalId)
         {
             return new PortalSettings(portalId).LoginTabId;
@@ -1100,7 +1116,7 @@ namespace DNNrocketAPI.Components
                 return "";
             }
 
-            var normalized = skinSrc.Replace("\\", "/").Trim();
+            var normalized = skinSrc.Replace("\\", "/").TrimStart('/');
 
             // Convert DNN tokenized skin path to portal-relative URL
             if (normalized.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
@@ -1110,6 +1126,33 @@ namespace DNNrocketAPI.Components
             else if (normalized.StartsWith("[L]", StringComparison.OrdinalIgnoreCase))
             {
                 normalized = "/Portals/" + portalId + "/" + normalized.Substring(3).TrimStart('/');
+            }
+            else if (normalized.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
+            {
+                var skinRelativePath = normalized.Substring(3).TrimStart('/');
+                if (skinRelativePath.StartsWith("skins/", StringComparison.OrdinalIgnoreCase))
+                {
+                    skinRelativePath = skinRelativePath.Substring("skins/".Length);
+                }
+
+                var portal = PortalController.Instance.GetPortal(portalId);
+                var portalHomeDirectory = "/Portals/" + portalId + "/";
+
+                if (portal != null && !string.IsNullOrWhiteSpace(portal.HomeDirectory))
+                {
+                    portalHomeDirectory = portal.HomeDirectory;
+                }
+
+                portalHomeDirectory = portalHomeDirectory.Replace("\\", "/").Trim();
+                if (!portalHomeDirectory.StartsWith("/"))
+                {
+                    portalHomeDirectory = "/" + portalHomeDirectory;
+                }
+
+                portalHomeDirectory = portalHomeDirectory.TrimEnd('/');
+                var portalSystemDirectory = portalHomeDirectory + "-System";
+
+                normalized = portalSystemDirectory + "/Skins/" + skinRelativePath;
             }
             else if (!normalized.StartsWith("/"))
             {

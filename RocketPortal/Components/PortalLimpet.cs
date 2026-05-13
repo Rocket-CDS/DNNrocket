@@ -332,6 +332,7 @@ namespace RocketPortal.Components
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "dnn-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
+        public string EditorTemplate { get { return Record.GetXmlProperty("genxml/select/globaleditor"); } set { Record.SetXmlProperty("genxml/select/globaleditor", value); } }
         public int AiImageCountMonth { get { return Record.GetXmlPropertyInt("genxml/data/aiimagecountmonth"); } set { Record.SetXmlProperty("genxml/data/aiimagecountmonth", value.ToString()); } }
         public DateTime AiImageMonthDate { get { return Record.GetXmlPropertyDate("genxml/data/aiimagemonthdate"); } set { Record.SetXmlProperty("genxml/data/aiimagemonthdate", value.ToString("O"), TypeCode.DateTime); } }
         public int AiImageCountTotal { get { return Record.GetXmlPropertyInt("genxml/data/aiimagecounttotal"); } set { Record.SetXmlProperty("genxml/data/aiimagecounttotal", value.ToString()); } }
