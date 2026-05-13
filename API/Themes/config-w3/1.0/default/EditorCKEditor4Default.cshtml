@@ -183,6 +183,37 @@
             }
         }
 
+        function applyEditorPadding() {
+            if (!editor.document) {
+                return;
+            }
+
+            var editorBody = editor.document.getBody();
+            if (editorBody) {
+                editorBody.setStyle('padding', '0 20px');
+                editorBody.setStyle('box-sizing', 'border-box');
+            }
+
+            var head = editor.document.getHead();
+            if (!head) {
+                return;
+            }
+
+            var styleId = 'dnnrocket-ckeditor-padding-style';
+            if (editor.document.getById(styleId)) {
+                return;
+            }
+
+            var styleElement = new CKEDITOR.dom.element('style', editor.document);
+            styleElement.setAttribute('id', styleId);
+            styleElement.setAttribute('type', 'text/css');
+            styleElement.setHtml('body { padding: 0 20px !important; box-sizing: border-box; }');
+            head.append(styleElement);
+        }
+
+        editor.on('instanceReady', applyEditorPadding);
+        editor.on('contentDom', applyEditorPadding);
+
         editor.on('paste', function (evt) {
             var pastedHtml = evt && evt.data ? evt.data.dataValue : '';
 
