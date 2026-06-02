@@ -197,7 +197,67 @@ namespace Rocket.AppThemes.Components
             }
             return rtn;
         }
-        public void DownloadGitHubProject(string projectName)
+        /// <summary>
+        /// Returns a list of top-level folder names in the GitHub repo for the given project.
+        /// Returns an empty list on failure.
+        /// </summary>
+        public List<string> GetGitHubRepoFolders(string projectName)
+        {
+            var result = new List<string>();
+            var githubToken = GitHubToken(projectName);
+            var projectThemeUrl = ProjectUrl(projectName);
+            if (string.IsNullOrEmpty(projectThemeUrl) || !projectThemeUrl.Contains("github.com")) return result;
+
+            var repoBase = projectThemeUrl.TrimEnd('/').Replace(".git", "").Replace(".GIT", "");
+            var repoApiBase = repoBase.Replace("https://github.com/", "https://api.github.com/repos/");
+            var contentsUrl = repoApiBase + "/contents/";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppThemeDownloader", "1.0"));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+                    client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
+                    if (!string.IsNullOrEmpty(githubToken))
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", githubToken);
+
+                    var response = client.GetAsync(contentsUrl).Result;
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        LogUtils.LogSystem($"GetGitHubRepoFolders HTTP {response.StatusCode}: {contentsUrl}");
+                        return result;
+                    }
+
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    // Parse folder names from JSON array: [{"name":"...","type":"dir",...},...]
+                    // Simple parse without adding a JSON library dependency
+                    var entries = json.Split(new[] { "},{" }, StringSplitOptions.None);
+                    foreach (var entry in entries)
+                    {
+                        var isDir = entry.Contains("\"type\":\"dir\"") || entry.Contains("\"type\": \"dir\"");
+                        if (!isDir) continue;
+                        var nameIdx = entry.IndexOf("\"name\":");
+                        if (nameIdx < 0) continue;
+                        var nameStart = entry.IndexOf('"', nameIdx + 7) + 1;
+                        var nameEnd = entry.IndexOf('"', nameStart);
+                        if (nameStart > 0 && nameEnd > nameStart)
+                            result.Add(entry.Substring(nameStart, nameEnd - nameStart));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Download all AppThemes for the project. Pass a non-null selectedFolders list to filter which ones are installed.
+        /// Passing null downloads everything (original behaviour).
+        /// </summary>
+        public void DownloadGitHubProject(string projectName, List<string> selectedFolders = null)
         {
             LogUtils.LogSystem("DownloadGitHubProject: " + projectName + " - START");
 
@@ -229,7 +289,7 @@ namespace Rocket.AppThemes.Components
                     var apiUrl = repoApiBase + $"/zipball/{branch}";
                     try
                     {
-                        if (TryDownloadFromUrl(apiUrl, projectName, githubToken))
+                        if (TryDownloadFromUrl(apiUrl, projectName, githubToken, selectedFolders))
                         {
                             LogUtils.LogSystem($"Successfully downloaded from branch: {branch}");
                             return;
@@ -244,7 +304,7 @@ namespace Rocket.AppThemes.Components
                 // Fallback: plain public archive URL (no auth) - works for public repos even if token failed
                 try
                 {
-                    if (TryDownloadFromUrl(publicUrl, projectName, null))
+                    if (TryDownloadFromUrl(publicUrl, projectName, null, selectedFolders))
                     {
                         LogUtils.LogSystem($"Successfully downloaded from public URL, branch: {branch}");
                         return;
@@ -259,7 +319,7 @@ namespace Rocket.AppThemes.Components
             LogUtils.LogSystem("ERROR: Failed to download from any branch");
         }
 
-        private bool TryDownloadFromUrl(string downloadUrl, string projectName, string githubToken)
+        private bool TryDownloadFromUrl(string downloadUrl, string projectName, string githubToken, List<string> selectedFolders = null)
         {
             var zFile = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + projectName + "_download.zip";
             var hasToken = !string.IsNullOrEmpty(githubToken);
@@ -330,7 +390,7 @@ namespace Rocket.AppThemes.Components
 
                 File.WriteAllBytes(zFile, contents);
                 LogUtils.LogSystem("Download successful: " + zFile);
-                ProcessDownloadedFile(zFile, projectName);
+                ProcessDownloadedFile(zFile, projectName, selectedFolders);
                 return true;
             }
             catch (Exception ex)
@@ -339,7 +399,7 @@ namespace Rocket.AppThemes.Components
                 return false;
             }
         }
-        private void ProcessDownloadedFile(string zFile, string projectName)
+        private void ProcessDownloadedFile(string zFile, string projectName, List<string> selectedFolders = null)
         {
             // unzip
             var extractDir = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\TempExtractDir";
@@ -359,6 +419,8 @@ namespace Rocket.AppThemes.Components
                     string dirName = new DirectoryInfo(d2).Name;
                     if (dirName != "")
                     {
+                        // If caller specified a selection, skip folders not in the list
+                        if (selectedFolders != null && !selectedFolders.Contains(dirName)) continue;
                         try
                         {
                             var rDir = d + "\\" + dirName;

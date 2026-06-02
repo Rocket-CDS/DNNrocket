@@ -57,6 +57,12 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_downloadallgithub":
                         strOut = DownloadAppThemes();
                         break;
+                    case "rocketapptheme_getdownloadpopup":
+                        strOut = GetDownloadPopup();
+                        break;
+                    case "rocketapptheme_downloadselectedgithub":
+                        strOut = DownloadSelectedAppThemes();
+                        break;
                     default:
 
                         switch (paramCmd)
@@ -496,6 +502,32 @@ namespace DNNrocket.AppThemes
         public string DownloadAppThemes()
         {
             _dataObject.AppThemeProjects.DownloadGitHubProject(_dataObject.AppTheme.ProjectName);
+            return GetEditList();
+        }
+
+        public string GetDownloadPopup()
+        {
+            var projectName = _dataObject.AppTheme.ProjectName;
+            var folders = _dataObject.AppThemeProjects.GetGitHubRepoFolders(projectName);
+            _dataObject.Settings["downloadpopup_projectname"] = projectName;
+            _dataObject.Settings["downloadpopup_folders"] = string.Join(",", folders);
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("DownloadPopup.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+
+        public string DownloadSelectedAppThemes()
+        {
+            var projectName = _dataObject.AppTheme.ProjectName;
+            var selectedListNods = _postInfo.XMLDoc.SelectNodes("genxml/checkboxselect/*");
+            if (selectedListNods == null) return GetEditList();
+            var selectedFolders = new List<string>();
+            foreach (XmlNode nod in selectedListNods)
+            {
+                if (nod.InnerText.ToLower() == "true") selectedFolders.Add(nod.Name);
+            }
+            _dataObject.AppThemeProjects.DownloadGitHubProject(projectName, selectedFolders);
             return GetEditList();
         }
         private Dictionary<string, object> ExportAppTheme()

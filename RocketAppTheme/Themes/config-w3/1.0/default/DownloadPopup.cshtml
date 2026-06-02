@@ -1,0 +1,78 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using System.Linq;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
+
+@{
+    var projectName = Model.GetSetting("downloadpopup_projectname");
+    var foldersRaw = Model.GetSetting("downloadpopup_folders");
+    var folders = string.IsNullOrEmpty(foldersRaw)
+        ? new string[0]
+        : foldersRaw.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+}
+
+<div id="downloadselectedgithub" class="w3-container w3-padding">
+    <h4>@projectName — Select AppThemes to Download</h4>
+
+    @if (folders.Length == 0)
+    {
+        <p class="w3-text-red">Could not retrieve folder list from GitHub. Check the token and URL for this project.</p>
+    }
+    else
+    {
+        <div class="w3-bar w3-padding-small w3-border-bottom w3-margin-bottom">
+            <label class="w3-bar-item">
+                <input type="checkbox" id="downloadpopup_selectall" checked="checked" />
+                <strong>&nbsp;Select / Deselect All</strong>
+            </label>
+        </div>
+        <div class="w3-row" style="max-height:420px;overflow-y:auto;">
+            @foreach (var folder in folders.OrderBy(f => f))
+            {
+                <div class="w3-col s12 m6 l4 w3-padding-small">
+                    <label>
+                        @CheckBox(new SimplisityInfo(),"genxml/checkboxselect/" + folder,""," class='downloadpopup_foldercheck' ", true)
+                        &nbsp;@folder
+                    </label>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="w3-bar w3-margin-top">
+        @if (folders.Length > 0)
+        {
+            <div id="downloadpopup_downloadbtn" class="w3-button w3-theme-action simplisity_click w3-bar-item"
+                 s-cmd="rocketapptheme_downloadselectedgithub"
+                 s-fields='{"selectedfolders":""}'
+                 s-post='#downloadselectedgithub'
+                 s-after="closedownloadpopupandrefresh">
+                <span class="material-icons">file_download</span>&nbsp;Download Selected
+            </div>
+        }
+        <div class="w3-button w3-grey w3-right w3-bar-item" onclick="$('#downloadpopup_modal').hide();">
+            Cancel
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // Select-all toggle
+        $('#downloadpopup_selectall').off('change').on('change', function () {
+            $('.downloadpopup_foldercheck').prop('checked', $(this).is(':checked'));
+        });
+
+        // Keep select-all in sync when individual boxes change
+        $(document).off('change', '.downloadpopup_foldercheck').on('change', '.downloadpopup_foldercheck', function () {
+            var total = $('.downloadpopup_foldercheck').length;
+            var checked = $('.downloadpopup_foldercheck:checked').length;
+            $('#downloadpopup_selectall').prop('checked', total === checked);
+        });
+
+        });
+</script>

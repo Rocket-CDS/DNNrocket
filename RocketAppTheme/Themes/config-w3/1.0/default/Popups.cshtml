@@ -60,6 +60,16 @@
 
 <div id="loginformreturn"></div>
 
+<div id="downloadpopup_modal" class="w3-modal" style="top:-30px;">
+    <div class="w3-modal-content w3-animate-opacity" style="width:70%;">
+        <header class="w3-container " style="height:38px;">
+            <div class="w3-button w3-display-topright" onclick="$('#downloadpopup_modal').hide();">
+                &times;
+            </div>
+        </header>
+        <div id="downloadpopup_container" class="w3-container"></div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -67,6 +77,15 @@
 
     function showeditpopup() {
         $('#editmodal').show();
+    }
+
+    function showdownloadpopup() {
+        $('#downloadpopup_modal').show();
+    }
+
+    function closedownloadpopupandrefresh() {
+        $('#downloadpopup_modal').hide();
+        $("#sidebarplaceholder [s-cmd='rocketapptheme_getlist']").trigger('click');
     }
 
 </script>
