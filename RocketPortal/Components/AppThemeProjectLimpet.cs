@@ -211,18 +211,42 @@ namespace Rocket.AppThemes.Components
                 return;
             }
 
+            var repoBase = projectThemeUrl.TrimEnd('/').Replace(".git", "").Replace(".GIT", "");
+            var hasToken = !string.IsNullOrEmpty(githubToken);
+
             // Try multiple branch names
             var branchesToTry = new[] { "main", "master" };
 
             foreach (var branch in branchesToTry)
             {
-                var downloadUrl = projectThemeUrl.ToLower().Replace(".git", "") + $"/archive/refs/heads/{branch}.zip";
+                // Always try the plain public archive URL first - works for all public repos
+                var publicUrl = repoBase + $"/archive/refs/heads/{branch}.zip";
 
+                // If a token is present, try the authenticated API endpoint first (needed for private repos)
+                if (hasToken)
+                {
+                    var repoApiBase = repoBase.Replace("https://github.com/", "https://api.github.com/repos/");
+                    var apiUrl = repoApiBase + $"/zipball/{branch}";
+                    try
+                    {
+                        if (TryDownloadFromUrl(apiUrl, projectName, githubToken))
+                        {
+                            LogUtils.LogSystem($"Successfully downloaded from branch: {branch}");
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogUtils.LogSystem($"API download failed for branch {branch}, falling back to public URL: " + ex.Message);
+                    }
+                }
+
+                // Fallback: plain public archive URL (no auth) - works for public repos even if token failed
                 try
                 {
-                    if (TryDownloadFromUrl(downloadUrl, projectName, githubToken))
+                    if (TryDownloadFromUrl(publicUrl, projectName, null))
                     {
-                        LogUtils.LogSystem($"Successfully downloaded from branch: {branch}");
+                        LogUtils.LogSystem($"Successfully downloaded from public URL, branch: {branch}");
                         return;
                     }
                 }
@@ -237,37 +261,82 @@ namespace Rocket.AppThemes.Components
 
         private bool TryDownloadFromUrl(string downloadUrl, string projectName, string githubToken)
         {
-            using (var client = new HttpClient())
+            var zFile = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + projectName + "_download.zip";
+            var hasToken = !string.IsNullOrEmpty(githubToken);
+
+            try
             {
-                var zFile = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + projectName + "_download.zip";
+                byte[] contents;
 
-                // Set proper headers
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", githubToken);
-                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppThemeDownloader", "1.0"));
-
-                try
+                if (hasToken)
                 {
-                    var response = client.GetAsync(downloadUrl).Result;
-
-                    if (!response.IsSuccessStatusCode)
+                    // Private repo: disable auto-redirect so we can manually forward the Authorization header
+                    // across cross-domain CDN redirects (default HttpClient strips it on redirect)
+                    var handler = new HttpClientHandler { AllowAutoRedirect = false };
+                    using (var client = new HttpClient(handler))
                     {
-                        LogUtils.LogSystem($"HTTP {response.StatusCode}: {downloadUrl}");
-                        return false;
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", githubToken);
+                        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppThemeDownloader", "1.0"));
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+                        client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
+
+                        var currentUrl = downloadUrl;
+                        contents = null;
+                        for (int redirects = 0; redirects < 5; redirects++)
+                        {
+                            var response = client.GetAsync(currentUrl).Result;
+                            if (response.StatusCode == HttpStatusCode.Found ||
+                                response.StatusCode == HttpStatusCode.Moved ||
+                                response.StatusCode == HttpStatusCode.TemporaryRedirect ||
+                                (int)response.StatusCode == 308)
+                            {
+                                var location = response.Headers.Location;
+                                if (location == null) break;
+                                currentUrl = location.IsAbsoluteUri ? location.ToString() : new Uri(new Uri(currentUrl), location).ToString();
+                                LogUtils.LogSystem($"Redirect -> {currentUrl}");
+                                continue;
+                            }
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                LogUtils.LogSystem($"HTTP {response.StatusCode}: {currentUrl}");
+                                return false;
+                            }
+                            contents = response.Content.ReadAsByteArrayAsync().Result;
+                            break;
+                        }
                     }
-
-                    var contents = response.Content.ReadAsByteArrayAsync().Result;
-                    File.WriteAllBytes(zFile, contents);
-                    LogUtils.LogSystem("Download successful: " + zFile);
-
-                    // Continue with your existing unzip logic...
-                    ProcessDownloadedFile(zFile, projectName);
-                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    LogUtils.LogException(ex);
+                    // Public repo: simple download with auto-redirect (same as original working behaviour)
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AppThemeDownloader", "1.0"));
+                        var response = client.GetAsync(downloadUrl).Result;
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            LogUtils.LogSystem($"HTTP {response.StatusCode}: {downloadUrl}");
+                            return false;
+                        }
+                        contents = response.Content.ReadAsByteArrayAsync().Result;
+                    }
+                }
+
+                if (contents == null || contents.Length == 0)
+                {
+                    LogUtils.LogSystem("ERROR: Empty response for: " + downloadUrl);
                     return false;
                 }
+
+                File.WriteAllBytes(zFile, contents);
+                LogUtils.LogSystem("Download successful: " + zFile);
+                ProcessDownloadedFile(zFile, projectName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return false;
             }
         }
         private void ProcessDownloadedFile(string zFile, string projectName)
