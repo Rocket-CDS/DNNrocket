@@ -1,0 +1,41 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [ "index.md", "toc.yml" ]
+      },
+      {
+        "files": [ "articles/**.md", "articles/**/toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "dnnrocket/**.md", "dnnrocket/**/toc.yml" ],
+        "src": "."
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "logo/**",
+          "imgs/**"
+        ]
+      }
+    ],
+    "template": [
+      "default",
+      "modern",
+      "templates/material/material"
+    ],
+    "globalMetadata": {
+      "_appTitle": "DNNrocket Documentation",
+      "_appFooter": "DNNrocket Project",
+      "_enableSearch": true,
+      "_appLogoPath": "logo/icon-32.png",
+      "_appFaviconPath": "logo/facicon.ico",
+      "_language": "en"
+    },
+    "dest": "_site",
+    "cleanupOutputFolder": true,
+    "disableGitFeatures": false
+  }
+}

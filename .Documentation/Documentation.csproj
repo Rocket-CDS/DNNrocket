@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F1E8C8B1-5F5C-4E5C-8C8C-5F5C4E5C8C8C}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docfx.json" />
+    <None Include="README.md" />
+    <None Include="toc.yml" />
+    <None Include="articles\index.md" />
+    <None Include="articles\toc.yml" />
+    <None Include="articles\DNNrocket.md" />
+    <None Include="articles\RocketBlog.md" />
+    <None Include="articles\RocketContent.md" />
+    <None Include="articles\RocketDirectory.md" />
+    <None Include="articles\RocketEvents.md" />
+    <None Include="articles\RocketForms.md" />
+    <None Include="articles\RocketNews.md" />
+    <None Include="articles\RocketTools.md" />
+    <None Include="articles\RocketUtils.md" />
+    <None Include="articles\RocketEndInstall.md" />
+    <None Include="articles\RocketPortal.md" />
+    <None Include="articles\AppThemes.md" />
+    <None Include="articles\Simplisity.md" />
+  </ItemGroup>
+</Project>
