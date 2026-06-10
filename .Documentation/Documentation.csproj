@@ -59,7 +59,9 @@
     <None Include="tutorial\Tools.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="imgs\" />
     <Folder Include="logo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="imgs\InstallAndPlay_Extension_Install_Button.jpg" />
   </ItemGroup>
 </Project>
