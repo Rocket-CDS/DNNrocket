@@ -7,9 +7,15 @@ Welcome to the DNNrocket documentation.
 DNNrocket is a powerful Content Management System (CMS) framework for DNN Platform, providing a flexible and extensible foundation for building dynamic web applications.
 
 ## Getting Started
+- [Starter Tutorial](tutorial/index.md) - Install, Plug and Play in DNN
+- [AppThemes](appthemes/index.md) - AppTheme are the key to using Rocket
+- [Razor Tokens](razortokens/index.md) - Razor Tokens with AppThemes
+- [Snippets](snippets/index.md) - AppTheme example code
 
-- [DNNrocket Core](articles/DNNrocket.md) - Core framework and API
-- [Modules](articles/index.md) - Module documentation
+## What It Is
+
+- [DNNrocket Core](dnnrocket/index.md) - Core framework and API
+- [Modules](modules/index.md) - Module documentation
 
 ## Components
 
@@ -32,4 +38,4 @@ DNNrocket is a powerful Content Management System (CMS) framework for DNN Platfo
 
 ## Resources
 
-- [GitHub Repository](https://github.com/Rocket-CDS/DNNrocket)
+- [GitHub Repository](https://github.com/Rocket-CDS)

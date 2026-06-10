@@ -5,11 +5,27 @@
         "files": [ "index.md", "toc.yml" ]
       },
       {
-        "files": [ "articles/**.md", "articles/**/toc.yml" ],
+        "files": [ "modules/**.md", "modules/**/toc.yml" ],
         "src": "."
       },
       {
         "files": [ "dnnrocket/**.md", "dnnrocket/**/toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "appthemes/**.md", "appthemes/**/toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "razortokens/**.md", "razortokens/**/toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "snippets/**.md", "snippets/**/toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "tutorial/**.md", "tutorial/**/toc.yml" ],
         "src": "."
       }
     ],
