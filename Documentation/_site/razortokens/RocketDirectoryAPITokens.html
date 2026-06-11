@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>AssignDataModel | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="AssignDataModel | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/RocketDirectoryAPITokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="assigndatamodel">AssignDataModel</h1>
+
+<p><strong>Description</strong>: Assigns the data model for Razor, making the template easier to build by populating various data properties like appTheme, moduleData, articleData, etc., from the SimplisityRazor model.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public string AssignDataModel(SimplisityRazor sModel)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@{ AssignDataModel(Model); }
+</code></pre>
+<hr>
+<h1 id="textboxmoney">TextBoxMoney</h1>
+<p><strong>Description</strong>: Renders a textbox for currency input. The value is formatted according to the portal's currency settings.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TextBoxMoney(int portalId, string systemKey, string cultureCode, SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;, string type = &quot;text&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@TextBoxMoney(0, &quot;rocketdirectoryapi&quot;, &quot;en-US&quot;, Model.Info, &quot;genxml/textbox/price&quot;)
+</code></pre>
+<hr>
+<h1 id="interfacenameresourcekey">InterfaceNameResourceKey</h1>
+<p><strong>Description</strong>: Gets the localized name for a RocketInterface from the resource files. It searches in the system's resources first, then the interface's template resources.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString InterfaceNameResourceKey(RocketInterface rocketInterface, SystemLimpet systemData, String lang = &quot;&quot;, string resxFileName = &quot;SideMenu&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@InterfaceNameResourceKey(myInterface, systemData)
+</code></pre>
+<hr>
+<h1 id="filtergroupcheckbox">FilterGroupCheckBox</h1>
+<p><strong>Description</strong>: Renders a checkbox for a property group filter, typically used in theme settings to enable or disable filter groups.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString FilterGroupCheckBox(SimplisityInfo info, string groupId, string textName)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@FilterGroupCheckBox(Model.Info, &quot;group1&quot;, &quot;Group 1 Filters&quot;)
+</code></pre>
+<hr>
+<h1 id="filtercheckbox">FilterCheckBox</h1>
+<p><strong>Description</strong>: Renders a filter checkbox for the public-facing view. When changed, it updates a session field and triggers a JavaScript function to refresh the article list.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString FilterCheckBox(string checkboxId, string textName, string sreturn, bool value, string cssClass = &quot;&quot;, string attributes = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@FilterCheckBox(&quot;filter-color-red&quot;, &quot;Red&quot;, &quot;#articlelist&quot;, false)
+</code></pre>
+<hr>
+<h1 id="filterjsapicall">FilterJsApiCall</h1>
+<p><strong>Description</strong>: Renders the JavaScript function 'callFilterArticleList' which calls the remote API to refresh the list of articles based on the current filter selections.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString FilterJsApiCall(ModuleContentLimpet moduleData, SessionParams sessionParams, string templateName = &quot;articlelist.cshtml&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@FilterJsApiCall(moduleData, sessionParams)
+</code></pre>
+<hr>
+<h1 id="filterclearbutton">FilterClearButton</h1>
+<p><strong>Description</strong>: Renders a button that clears all active filters by unchecking all filter checkboxes and refreshing the article list.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString FilterClearButton(string textName, string sreturn)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@FilterClearButton(&quot;Clear All&quot;, &quot;#articlelist&quot;)
+</code></pre>
+<hr>
+<h1 id="tagbuttonclear">TagButtonClear</h1>
+<p><strong>Description</strong>: Renders a button to clear the active tag filter. It is initially hidden and appears when a tag is selected.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TagButtonClear(string textName, SessionParams sessionParams, string displayClass = &quot;rocket-tagbutton&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@TagButtonClear(&quot;Clear Tag&quot;, sessionParams)
+</code></pre>
+<hr>
+<h1 id="tagbutton">TagButton</h1>
+<p><strong>Description</strong>: Renders a clickable tag button. When clicked, it sets the 'rocketpropertyidtag' session field and refreshes the article list to show items with that tag.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TagButton(int propertyid, string textName, SessionParams sessionParams, string displayClass = &quot;rocket-tagbutton&quot;, string selectedClass = &quot;rocket-tagbuttonOn&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@TagButton(123, &quot;Featured&quot;, sessionParams)
+</code></pre>
+<hr>
+<h1 id="tagjsapicall">TagJsApiCall</h1>
+<p><strong>Description</strong>: Renders the JavaScript function 'callTagArticleList' which calls the remote API to refresh the list of articles based on the selected tag.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TagJsApiCall(ModuleContentLimpet moduleData, string sreturn, SessionParams sessionParams, string templateName = &quot;articlelist.cshtml&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@TagJsApiCall(moduleData, &quot;#articlelist&quot;, sessionParams)
+</code></pre>
+<hr>
+<h1 id="datejsapicall">DateJsApiCall</h1>
+<p><strong>Description</strong>: Renders the JavaScript function 'doDateSearchReload' which calls the remote API to refresh the list of articles based on a selected date range.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DateJsApiCall(ModuleContentLimpet moduleData, string sreturn, SessionParams sessionParams, string templateName = &quot;articlelist.cshtml&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DateJsApiCall(moduleData, &quot;#articlelist&quot;, sessionParams)
+</code></pre>
+<hr>
+<h1 id="listurl">ListUrl</h1>
+<p><strong>Description</strong>: Builds a friendly URL to a list page, optionally including category information.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ListUrl(int listpageid, CategoryLimpet categoryData, string[] urlparams = null)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@ListUrl(100, myCategory)
+</code></pre>
+<hr>
+<h1 id="detailurl">DetailUrl</h1>
+<p><strong>Description</strong>: Builds a friendly URL to a detail page for a specific article, including the article title and ID for SEO and routing.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DetailUrl(int detailpageid, ArticleLimpet articleData, string[] urlparams = null)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DetailUrl(101, myArticle)
+</code></pre>
+<hr>
+<h1 id="rssurl">RssUrl</h1>
+<p><strong>Description</strong>: Generates a URL for an RSS feed based on a command, date range, and optional SQL index.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RssUrl(int portalId, string cmd, int yearDate, int monthDate, int numberOfMonths = 1, string sqlidx = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@RssUrl(0, &quot;getfeed&quot;, 2023, 1, 12)
+</code></pre>
+<hr>
+<h1 id="chatgpt">ChatGPT</h1>
+<p><strong>Description</strong>: Renders a button to open a ChatGPT modal for generating text. Requires a ChatGPT API key in the global settings. The generated text will populate the field specified by 'textId'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ChatGPT(string textId, string sourceTextId = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@ChatGPT(&quot;mytextarea&quot;, &quot;mysourcetextbox&quot;)
+</code></pre>
+<hr>
+<h1 id="deepl">DeepL</h1>
+<p><strong>Description</strong>: Renders a button to open a DeepL translation modal. Requires a DeepL API key in the global settings and more than one portal language to be enabled. The translated text will populate the field specified by 'textId'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DeepL(string textId, string sourceTextId = &quot;&quot;, string cultureCode = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DeepL(&quot;translatedtext&quot;, &quot;originaltext&quot;)
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/RocketDirectoryAPITokens.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

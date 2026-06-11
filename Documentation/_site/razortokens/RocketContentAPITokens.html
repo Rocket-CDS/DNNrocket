@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>AssignDataModel | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="AssignDataModel | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/RocketContentAPITokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="assigndatamodel">AssignDataModel</h1>
+
+<p><strong>Description</strong>: Assigns the data model for Razor, making the template easier to build by populating various data properties like articleData, appTheme, moduleData, etc., from the SimplisityRazor model.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public string AssignDataModel(SimplisityRazor sModel)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@{ AssignDataModel(Model); }
+</code></pre>
+<hr>
+<h1 id="rowkey">RowKey</h1>
+<p><strong>Description</strong>: Generates the necessary hidden fields for a row's unique key ('rowkey' and 'rowkeylang') and a unique entity ID ('eid'). A row MUST have a rowkey to be saved to the database.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RowKey(SimplisityInfo info)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@RowKey(Model.Info)
+</code></pre>
+<hr>
+<h1 id="checkboxrowishidden">CheckBoxRowIsHidden</h1>
+<p><strong>Description</strong>: Creates a checkbox for the 'IsHidden' property of a row, allowing a row to be marked as hidden.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString CheckBoxRowIsHidden(SimplisityInfo rowData)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@CheckBoxRowIsHidden(Model.Info)
+</code></pre>
+<hr>
+<h1 id="textboxrowtitle">TextBoxRowTitle</h1>
+<p><strong>Description</strong>: Creates a standard textbox for a row's title using the XPath 'genxml/lang/genxml/textbox/title'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TextBoxRowTitle(SimplisityInfo rowData)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@TextBoxRowTitle(Model.Info)
+</code></pre>
+<hr>
+<h1 id="chatgpt">ChatGPT</h1>
+<p><strong>Description</strong>: Renders a button to open a ChatGPT modal for generating text. Requires a ChatGPT API key in the global settings. The generated text will populate the field specified by 'textId'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ChatGPT(string textId, string sourceTextId = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@ChatGPT(&quot;mytextarea&quot;, &quot;mysourcetextbox&quot;)
+</code></pre>
+<hr>
+<h1 id="deepl">DeepL</h1>
+<p><strong>Description</strong>: Renders a button to open a DeepL translation modal. Requires a DeepL API key in the global settings and more than one portal language to be enabled. The translated text will populate the field specified by 'textId'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DeepL(string textId, string sourceTextId = &quot;&quot;, string cultureCode = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DeepL(&quot;translatedtext&quot;, &quot;originaltext&quot;)
+</code></pre>
+<hr>
+<h1 id="stylepadding">StylePadding</h1>
+<p><strong>Description</strong>: Generates an inline CSS padding style string based on module settings. It reads 'leftpadding', 'rightpadding', 'toppadding', and 'bottompadding' settings and creates corresponding CSS properties.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public string StylePadding()
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">&lt;div style=&quot;@StylePadding()&quot;&gt;...&lt;/div&gt;
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/RocketContentAPITokens.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

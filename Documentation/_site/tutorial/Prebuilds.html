@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Using Prebuilds for Site Export and Import | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using Prebuilds for Site Export and Import | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/Prebuilds.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-prebuilds-for-site-export-and-import">Using Prebuilds for Site Export and Import</h1>
+
+<p>The Prebuild feature, found in the Rocket Tools section, is a powerful utility for creating and restoring complete snapshots of your DNN website. It extends the standard DNN Site Export/Import functionality by including critical Rocket-specific data, making it the recommended way to migrate or back up a Rocket-powered site.</p>
+<hr>
+<h2 id="what-a-prebuild-does">What a Prebuild Does</h2>
+<p>A Prebuild is more than just a standard site export. Here’s what makes it different:</p>
+<ul>
+<li><strong>Extends DNN Export:</strong> It uses the core DNN export engine to package all standard site assets like pages, modules, content, and files.</li>
+<li><strong>Exports Global Rocket Data:</strong> Crucially, it also exports all global data associated with the Rocket framework. This includes system-wide configurations for RocketDirectory, portal-level AppTheme settings, and other essential data that is not part of the standard DNN export.</li>
+<li><strong>Excludes DNN Workflow:</strong> The DNN Workflow feature is not supported by this process and is automatically excluded from the export to ensure a clean import.</li>
+</ul>
+<hr>
+<h2 id="how-to-export-a-prebuild">How to Export a Prebuild</h2>
+<p>Exporting your site into a prebuild package is a straightforward process.</p>
+<ol>
+<li>Navigate to the Persona Bar and go to <strong>Rocket &gt; Tools</strong>.</li>
+<li>Find and click on the <strong>Export Prebuild</strong> option.</li>
+<li>The system will begin packaging the entire site, including all content and Rocket data, into a single <code>.zip</code> file.</li>
+<li>Once the process is complete, your browser will prompt you to save the prebuild <code>.zip</code> file to your local computer.</li>
+</ol>
+<hr>
+<h2 id="how-to-import-a-prebuild">How to Import a Prebuild</h2>
+<p>Importing a prebuild can sometimes be a two-step process, as it may require configuration changes to your DNN environment.</p>
+<ol>
+<li><p>Navigate to the Persona Bar and go to <strong>Rocket &gt; Tools</strong>.</p>
+</li>
+<li><p>Click on the <strong>Import Prebuild</strong> option.</p>
+</li>
+<li><p><strong>Important First Step - Configuration Check:</strong> The import tool will first check if your <code>web.config</code> file needs to be updated for compatibility with the prebuild.</p>
+<ul>
+<li>If changes are required, the tool will apply them and then <strong>automatically restart the Application Pool</strong>.</li>
+<li>You must wait for the site to come back online after the restart.</li>
+</ul>
+</li>
+<li><p><strong>Second Step - The Actual Import:</strong> After the site has restarted (or if no configuration changes were needed), you must navigate back to <strong>Rocket &gt; Tools</strong> and click <strong>Import Prebuild</strong> again.</p>
+</li>
+<li><p>This time, you will be prompted to select the prebuild <code>.zip</code> file you wish to import (e.g., <code>prebuild0_PREBUILD_W3.zip</code>).</p>
+</li>
+<li><p>Select the file and the import process will begin. This will restore the site, including all pages, modules, content, and global Rocket data, to the exact state captured in the prebuild file.</p>
+</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/Prebuilds.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

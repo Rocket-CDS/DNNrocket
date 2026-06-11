@@ -1,0 +1,43 @@
+[
+  {
+    "type": "razor-token",
+    "name": "GetTabList",
+    "source_file": "RocketTools/render/RocketToolsTokens.cs",
+    "description": "Generates a hierarchical HTML list of portal tabs with checkboxes for selection. This is typically used to build a tree-like view of pages.",
+    "signature": "public IEncodedString GetTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = \"\", string attributes = \"\", bool showAllTabs = false)",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The ID of the portal."
+      },
+      {
+        "name": "selectedTabIdList",
+        "type": "List<int>",
+        "description": "A list of Tab IDs that should be pre-selected (checked)."
+      },
+      {
+        "name": "treeviewId",
+        "type": "string",
+        "description": "A unique ID for the tree view, used in generating element IDs and XPaths."
+      },
+      {
+        "name": "lang",
+        "type": "string",
+        "description": "Optional. The language code to use for tab names. Defaults to the current culture."
+      },
+      {
+        "name": "attributes",
+        "type": "string",
+        "description": "Optional. Additional HTML attributes to apply to each checkbox input."
+      },
+      {
+        "name": "showAllTabs",
+        "type": "bool",
+        "description": "Optional. If true, shows all tabs regardless of permissions."
+      }
+    ],
+    "returns": "IEncodedString",
+    "example": "@GetTabList(0, new List<int> { 21, 55 }, \"pagetree\")"
+  }
+]

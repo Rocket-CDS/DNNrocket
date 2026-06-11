@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Using the RocketDirectory Module: Product Catalog Example | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using the RocketDirectory Module: Product Catalog Example | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/RocketDirectoryEdit.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-the-rocketdirectory-module-product-catalog-example">Using the RocketDirectory Module: Product Catalog Example</h1>
+
+<p>This guide explains how to set up and manage the RocketDirectory module, a powerful tool for creating and displaying lists of structured data. For this tutorial, we will walk through creating a <strong>product catalog</strong>.</p>
+<p>The process begins after the RocketDirectory module has been added to a DNN page.</p>
+<hr>
+<h2 id="step-1-initial-configuration">Step 1: Initial Configuration</h2>
+<p>When you add a new RocketDirectory module to a page, it will first prompt you to configure it. The module needs to be assigned an <strong>AppTheme</strong> to define its data structure, appearance, and administrative interface. Click the <strong>Configure</strong> button to start.</p>
+<hr>
+<h2 id="step-2-select-an-apptheme">Step 2: Select an AppTheme</h2>
+<p>You will be taken to the AppTheme selection screen. The AppTheme you choose determines what kind of directory you will be building.</p>
+<p>For this tutorial, we will use the open-source <strong>&quot;AppThemes-W3-CSS&quot;</strong> project, which is downloaded by default during the RocketCDS installation.</p>
+<ol>
+<li>Select the <strong>Project</strong>: <code>AppThemes-W3-CSS</code>. <em>Automatically selected if you only have 1 AppTheme project</em></li>
+<li>Select the <strong>AppTheme</strong>: <code>Products</code>. This theme is specifically designed to manage a product catalog.</li>
+<li>Click <strong>Save</strong>.  <em>You will have a set of setting appear that is linked to the <code>Template</code> you have select.</em></li>
+</ol>
+<hr>
+<h2 id="step-3-module-settings">Step 3: Module Settings</h2>
+<p>The settings page allows you to control the behavior of your product catalog. It includes standard settings common to RocketDirectory and custom settings defined by the &quot;Products&quot; AppTheme.</p>
+<h3 id="standard-settings">Standard Settings</h3>
+<p>Based on the default settings template, here are the key options you can configure:</p>
+<ul>
+<li><strong>Disable Cache:</strong> Check this to turn off caching for the module. This is useful during development but should be disabled in production for optimal performance.</li>
+<li><strong>ECO Mode:</strong> An efficiency mode that can improve performance by optimizing how the module renders.</li>
+<li><strong>Template:</strong> Selects the specific Razor template (<code>.cshtml</code> file) from the AppTheme to use for the public display. The &quot;Products&quot; theme may have different templates for a product list, a featured product grid, etc.</li>
+<li><strong>Default Sort:</strong> Sets the default order in which the products will be displayed (e.g., by product name, price).</li>
+<li><strong>List Page:</strong> Specifies which DNN page the main product catalog should be displayed on.</li>
+<li><strong>Detail Page:</strong> Specifies the DNN page where the detailed view of a single product will be shown.</li>
+<li><strong>API Module Reference:</strong> A powerful feature that allows this module to use another RocketDirectory module as its data source. This is perfect for reusing the same product data in different places with different display settings.</li>
+</ul>
+<h3 id="apptheme-settings">AppTheme Settings</h3>
+<p>The &quot;Products&quot; AppTheme will add its own set of custom settings, which might include options like currency symbol, image sizes, or filtering options.</p>
+<p>After configuring the settings, click <strong>Update</strong> to apply them.</p>
+<hr>
+<h2 id="step-4-editing-data">Step 4: Editing Data</h2>
+<p>In the module's &quot;Edit&quot; mode will show an administration panel, you can add, manage, and organize the individual products, categories, properties, settings and administration settings in your catalog. The fields available for each product (e.g., product name, SKU, price, image, description) are entirely defined by the &quot;Products&quot; AppTheme.</p>
+<p>Add the information for each product and click <strong>Save</strong>. The content will then be displayed on the front end according to the layout in your AppTheme's view template.</p>
+<hr>
+<hr>
+<h2 id="step-5-the-administration-settings">Step 5: The Administration Settings</h2>
+<p>Beyond the settings for an individual module, RocketDirectory has a powerful system-level administration area. This is typically accessed from the module admin panel. These settings control the fundamental behavior of the entire directory system for the portal, not just a single module instance.</p>
+<p>The administration area is organized into several tabs:</p>
+<h3 id="general-tab">General Tab</h3>
+<p>This tab contains the core operational settings for the directory system.</p>
+<ul>
+<li><strong>AppTheme Project / AppTheme / Version:</strong> This selects the default AppTheme that will be used for the administration interface itself.</li>
+<li><strong>Max Articles:</strong> Sets the maximum number of directory items (articles) that can be created for this portal. Defaults to 1000.</li>
+<li><strong>Articles Image Limit:</strong> The maximum number of images that can be uploaded for a single directory item. Defaults to 12.</li>
+<li><strong>Articles Document Limit:</strong> The maximum number of document attachments for a single directory item. Defaults to 12.</li>
+<li><strong>Image Resize:</strong> Sets the maximum width or height (in pixels) to which uploaded images will be resized. This helps to conserve server space and improve performance. Defaults to 1024px.</li>
+<li><strong>Email On:</strong> Enables or disables email notifications for certain system events.</li>
+<li><strong>Debug Mode:</strong> Activates debug mode, which may display additional diagnostic information. This should be disabled on a live site.</li>
+<li><strong>Secure Upload:</strong> Enforces stricter security checks on file uploads.</li>
+<li><strong>Security Key:</strong> A unique key used for securing API endpoints and other communications.</li>
+<li><strong>Count Downloads:</strong> Enables a counter for any downloadable files linked within directory items.</li>
+<li><strong>Checkbox Filter AND:</strong> Changes the logic for filtering. When checked, if a user selects multiple checkbox filters (e.g., &quot;Feature A&quot; and &quot;Feature B&quot;), it will only show items that have <strong>both</strong> features (AND logic). If unchecked, it will show items that have <strong>either</strong> feature (OR logic).</li>
+</ul>
+<h3 id="config-tab">Config Tab</h3>
+<p>This tab is for SuperUsers only and controls more advanced, technical aspects of the directory.</p>
+<ul>
+<li><strong>Currency Culture Code:</strong> Sets the culture code (e.g., <code>en-US</code>, <code>de-DE</code>) to be used for formatting currency values.</li>
+<li><strong>Canonical Pages (List/Detail/Search):</strong> Defines the primary, canonical URL for the list, detail, and search pages. This is important for SEO to avoid duplicate content penalties.</li>
+<li><strong>Search Module ID:</strong> Specifies which module on the search page is responsible for handling search queries.</li>
+<li><strong>SQL Filter:</strong> Allows a SuperUser to write a custom SQL <code>WHERE</code> clause to apply a permanent filter to the items displayed in the directory, both for public and admin views. This is a powerful tool for creating specialized sub-directories from a master data set.</li>
+<li><strong>DNN Search Extra:</strong> Lets you append extra text to the content that is passed to the standard DNN search indexer, allowing you to include keywords or data that might not be in the main display templates.</li>
+<li><strong>Generate Link Images:</strong> An option related to how images are handled in specific linking scenarios.</li>
+</ul>
+<h3 id="order-by-tab">Order By Tab</h3>
+<p>This tab allows you to define the custom sorting options that will be available to both administrators and, potentially, end-users.</p>
+<ul>
+<li>You can add, remove, and reorder various sorting fields. Each entry consists of a <strong>Key</strong> (a short name, often the database field name) and a <strong>Value</strong> (the full SQL <code>ORDER BY</code> clause).</li>
+<li>For example, you could create a sort option with the Key <code>Price</code> and the Value <code>order by articlename.GUIDKey</code> to allow sorting by price in ascending order.</li>
+<li><strong>Admin Order By:</strong> Selects the default sort order used in the administrative back-end.</li>
+</ul>
+<h3 id="providers-plugins-tab">Providers (Plugins) Tab</h3>
+<p>This area manages the active plugins for the RocketDirectory system. Plugins are extensions that can add new functionality, data types, or integration points. Here you can:</p>
+<ul>
+<li>Activate or deactivate available plugins.</li>
+<li>Set the sort order to control the display order of plugin-related UI elements.</li>
+</ul>
+<h3 id="tools-tab">Tools Tab</h3>
+<p>This tab provides access to various maintenance and administrative tools.</p>
+<ul>
+<li><strong>Validate and Index:</strong> This crucial tool performs two actions: it validates the integrity of the directory data and then rebuilds the search index. This should be run if you are having issues with search results not being up-to-date.</li>
+<li><strong>Scheduler Run Hours:</strong> Sets the interval, in hours, for how often the system's background scheduler task should run. This task might perform maintenance like re-indexing or data cleanup.</li>
+<li><strong>Missing Documents:</strong> A utility to scan the directory and find any records that are referencing document files that no longer exist on the server's file system.</li>
+</ul>
+<hr>
+<h3 id="a-note-on-changing-appthemes">A Note on Changing AppThemes</h3>
+<p>While you can change the AppTheme at any time from the module's settings, exercise caution. Different AppThemes use different data structures. Switching from the &quot;Products&quot; theme to another theme on a module that already contains content could make that data inaccessible. It's always best to be certain before switching themes on a live module.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/RocketDirectoryEdit.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

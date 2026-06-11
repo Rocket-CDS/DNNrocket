@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>RocketNews Module | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="RocketNews Module | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/modules/RocketNews.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="rocketnews-module">RocketNews Module</h1>
+
+<h2 id="overview">Overview</h2>
+<p>RocketNews is a specialized content module for creating and managing a news feed or press releases. While it appears to the user as a standalone &quot;News&quot; module, it is architecturally a sophisticated <strong>wrapper</strong> around the core <code>RocketDirectory</code> engine.</p>
+<p>This wrapper approach allows for multiple, independent directories to exist on a single DNN portal, each with its own data and theming, while reusing the powerful filtering and data management capabilities of RocketDirectory.</p>
+<hr>
+<h2 id="architecture-the-wrapper-model">Architecture: The Wrapper Model</h2>
+<p>The most important concept to understand is that RocketNews <strong>delegates</strong> its core functionality to RocketDirectory.</p>
+<ol>
+<li><p><strong><code>RocketNewsAPI</code> (.NET Standard):</strong></p>
+<ul>
+<li>This project is often very lightweight. Its primary purpose is to provide a unique identity for the &quot;News&quot; module type.</li>
+<li>It can also contain any specialized business logic required for a news article that <code>RocketDirectoryAPI</code> doesn't provide, such as handling press contacts or source attributions.</li>
+</ul>
+</li>
+<li><p><strong><code>RocketNewsMod</code> (.NET Framework):</strong></p>
+<ul>
+<li>This project contains the module definition that makes &quot;RocketNews&quot; appear as an installable module in DNN.</li>
+<li>Crucially, it <strong>does not contain its own administrative controls</strong> like <code>Edit.ascx</code> or <code>Settings.ascx</code>. Instead, the module definition is configured to point to the controls within <code>RocketDirectoryMod</code>.</li>
+</ul>
+</li>
+</ol>
+<p>This means when an administrator clicks &quot;Edit&quot; on a RocketNews module, they are actually using the <code>Edit.ascx</code> control from the RocketDirectory module. The system knows to save the data in a way that is unique to the RocketNews module instance, even though the UI is shared.</p>
+<hr>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li><p><strong>Separate Data Storage:</strong> Even though it uses RocketDirectory's controls, the data for RocketNews is stored separately. The <code>DNNrocketAPI</code> uses the module's type (<code>RocketNews</code>) to ensure data from a news article does not mix with data from a blog or a standard directory.</p>
+</li>
+<li><p><strong>Dedicated AppThemes:</strong> RocketNews has its own AppThemes. A theme designed for RocketNews will have templates (<code>Edit.cshtml</code>, <code>View.cshtml</code>) with fields and layouts specific to a news item, such as &quot;Headline&quot;, &quot;Summary&quot;, &quot;FullStory&quot;, &quot;PublicationDate&quot;, and &quot;Source&quot;.</p>
+</li>
+<li><p><strong>Specialized Logic:</strong> The <code>RocketNewsAPI</code> can add extra functionality on top of the base directory features. For example, it could have logic to syndicate content to other services or to feature &quot;breaking news&quot; articles at the top of a list.</p>
+</li>
+</ol>
+<h2 id="example-use-case">Example Use Case</h2>
+<ul>
+<li>You add the <strong>RocketNews</strong> module to a page to show a list of official press releases.</li>
+<li>You add the <strong>RocketBlog</strong> module to another page to show informal developer blog posts.</li>
+<li>Both modules use the same underlying <code>RocketDirectory</code> engine and administrative controls.</li>
+<li>However, the RocketNews module uses a &quot;News&quot; AppTheme, so its edit form asks for &quot;Headline&quot; and &quot;Source&quot;.</li>
+<li>The RocketBlog module uses a &quot;Blog&quot; AppTheme, and its edit form asks for &quot;Title&quot; and &quot;Author&quot;.</li>
+<li>The data for each is stored independently, and they can be themed and managed as completely separate entities, providing maximum code reuse and flexibility.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/modules/RocketNews.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

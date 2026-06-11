@@ -1,0 +1,1296 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Simplicity Base64 File Upload - Developer Guide | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Simplicity Base64 File Upload - Developer Guide | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/snippets/fileuploadbase64.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="simplicity-base64-file-upload---developer-guide">Simplicity Base64 File Upload - Developer Guide</h1>
+
+<h2 id="purpose">Purpose</h2>
+<p>This document explains how to implement file and image uploads using the Simplicity Base64 upload system in the DNNrocket framework. This guide is designed for both AI assistants and human developers to understand the complete upload pattern, including client-side HTML and server-side C# implementation.</p>
+<hr>
+<h2 id="system-overview">System Overview</h2>
+<p>The Simplicity Base64 upload system provides an automatic file upload mechanism that:</p>
+<ul>
+<li>Converts selected files to base64 encoding on the client side</li>
+<li>Sends files via AJAX to the server</li>
+<li>Processes files on the server with C# handlers</li>
+<li>Returns HTML to display results dynamically</li>
+</ul>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Automatic base64 encoding</li>
+<li>Multiple file upload support</li>
+<li>Progress tracking capability</li>
+<li>No form submission required</li>
+<li>Seamless integration with Simplicity framework</li>
+</ul>
+<hr>
+<h2 id="quick-start---minimal-example">Quick Start - Minimal Example</h2>
+<h3 id="client-side-html">Client-Side HTML</h3>
+<pre><code class="lang-html">&lt;!-- Hidden file input with Simplicity attributes --&gt;
+&lt;input 
+  id=&quot;myFileUpload&quot; 
+  class=&quot;simplisity_base64upload&quot; 
+  type=&quot;file&quot; 
+  s-cmd=&quot;mycommand_upload&quot; 
+  s-post=&quot;#formData&quot; 
+  s-return=&quot;#results&quot; 
+  s-fields='{&quot;itemid&quot;:&quot;123&quot;}' 
+  style=&quot;display:none;&quot;&gt;
+
+&lt;!-- Visible upload button --&gt;
+&lt;button type=&quot;button&quot; onclick=&quot;$('#myFileUpload').click();&quot;&gt;
+  Choose Files
+&lt;/button&gt;
+
+&lt;!-- Results display area --&gt;
+&lt;div id=&quot;results&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Form data container (referenced by s-post) --&gt;
+&lt;div id=&quot;formData&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;itemid&quot; value=&quot;123&quot;&gt;
+&lt;/div&gt;
+</code></pre>
+<p>NOTE: The s-return attr on the input is optional, it depends on the html being returned.  Usually the s-return is not added and the html return goes into the default elelment #simplisity_startpanel.</p>
+<h3 id="server-side-c-handler">Server-Side C# Handler</h3>
+<pre><code class="lang-csharp">// In your API Controller ProcessCommand method
+case &quot;mycommand_upload&quot;:
+    strOut = HandleFileUpload();
+    break;
+
+// Handler implementation
+private string HandleFileUpload()
+{
+    // 1. Get parameters
+    var itemId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/itemid&quot;);
+
+    // 2. Get uploaded file data
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    // 3. Check if files exist
+    if (string.IsNullOrEmpty(fileData))
+        return &quot;&lt;div&gt;No files uploaded&lt;/div&gt;&quot;;
+
+    // 4. Split multiple files (separated by *)
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    // 5. Save each file
+    for (int i = 0; i &lt; nameArray.Length; i++)
+    {
+        if (!string.IsNullOrEmpty(nameArray[i]))
+        {
+            var fileName = nameArray[i];
+            var base64Data = dataArray[i];
+            var bytes = Convert.FromBase64String(base64Data);
+            var savePath = Path.Combine(&quot;your/upload/path&quot;, fileName);
+            File.WriteAllBytes(savePath, bytes);
+        }
+    }
+
+    // 6. Return HTML response
+    return &quot;&lt;div&gt;Files uploaded successfully!&lt;/div&gt;&quot;;
+}
+</code></pre>
+<hr>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="client-side-flow">Client-Side Flow</h3>
+<ol>
+<li><strong>User clicks button</strong> → File picker dialog opens</li>
+<li><strong>User selects files</strong> → Files are automatically converted to base64</li>
+<li><strong>Files are posted</strong> → AJAX sends data to server via Simplicity framework</li>
+<li><strong>Server responds</strong> → HTML response is injected into the <code>s-return</code> container</li>
+</ol>
+<h3 id="server-side-flow">Server-Side Flow</h3>
+<ol>
+<li><strong>Command routing</strong> → <code>ProcessCommand</code> method receives <code>s-cmd</code> value</li>
+<li><strong>Data extraction</strong> → Get <code>fileuploadlist</code> (filenames) and <code>fileuploadbase64</code> (file data)</li>
+<li><strong>File processing</strong> → Decode base64 and save files to disk</li>
+<li><strong>Response</strong> → Return HTML to display in browser</li>
+</ol>
+<h3 id="data-flow-diagram">Data Flow Diagram</h3>
+<pre><code>User → Button Click → File Input
+                         ↓
+                   Base64 Encoding
+                         ↓
+                   AJAX POST (Simplicity)
+                         ↓
+              Server ProcessCommand(s-cmd)
+                         ↓
+              Extract fileuploadlist + fileuploadbase64
+                         ↓
+              Decode Base64 → Save Files
+                         ↓
+              Return HTML
+                         ↓
+              Display in s-return Container
+</code></pre>
+<hr>
+<h2 id="required-html-attributes">Required HTML Attributes</h2>
+<h3 id="essential-attributes">Essential Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class</code></td>
+<td><strong>Yes</strong></td>
+<td>Must be <code>simplisity_base64upload</code> to activate handler</td>
+<td><code>class=&quot;simplisity_base64upload&quot;</code></td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><strong>Yes</strong></td>
+<td>Must be <code>file</code></td>
+<td><code>type=&quot;file&quot;</code></td>
+</tr>
+<tr>
+<td><code>s-cmd</code></td>
+<td><strong>Yes</strong></td>
+<td>Server command name (routes to ProcessCommand)</td>
+<td><code>s-cmd=&quot;article_addimage&quot;</code></td>
+</tr>
+<tr>
+<td><code>s-post</code></td>
+<td><strong>Yes</strong></td>
+<td>CSS selector for form data container</td>
+<td><code>s-post=&quot;#formData&quot;</code></td>
+</tr>
+<tr>
+<td><code>s-return</code></td>
+<td><strong>Yes</strong></td>
+<td>CSS selector where server response displays</td>
+<td><code>s-return=&quot;#imageContainer&quot;</code></td>
+</tr>
+<tr>
+<td><code>s-fields</code></td>
+<td><strong>Yes</strong></td>
+<td>JSON object with required parameters</td>
+<td><code>s-fields='{&quot;articleid&quot;:&quot;123&quot;}'</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="important-html-structure-pattern">Important: HTML Structure Pattern</h3>
+<p><strong>The file input does NOT need to be inside the s-post container.</strong></p>
+<p>✅ <strong>Correct Pattern:</strong></p>
+<pre><code class="lang-html">&lt;!-- File input (can be anywhere) --&gt;
+&lt;input id=&quot;fileUpload&quot; class=&quot;simplisity_base64upload&quot; 
+       s-post=&quot;#formData&quot; s-return=&quot;#results&quot; ...&gt;
+
+&lt;!-- Form data container (referenced by s-post) --&gt;
+&lt;div id=&quot;formData&quot;&gt;
+  &lt;input name=&quot;articleid&quot; value=&quot;123&quot;&gt;
+&lt;/div&gt;
+
+&lt;!-- Results container (referenced by s-return) --&gt;
+&lt;div id=&quot;results&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>❌ <strong>Not Required (but won't break):</strong></p>
+<pre><code class="lang-html">&lt;!-- File input doesn't need to be inside the form --&gt;
+&lt;div id=&quot;formData&quot;&gt;
+  &lt;input id=&quot;fileUpload&quot; class=&quot;simplisity_base64upload&quot; s-post=&quot;#formData&quot;...&gt;
+  &lt;input name=&quot;articleid&quot; value=&quot;123&quot;&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><code>s-post</code> - <strong>WHERE TO FIND</strong> form data to send with the upload</li>
+<li><code>s-return</code> - <strong>WHERE TO DISPLAY</strong> the server response</li>
+<li>The file input itself can be located anywhere in the DOM</li>
+</ul>
+<h3 id="optional-attributes">Optional Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>s-reload</code></td>
+<td>Reload page after upload (<code>true</code>/<code>false</code>)</td>
+<td><code>s-reload=&quot;false&quot;</code></td>
+</tr>
+<tr>
+<td><code>multiple</code></td>
+<td>Allow multiple file selection</td>
+<td><code>multiple</code></td>
+</tr>
+<tr>
+<td><code>accept</code></td>
+<td>File type filter</td>
+<td><code>accept=&quot;image/*&quot;</code> or <code>accept=&quot;.pdf,.doc&quot;</code></td>
+</tr>
+<tr>
+<td><code>s-list</code></td>
+<td>Additional data lists to send</td>
+<td><code>s-list=&quot;.imagelist,.doclist&quot;</code></td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Recommended to hide input</td>
+<td><code>style=&quot;display:none;&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="server-side-implementation">Server-Side Implementation</h2>
+<h3 id="command-routing-pattern">Command Routing Pattern</h3>
+<p>In your API controller (e.g., <code>StartConnect.cs</code>, <code>ArticleConnect.cs</code>), implement command routing:</p>
+<pre><code class="lang-csharp">public string ProcessCommand(string cmd, SimplisityInfo systemInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = &quot;&quot;)
+{
+    var strOut = &quot;&quot;;
+
+    // Initialize your data objects
+    _postInfo = postInfo;
+    _paramInfo = paramInfo;
+
+    switch (cmd.ToLower())
+    {
+        case &quot;article_addimage&quot;:
+            strOut = AddArticleImage();
+            break;
+        case &quot;article_uploaddoc&quot;:
+            strOut = AddArticleDocument();
+            break;
+        // ... other commands
+    }
+
+    return strOut;
+}
+</code></pre>
+<h3 id="data-extraction-methods">Data Extraction Methods</h3>
+<h4 id="getting-upload-data">Getting Upload Data</h4>
+<pre><code class="lang-csharp">// Get comma or asterisk-separated list of filenames
+var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+
+// Get base64-encoded file data (separated by asterisks for multiple files)
+var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+</code></pre>
+<h4 id="getting-parameters-from-s-fields">Getting Parameters from s-fields</h4>
+<pre><code class="lang-csharp">// From s-fields='{&quot;articleid&quot;:&quot;123&quot;, &quot;categoryid&quot;:&quot;456&quot;}'
+var articleId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/articleid&quot;);
+var categoryId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/categoryid&quot;);
+var someText = _paramInfo.GetXmlProperty(&quot;genxml/hidden/sometext&quot;);
+</code></pre>
+<h4 id="getting-form-data-from-s-post-container">Getting Form Data from s-post Container</h4>
+<pre><code class="lang-csharp">// From &lt;input name=&quot;title&quot; value=&quot;My Title&quot;&gt;
+var title = _postInfo.GetXmlProperty(&quot;genxml/textbox/title&quot;);
+
+// From &lt;input name=&quot;description&quot; value=&quot;Description text&quot;&gt;
+var description = _postInfo.GetXmlProperty(&quot;genxml/textbox/description&quot;);
+
+// From &lt;input type=&quot;hidden&quot; name=&quot;itemid&quot; value=&quot;789&quot;&gt;
+var itemId = _postInfo.GetXmlPropertyInt(&quot;genxml/hidden/itemid&quot;);
+</code></pre>
+<h3 id="complete-upload-handler-examples">Complete Upload Handler Examples</h3>
+<h4 id="example-1-simple-image-upload">Example 1: Simple Image Upload</h4>
+<pre><code class="lang-csharp">public string AddArticleImage()
+{
+    // 1. Get article ID from s-fields parameter
+    var articleId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/articleid&quot;);
+
+    // 2. Get uploaded file data from postInfo
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    // 3. Validate upload
+    if (string.IsNullOrEmpty(fileData))
+    {
+        return &quot;&lt;div class='error'&gt;No files were uploaded&lt;/div&gt;&quot;;
+    }
+
+    // 4. Split multiple files
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    // 5. Create destination directory
+    var destDir = PortalUtils.ImageFolderMapPath() + &quot;\\&quot; + articleId;
+    if (!Directory.Exists(destDir))
+        Directory.CreateDirectory(destDir);
+
+    // 6. Save each file
+    var savedFiles = new List&lt;string&gt;();
+    for (int i = 0; i &lt; nameArray.Length; i++)
+    {
+        if (!string.IsNullOrEmpty(nameArray[i]))
+        {
+            var fileName = nameArray[i];
+            var base64Data = dataArray[i];
+            var fileBytes = Convert.FromBase64String(base64Data);
+            var filePath = Path.Combine(destDir, fileName);
+
+            File.WriteAllBytes(filePath, fileBytes);
+            savedFiles.Add(fileName);
+
+            // Optional: Save to database or XML
+            // articleData.AddImage(fileName);
+        }
+    }
+
+    // 7. Return HTML response
+    var html = &quot;&lt;div class='upload-success'&gt;&quot;;
+    html += $&quot;&lt;p&gt;Successfully uploaded {savedFiles.Count} image(s)&lt;/p&gt;&quot;;
+    foreach (var file in savedFiles)
+    {
+        html += $&quot;&lt;img src='/Images/{articleId}/{file}' width='100' /&gt;&quot;;
+    }
+    html += &quot;&lt;/div&gt;&quot;;
+
+    return html;
+}
+</code></pre>
+<h4 id="example-2-image-upload-with-dnnrocket-helper-method">Example 2: Image Upload with DNNrocket Helper Method</h4>
+<pre><code class="lang-csharp">public string AddArticleImage()
+{
+    // 1. Get parameters
+    var articleId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/articleid&quot;);
+    var articleData = GetActiveArticle(articleId);
+
+    // 2. Save any form data first
+    articleData.Save(_postInfo);
+
+    // 3. Get uploaded files
+    var fileuploadlist = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileuploadbase64 = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    // 4. Process base64 images using DNNrocket helper
+    if (!string.IsNullOrEmpty(fileuploadbase64))
+    {
+        var filenameList = fileuploadlist.Split('*');
+        var filebase64List = fileuploadbase64.Split('*');
+
+        // Set up paths
+        var baseFileMapPath = PortalUtils.TempDirectoryMapPath() + &quot;\\&quot; + GeneralUtils.GetGuidKey();
+        var destDir = _dataObject.PortalContent.ImageFolderMapPath + &quot;\\&quot; + articleData.ArticleId;
+
+        // Create directory if needed
+        if (!Directory.Exists(destDir))
+            Directory.CreateDirectory(destDir);
+
+        // Get image resize setting
+        var imgsize = _postInfo.GetXmlPropertyInt(&quot;genxml/hidden/imageresize&quot;);
+        if (imgsize == 0)
+            imgsize = _dataObject.PortalContent.ImageResize;
+
+        // Upload and resize images
+        var imgList = RocketUtils.ImgUtils.UploadBase64Image(
+            filenameList, 
+            filebase64List, 
+            baseFileMapPath, 
+            destDir, 
+            imgsize
+        );
+
+        // Add each image to article data
+        foreach (var imgFileMapPath in imgList)
+        {
+            articleData.AddImage(Path.GetFileName(imgFileMapPath));
+        }
+
+        // Store in data object for rendering
+        _dataObject.SetDataObject(&quot;articledata&quot;, articleData);
+    }
+
+    // 5. Render response using Razor template
+    var razorTempl = GetSystemTemplate(&quot;Articleimages.cshtml&quot;);
+    var pr = RenderRazorUtils.RazorProcessData(
+        razorTempl, 
+        articleData, 
+        _dataObject.DataObjects, 
+        _dataObject.Settings, 
+        _sessionParams, 
+        true
+    );
+
+    if (pr.ErrorMsg != &quot;&quot;)
+        return pr.ErrorMsg;
+
+    return pr.RenderedText;
+}
+</code></pre>
+<h4 id="example-3-document-upload">Example 3: Document Upload</h4>
+<pre><code class="lang-csharp">public string AddArticleDocument()
+{
+    // 1. Get parameters
+    var articleId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/articleid&quot;);
+
+    // 2. Get uploaded files
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    if (string.IsNullOrEmpty(fileData))
+        return &quot;&lt;p&gt;No documents selected&lt;/p&gt;&quot;;
+
+    // 3. Split files
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    // 4. Set up document folder
+    var docDir = PortalUtils.DocumentFolderMapPath() + &quot;\\&quot; + articleId;
+    if (!Directory.Exists(docDir))
+        Directory.CreateDirectory(docDir);
+
+    // 5. Save documents
+    var uploadedDocs = new List&lt;string&gt;();
+    for (int i = 0; i &lt; nameArray.Length; i++)
+    {
+        if (!string.IsNullOrEmpty(nameArray[i]))
+        {
+            var fileName = GeneralUtils.SanitizeFileName(nameArray[i]);
+            var base64Data = dataArray[i];
+            var bytes = Convert.FromBase64String(base64Data);
+            var filePath = Path.Combine(docDir, fileName);
+
+            File.WriteAllBytes(filePath, bytes);
+            uploadedDocs.Add(fileName);
+
+            // Save document reference
+            // articleData.AddDocument(fileName);
+        }
+    }
+
+    // 6. Return document list
+    var html = &quot;&lt;div class='document-list'&gt;&quot;;
+    html += &quot;&lt;h4&gt;Uploaded Documents&lt;/h4&gt;&lt;ul&gt;&quot;;
+    foreach (var doc in uploadedDocs)
+    {
+        html += $&quot;&lt;li&gt;&lt;a href='/Documents/{articleId}/{doc}'&gt;{doc}&lt;/a&gt;&lt;/li&gt;&quot;;
+    }
+    html += &quot;&lt;/ul&gt;&lt;/div&gt;&quot;;
+
+    return html;
+}
+</code></pre>
+<hr>
+<h2 id="complete-working-examples">Complete Working Examples</h2>
+<p><strong>Note:</strong> In all examples below, notice that the file input is separate from the form data container. The <code>s-post</code> attribute points to the container with form data, but the file input itself doesn't need to be inside it. This is the standard pattern used in DNNrocket.</p>
+<h3 id="example-1-product-image-upload">Example 1: Product Image Upload</h3>
+<h4 id="html-client-side">HTML (Client-Side)</h4>
+<pre><code class="lang-html">&lt;div id=&quot;productUploadSection&quot;&gt;
+    &lt;h3&gt;Upload Product Images&lt;/h3&gt;
+
+    &lt;!-- Upload Button --&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn-upload&quot; onclick=&quot;$('#productImageUpload').click();&quot;&gt;
+        &lt;i class=&quot;fa fa-upload&quot;&gt;&lt;/i&gt; Select Images
+    &lt;/button&gt;
+
+    &lt;!-- Hidden File Input --&gt;
+    &lt;input 
+        id=&quot;productImageUpload&quot; 
+        class=&quot;simplisity_base64upload&quot; 
+        type=&quot;file&quot; 
+        accept=&quot;image/*&quot; 
+        multiple 
+        s-cmd=&quot;product_addimages&quot; 
+        s-post=&quot;#productFormData&quot; 
+        s-return=&quot;#productImageGallery&quot; 
+        s-reload=&quot;false&quot; 
+        s-fields='{&quot;productid&quot;:&quot;@Model.ProductId&quot;, &quot;categoryid&quot;:&quot;@Model.CategoryId&quot;}' 
+        style=&quot;display:none;&quot;&gt;
+
+    &lt;!-- Form Data Container --&gt;
+    &lt;div id=&quot;productFormData&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;productid&quot; value=&quot;@Model.ProductId&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;categoryid&quot; value=&quot;@Model.CategoryId&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;imageresize&quot; value=&quot;1200&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Image Gallery Display --&gt;
+    &lt;div id=&quot;productImageGallery&quot; class=&quot;image-gallery&quot;&gt;
+        &lt;!-- Uploaded images will appear here --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h4 id="c-server-handler">C# Server Handler</h4>
+<pre><code class="lang-csharp">// In StartConnect.cs or ProductConnect.cs
+public string ProcessCommand(string cmd, SimplisityInfo systemInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = &quot;&quot;)
+{
+    var strOut = &quot;&quot;;
+    _postInfo = postInfo;
+    _paramInfo = paramInfo;
+
+    switch (cmd.ToLower())
+    {
+        case &quot;product_addimages&quot;:
+            strOut = AddProductImages();
+            break;
+    }
+
+    return strOut;
+}
+
+private string AddProductImages()
+{
+    // Get product ID and category ID from s-fields
+    var productId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/productid&quot;);
+    var categoryId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/categoryid&quot;);
+
+    // Get image resize setting from form
+    var imageResize = _postInfo.GetXmlPropertyInt(&quot;genxml/hidden/imageresize&quot;);
+    if (imageResize == 0) imageResize = 1200; // default
+
+    // Get uploaded file data
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    if (string.IsNullOrEmpty(fileData))
+        return &quot;&lt;p class='error'&gt;No images selected&lt;/p&gt;&quot;;
+
+    // Split multiple files
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    // Create product image directory
+    var uploadPath = Server.MapPath($&quot;~/Images/Products/{productId}/&quot;);
+    if (!Directory.Exists(uploadPath))
+        Directory.CreateDirectory(uploadPath);
+
+    // Save images
+    var savedImages = new List&lt;string&gt;();
+    for (int i = 0; i &lt; nameArray.Length; i++)
+    {
+        if (!string.IsNullOrEmpty(nameArray[i]))
+        {
+            var fileName = GeneralUtils.SanitizeFileName(nameArray[i]);
+            var base64Data = dataArray[i];
+            var bytes = Convert.FromBase64String(base64Data);
+
+            // Save original
+            var filePath = Path.Combine(uploadPath, fileName);
+            File.WriteAllBytes(filePath, bytes);
+
+            // Optional: Create thumbnail
+            var thumbPath = Path.Combine(uploadPath, &quot;thumb_&quot; + fileName);
+            ImageUtils.ResizeImage(filePath, thumbPath, 200, 200);
+
+            savedImages.Add(fileName);
+        }
+    }
+
+    // Build HTML response
+    var html = new StringBuilder();
+    html.Append(&quot;&lt;div class='upload-success'&gt;&quot;);
+    html.Append($&quot;&lt;p&gt;Successfully uploaded {savedImages.Count} image(s)&lt;/p&gt;&quot;);
+    html.Append(&quot;&lt;div class='image-grid'&gt;&quot;);
+
+    foreach (var img in savedImages)
+    {
+        html.Append(&quot;&lt;div class='image-item'&gt;&quot;);
+        html.Append($&quot;&lt;img src='/Images/Products/{productId}/{img}' alt='{img}' /&gt;&quot;);
+        html.Append($&quot;&lt;p&gt;{img}&lt;/p&gt;&quot;);
+        html.Append(&quot;&lt;/div&gt;&quot;);
+    }
+
+    html.Append(&quot;&lt;/div&gt;&lt;/div&gt;&quot;);
+    return html.ToString();
+}
+</code></pre>
+<h3 id="example-2-user-avatar-upload-single-image">Example 2: User Avatar Upload (Single Image)</h3>
+<h4 id="html">HTML</h4>
+<pre><code class="lang-html">&lt;div id=&quot;avatarSection&quot;&gt;
+    &lt;div id=&quot;currentAvatar&quot;&gt;
+        &lt;img src=&quot;@Model.AvatarUrl&quot; alt=&quot;Avatar&quot; width=&quot;150&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;button type=&quot;button&quot; onclick=&quot;$('#avatarUpload').click();&quot;&gt;
+        Change Avatar
+    &lt;/button&gt;
+
+    &lt;input 
+        id=&quot;avatarUpload&quot; 
+        class=&quot;simplisity_base64upload&quot; 
+        type=&quot;file&quot; 
+        accept=&quot;image/*&quot; 
+        s-cmd=&quot;user_updateavatar&quot; 
+        s-post=&quot;#userForm&quot; 
+        s-return=&quot;#currentAvatar&quot; 
+        s-reload=&quot;false&quot; 
+        s-fields='{&quot;userid&quot;:&quot;@Model.UserId&quot;}' 
+        style=&quot;display:none;&quot;&gt;
+
+    &lt;div id=&quot;userForm&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;userid&quot; value=&quot;@Model.UserId&quot;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h4 id="c-handler">C# Handler</h4>
+<pre><code class="lang-csharp">case &quot;user_updateavatar&quot;:
+    strOut = UpdateUserAvatar();
+    break;
+
+private string UpdateUserAvatar()
+{
+    var userId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/userid&quot;);
+
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    if (string.IsNullOrEmpty(fileData))
+        return &quot;&lt;p&gt;No image selected&lt;/p&gt;&quot;;
+
+    // Get first file only (single upload)
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    if (nameArray.Length &gt; 0 &amp;&amp; !string.IsNullOrEmpty(nameArray[0]))
+    {
+        var fileName = $&quot;avatar_{userId}.jpg&quot;;
+        var bytes = Convert.FromBase64String(dataArray[0]);
+
+        var avatarPath = Server.MapPath($&quot;~/Images/Avatars/&quot;);
+        if (!Directory.Exists(avatarPath))
+            Directory.CreateDirectory(avatarPath);
+
+        var filePath = Path.Combine(avatarPath, fileName);
+        File.WriteAllBytes(filePath, bytes);
+
+        // Resize to standard size
+        ImageUtils.ResizeImage(filePath, filePath, 150, 150);
+
+        // Update user record
+        // userService.UpdateAvatarUrl(userId, $&quot;/Images/Avatars/{fileName}&quot;);
+
+        return $&quot;&lt;img src='/Images/Avatars/{fileName}?v={DateTime.Now.Ticks}' alt='Avatar' width='150'&gt;&quot;;
+    }
+
+    return &quot;&lt;p&gt;Upload failed&lt;/p&gt;&quot;;
+}
+</code></pre>
+<h3 id="example-3-article-document-upload-with-list">Example 3: Article Document Upload with List</h3>
+<h4 id="html-1">HTML</h4>
+<pre><code class="lang-html">&lt;div id=&quot;documentSection&quot;&gt;
+    &lt;h4&gt;Article Documents&lt;/h4&gt;
+
+    &lt;button type=&quot;button&quot; onclick=&quot;$('#docUpload').click();&quot;&gt;
+        &lt;i class=&quot;fa fa-file&quot;&gt;&lt;/i&gt; Upload Documents
+    &lt;/button&gt;
+
+    &lt;input 
+        id=&quot;docUpload&quot; 
+        class=&quot;simplisity_base64upload&quot; 
+        type=&quot;file&quot; 
+        accept=&quot;.pdf,.doc,.docx,.xls,.xlsx&quot; 
+        multiple 
+        s-cmd=&quot;article_uploaddocs&quot; 
+        s-post=&quot;#articleData&quot; 
+        s-return=&quot;#documentList&quot; 
+        s-reload=&quot;false&quot; 
+        s-fields='{&quot;articleid&quot;:&quot;@articleData.ArticleId&quot;}' 
+        style=&quot;display:none;&quot;&gt;
+
+    &lt;div id=&quot;articleData&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;articleid&quot; value=&quot;@articleData.ArticleId&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;maxfilesize&quot; value=&quot;10485760&quot;&gt;&lt;!-- 10MB --&gt;
+    &lt;/div&gt;
+
+    &lt;div id=&quot;documentList&quot;&gt;
+        @* Existing documents will be displayed here *@
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h4 id="c-handler-1">C# Handler</h4>
+<pre><code class="lang-csharp">case &quot;article_uploaddocs&quot;:
+    strOut = AddArticleDocuments();
+    break;
+
+private string AddArticleDocuments()
+{
+    var articleId = _paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/articleid&quot;);
+    var maxFileSize = _postInfo.GetXmlPropertyInt(&quot;genxml/hidden/maxfilesize&quot;);
+
+    var fileNames = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;);
+    var fileData = _postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;);
+
+    if (string.IsNullOrEmpty(fileData))
+        return &quot;&lt;p&gt;No documents selected&lt;/p&gt;&quot;;
+
+    var nameArray = fileNames.Split('*');
+    var dataArray = fileData.Split('*');
+
+    var docPath = Server.MapPath($&quot;~/Documents/Articles/{articleId}/&quot;);
+    if (!Directory.Exists(docPath))
+        Directory.CreateDirectory(docPath);
+
+    var html = new StringBuilder();
+    html.Append(&quot;&lt;ul class='document-list'&gt;&quot;);
+
+    for (int i = 0; i &lt; nameArray.Length; i++)
+    {
+        if (!string.IsNullOrEmpty(nameArray[i]))
+        {
+            var fileName = GeneralUtils.SanitizeFileName(nameArray[i]);
+            var bytes = Convert.FromBase64String(dataArray[i]);
+
+            // Check file size
+            if (maxFileSize &gt; 0 &amp;&amp; bytes.Length &gt; maxFileSize)
+            {
+                html.Append($&quot;&lt;li class='error'&gt;{fileName} - File too large (max {maxFileSize / 1024 / 1024}MB)&lt;/li&gt;&quot;);
+                continue;
+            }
+
+            var filePath = Path.Combine(docPath, fileName);
+            File.WriteAllBytes(filePath, bytes);
+
+            // Get file icon based on extension
+            var extension = Path.GetExtension(fileName).ToLower();
+            var icon = GetFileIcon(extension);
+
+            // Format file size
+            var fileSize = FormatFileSize(bytes.Length);
+
+            html.Append(&quot;&lt;li&gt;&quot;);
+            html.Append($&quot;&lt;i class='fa {icon}'&gt;&lt;/i&gt; &quot;);
+            html.Append($&quot;&lt;a href='/Documents/Articles/{articleId}/{fileName}' target='_blank'&gt;{fileName}&lt;/a&gt;&quot;);
+            html.Append($&quot;&lt;span class='filesize'&gt;({fileSize})&lt;/span&gt;&quot;);
+            html.Append(&quot;&lt;/li&gt;&quot;);
+        }
+    }
+
+    html.Append(&quot;&lt;/ul&gt;&quot;);
+    return html.ToString();
+}
+
+private string GetFileIcon(string extension)
+{
+    switch (extension)
+    {
+        case &quot;.pdf&quot;: return &quot;fa-file-pdf&quot;;
+        case &quot;.doc&quot;:
+        case &quot;.docx&quot;: return &quot;fa-file-word&quot;;
+        case &quot;.xls&quot;:
+        case &quot;.xlsx&quot;: return &quot;fa-file-excel&quot;;
+        default: return &quot;fa-file&quot;;
+    }
+}
+
+private string FormatFileSize(long bytes)
+{
+    if (bytes &lt; 1024) return $&quot;{bytes} B&quot;;
+    if (bytes &lt; 1048576) return $&quot;{bytes / 1024} KB&quot;;
+    return $&quot;{bytes / 1048576} MB&quot;;
+}
+</code></pre>
+<hr>
+<h2 id="common-patterns-and-use-cases">Common Patterns and Use Cases</h2>
+<h3 id="pattern-1-image-gallery-with-multiple-upload">Pattern 1: Image Gallery with Multiple Upload</h3>
+<pre><code class="lang-html">&lt;input 
+  class=&quot;simplisity_base64upload&quot; 
+  type=&quot;file&quot; 
+  accept=&quot;image/*&quot; 
+  multiple 
+  s-cmd=&quot;gallery_addimages&quot; 
+  s-post=&quot;#galleryForm&quot; 
+  s-return=&quot;#imageGallery&quot;&gt;
+</code></pre>
+<h3 id="pattern-2-single-file-upload-with-validation">Pattern 2: Single File Upload with Validation</h3>
+<pre><code class="lang-html">&lt;input 
+  class=&quot;simplisity_base64upload&quot; 
+  type=&quot;file&quot; 
+  accept=&quot;.pdf&quot; 
+  s-cmd=&quot;contract_uploadpdf&quot; 
+  s-post=&quot;#contractForm&quot; 
+  s-return=&quot;#pdfPreview&quot;&gt;
+</code></pre>
+<h3 id="pattern-3-profile-photo-with-crop">Pattern 3: Profile Photo with Crop</h3>
+<pre><code class="lang-html">&lt;input 
+  class=&quot;simplisity_base64upload&quot; 
+  type=&quot;file&quot; 
+  accept=&quot;image/*&quot; 
+  s-cmd=&quot;profile_updatephoto&quot; 
+  s-post=&quot;#profileData&quot; 
+  s-return=&quot;#photoDisplay&quot; 
+  s-fields='{&quot;userid&quot;:&quot;123&quot;, &quot;cropsize&quot;:&quot;200&quot;}'&gt;
+</code></pre>
+<h3 id="pattern-4-document-upload-with-category">Pattern 4: Document Upload with Category</h3>
+<pre><code class="lang-html">&lt;input 
+  class=&quot;simplisity_base64upload&quot; 
+  type=&quot;file&quot; 
+  accept=&quot;.pdf,.doc,.docx&quot; 
+  multiple 
+  s-cmd=&quot;document_upload&quot; 
+  s-post=&quot;#docForm&quot; 
+  s-return=&quot;#docList&quot; 
+  s-fields='{&quot;categoryid&quot;:&quot;456&quot;, &quot;projectid&quot;:&quot;789&quot;}'&gt;
+</code></pre>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="client-side-best-practices">Client-Side Best Practices</h3>
+<ol>
+<li><p><strong>Always hide the file input</strong></p>
+<pre><code class="lang-html">&lt;input type=&quot;file&quot; style=&quot;display:none;&quot;&gt;
+</code></pre>
+</li>
+<li><p><strong>Use descriptive IDs</strong></p>
+<pre><code class="lang-html">&lt;input id=&quot;productImageUpload&quot; ...&gt;
+&lt;input id=&quot;userAvatarUpload&quot; ...&gt;
+</code></pre>
+</li>
+<li><p><strong>Specify file types</strong></p>
+<pre><code class="lang-html">accept=&quot;image/*&quot;  &lt;!-- All images --&gt;
+accept=&quot;.pdf,.doc,.docx&quot;  &lt;!-- Specific types --&gt;
+</code></pre>
+</li>
+<li><p><strong>Set reload appropriately</strong></p>
+<pre><code class="lang-html">s-reload=&quot;false&quot;  &lt;!-- Use for AJAX updates --&gt;
+s-reload=&quot;true&quot;   &lt;!-- Use when full page refresh needed --&gt;
+</code></pre>
+</li>
+<li><p><strong>Use multiple for batch uploads</strong></p>
+<pre><code class="lang-html">&lt;input multiple ...&gt;  &lt;!-- Allow multiple files --&gt;
+</code></pre>
+</li>
+</ol>
+<h3 id="server-side-best-practices">Server-Side Best Practices</h3>
+<ol>
+<li><p><strong>Always validate input</strong></p>
+<pre><code class="lang-csharp">if (string.IsNullOrEmpty(fileData))
+    return &quot;&lt;p&gt;No files uploaded&lt;/p&gt;&quot;;
+
+if (articleId &lt;= 0)
+    return &quot;&lt;p&gt;Invalid article ID&lt;/p&gt;&quot;;
+</code></pre>
+</li>
+<li><p><strong>Sanitize filenames</strong></p>
+<pre><code class="lang-csharp">var safeFileName = GeneralUtils.SanitizeFileName(fileName);
+var safeFileName = Path.GetFileName(fileName); // Remove path
+</code></pre>
+</li>
+<li><p><strong>Create directories safely</strong></p>
+<pre><code class="lang-csharp">if (!Directory.Exists(uploadPath))
+    Directory.CreateDirectory(uploadPath);
+</code></pre>
+</li>
+<li><p><strong>Handle exceptions</strong></p>
+<pre><code class="lang-csharp">try
+{
+    File.WriteAllBytes(filePath, bytes);
+}
+catch (Exception ex)
+{
+    LogUtils.LogException(ex);
+    return &quot;&lt;p&gt;Upload failed&lt;/p&gt;&quot;;
+}
+</code></pre>
+</li>
+<li><p><strong>Return meaningful HTML</strong></p>
+<pre><code class="lang-csharp">// Good: Shows what was uploaded
+return &quot;&lt;div&gt;&lt;img src='/path/to/image.jpg'&gt;&lt;p&gt;Upload complete&lt;/p&gt;&lt;/div&gt;&quot;;
+
+// Bad: No feedback
+return &quot;&quot;;
+</code></pre>
+</li>
+<li><p><strong>Check file sizes</strong></p>
+<pre><code class="lang-csharp">var bytes = Convert.FromBase64String(base64Data);
+if (bytes.Length &gt; maxFileSize)
+    return $&quot;&lt;p&gt;File too large (max {maxFileSize}MB)&lt;/p&gt;&quot;;
+</code></pre>
+</li>
+<li><p><strong>Use secure paths</strong></p>
+<pre><code class="lang-csharp">// Good: Controlled path
+var uploadPath = Server.MapPath(&quot;~/Uploads/&quot;);
+
+// Bad: User-controlled path
+var uploadPath = userInput; // Security risk!
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="troubleshooting-guide">Troubleshooting Guide</h2>
+<h3 id="common-issues-and-solutions">Common Issues and Solutions</h3>
+<h4 id="issue-files-not-uploading">Issue: Files not uploading</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Check <code>class=&quot;simplisity_base64upload&quot;</code> is present</li>
+<li>Verify <code>s-cmd</code> matches server-side case statement</li>
+<li>Check browser console for JavaScript errors</li>
+</ul>
+<h4 id="issue-server-command-not-executing">Issue: Server command not executing</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Verify command name in <code>s-cmd</code> matches <code>ProcessCommand</code> case</li>
+<li>Check spelling and casing</li>
+<li>Ensure <code>ProcessCommand</code> method is public</li>
+</ul>
+<h4 id="issue-no-response-displayed">Issue: No response displayed</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Verify <code>s-return</code> selector exists in DOM</li>
+<li>Check that handler returns HTML string</li>
+<li>Inspect browser network tab for response</li>
+</ul>
+<h4 id="issue-multiple-files-not-working">Issue: Multiple files not working</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Add <code>multiple</code> attribute to input</li>
+<li>Split data using <code>*</code> separator: <code>nameArray.Split('*')</code></li>
+<li>Loop through all array elements</li>
+</ul>
+<h4 id="issue-file-data-is-empty">Issue: File data is empty</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Check <code>s-post</code> selector is correct</li>
+<li>Verify <code>_postInfo</code> is initialized</li>
+<li>Use correct XML path: <code>genxml/hidden/fileuploadbase64</code></li>
+</ul>
+<h4 id="issue-invalid-base64-string-error">Issue: Invalid base64 string error</h4>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>Check data is not corrupted</li>
+<li>Verify complete base64 string is received</li>
+<li>Handle empty strings before decoding</li>
+</ul>
+<hr>
+<h2 id="testing-checklist">Testing Checklist</h2>
+<h3 id="client-side-testing">Client-Side Testing</h3>
+<ul>
+<li>[ ] File input is hidden from view</li>
+<li>[ ] Upload button triggers file picker</li>
+<li>[ ] File picker accepts correct file types</li>
+<li>[ ] Multiple files can be selected (if <code>multiple</code> attribute)</li>
+<li>[ ] <code>s-cmd</code> attribute is set correctly</li>
+<li>[ ] <code>s-post</code> selector points to valid element</li>
+<li>[ ] <code>s-return</code> selector points to valid element</li>
+<li>[ ] <code>s-fields</code> contains valid JSON</li>
+</ul>
+<h3 id="server-side-testing">Server-Side Testing</h3>
+<ul>
+<li>[ ] Command routing works (ProcessCommand receives correct cmd)</li>
+<li>[ ] <code>fileuploadlist</code> is extracted correctly</li>
+<li>[ ] <code>fileuploadbase64</code> is extracted correctly</li>
+<li>[ ] Parameters from <code>s-fields</code> are retrieved</li>
+<li>[ ] Form data from <code>s-post</code> is retrieved</li>
+<li>[ ] Files are decoded from base64</li>
+<li>[ ] Files are saved to correct location</li>
+<li>[ ] Directory is created if not exists</li>
+<li>[ ] Filenames are sanitized</li>
+<li>[ ] HTML response is returned</li>
+<li>[ ] Response displays in <code>s-return</code> container</li>
+</ul>
+<h3 id="security-testing">Security Testing</h3>
+<ul>
+<li>[ ] File types are validated</li>
+<li>[ ] File sizes are checked</li>
+<li>[ ] Filenames are sanitized</li>
+<li>[ ] Upload paths are secure</li>
+<li>[ ] User permissions are verified</li>
+<li>[ ] No path traversal vulnerabilities</li>
+</ul>
+<hr>
+<h2 id="integration-with-dnnrocket-framework">Integration with DNNrocket Framework</h2>
+<h3 id="using-framework-methods">Using Framework Methods</h3>
+<p>The DNNrocket framework provides helper methods for common upload scenarios:</p>
+<h4 id="image-upload-with-resize">Image Upload with Resize</h4>
+<pre><code class="lang-csharp">var imgList = RocketUtils.ImgUtils.UploadBase64Image(
+    filenameList,       // string[] of filenames
+    filebase64List,     // string[] of base64 data
+    baseFileMapPath,    // Temp path for processing
+    destDir,            // Final destination directory
+    imgsize             // Max dimension (width/height)
+);
+</code></pre>
+<h4 id="portal-content-paths">Portal Content Paths</h4>
+<pre><code class="lang-csharp">// Get portal image folder
+var imageFolder = _dataObject.PortalContent.ImageFolderMapPath;
+
+// Get portal document folder
+var docFolder = _dataObject.PortalContent.DocFolderMapPath;
+
+// Get temp directory
+var tempPath = PortalUtils.TempDirectoryMapPath();
+</code></pre>
+<h4 id="articlecategory-methods">Article/Category Methods</h4>
+<pre><code class="lang-csharp">// Add image to article
+articleData.AddImage(fileName);
+
+// Add document to article
+articleData.AddDocument(fileName);
+
+// Save article data
+articleData.Save(_postInfo);
+
+// Clear cache after changes
+articleData.ClearCache();
+</code></pre>
+<hr>
+<h2 id="advanced-scenarios">Advanced Scenarios</h2>
+<h3 id="scenario-1-upload-with-progress-bar">Scenario 1: Upload with Progress Bar</h3>
+<p>For large file uploads, add a progress bar:</p>
+<pre><code class="lang-html">&lt;div id=&quot;progressBar&quot; style=&quot;display:none;&quot;&gt;
+    &lt;div class=&quot;progress&quot;&gt;
+        &lt;div class=&quot;progress-bar&quot; style=&quot;width: 0%&quot;&gt;0%&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Show progress during upload
+$('#myFileUpload').on('change', function() {
+    $('#progressBar').show();
+    $('.progress-bar').css('width', '50%').text('Uploading...');
+});
+
+// Hide after completion
+$(document).on('simplisitypostgetcompleted', function() {
+    $('#progressBar').hide();
+});
+&lt;/script&gt;
+</code></pre>
+<h3 id="scenario-2-upload-with-validation">Scenario 2: Upload with Validation</h3>
+<p>Add client-side validation before upload:</p>
+<pre><code class="lang-html">&lt;script&gt;
+function validateUpload() {
+    var fileInput = document.getElementById('myFileUpload');
+    var files = fileInput.files;
+
+    if (files.length === 0) {
+        alert('Please select a file');
+        return false;
+    }
+
+    // Check file size (5MB limit)
+    var maxSize = 5 * 1024 * 1024;
+    for (var i = 0; i &lt; files.length; i++) {
+        if (files[i].size &gt; maxSize) {
+            alert('File ' + files[i].name + ' is too large (max 5MB)');
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Trigger validation before upload
+$('#uploadButton').click(function() {
+    if (validateUpload()) {
+        $('#myFileUpload').click();
+    }
+});
+&lt;/script&gt;
+</code></pre>
+<h3 id="scenario-3-upload-with-callback-function">Scenario 3: Upload with Callback Function</h3>
+<p>Execute custom code after upload completes:</p>
+<pre><code class="lang-html">&lt;input 
+  class=&quot;simplisity_base64upload&quot; 
+  s-cmd=&quot;article_addimage&quot; 
+  s-after=&quot;refreshGallery,updateCounter&quot;&gt;
+
+&lt;script&gt;
+function refreshGallery() {
+    console.log('Gallery refreshed');
+    // Custom gallery refresh logic
+}
+
+function updateCounter() {
+    var count = $('#imageGallery img').length;
+    $('#imageCount').text(count + ' images');
+}
+&lt;/script&gt;
+</code></pre>
+<hr>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="client-side-attributes">Client-Side Attributes</h3>
+<pre><code class="lang-html">&lt;input 
+  id=&quot;unique-id&quot;
+  class=&quot;simplisity_base64upload&quot;
+  type=&quot;file&quot;
+  name=&quot;file[]&quot;
+  accept=&quot;mime-type&quot;
+  multiple
+  s-cmd=&quot;command_name&quot;
+  s-cmdurl=&quot;/api/endpoint&quot;
+  s-post=&quot;#form-selector&quot;
+  s-return=&quot;#result-selector&quot;
+  s-fields='{&quot;key&quot;:&quot;value&quot;}'
+  s-list=&quot;.list1,.list2&quot;
+  s-reload=&quot;true|false&quot;
+  s-after=&quot;function1,function2&quot;
+  s-before=&quot;validateFunction&quot;
+  s-showloader=&quot;true|false&quot;
+  s-timeout=&quot;120000&quot;
+  style=&quot;display:none;&quot;&gt;
+</code></pre>
+<h3 id="server-side-data-paths">Server-Side Data Paths</h3>
+<pre><code class="lang-csharp">// Upload data
+_postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadlist&quot;)
+_postInfo.GetXmlProperty(&quot;genxml/hidden/fileuploadbase64&quot;)
+
+// Parameters from s-fields
+_paramInfo.GetXmlProperty(&quot;genxml/hidden/{fieldname}&quot;)
+_paramInfo.GetXmlPropertyInt(&quot;genxml/hidden/{fieldname}&quot;)
+
+// Form data from s-post
+_postInfo.GetXmlProperty(&quot;genxml/textbox/{inputname}&quot;)
+_postInfo.GetXmlProperty(&quot;genxml/hidden/{inputname}&quot;)
+_postInfo.GetXmlPropertyInt(&quot;genxml/textbox/{inputname}&quot;)
+</code></pre>
+<hr>
+<h2 id="summary">Summary</h2>
+<h3 id="for-ai-assistants">For AI Assistants</h3>
+<p>When implementing file uploads in DNNrocket/Simplicity:</p>
+<ol>
+<li><strong>Client-side</strong>: Add hidden file input with <code>class=&quot;simplisity_base64upload&quot;</code> and required <code>s-*</code> attributes</li>
+<li><strong>HTML Structure</strong>: File input does NOT need to be inside the <code>s-post</code> container - they are separate elements</li>
+<li><strong>Command routing</strong>: Add case in <code>ProcessCommand</code> method matching <code>s-cmd</code> value</li>
+<li><strong>Data extraction</strong>: Get <code>fileuploadlist</code> and <code>fileuploadbase64</code> from <code>_postInfo</code></li>
+<li><strong>Processing</strong>: Split by <code>*</code>, decode base64, save files</li>
+<li><strong>Response</strong>: Return HTML to display in <code>s-return</code> container</li>
+</ol>
+<h3 id="for-human-developers">For Human Developers</h3>
+<p>The Simplicity Base64 upload system provides:</p>
+<ul>
+<li>Automatic file-to-base64 conversion</li>
+<li>AJAX-based upload without form submission</li>
+<li>Server-side C# processing</li>
+<li>Dynamic HTML response injection</li>
+<li>Multiple file support</li>
+<li>Integration with DNNrocket framework</li>
+</ul>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Always use <code>class=&quot;simplisity_base64upload&quot;</code></li>
+<li>File input is separate from the form data container</li>
+<li><code>s-post</code> tells Simplicity WHERE to find form data</li>
+<li><code>s-return</code> tells Simplicity WHERE to display results</li>
+<li>Match <code>s-cmd</code> to server-side case statement</li>
+<li>Extract data from correct XML paths</li>
+<li>Return HTML for dynamic display</li>
+<li>Validate and sanitize all inputs</li>
+</ul>
+<hr>
+<h2 id="additional-resources">Additional Resources</h2>
+<h3 id="related-documentation">Related Documentation</h3>
+<ul>
+<li>Large File Upload: <code>AI_LargeFileUpload.md</code></li>
+<li>Simplicity Framework: <code>Simplisity/README.md</code></li>
+<li>Image Processing: DNNrocket ImageUtils documentation</li>
+</ul>
+<h3 id="example-files">Example Files</h3>
+<ul>
+<li><code>ArticleImageSelect.cshtml</code> - Image upload UI example</li>
+<li><code>ArticleConnect.cs</code> - Server-side upload handlers</li>
+<li><code>StartConnect.cs</code> - Command routing examples</li>
+</ul>
+<hr>
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Last Updated:</strong> 2025<br>
+<strong>Framework:</strong> DNNrocket Simplicity<br>
+<strong>Target Framework:</strong> .NET Framework 4.7.2, .NET Standard 2.0</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/snippets/fileuploadbase64.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,657 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Large File Upload Process Documentation | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Large File Upload Process Documentation | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/snippets/LargeFileUpload.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="large-file-upload-process-documentation">Large File Upload Process Documentation</h1>
+
+<h2 id="overview">Overview</h2>
+<p>This document explains the pattern for implementing large file uploads in the DNNrocket system. It covers web.config configuration, client-side upload handling, progress tracking, and server-side command execution after upload completion.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Enable AI assistants to understand and implement/modify large file upload functionality that:</p>
+<ol>
+<li>Allows users to upload large files (e.g., ZIP files for import)</li>
+<li>Tracks upload progress with visual feedback</li>
+<li>Executes server-side commands after successful upload</li>
+<li>Handles web.config requirements for large file sizes and long execution times</li>
+</ol>
+<hr>
+<h2 id="architecture-components">Architecture Components</h2>
+<h3 id="1-webconfig-configuration-requirements">1. Web.config Configuration Requirements</h3>
+<p>Large file uploads require two critical web.config settings:</p>
+<h4 id="httpruntime-settings">httpRuntime Settings</h4>
+<pre><code class="lang-xml">&lt;system.web&gt;
+  &lt;httpRuntime maxRequestLength=&quot;102400&quot; executionTimeout=&quot;3600&quot; /&gt;
+&lt;/system.web&gt;
+</code></pre>
+<p><strong>Settings Explained:</strong></p>
+<ul>
+<li><strong>maxRequestLength</strong>: Maximum file upload size in KB (e.g., 102400 KB = 100 MB)</li>
+<li><strong>executionTimeout</strong>: Maximum execution time in seconds (e.g., 3600 = 60 minutes)</li>
+</ul>
+<h4 id="reading-current-webconfig-values-server-side-c">Reading Current Web.config Values (Server-Side C#)</h4>
+<pre><code class="lang-csharp">using System.Web.Configuration;
+
+int maxUploadSizeMB = 100; // Default
+int executionTimeoutMinutes = 60; // Default
+
+try
+{
+    var config = WebConfigurationManager.OpenWebConfiguration(&quot;~&quot;);
+    var httpRuntimeSection = (HttpRuntimeSection)config.GetSection(&quot;system.web/httpRuntime&quot;);
+
+    if (httpRuntimeSection != null)
+    {
+        // maxRequestLength is in KB, convert to MB
+        maxUploadSizeMB = httpRuntimeSection.MaxRequestLength / 1024;
+
+        // executionTimeout is in seconds, convert to minutes
+        executionTimeoutMinutes = (int)httpRuntimeSection.ExecutionTimeout.TotalSeconds / 60;
+    }
+}
+catch (Exception ex)
+{
+    LogUtils.LogException(ex);
+}
+</code></pre>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Always wrap in try-catch to handle configuration read errors</li>
+<li>Provide sensible defaults (100 MB, 60 minutes)</li>
+<li>Convert units appropriately (KB→MB, seconds→minutes)</li>
+</ul>
+<hr>
+<h3 id="2-client-side-html-structure">2. Client-Side HTML Structure</h3>
+<h4 id="file-input-element">File Input Element</h4>
+<pre><code class="lang-html">&lt;input id=&quot;importfileupload&quot; class=&quot;w3-hide&quot; type=&quot;file&quot; name=&quot;files[]&quot; 
+       style=&quot;display:none;&quot; accept=&quot;.zip&quot;&gt;
+</code></pre>
+<p><strong>Properties:</strong></p>
+<ul>
+<li><code>id</code>: Unique identifier for JavaScript targeting</li>
+<li><code>type=&quot;file&quot;</code>: Standard file input</li>
+<li><code>name=&quot;files[]&quot;</code>: Array notation for server-side processing</li>
+<li><code>accept=&quot;.zip&quot;</code>: File type restriction (optional, can be changed or removed)</li>
+<li><code>class=&quot;w3-hide&quot;</code> + <code>style=&quot;display:none;&quot;</code>: Hidden from view</li>
+</ul>
+<h4 id="upload-trigger-button">Upload Trigger Button</h4>
+<pre><code class="lang-html">&lt;span class=&quot;w3-button w3-teal fileuploadaction&quot; 
+      onclick=&quot;$('#importfileupload').trigger('click');&quot;&gt;
+    Upload Select Import File
+&lt;/span&gt;
+</code></pre>
+<p><strong>Purpose:</strong> Provides a styled button that triggers the hidden file input</p>
+<h4 id="progress-bar-modal">Progress Bar Modal</h4>
+<pre><code class="lang-html">&lt;div id=&quot;simplisity-file-progress-bar&quot; class=&quot;w3-modal w3-padding&quot; 
+     style=&quot;z-index:9999;background-color:grey;display:none;&quot;&gt;
+    &lt;div class=&quot;w3-modal-content w3-card-4 w3-display-middle w3-padding&quot; style=&quot;width: 60%;&quot;&gt;
+        &lt;div class=&quot;w3-center&quot;&gt;
+            &lt;h4 id=&quot;progessaction&quot;&gt;Uploading File...&lt;/h4&gt;
+            &lt;div class=&quot;w3-row w3-light-grey w3-margin-top&quot;&gt;
+                &lt;div class=&quot;w3-blue simplisity-file-progress-bar&quot; 
+                     style=&quot;width:0%;height:24px;line-height:24px;text-align:center;&quot;&gt;0%&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>Properties:</strong></p>
+<ul>
+<li>Modal overlay with high z-index (9999) to appear above all content</li>
+<li>Progress bar div with class <code>simplisity-file-progress-bar</code> for JavaScript targeting</li>
+<li>Initially hidden (<code>display:none;</code>)</li>
+<li>Width as percentage for visual progress indication</li>
+</ul>
+<h4 id="server-command-trigger-element">Server Command Trigger Element</h4>
+<pre><code class="lang-html">&lt;div id=&quot;processimportupload&quot; 
+     s-cmd=&quot;rockettools_importprebuildexe&quot; 
+     s-timeout=&quot;900000&quot; 
+     s-post=&quot;#sectiondata&quot; 
+     s-return=&quot;#toolsmodalcontainer&quot; 
+     class=&quot;w3-hide&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>Custom Attributes (Simplisity Framework):</strong></p>
+<ul>
+<li><code>s-cmd</code>: Server-side command name to execute after upload</li>
+<li><code>s-timeout</code>: Command timeout in milliseconds (900000 = 15 minutes)</li>
+<li><code>s-post</code>: jQuery selector for data to post with command</li>
+<li><code>s-return</code>: jQuery selector where server response should be rendered</li>
+<li><code>class=&quot;w3-hide&quot;</code>: Hidden element, only used for configuration</li>
+</ul>
+<p><strong>IMPORTANT</strong>: When modifying existing code, always check what server command name already exists and use that exact name in the <code>s-cmd</code> attribute. Do not invent new command names unless you are also creating the corresponding server-side handler.</p>
+<hr>
+<h3 id="3-javascript-upload-implementation">3. JavaScript Upload Implementation</h3>
+<h4 id="complete-upload-handler-pattern">Complete Upload Handler Pattern</h4>
+<pre><code class="lang-javascript">$(document).ready(function() {
+    $('#importfileupload').on('change', function(e) {
+        var files = e.target.files;
+        if (files.length === 0) return;
+        
+        var file = files[0];
+        var formData = new FormData();
+        formData.append('files[]', file);
+        
+        // Show progress bar
+        $('#simplisity-file-progress-bar').show();
+        $('.simplisity-file-progress-bar').css('width', '0%').text('0%');
+        
+        // Create XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', function(e) {
+            if (e.lengthComputable) {
+                var percentComplete = Math.round((e.loaded / e.total) * 100);
+                $('.simplisity-file-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+            }
+        }, false);
+        
+        // Handle completion
+        xhr.addEventListener('load', function() {
+            console.log('Upload complete, status:', xhr.status);
+            $('#simplisity-file-progress-bar').hide();
+
+            if (xhr.status === 200) {
+                // Upload successful, trigger the server command
+                console.log('Upload successful, triggering command...');
+                simplisity_callserver($('#processimportupload'));
+            } else if (xhr.status === 413) {
+                alert('Upload failed: File is too large');
+            } else {
+                alert('Upload failed with status: ' + xhr.status);
+            }
+        }, false);
+        
+        // Handle errors
+        xhr.addEventListener('error', function() {
+            console.error('Upload error');
+            $('#simplisity-file-progress-bar').hide();
+            alert('Upload failed');
+        }, false);
+        
+        // Handle abort
+        xhr.addEventListener('abort', function() {
+            console.log('Upload aborted');
+            $('#simplisity-file-progress-bar').hide();
+        }, false);
+        
+        // Send the request
+        xhr.open('POST', '/Desktopmodules/dnnrocket/api/fileupload/upload', true);
+        xhr.send(formData);
+    });
+});
+</code></pre>
+<h4 id="step-by-step-breakdown">Step-by-Step Breakdown</h4>
+<p><strong>Step 1: File Selection Event</strong></p>
+<pre><code class="lang-javascript">$('#importfileupload').on('change', function(e) {
+    var files = e.target.files;
+    if (files.length === 0) return;
+</code></pre>
+<ul>
+<li>Triggered when user selects a file</li>
+<li>Validates that a file was actually selected</li>
+</ul>
+<p><strong>Step 2: Prepare FormData</strong></p>
+<pre><code class="lang-javascript">var file = files[0];
+var formData = new FormData();
+formData.append('files[]', file);
+</code></pre>
+<ul>
+<li>Create FormData object for multipart/form-data encoding</li>
+<li>Append file with array notation <code>files[]</code></li>
+</ul>
+<p><strong>Step 3: Initialize Progress Bar</strong></p>
+<pre><code class="lang-javascript">$('#simplisity-file-progress-bar').show();
+$('.simplisity-file-progress-bar').css('width', '0%').text('0%');
+</code></pre>
+<ul>
+<li>Display progress modal</li>
+<li>Reset progress bar to 0%</li>
+</ul>
+<p><strong>Step 4: Create XMLHttpRequest</strong></p>
+<pre><code class="lang-javascript">var xhr = new XMLHttpRequest();
+</code></pre>
+<ul>
+<li>Use XMLHttpRequest instead of jQuery AJAX for progress tracking capability</li>
+</ul>
+<p><strong>Step 5: Track Upload Progress</strong></p>
+<pre><code class="lang-javascript">xhr.upload.addEventListener('progress', function(e) {
+    if (e.lengthComputable) {
+        var percentComplete = Math.round((e.loaded / e.total) * 100);
+        $('.simplisity-file-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+    }
+}, false);
+</code></pre>
+<ul>
+<li>Monitor <code>xhr.upload.progress</code> event</li>
+<li>Calculate percentage: <code>(loaded / total) * 100</code></li>
+<li>Update progress bar width and text in real-time</li>
+</ul>
+<p><strong>Step 6: Handle Upload Completion</strong></p>
+<pre><code class="lang-javascript">xhr.addEventListener('load', function() {
+    $('#simplisity-file-progress-bar').hide();
+
+    if (xhr.status === 200) {
+        simplisity_callserver($('#processimportupload'));
+    } else if (xhr.status === 413) {
+        alert('Upload failed: File is too large');
+    } else {
+        alert('Upload failed with status: ' + xhr.status);
+    }
+}, false);
+</code></pre>
+<ul>
+<li>Hide progress bar when upload completes</li>
+<li>Check HTTP status code:
+<ul>
+<li><strong>200</strong>: Success → trigger server command</li>
+<li><strong>413</strong>: Payload Too Large → notify user</li>
+<li><strong>Other</strong>: General error → notify user</li>
+</ul>
+</li>
+</ul>
+<p><strong>Step 7: Handle Errors</strong></p>
+<pre><code class="lang-javascript">xhr.addEventListener('error', function() {
+    $('#simplisity-file-progress-bar').hide();
+    alert('Upload failed');
+}, false);
+</code></pre>
+<ul>
+<li>Network errors, timeouts, etc.</li>
+<li>Hide progress bar and notify user</li>
+</ul>
+<p><strong>Step 8: Send Request</strong></p>
+<pre><code class="lang-javascript">xhr.open('POST', '/Desktopmodules/dnnrocket/api/fileupload/upload', true);
+xhr.send(formData);
+</code></pre>
+<ul>
+<li>POST to file upload API endpoint</li>
+<li>Third parameter <code>true</code> = asynchronous</li>
+</ul>
+<hr>
+<h3 id="4-server-side-command-execution">4. Server-Side Command Execution</h3>
+<p>After successful file upload, the JavaScript triggers a server-side command:</p>
+<pre><code class="lang-javascript">simplisity_callserver($('#processimportupload'));
+</code></pre>
+<p>This calls the Simplisity framework function with the configuration element:</p>
+<ul>
+<li><strong>Command</strong>: <code>rockettools_importprebuildexe</code> (from <code>s-cmd</code> attribute)</li>
+<li><strong>Timeout</strong>: 900000 ms = 15 minutes (from <code>s-timeout</code> attribute)</li>
+<li><strong>Post Data</strong>: Data from <code>#sectiondata</code> element (from <code>s-post</code> attribute)</li>
+<li><strong>Response Target</strong>: <code>#toolsmodalcontainer</code> (from <code>s-return</code> attribute)</li>
+</ul>
+<h4 id="server-side-command-implementation-pattern">Server-Side Command Implementation Pattern</h4>
+<p>The server command should:</p>
+<ol>
+<li>Locate the uploaded file in the temporary upload directory</li>
+<li>Process the file (e.g., extract ZIP, import data)</li>
+<li>Provide progress feedback if possible</li>
+<li>Return success/failure status</li>
+</ol>
+<p><strong>Example Command Structure (C#):</strong></p>
+<pre><code class="lang-csharp">public class RocketToolsInterface
+{
+    public string rockettools_importprebuildexe(Simplisity.SimplisityInfo systemInfo)
+    {
+        try
+        {
+            // Get uploaded file path
+            var uploadPath = DNNrocketUtils.MapPath(&quot;/portals/0/rocketuploads/&quot;);
+            var zipFiles = Directory.GetFiles(uploadPath, &quot;*.zip&quot;);
+            
+            if (zipFiles.Length == 0)
+            {
+                return &quot;Error: No upload file found&quot;;
+            }
+            
+            var zipFile = zipFiles[0];
+            
+            // Process file (extract, import, etc.)
+            // ... processing logic ...
+            
+            // Clean up
+            File.Delete(zipFile);
+            
+            // Update status
+            systemInfo.SetSetting(&quot;importprebuild&quot;, &quot;true&quot;);
+            
+            return RenderTemplate(&quot;prebuildimport.cshtml&quot;);
+        }
+        catch (Exception ex)
+        {
+            LogUtils.LogException(ex);
+            return &quot;Error: &quot; + ex.Message;
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="implementation-checklist">Implementation Checklist</h2>
+<p>When implementing or modifying a large file upload feature:</p>
+<h3 id="configuration">Configuration</h3>
+<ul>
+<li>[ ] Verify web.config has appropriate <code>maxRequestLength</code> (in KB)</li>
+<li>[ ] Verify web.config has appropriate <code>executionTimeout</code> (in seconds)</li>
+<li>[ ] Consider if settings need to be configurable via UI</li>
+</ul>
+<h3 id="html-elements">HTML Elements</h3>
+<ul>
+<li>[ ] Hidden file input with unique ID</li>
+<li>[ ] Trigger button to open file dialog</li>
+<li>[ ] Progress bar modal with proper styling</li>
+<li>[ ] Server command trigger element with all required attributes</li>
+<li>[ ] <strong>IMPORTANT</strong>: If modifying existing code, use the existing server command name in <code>s-cmd</code> attribute - do not change it unless you are also updating the server-side command handler</li>
+</ul>
+<h3 id="javascript">JavaScript</h3>
+<ul>
+<li>[ ] File input change event handler</li>
+<li>[ ] FormData preparation with correct field name</li>
+<li>[ ] XMLHttpRequest creation (not jQuery AJAX)</li>
+<li>[ ] Progress event listener with percentage calculation</li>
+<li>[ ] Load event listener with status code handling</li>
+<li>[ ] Error event listener</li>
+<li>[ ] Proper API endpoint URL</li>
+<li>[ ] Server command trigger on success</li>
+</ul>
+<h3 id="server-side">Server-Side</h3>
+<ul>
+<li>[ ] File upload API endpoint configured</li>
+<li>[ ] Command handler implemented</li>
+<li>[ ] Timeout sufficient for processing</li>
+<li>[ ] Error handling and logging</li>
+<li>[ ] File cleanup after processing</li>
+<li>[ ] Status feedback to user</li>
+</ul>
+<h3 id="testing">Testing</h3>
+<ul>
+<li>[ ] Test with small file (&lt; 1 MB)</li>
+<li>[ ] Test with large file (near maxRequestLength limit)</li>
+<li>[ ] Test with file exceeding maxRequestLength (should get 413 error)</li>
+<li>[ ] Test with slow connection (verify progress updates)</li>
+<li>[ ] Test server command execution after upload</li>
+<li>[ ] Test error scenarios (network failure, server error, timeout)</li>
+</ul>
+<hr>
+<h2 id="common-http-status-codes">Common HTTP Status Codes</h2>
+<ul>
+<li><strong>200 OK</strong>: Upload successful</li>
+<li><strong>400 Bad Request</strong>: Invalid request format</li>
+<li><strong>413 Payload Too Large</strong>: File exceeds maxRequestLength</li>
+<li><strong>500 Internal Server Error</strong>: Server-side processing error</li>
+<li><strong>504 Gateway Timeout</strong>: Upload exceeded executionTimeout</li>
+</ul>
+<hr>
+<h2 id="customization-points">Customization Points</h2>
+<h3 id="file-type-restrictions">File Type Restrictions</h3>
+<p>Change the <code>accept</code> attribute:</p>
+<pre><code class="lang-html">&lt;!-- ZIP only --&gt;
+&lt;input accept=&quot;.zip&quot;&gt;
+
+&lt;!-- Images only --&gt;
+&lt;input accept=&quot;image/*&quot;&gt;
+
+&lt;!-- Multiple types --&gt;
+&lt;input accept=&quot;.zip,.xml,.json&quot;&gt;
+
+&lt;!-- No restriction --&gt;
+&lt;input&gt;
+</code></pre>
+<h3 id="upload-endpoint">Upload Endpoint</h3>
+<p>Change the API endpoint URL:</p>
+<pre><code class="lang-javascript">xhr.open('POST', '/your/custom/upload/endpoint', true);
+</code></pre>
+<h3 id="progress-bar-styling">Progress Bar Styling</h3>
+<p>Modify CSS classes and inline styles:</p>
+<pre><code class="lang-html">&lt;div class=&quot;w3-blue simplisity-file-progress-bar&quot; 
+     style=&quot;width:0%;height:24px;line-height:24px;text-align:center;&quot;&gt;0%&lt;/div&gt;
+</code></pre>
+<h3 id="server-command-configuration">Server Command Configuration</h3>
+<p>Modify attributes on the command trigger element:</p>
+<pre><code class="lang-html">&lt;div id=&quot;processimportupload&quot; 
+     s-cmd=&quot;your_custom_command&quot; 
+     s-timeout=&quot;1800000&quot; 
+     s-post=&quot;#yourdata&quot; 
+     s-return=&quot;#yourcontainer&quot; 
+     class=&quot;w3-hide&quot;&gt;&lt;/div&gt;
+</code></pre>
+<h3 id="timeout-values">Timeout Values</h3>
+<ul>
+<li><strong>s-timeout</strong>: Client-side JavaScript timeout in milliseconds</li>
+<li><strong>executionTimeout</strong>: Server-side web.config timeout in seconds</li>
+<li>Rule: <code>s-timeout</code> should be less than <code>executionTimeout * 1000</code></li>
+</ul>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="upload-fails-with-413-error">Upload Fails with 413 Error</h3>
+<ul>
+<li>Increase <code>maxRequestLength</code> in web.config</li>
+<li>Ensure value is in KB (100 MB = 102400 KB)</li>
+<li>Restart application pool after web.config change</li>
+</ul>
+<h3 id="upload-succeeds-but-times-out">Upload Succeeds but Times Out</h3>
+<ul>
+<li>Increase <code>executionTimeout</code> in web.config</li>
+<li>Increase <code>s-timeout</code> attribute (in milliseconds)</li>
+<li>Optimize server-side processing for large files</li>
+</ul>
+<h3 id="progress-bar-not-updating">Progress Bar Not Updating</h3>
+<ul>
+<li>Verify using <code>XMLHttpRequest</code>, not jQuery AJAX</li>
+<li>Check <code>xhr.upload.addEventListener('progress', ...)</code> is attached</li>
+<li>Ensure progress bar element has class <code>simplisity-file-progress-bar</code></li>
+</ul>
+<h3 id="server-command-not-executing">Server Command Not Executing</h3>
+<ul>
+<li>Verify <code>simplisity_callserver()</code> function is available</li>
+<li>Check browser console for JavaScript errors</li>
+<li>Verify command name in <code>s-cmd</code> attribute matches server implementation</li>
+<li>Ensure upload completed with status 200</li>
+</ul>
+<h3 id="file-not-found-in-server-command">File Not Found in Server Command</h3>
+<ul>
+<li>Check upload API saves file to expected location</li>
+<li>Verify file naming convention</li>
+<li>Check file permissions on upload directory</li>
+</ul>
+<hr>
+<h2 id="security-considerations">Security Considerations</h2>
+<ol>
+<li><strong>File Type Validation</strong>: Always validate file type server-side, not just client-side</li>
+<li><strong>File Size Limits</strong>: Enforce reasonable limits to prevent DoS attacks</li>
+<li><strong>File Content Scanning</strong>: Consider virus scanning for uploaded files</li>
+<li><strong>Authentication</strong>: Ensure upload endpoint requires appropriate authentication</li>
+<li><strong>Authorization</strong>: Verify user has permission to upload files</li>
+<li><strong>Path Traversal</strong>: Sanitize file names to prevent directory traversal attacks</li>
+<li><strong>Temporary File Cleanup</strong>: Always clean up uploaded files after processing</li>
+</ol>
+<hr>
+<h2 id="example-adapting-for-different-file-types">Example: Adapting for Different File Types</h2>
+<h3 id="xml-configuration-import">XML Configuration Import</h3>
+<pre><code class="lang-html">&lt;input id=&quot;xmlfileupload&quot; type=&quot;file&quot; accept=&quot;.xml&quot; style=&quot;display:none;&quot;&gt;
+&lt;div id=&quot;processxmlupload&quot; 
+     s-cmd=&quot;rockettools_importxmlconfig&quot; 
+     s-timeout=&quot;300000&quot; 
+     s-post=&quot;#configdata&quot; 
+     s-return=&quot;#resultcontainer&quot; 
+     class=&quot;w3-hide&quot;&gt;&lt;/div&gt;
+</code></pre>
+<h3 id="image-upload-with-preview">Image Upload with Preview</h3>
+<pre><code class="lang-html">&lt;input id=&quot;imageupload&quot; type=&quot;file&quot; accept=&quot;image/*&quot; style=&quot;display:none;&quot;&gt;
+&lt;img id=&quot;imagepreview&quot; src=&quot;&quot; style=&quot;max-width:200px;display:none;&quot;&gt;
+&lt;div id=&quot;processimageupload&quot; 
+     s-cmd=&quot;media_processimage&quot; 
+     s-timeout=&quot;60000&quot; 
+     s-post=&quot;#imagedata&quot; 
+     s-return=&quot;#gallerycontainer&quot; 
+     class=&quot;w3-hide&quot;&gt;&lt;/div&gt;
+</code></pre>
+<h3 id="multiple-file-upload">Multiple File Upload</h3>
+<pre><code class="lang-javascript">$('#multifileupload').on('change', function(e) {
+    var files = e.target.files;
+    if (files.length === 0) return;
+    
+    var formData = new FormData();
+    
+    // Append all selected files
+    for (var i = 0; i &lt; files.length; i++) {
+        formData.append('files[]', files[i]);
+    }
+    
+    // ... rest of upload logic
+});
+</code></pre>
+<hr>
+<h2 id="integration-with-simplisity-framework">Integration with Simplisity Framework</h2>
+<p>The DNNrocket system uses the Simplisity framework for server communication:</p>
+<h3 id="simplisity_callserver-function">simplisity_callserver() Function</h3>
+<p>This function handles AJAX communication with server commands:</p>
+<ul>
+<li>Reads configuration from data attributes (<code>s-cmd</code>, <code>s-post</code>, <code>s-return</code>, etc.)</li>
+<li>Serializes data from specified elements</li>
+<li>Makes AJAX POST request</li>
+<li>Handles response rendering</li>
+</ul>
+<h3 id="data-attributes-convention">Data Attributes Convention</h3>
+<ul>
+<li><code>s-cmd</code>: Server command name</li>
+<li><code>s-post</code>: jQuery selector for data source</li>
+<li><code>s-return</code>: jQuery selector for response target</li>
+<li><code>s-timeout</code>: Request timeout in milliseconds</li>
+<li><code>s-update</code>: Auto-update behavior</li>
+</ul>
+<h3 id="example-server-command-handler">Example Server Command Handler</h3>
+<pre><code class="lang-csharp">public class YourInterface
+{
+    public string your_command_name(Simplisity.SimplisityInfo systemInfo)
+    {
+        // Access posted data
+        var data = systemInfo.GetXmlProperty(&quot;genxml/textbox/yourfield&quot;);
+        
+        // Process request
+        // ...
+        
+        // Return HTML response or template
+        return RenderTemplate(&quot;yourtemplate.cshtml&quot;);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>This pattern provides a robust, user-friendly large file upload experience with:</p>
+<ul>
+<li>Real-time progress feedback</li>
+<li>Proper error handling</li>
+<li>Configurable size and timeout limits</li>
+<li>Seamless integration with server-side processing</li>
+<li>Clear separation of concerns (upload → process)</li>
+</ul>
+<p>When implementing, follow the checklist and ensure all components are properly configured and tested.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/snippets/LargeFileUpload.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

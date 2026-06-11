@@ -1,0 +1,880 @@
+{
+  "source_base_path": "D:/NEVOWEB/Project/DesktopModules/DNNrocket/Documentation",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/AppThemeEngine.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/AppThemeEngine.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/CreateAppTheme.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/CreateAppTheme.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/EditAppTheme.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/EditAppTheme.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/InstallAppThemes.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/InstallAppThemes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/RocketContentAppTheme.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/RocketContentAppTheme.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/RocketDirectoryAppTheme.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/RocketDirectoryAppTheme.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "appthemes/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "appthemes/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/toc.html"
+        },
+        ".json": {
+          "relative_path": "appthemes/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/AppThemes.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/AppThemes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/DNNrocket.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/DNNrocket.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/RocketPortal.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/RocketPortal.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/RocketTools.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/RocketTools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/Simplisity.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/Simplisity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "dnnrocket/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "dnnrocket/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "dnnrocket/toc.html"
+        },
+        ".json": {
+          "relative_path": "dnnrocket/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_Extension_Install_Button.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_Extension_Install_Button.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_AppTheme_Sources_Rocket_Menu3.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_AppTheme_Sources_Rocket_Menu3.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_AppThemes_Rocket_Menu2.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_AppThemes_Rocket_Menu2.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_Global_Settings_Rocket_Menu5.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_Global_Settings_Rocket_Menu5.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_RocketOptions_Root_Menu.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_RocketOptions_Root_Menu.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_RocketTools_Rocket_Menu4.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_RocketTools_Rocket_Menu4.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/InstallAndPlay_PB_WebServices_Rocket_Menu1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/InstallAndPlay_PB_WebServices_Rocket_Menu1.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/Localization_Page_Localization_Tool.png",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/Localization_Page_Localization_Tool.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketContentEdit_Configuration_Button.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketContentEdit_Configuration_Button.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketContentEdit_Configuration_SelectAppTheme_1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketContentEdit_Configuration_SelectAppTheme_1.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketContentEdit_EditData.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketContentEdit_EditData.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketContentEdit_Module_Settings.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketContentEdit_Module_Settings.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketContentEdit_RecycleBin.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketContentEdit_RecycleBin.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "imgs/RocketTools_Menu_Localization.png",
+      "output": {
+        "resource": {
+          "relative_path": "imgs/RocketTools_Menu_Localization.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketBlog.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketBlog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketContent.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketContent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketDirectory.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketDirectory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketEvents.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketEvents.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketForms.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketForms.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/RocketNews.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/RocketNews.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "modules/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "modules/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "modules/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "modules/toc.html"
+        },
+        ".json": {
+          "relative_path": "modules/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/DNNrocketTokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/DNNrocketTokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/DNNrocketTokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/DNNrocketTokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/DNNrocketUtils.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/DNNrocketUtils.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/DNNrocketUtils.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/DNNrocketUtils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/GeneralUtils.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/GeneralUtils.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/GeneralUtils.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/GeneralUtils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RazorEngineTokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RazorEngineTokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RazorEngineTokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RazorEngineTokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RocketBlogTokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RocketBlogTokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketBlogTokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketBlogTokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RocketContentAPITokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RocketContentAPITokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketContentAPITokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketContentAPITokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RocketDirectoryAPITokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RocketDirectoryAPITokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketDirectoryAPITokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketDirectoryAPITokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RocketEventsTokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RocketEventsTokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketEventsTokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketEventsTokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/RocketFormsTokens.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/RocketFormsTokens.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketFormsTokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketFormsTokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/RocketNewsAPITokens.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/RocketNewsAPITokens.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "razortokens/UserUtils.json",
+      "output": {
+        "resource": {
+          "relative_path": "razortokens/UserUtils.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/UserUtils.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/UserUtils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "razortokens/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "razortokens/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "razortokens/toc.html"
+        },
+        ".json": {
+          "relative_path": "razortokens/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/LargeFileUpload.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/LargeFileUpload.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/MenuLocalization.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/MenuLocalization.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/ResxLocalization.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/ResxLocalization.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/RocketBlogSnippets.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/RocketBlogSnippets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/RocketContentSnippets.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/RocketContentSnippets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/RocketDirectorySnippets.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/RocketDirectorySnippets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/RocketEventsSnippets.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/RocketEventsSnippets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/RocketNewsSnippets.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/RocketNewsSnippets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/fileuploadbase64.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/fileuploadbase64.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "snippets/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "snippets/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "snippets/toc.html"
+        },
+        ".json": {
+          "relative_path": "snippets/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/InstallAndPlay.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/InstallAndPlay.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/Localization.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/Localization.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/Prebuilds.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/Prebuilds.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/RocketBlogEdit.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/RocketBlogEdit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/RocketContentEdit.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/RocketContentEdit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/RocketDirectoryEdit.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/RocketDirectoryEdit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/RocketEventsEdit.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/RocketEventsEdit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/RocketNewsEdit.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/RocketNewsEdit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/Tools.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/Tools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "tutorial/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "tutorial/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "tutorial/toc.html"
+        },
+        ".json": {
+          "relative_path": "tutorial/toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

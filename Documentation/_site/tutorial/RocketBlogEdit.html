@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Using the RocketBlog Module | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using the RocketBlog Module | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/RocketBlogEdit.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-the-rocketblog-module">Using the RocketBlog Module</h1>
+
+<p>This guide explains how to set up and manage the RocketBlog module, a complete system for creating and managing a blog on your DNN site. As a specialized version of the RocketDirectory system, it provides a familiar interface tailored specifically for blog posts.</p>
+<hr>
+<h2 id="step-1-initial-configuration">Step 1: Initial Configuration</h2>
+<p>After adding a new RocketBlog module to a page, it will prompt you to configure it. The module needs an <strong>AppTheme</strong> to define its data structure (e.g., title, summary, post body), layout, and administrative interface. Click the <strong>Configure</strong> button to begin.</p>
+<hr>
+<h2 id="step-2-select-an-apptheme">Step 2: Select an AppTheme</h2>
+<p>You will be taken to the AppTheme selection screen. For a blog, you will use a theme designed for that purpose.</p>
+<ol>
+<li>Select the <strong>Project</strong>: <code>AppThemes-W3-CSS</code> (the default open-source theme project).</li>
+<li>Select the <strong>AppTheme</strong>: <code>rocketblogapi.Blog</code>. This theme provides all the necessary templates for a standard blog, including a post list, detail view, and data entry forms.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<hr>
+<h2 id="step-3-module-settings">Step 3: Module Settings</h2>
+<p>The settings page allows you to control the behavior of your blog. It includes standard RocketDirectory settings plus options specific to the Blog AppTheme.</p>
+<h3 id="standard-settings">Standard Settings</h3>
+<ul>
+<li><strong>Disable Cache, ECO Mode, Template, Default Sort, List/Detail Page, API Module Reference:</strong> These function exactly as they do in the standard RocketDirectory module, allowing you to control performance, select view templates, and reuse data from other modules.</li>
+</ul>
+<h3 id="blog-apptheme-settings">Blog AppTheme Settings</h3>
+<p>The <code>rocketblogapi.Blog</code> theme will add its own settings, which may include:</p>
+<ul>
+<li><strong>Posts Per Page:</strong> The number of blog post summaries to show on the main listing page.</li>
+<li><strong>Enable Comments:</strong> An option to integrate with a commenting system like Disqus.</li>
+<li><strong>Show Author/Date:</strong> Toggles for displaying the author's name and the publication date on posts.</li>
+<li><strong>Social Sharing Buttons:</strong> Options to enable sharing links for platforms like Twitter, Facebook, and LinkedIn.</li>
+</ul>
+<hr>
+<h2 id="step-4-editing-data-creating-a-blog-post">Step 4: Editing Data (Creating a Blog Post)</h2>
+<p>In the module's &quot;Edit&quot; mode, you can create and manage your blog posts. The fields are specifically designed for blogging:</p>
+<ul>
+<li><strong>Title:</strong> The headline of your blog post.</li>
+<li><strong>Summary:</strong> A short teaser or summary that appears on the main blog listing page.</li>
+<li><strong>Post Body:</strong> The main content of your article, usually edited with a rich text editor.</li>
+<li><strong>Author:</strong> The name of the person who wrote the post.</li>
+<li><strong>Publication Date:</strong> The date the post should be published. You can often set this to a future date to schedule posts.</li>
+<li><strong>Tags &amp; Categories:</strong> Taxonomies to organize your posts and help readers find related content.</li>
+<li><strong>Featured Image:</strong> An image that represents the post, often shown at the top of the article and on the listing page.</li>
+</ul>
+<hr>
+<h2 id="step-5-the-administration-settings">Step 5: The Administration Settings</h2>
+<p>The underlying RocketDirectory administration panel governs all directory-based systems, including RocketBlog. These settings for <strong>General, Config, Order By, Providers, and Tools</strong> apply globally and function as described in the RocketDirectory tutorial. For example, you can use the &quot;Order By&quot; tab to create a sort option for <code>PublicationDate DESC</code> and set it as the default for your blog.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/tutorial/RocketBlogEdit.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>RocketTools | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="RocketTools | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/dnnrocket/RocketTools.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="rockettools">RocketTools</h1>
+
+<h2 id="overview">Overview</h2>
+<p><code>RocketTools</code> is a special administrative module that serves as the central control panel for the entire DNNrocket ecosystem. Unlike other Rocket Modules that provide front-end functionality for website visitors, <code>RocketTools</code> is a pure back-end utility designed for developers and system administrators.</p>
+<p>It is typically accessed from the DNN Persona Bar or as a standalone admin page. Its primary purpose is to provide a user interface for managing system settings, installing and updating components, and debugging the DNNrocket environment.</p>
+<hr>
+<h2 id="core-features">Core Features</h2>
+<p>The <code>RocketTools</code> interface provides a suite of powerful utilities for managing a DNNrocket installation. The main tools available from its menu are:</p>
+<h3 id="1-system-configuration--health">1. System Configuration &amp; Health</h3>
+<ul>
+<li><strong>System Info:</strong> The main dashboard displays critical information about the environment, such as the current Portal ID, version numbers, file permissions, and cache status. A refresh button allows for reloading the environment.</li>
+<li><strong>Global Settings:</strong> Configure system-wide parameters that affect all Rocket Modules.</li>
+<li><strong>Validate &amp; Index:</strong>
+<ul>
+<li><strong>Index Portal:</strong> Triggers a re-indexing of the portal's content for search purposes.</li>
+<li><strong>Validate System:</strong> Performs a system health check.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-content--language-tools">2. Content &amp; Language Tools</h3>
+<ul>
+<li><strong>Page Localization:</strong> Provides tools for managing multi-lingual content on pages.</li>
+<li><strong>Copy Language:</strong> A utility to duplicate content from one language to another across the portal, which is useful when setting up a new language.</li>
+<li><strong>Menu &amp; URL Settings:</strong> A suite of tools to manage URL generation, menu structures, and apply global styling helpers.</li>
+</ul>
+<h3 id="3-import--export-of-pre-builds">3. Import &amp; Export of Pre-builds</h3>
+<p>This is a powerful feature for developers to package and distribute entire site configurations.</p>
+<ul>
+<li><strong>Export Pre-build:</strong> Allows a developer to package up all the custom portal-level configurations (AppThemes, data, settings) into a single distributable ZIP file. This is ideal for creating a &quot;starter kit&quot; or a snapshot of a completed project.</li>
+<li><strong>Import Pre-build:</strong> An administrator can upload a pre-build ZIP file, and <code>RocketTools</code> will automatically deploy all the AppThemes and data to the current portal. This is used to quickly set up a new site with a pre-configured structure and content.</li>
+</ul>
+<h3 id="4-security--data-management">4. Security &amp; Data Management</h3>
+<ul>
+<li><strong>Role Manager:</strong> A utility to manage security roles within the context of DNNrocket.</li>
+<li><strong>Cloning Tool:</strong> Provides functionality to duplicate or &quot;clone&quot; module content or settings, speeding up site builds.</li>
+<li><strong>Cache Management:</strong> Includes buttons to clear the DNNrocket system cache, which is often necessary after making configuration or template changes.</li>
+</ul>
+<hr>
+<h2 id="how-it-is-used">How It Is Used</h2>
+<p>A typical workflow involving <code>RocketTools</code> might be:</p>
+<ol>
+<li>A developer finishes building a client's site.</li>
+<li>They navigate to <code>RocketTools</code> and use the <strong>Export Pre-build</strong> feature to create a <code>ClientName.zip</code> file containing all their portal-level AppTheme customizations and content.</li>
+<li>To deploy this to a live server, they install a fresh DNNrocket instance, navigate to <code>RocketTools</code>, and use the <strong>Import Pre-build</strong> feature to upload the <code>ClientName.zip</code>.</li>
+<li>The entire site configuration is instantly deployed and ready to go.</li>
+</ol>
+<p>In summary, <code>RocketTools</code> is the essential administrative backend that makes the management of the sophisticated, multi-layered DNNrocket architecture possible through a user-friendly interface.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/dnnrocket/RocketTools.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

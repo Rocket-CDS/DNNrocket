@@ -1,0 +1,480 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>GetCurrentUserId | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="GetCurrentUserId | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/UserUtils.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="getcurrentuserid">GetCurrentUserId</h1>
+
+<p><strong>Description</strong>: Gets the ID of the currently logged-in user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static int GetCurrentUserId()
+</code></pre>
+<hr>
+<h1 id="removeuser">RemoveUser</h1>
+<p><strong>Description</strong>: Permanently removes a user from the database (hard delete).
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void RemoveUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)
+</code></pre>
+<hr>
+<h1 id="deleteuser">DeleteUser</h1>
+<p><strong>Description</strong>: Moves a user to the recycle bin (soft delete).
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void DeleteUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)
+</code></pre>
+<hr>
+<h1 id="undeleteuser">UnDeleteUser</h1>
+<p><strong>Description</strong>: Restores a user from the recycle bin.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void UnDeleteUser(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="getcurrentuserdisplayname">GetCurrentUserDisplayName</h1>
+<p><strong>Description</strong>: Gets the display name of the currently logged-in user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string GetCurrentUserDisplayName()
+</code></pre>
+<hr>
+<h1 id="setcurrentuserdisplayname">SetCurrentUserDisplayName</h1>
+<p><strong>Description</strong>: Sets the display name for the currently logged-in user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void SetCurrentUserDisplayName(string displayName)
+</code></pre>
+<hr>
+<h1 id="getcurrentusername">GetCurrentUserName</h1>
+<p><strong>Description</strong>: Gets the username of the currently logged-in user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string GetCurrentUserName()
+</code></pre>
+<hr>
+<h1 id="getcurrentuseremail">GetCurrentUserEmail</h1>
+<p><strong>Description</strong>: Gets the email address of the currently logged-in user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string GetCurrentUserEmail()
+</code></pre>
+<hr>
+<h1 id="getuserroles">GetUserRoles</h1>
+<p><strong>Description</strong>: Gets a list of roles for a specified user or the current user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;string&gt; GetUserRoles(int portalid = -1, int userId = -1)
+</code></pre>
+<hr>
+<h1 id="resetpass">ResetPass</h1>
+<p><strong>Description</strong>: Initiates the password reset process for a user by their email address.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool ResetPass(string emailaddress, bool sendEmail)
+</code></pre>
+<hr>
+<h1 id="changepassword">ChangePassword</h1>
+<p><strong>Description</strong>: Changes the password for a specified user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool ChangePassword(int portalId, int userId, string newPassword)
+</code></pre>
+<hr>
+<h1 id="dologin">DoLogin</h1>
+<p><strong>Description</strong>: Logs a user in with the provided credentials.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
+</code></pre>
+<hr>
+<h1 id="userlogin">UserLogin</h1>
+<p><strong>Description</strong>: Performs a user login action.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool UserLogin(string userHostAddress, string username, string password, bool rememberme)
+</code></pre>
+<hr>
+<h1 id="userlogin-1">UserLogin</h1>
+<p><strong>Description</strong>: Logs in a user programmatically without a password check, assuming they are already authenticated.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void UserLogin(int portalId, string portalName, string userHostAddress, string username, bool rememberme)
+</code></pre>
+<hr>
+<h1 id="dologin-1">DoLogin</h1>
+<p><strong>Description</strong>: Logs a user in using data from a generic login form (SimplisityInfo).
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool DoLogin(SimplisityInfo postInfo, SimplisityInfo paramInfo)
+</code></pre>
+<hr>
+<h1 id="loginform">LoginForm</h1>
+<p><strong>Description</strong>: Renders a login form using a Razor template.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string LoginForm(string systemkey, SimplisityInfo sInfo, string interfacekey, int userid)
+</code></pre>
+<hr>
+<h1 id="registerform">RegisterForm</h1>
+<p><strong>Description</strong>: Renders a user registration form using a Razor template.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string RegisterForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
+</code></pre>
+<hr>
+<h1 id="registeruser">RegisterUser</h1>
+<p><strong>Description</strong>: Registers a new user based on data from a SimplisityInfo object.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = &quot;&quot;)
+</code></pre>
+<hr>
+<h1 id="registeruser-1">RegisterUser</h1>
+<p><strong>Description</strong>: Registers a new user with the specified details.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string RegisterUser(string displayname, string username, string useremail, string password, string confirmpassword, string currentCulture, bool approved)
+</code></pre>
+<hr>
+<h1 id="createuser">CreateUser</h1>
+<p><strong>Description</strong>: Creates a new user in the specified portal and optionally assigns them to a role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static string CreateUser(int portalId, string username, string email, string roleName = &quot;&quot;)
+</code></pre>
+<hr>
+<h1 id="getuserdatabyusername">GetUserDataByUsername</h1>
+<p><strong>Description</strong>: Gets a UserData object for a user by their username.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static UserData GetUserDataByUsername(int portalId, string username)
+</code></pre>
+<hr>
+<h1 id="getuserdatabyemail">GetUserDataByEmail</h1>
+<p><strong>Description</strong>: Gets a UserData object for a user by their email address.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static UserData GetUserDataByEmail(int portalId, string email)
+</code></pre>
+<hr>
+<h1 id="getuserdata">GetUserData</h1>
+<p><strong>Description</strong>: Gets a UserData object containing detailed information about a user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static UserData GetUserData(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="isauthorised">IsAuthorised</h1>
+<p><strong>Description</strong>: Checks if the current user is authorized (approved).
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsAuthorised()
+</code></pre>
+<hr>
+<h1 id="isauthorised-1">IsAuthorised</h1>
+<p><strong>Description</strong>: Checks if a specific user is authorized (approved).
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsAuthorised(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="unauthoriseuser">UnAuthoriseUser</h1>
+<p><strong>Description</strong>: Marks a user as not approved.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void UnAuthoriseUser(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="authoriseuser">AuthoriseUser</h1>
+<p><strong>Description</strong>: Marks a user as approved.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void AuthoriseUser(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="updateemail">UpdateEmail</h1>
+<p><strong>Description</strong>: Updates the email address for a user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static UserData UpdateEmail(int portalId, int userId, string email)
+</code></pre>
+<hr>
+<h1 id="getuserprofileproperties">GetUserProfileProperties</h1>
+<p><strong>Description</strong>: Gets a dictionary of all profile properties for a user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Dictionary&lt;string, string&gt; GetUserProfileProperties(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="getuserprofileproperties-1">GetUserProfileProperties</h1>
+<p><strong>Description</strong>: Gets a dictionary of all profile properties for a user by their user ID as a string.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Dictionary&lt;string, string&gt; GetUserProfileProperties(string userId)
+</code></pre>
+<hr>
+<h1 id="setuserprofileproperties">SetUserProfileProperties</h1>
+<p><strong>Description</strong>: Sets multiple profile properties for a user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void SetUserProfileProperties(String userId, Dictionary&lt;string, string&gt; properties)
+</code></pre>
+<hr>
+<h1 id="setuserprofileproperties-1">SetUserProfileProperties</h1>
+<p><strong>Description</strong>: Sets multiple profile properties for a user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void SetUserProfileProperties(int portalId, int userId, Dictionary&lt;string, string&gt; properties)
+</code></pre>
+<hr>
+<h1 id="getuseridbyusername">GetUserIdByUserName</h1>
+<p><strong>Description</strong>: Gets a user's ID from their username.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static int GetUserIdByUserName(int portalId, string username)
+</code></pre>
+<hr>
+<h1 id="getusers">GetUsers</h1>
+<p><strong>Description</strong>: Gets a list of users as SimplisityRecord objects, optionally filtered by role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;SimplisityRecord&gt; GetUsers(int portalId, string inRole = &quot;&quot;)
+</code></pre>
+<hr>
+<h1 id="getusers-1">GetUsers</h1>
+<p><strong>Description</strong>: Gets a paginated list of users as SimplisityRecord objects.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;SimplisityRecord&gt; GetUsers(int portalId, int pageNumber, int pageSize, ref int totalRecord, bool includeDeleted = false, bool superUsersOnly = false)
+</code></pre>
+<hr>
+<h1 id="getusers-2">GetUsers</h1>
+<p><strong>Description</strong>: Searches for users by a text string and returns a list of SimplisityRecord objects.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;SimplisityRecord&gt; GetUsers(int portalId, string searchtext, int returnLimit = 100)
+</code></pre>
+<hr>
+<h1 id="getusersuserdata">GetUsersUserData</h1>
+<p><strong>Description</strong>: Searches for users by a text string and returns a list of UserData objects.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;UserData&gt; GetUsersUserData(int portalId, string searchtext, int returnLimit = 100)
+</code></pre>
+<hr>
+<h1 id="getsuperusers">GetSuperUsers</h1>
+<p><strong>Description</strong>: Gets a list of all super users as SimplisityRecord objects.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static List&lt;SimplisityRecord&gt; GetSuperUsers()
+</code></pre>
+<hr>
+<h1 id="getuseridbyemail">GetUserIdByEmail</h1>
+<p><strong>Description</strong>: Gets a user's ID from their email address.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static int GetUserIdByEmail(int portalId, string email)
+</code></pre>
+<hr>
+<h1 id="isinrole">IsInRole</h1>
+<p><strong>Description</strong>: Checks if a specific user is in a given role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsInRole(int portalId, int userId, string role)
+</code></pre>
+<hr>
+<h1 id="isinrole-1">IsInRole</h1>
+<p><strong>Description</strong>: Checks if the current user is in a given role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsInRole(string role)
+</code></pre>
+<hr>
+<h1 id="issuperuser">IsSuperUser</h1>
+<p><strong>Description</strong>: Checks if a specific user is a super user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsSuperUser(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="issuperuser-1">IsSuperUser</h1>
+<p><strong>Description</strong>: Checks if the current user is a super user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsSuperUser()
+</code></pre>
+<hr>
+<h1 id="isclientonly">IsClientOnly</h1>
+<p><strong>Description</strong>: Checks if the current user has only the 'Collaborator' role and no higher-level roles.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Boolean IsClientOnly()
+</code></pre>
+<hr>
+<h1 id="ismanager">IsManager</h1>
+<p><strong>Description</strong>: Checks if the current user is in the 'Manager' or 'Administrators' role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Boolean IsManager()
+</code></pre>
+<hr>
+<h1 id="iseditor">IsEditor</h1>
+<p><strong>Description</strong>: Checks if the current user has at least 'Collaborator' level permissions.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Boolean IsEditor()
+</code></pre>
+<hr>
+<h1 id="isadministrator">IsAdministrator</h1>
+<p><strong>Description</strong>: Checks if the current user is in the 'Administrators' role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Boolean IsAdministrator()
+</code></pre>
+<hr>
+<h1 id="isadministrator-1">IsAdministrator</h1>
+<p><strong>Description</strong>: Checks if a specific user is an administrator.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsAdministrator(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="getvaliduser">GetValidUser</h1>
+<p><strong>Description</strong>: Validates a user's credentials and returns the UserInfo object if valid.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static UserInfo GetValidUser(int PortalId, string username, string password)
+</code></pre>
+<hr>
+<h1 id="isvaliduser">IsValidUser</h1>
+<p><strong>Description</strong>: Checks if a user exists by username.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsValidUser(int PortalId, string username)
+</code></pre>
+<hr>
+<h1 id="isvaliduser-1">IsValidUser</h1>
+<p><strong>Description</strong>: Checks if a user's credentials are valid.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsValidUser(int PortalId, string username, string password)
+</code></pre>
+<hr>
+<h1 id="isvaliduser-2">IsValidUser</h1>
+<p><strong>Description</strong>: Checks if a user exists by user ID.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool IsValidUser(int portalId, int userId)
+</code></pre>
+<hr>
+<h1 id="getrolebyid">GetRoleById</h1>
+<p><strong>Description</strong>: Gets role information as a SimplisityRecord by role ID.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static SimplisityRecord GetRoleById(int portalId, int roleId)
+</code></pre>
+<hr>
+<h1 id="getroles">GetRoles</h1>
+<p><strong>Description</strong>: Gets a dictionary of all roles in a portal.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static Dictionary&lt;int, string&gt; GetRoles(int portalId)
+</code></pre>
+<hr>
+<h1 id="getrolebyname">GetRoleByName</h1>
+<p><strong>Description</strong>: Gets role information as a SimplisityRecord by role name.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static SimplisityRecord GetRoleByName(int portalId, string roleName)
+</code></pre>
+<hr>
+<h1 id="adduserrole">AddUserRole</h1>
+<p><strong>Description</strong>: Adds a user to a role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void AddUserRole(int portalId, int userId, int roleId)
+</code></pre>
+<hr>
+<h1 id="adduserrole-1">AddUserRole</h1>
+<p><strong>Description</strong>: Adds a user to a role and optionally notifies the user.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void AddUserRole(int portalId, int userId, int roleId, bool notifyUser)
+</code></pre>
+<hr>
+<h1 id="removeuserrole">RemoveUserRole</h1>
+<p><strong>Description</strong>: Removes a user from a role.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void RemoveUserRole(int portalId, int userId, int roleId)
+</code></pre>
+<hr>
+<h1 id="signout">SignOut</h1>
+<p><strong>Description</strong>: Signs the current user out.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static void SignOut()
+</code></pre>
+<hr>
+<h1 id="hasmoduleaccess">HasModuleAccess</h1>
+<p><strong>Description</strong>: Checks if a user has a specific level of access to a module.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool HasModuleAccess(int portalId, int userId, int moduleId, string permissionKey = &quot;VIEW&quot;)
+</code></pre>
+<hr>
+<h1 id="updateorcreateuserprofileproperty">UpdateOrCreateUserProfileProperty</h1>
+<p><strong>Description</strong>: Updates or creates a DNN user profile property. If the property definition doesn't exist, it will be created.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public static bool UpdateOrCreateUserProfileProperty(int userId, string key, string value, int portalId = 0, string category = &quot;Custom&quot;, bool visibilityAllUsers = false)
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/UserUtils.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

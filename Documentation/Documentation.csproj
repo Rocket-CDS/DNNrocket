@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F1E8C8B1-5F5C-4E5C-8C8C-5F5C4E5C8C8C}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="appthemes\AppThemeEngine.md" />
+    <None Include="appthemes\InstallAppThemes.md" />
+    <None Include="appthemes\CreateAppTheme.md" />
+    <None Include="appthemes\EditAppTheme.md" />
+    <None Include="appthemes\index.md" />
+    <None Include="appthemes\RocketContentAppTheme.md" />
+    <None Include="appthemes\RocketDirectoryAppTheme.md" />
+    <None Include="appthemes\toc.yml" />
+    <None Include="dnnrocket\AppThemes.md" />
+    <None Include="dnnrocket\DNNrocket.md" />
+    <None Include="dnnrocket\index.md" />
+    <None Include="dnnrocket\RocketPortal.md" />
+    <None Include="dnnrocket\RocketTools.md" />
+    <None Include="dnnrocket\Simplisity.md" />
+    <None Include="dnnrocket\toc.yml" />
+    <None Include="docfx.json" />
+    <None Include="index.md" />
+    <None Include="razortokens\DNNrocketTokens.json" />
+    <None Include="razortokens\DNNrocketTokens.md" />
+    <None Include="razortokens\DNNrocketUtils.json" />
+    <None Include="razortokens\DNNrocketUtils.md" />
+    <None Include="razortokens\GeneralUtils.json" />
+    <None Include="razortokens\GeneralUtils.md" />
+    <None Include="razortokens\index.md" />
+    <None Include="razortokens\RazorEngineTokens.json" />
+    <None Include="razortokens\RazorEngineTokens.md" />
+    <None Include="razortokens\RocketBlogAPITokens.md" />
+    <None Include="razortokens\RocketBlogTokens.json" />
+    <None Include="razortokens\RocketBlogTokens.md" />
+    <None Include="razortokens\RocketContentAPITokens.json" />
+    <None Include="razortokens\RocketContentAPITokens.md" />
+    <None Include="razortokens\RocketDirectoryAPITokens.json" />
+    <None Include="razortokens\RocketDirectoryAPITokens.md" />
+    <None Include="razortokens\RocketEventsAPITokens.md" />
+    <None Include="razortokens\RocketEventsTokens.json" />
+    <None Include="razortokens\RocketEventsTokens.md" />
+    <None Include="razortokens\RocketFormsTokens.json" />
+    <None Include="razortokens\RocketFormsTokens.md" />
+    <None Include="razortokens\RocketNewsAPITokens.md" />
+    <None Include="razortokens\RocketNewsTokens.json" />
+    <None Include="razortokens\RocketNewsTokens.md" />
+    <None Include="razortokens\RocketToolsTokens.json" />
+    <None Include="razortokens\RocketToolsTokens.md" />
+    <None Include="razortokens\toc.yml" />
+    <None Include="razortokens\UserUtils.json" />
+    <None Include="razortokens\UserUtils.md" />
+    <None Include="README.md" />
+    <None Include="snippets\fileuploadbase64.md" />
+    <None Include="snippets\LargeFileUpload.md" />
+    <None Include="snippets\ResxLocalization.md" />
+    <None Include="snippets\index.md" />
+    <None Include="snippets\MenuLocalization.md" />
+    <None Include="snippets\RocketBlogSnippets.md" />
+    <None Include="snippets\RocketContentSnippets.md" />
+    <None Include="snippets\RocketDirectorySnippets.md" />
+    <None Include="snippets\RocketEventsSnippets.md" />
+    <None Include="snippets\RocketNewsSnippets.md" />
+    <None Include="snippets\toc.yml" />
+    <None Include="toc.yml" />
+    <None Include="modules\index.md" />
+    <None Include="modules\toc.yml" />
+    <None Include="modules\RocketBlog.md" />
+    <None Include="modules\RocketContent.md" />
+    <None Include="modules\RocketDirectory.md" />
+    <None Include="modules\RocketEvents.md" />
+    <None Include="modules\RocketForms.md" />
+    <None Include="modules\RocketNews.md" />
+    <None Include="tutorial\index.md" />
+    <None Include="tutorial\InstallAndPlay.md" />
+    <None Include="tutorial\Localization.md" />
+    <None Include="tutorial\Prebuilds.md" />
+    <None Include="tutorial\RocketBlogEdit.md" />
+    <None Include="tutorial\RocketContentEdit.md" />
+    <None Include="tutorial\RocketDirectoryEdit.md" />
+    <None Include="tutorial\RocketEventsEdit.md" />
+    <None Include="tutorial\RocketNewsEdit.md" />
+    <None Include="tutorial\toc.yml" />
+    <None Include="tutorial\Tools.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="logo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="imgs\InstallAndPlay_Extension_Install_Button.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_AppThemes_Rocket_Menu2.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_AppTheme_Sources_Rocket_Menu3.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_Global_Settings_Rocket_Menu5.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_RocketOptions_Root_Menu.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_RocketTools_Rocket_Menu4.jpg" />
+    <Content Include="imgs\InstallAndPlay_PB_WebServices_Rocket_Menu1.jpg" />
+    <Content Include="imgs\RocketContentEdit_Configuration_Button.jpg" />
+    <Content Include="imgs\RocketContentEdit_Configuration_SelectAppTheme_1.jpg" />
+    <Content Include="imgs\RocketContentEdit_EditData.jpg" />
+    <Content Include="imgs\RocketContentEdit_Module_Settings.jpg" />
+    <Content Include="imgs\RocketContentEdit_RecycleBin.jpg" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,475 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>AddProcessDataResx | DNNrocket Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="AddProcessDataResx | DNNrocket Documentation ">
+      
+      
+      <link rel="icon" href="../logo/facicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/DNNrocketTokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo/icon-32.png" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="addprocessdataresx">AddProcessDataResx</h1>
+
+<p><strong>Description</strong>: Adds resource paths to the process data for later use by resource key tokens. Can include portal-specific, app-theme-specific, and optionally the core API resx paths.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString AddProcessDataResx(AppThemeLimpet appTheme, bool includeAPIresx = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.AddProcessDataResx(appTheme, true)
+</code></pre>
+<hr>
+<h1 id="dropdownlanguagelist">DropDownLanguageList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of enabled languages for the portal, with flags.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DropDownLanguageList(Model.Info, &quot;genxml/dropdown/language&quot;)
+</code></pre>
+<hr>
+<h1 id="dropdowncurrencylist">DropDownCurrencyList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of available currencies.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DropDownCurrencyList(Model.Info, &quot;genxml/dropdown/currency&quot;)
+</code></pre>
+<hr>
+<h1 id="dropdownculturecodelist">DropDownCultureCodeList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of culture codes for the portal.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DropDownCultureCodeList(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DropDownCultureCodeList(Model.Info, &quot;genxml/dropdown/culturecode&quot;)
+</code></pre>
+<hr>
+<h1 id="dropdowncountrycodelist">DropDownCountryCodeList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of country codes.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DropDownCountryCodeList(Model.Info, &quot;genxml/dropdown/countrycode&quot;)
+</code></pre>
+<hr>
+<h1 id="dropdownsystemkeylist">DropDownSystemKeyList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of active system keys.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, String defaultValue = &quot;&quot;, bool localized = false, int row = 0, string listname = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DropDownSystemKeyList(Model.Info, &quot;genxml/dropdown/systemkey&quot;)
+</code></pre>
+<hr>
+<h1 id="resourcecsv">ResourceCSV</h1>
+<p><strong>Description</strong>: Output CSV list of resx values. Example: @ResourceCSV(&quot;RocketIntra&quot;, &quot;test1,test2,test3&quot;)
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = &quot;&quot;, string resourceExtension = &quot;Text&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ResourceCSV(&quot;MyResources&quot;, &quot;key1,key2,key3&quot;)
+</code></pre>
+<hr>
+<h1 id="buttontexticon">ButtonTextIcon</h1>
+<p><strong>Description</strong>: Renders a button with text followed by an icon, based on a button type.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ButtonTextIcon(ButtonTypes.Save)
+</code></pre>
+<hr>
+<h1 id="buttonicontext">ButtonIconText</h1>
+<p><strong>Description</strong>: Renders a button with an icon followed by text, based on a button type.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ButtonIconText(ButtonTypes.Save)
+</code></pre>
+<hr>
+<h1 id="buttontext">ButtonText</h1>
+<p><strong>Description</strong>: Renders a button with an icon followed by text.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ButtonText(ButtonTypes buttontype, String lang = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ButtonText(ButtonTypes.Delete)
+</code></pre>
+<hr>
+<h1 id="buttonicon">ButtonIcon</h1>
+<p><strong>Description</strong>: Renders a button with only an icon, using the button text as the title attribute for accessibility.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ButtonIcon(ButtonTypes.Edit)
+</code></pre>
+<hr>
+<h1 id="resourcekeymod">ResourceKeyMod</h1>
+<p><strong>Description</strong>: Gets a resource string, automatically prepending the key with a module reference and an underscore.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = &quot;&quot;, String resourceExtension = &quot;Text&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ResourceKeyMod(&quot;MyModRef&quot;, &quot;MyKey&quot;)
+</code></pre>
+<hr>
+<h1 id="resourcekey">ResourceKey</h1>
+<p><strong>Description</strong>: Gets a resource string from the resource paths previously added via AddProcessDataResx.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ResourceKey(String resourceFileKey, String lang = &quot;&quot;, String resourceExtension = &quot;Text&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ResourceKey(&quot;WelcomeMessage&quot;)
+</code></pre>
+<hr>
+<h1 id="resourcekeyjs">ResourceKeyJS</h1>
+<p><strong>Description</strong>: Gets a resource string and escapes single quotes for safe use within JavaScript code.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ResourceKeyJS(String resourceFileKey, String lang = &quot;&quot;, String resourceExtension = &quot;Text&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">var message = '@DnnRocket.ResourceKeyJS(&quot;AlertMessage&quot;)';
+</code></pre>
+<hr>
+<h1 id="renderlanguageselector">RenderLanguageSelector</h1>
+<p><strong>Description</strong>: Renders a language selector component with a dictionary for selector fields.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderLanguageSelector(string scmd, Dictionary&lt;string, string&gt; sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderLanguageSelector(&quot;changelang&quot;, new Dictionary&lt;string, string&gt;(), appThemeSystem, Model)
+</code></pre>
+<hr>
+<h1 id="renderremotelanguageselector">RenderRemoteLanguageSelector</h1>
+<p><strong>Description</strong>: Renders a remote language selector component.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderRemoteLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderRemoteLanguageSelector(&quot;changelang&quot;, &quot;{}&quot;, appThemeSystem, Model)
+</code></pre>
+<hr>
+<h1 id="rendertemplate">RenderTemplate</h1>
+<p><strong>Description</strong>: Renders a Razor template string with the given model.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderTemplate(&quot;&lt;div&gt;Hello @Model.Get('name')&lt;/div&gt;&quot;, myModel)
+</code></pre>
+<hr>
+<h1 id="renderplugin">RenderPlugin</h1>
+<p><strong>Description</strong>: Renders a plugin based on its registered interface key. The 'systemdata' object must be available in the model.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderPlugin(&quot;myplugin&quot;, &quot;showdetails&quot;, Model)
+</code></pre>
+<hr>
+<h1 id="renderxml">RenderXml</h1>
+<p><strong>Description</strong>: Renders a display of the XML model from a SimplisityInfo object for debugging purposes.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderXml(SimplisityInfo info, string xmlidx = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderXml(Model.Info)
+</code></pre>
+<hr>
+<h1 id="renderimageselect">RenderImageSelect</h1>
+<p><strong>Description</strong>: Renders an image selection interface.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderImageSelect(&quot;mysystem&quot;, &quot;/Portals/0/Images&quot;)
+</code></pre>
+<hr>
+<h1 id="renderdocumentselect">RenderDocumentSelect</h1>
+<p><strong>Description</strong>: Renders a document selection interface.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.RenderDocumentSelect(&quot;mysystem&quot;, &quot;/Portals/0/Documents&quot;)
+</code></pre>
+<hr>
+<h1 id="translationlock">TranslationLock</h1>
+<p><strong>Description</strong>: Renders a lock/unlock icon for managing the translation state of a field. It includes a hidden checkbox to store the state.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.TranslationLock(Model.Info, &quot;genxml/textbox/title&quot;)
+</code></pre>
+<hr>
+<h1 id="translate">Translate</h1>
+<p><strong>Description</strong>: Renders a translation icon that can be clicked to trigger a translation action for a specific field.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString Translate(SimplisityInfo info, string xpath, bool active = true, int row = 0)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.Translate(Model.Info, &quot;genxml/textbox/summary&quot;)
+</code></pre>
+<hr>
+<h1 id="translationkeyup">TranslationKeyUp</h1>
+<p><strong>Description</strong>: Generates an 'onkeyup' HTML attribute. When the user types in a field, this script will automatically set the corresponding translation lock to 'locked'.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TranslationKeyUp(string fieldId, bool active = true, int row = 0)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">&lt;input type='text' @DnnRocket.TranslationKeyUp(&quot;title&quot;) /&gt;
+</code></pre>
+<hr>
+<h1 id="editflag">EditFlag</h1>
+<p><strong>Description</strong>: Displays the flag image for the current editing culture code from session parameters.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.EditFlag(Model.SessionParams, &quot;my-flag-class&quot;)
+</code></pre>
+<hr>
+<h1 id="displayflag">DisplayFlag</h1>
+<p><strong>Description</strong>: Displays a flag image for a given culture code, if the image file exists.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DisplayFlag(string cultureCode, string classvalues = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DisplayFlag(&quot;fr-FR&quot;)
+</code></pre>
+<hr>
+<h1 id="displayengineflag">DisplayEngineFlag</h1>
+<p><strong>Description</strong>: Displays a flag image from a remote engine URL for a given culture code.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DisplayEngineFlag(&quot;https://myothersite.com&quot;, &quot;de-DE&quot;)
+</code></pre>
+<hr>
+<h1 id="imageurl">ImageUrl</h1>
+<p><strong>Description</strong>: Display Thumbnail Image. Creates and returns a URL for a resized version of an image. Supports various output formats and cropping. By default, PNGs remain PNGs, and other formats are converted to WEBP. The cache holds a lock on the image file, so use DNNrocketUtils.ClearThumbnailLock() before deleting the original image.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ImageUrl(&quot;&quot;, &quot;/Portals/0/my-image.jpg&quot;, 200, 200, &quot;webp&quot;, true)
+</code></pre>
+<hr>
+<h1 id="injecthiddenfielddata">InjectHiddenFieldData</h1>
+<p><strong>Description</strong>: Renders all nodes under 'genxml/hidden/*' as hidden input fields in the HTML. This is useful for passing data from the model to client-side scripts.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.InjectHiddenFieldData(Model.Info)
+</code></pre>
+<hr>
+<h1 id="ckeditor4legacy">CKEditor4legacy</h1>
+<p><strong>Description</strong>: Legacy CKEditor 4 implementation. Consider using @Editor() instead.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = &quot;&quot;, string langauge = &quot;&quot;, bool coded = false, string filename = &quot;ckeditor4startup1.js&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.CKEditor4legacy(Model.Info, &quot;genxml/richtext/content&quot;)
+</code></pre>
+<hr>
+<h1 id="editor">Editor</h1>
+<p><strong>Description</strong>: Renders a rich text editor (defaulting to Jodit). The specific editor template can be configured in the portal settings or specified directly.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = &quot;&quot;, string editorRazorTemplate = &quot;EditorJoditDefault.cshtml&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.Editor(Model.Info, &quot;genxml/richtext/content&quot;, Model)
+</code></pre>
+<hr>
+<h1 id="linkinternalurl">LinkInternalUrl</h1>
+<p><strong>Description</strong>: Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.LinkInternalUrl(0, 55, &quot;en-US&quot;)
+</code></pre>
+<hr>
+<h1 id="tabselectlistontabid">TabSelectListOnTabId</h1>
+<p><strong>Description</strong>: Renders a dropdown list of portal tabs (pages), structured as a tree. The value of each option is the TabId.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = &quot;&quot;, Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = &quot;&quot;, bool showAllTabs = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.TabSelectListOnTabId(Model.Info, &quot;genxml/dropdown/pagelink&quot;)
+</code></pre>
+<hr>
+<h1 id="gettaburlbyguid">GetTabUrlByGuid</h1>
+<p><strong>Description</strong>: Gets the URL for a tab by its unique GUID.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString GetTabUrlByGuid(String tabguid)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.GetTabUrlByGuid(&quot;a1b2c3d4-e5f6-7890-1234-567890abcdef&quot;)
+</code></pre>
+<hr>
+<h1 id="linkpageurl">LinkPageURL</h1>
+<p><strong>Description</strong>: Creates an anchor tag linking to an internal DNN page. The tab ID is read from a SimplisityInfo field.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = &quot;&quot;, string attributes = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.LinkPageURL(Model.Info, &quot;genxml/data/linkedpageid&quot;, text: &quot;Read More&quot;)
+</code></pre>
+<hr>
+<h1 id="linkurl">LinkURL</h1>
+<p><strong>Description</strong>: Creates an anchor tag for a URL stored in a SimplisityInfo field. Automatically handles adding 'https://' if missing.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = &quot;&quot;, string attributes = &quot;&quot;)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.LinkURL(Model.Info, &quot;genxml/textbox/websiteurl&quot;, true, &quot;Visit Website&quot;)
+</code></pre>
+<hr>
+<h1 id="datasourcelist">DataSourceList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of data sources (MODULEPARAMS) for a given system key.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = &quot;&quot;, bool allowEmpty = true, bool localized = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.DataSourceList(Model.Info, 1, &quot;genxml/dropdown/datasource&quot;)
+</code></pre>
+<hr>
+<h1 id="gettreetablist">GetTreeTabList</h1>
+<p><strong>Description</strong>: Generates a tree-structured HTML list of portal tabs with checkboxes for selection.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString GetTreeTabList(int portalId, List&lt;int&gt; selectedTabIdList, string treeviewId, string lang = &quot;&quot;, string attributes = &quot;&quot;, bool showAllTabs = false)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.GetTreeTabList(0, new List&lt;int&gt;(), &quot;mytree&quot;)
+</code></pre>
+<hr>
+<h1 id="modselectlist">ModSelectList</h1>
+<p><strong>Description</strong>: Renders a dropdown list of modules for a given portal, showing module references.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = &quot;&quot;, bool addEmpty = true)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.ModSelectList(Model.Info, &quot;genxml/dropdown/moduleid&quot;, 0)
+</code></pre>
+<hr>
+<h1 id="checkboxrowecomode">CheckBoxRowECOMode</h1>
+<p><strong>Description</strong>: Creates a checkbox for ECOMode in the settings of a module.
+<strong>Signature</strong></p>
+<pre><code class="lang-csharp">public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)
+</code></pre>
+<p><strong>Example</strong></p>
+<pre><code class="lang-csharp">@DnnRocket.CheckBoxRowECOMode(Model.Info)
+</code></pre>
+<hr>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Rocket-CDS/DNNrocket/blob/master/Documentation/razortokens/DNNrocketTokens.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          DNNrocket Project
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
