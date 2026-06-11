@@ -1,10 +1,13 @@
-# DNNrocket Documentation
+# RocketCDS Documentation
 
-Welcome to the DNNrocket documentation.
+Welcome to the RocketCDS documentation.
 
 ## Overview
 
-DNNrocket is a powerful Content Management System (CMS) framework for DNN Platform, providing a flexible and extensible foundation for building dynamic web applications.
+RocketCDS is a powerful Content Management System (CMS) framework for DNN Platform, providing a flexible and extensible foundation for building dynamic web applications.  
+
+This documentation is not intended to be highly technical; rather, it focuses on the integration and functionality of RocketCDS and is not designed as an end-user guide. All RocketCDS modules have been developed to be as simple and intuitive to edit as possible, allowing users with basic computer skills to easily update and manage content.
+
 
 ## Getting Started
 - [Starter Tutorial](tutorial/index.md) - Install, Plug and Play in DNN

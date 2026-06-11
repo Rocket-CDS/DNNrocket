@@ -22,7 +22,7 @@ You will notice two different installation packages available:
 
 The reason for two packages is that the image processing assemblies are often locked by the DNN application pool when images are being served and cached. Attempting to upgrade these locked files can cause installation failures. The upgrade package allows for a smooth update of all other components without interrupting the site.
 
-> **Important:** If you need to update the image processing assemblies, you must use the full package. Before doing so, it is crucial to use the **PB > Restart** menu option. This action, created by the Rocket suite itself, helps to release file locks and ensure a successful upgrade.
+> **Important:** If you need to update the image processing assemblies, you must use the full package. Before doing so, it is crucial to use the **PB > Rocket > Clear Cache** menu option. This action, created by the Rocket suite itself, helps to release file locks and ensure a successful upgrade.
 
 ---
 
