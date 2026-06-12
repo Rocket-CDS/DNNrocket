@@ -44,11 +44,11 @@
       "templates/material/material"
     ],
     "globalMetadata": {
-      "_appTitle": "DNNrocket Documentation",
-      "_appFooter": "DNNrocket Project",
+      "_appTitle": "RocketCDS Documentation",
+      "_appFooter": "RocketCDS Project",
       "_enableSearch": true,
-      "_appLogoPath": "logo/icon-32.png",
-      "_appFaviconPath": "logo/facicon.ico",
+      "_appLogoPath": "logo/logo.png",
+      "_appFaviconPath": "logo/favicon.ico",
       "_language": "en"
     },
     "dest": "_site",

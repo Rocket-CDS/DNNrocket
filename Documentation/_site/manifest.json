@@ -72,6 +72,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "appthemes/VScodeIntellisense.md",
+      "output": {
+        ".html": {
+          "relative_path": "appthemes/VScodeIntellisense.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "appthemes/index.md",
       "output": {
         ".html": {
@@ -317,6 +327,26 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "logo/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "logo/favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "logo/logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "logo/logo.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "modules/RocketBlog.md",
       "output": {
@@ -481,60 +511,40 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "razortokens/RocketBlogTokens.json",
+      "source_relative_path": "razortokens/RocketContentTokens.json",
       "output": {
         "resource": {
-          "relative_path": "razortokens/RocketBlogTokens.json"
+          "relative_path": "razortokens/RocketContentTokens.json"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "razortokens/RocketBlogTokens.md",
+      "source_relative_path": "razortokens/RocketContentTokens.md",
       "output": {
         ".html": {
-          "relative_path": "razortokens/RocketBlogTokens.html"
+          "relative_path": "razortokens/RocketContentTokens.html"
         }
       },
       "version": ""
     },
     {
       "type": "Resource",
-      "source_relative_path": "razortokens/RocketContentAPITokens.json",
+      "source_relative_path": "razortokens/RocketDirectoryTokens.json",
       "output": {
         "resource": {
-          "relative_path": "razortokens/RocketContentAPITokens.json"
+          "relative_path": "razortokens/RocketDirectoryTokens.json"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "razortokens/RocketContentAPITokens.md",
+      "source_relative_path": "razortokens/RocketDirectoryTokens.md",
       "output": {
         ".html": {
-          "relative_path": "razortokens/RocketContentAPITokens.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "razortokens/RocketDirectoryAPITokens.json",
-      "output": {
-        "resource": {
-          "relative_path": "razortokens/RocketDirectoryAPITokens.json"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "razortokens/RocketDirectoryAPITokens.md",
-      "output": {
-        ".html": {
-          "relative_path": "razortokens/RocketDirectoryAPITokens.html"
+          "relative_path": "razortokens/RocketDirectoryTokens.html"
         }
       },
       "version": ""
@@ -575,16 +585,6 @@
       "output": {
         ".html": {
           "relative_path": "razortokens/RocketFormsTokens.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "razortokens/RocketNewsAPITokens.md",
-      "output": {
-        ".html": {
-          "relative_path": "razortokens/RocketNewsAPITokens.html"
         }
       },
       "version": ""

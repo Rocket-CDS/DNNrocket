@@ -14,9 +14,7 @@ Browse the topics below to find the tokens or methods you need.
 
 ## Rocket Modules
 
-*   [RocketBlogTokens](./RocketBlogTokens.md): Tokens for the RocketBlog API.
-*   [RocketContentAPITokens](./RocketContentAPITokens.md): Tokens for the RocketContent API.
-*   [RocketDirectoryAPITokens](./RocketDirectoryAPITokens.md): Tokens for the RocketDirectory API.
+*   [RocketContentAPITokens](./RocketContentTokens.md): Tokens for the RocketContent API.
+*   [RocketDirectoryAPITokens](./RocketDirectoryTokens.md): Tokens for the RocketDirectory API.
 *   [RocketEventsTokens](./RocketEventsTokens.md): Tokens for the RocketEvents API.
 *   [RocketFormsTokens](./RocketFormsTokens.md): Tokens for the RocketForms API.
-*   [RocketNewsAPITokens](./RocketNewsAPITokens.md): Tokens for the RocketNews API.

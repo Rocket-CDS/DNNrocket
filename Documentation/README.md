@@ -37,7 +37,7 @@ The server will watch for file changes and automatically rebuild.
 To just build the documentation without serving:
 
 ```powershell
-cd D:\NEVOWEB\Project\DesktopModules\DNNrocket\.Documentation
+cd D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation
 docfx docfx.json
 ```
 

@@ -2,6 +2,8 @@
   href: AppThemeEngine.md
 - name: Install AppThemes
   href: InstallAppThemes.md
+- name: VScode Intellisense
+  href: VScodeIntellisense.md
 - name: Edit an AppTheme
   href: EditAppTheme.md
 - name: Create an AppTheme

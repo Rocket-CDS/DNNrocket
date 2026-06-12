@@ -8,6 +8,9 @@ What is the AppTheme Engine.
 ### [Install AppThemes](InstallAppThemes.md)
 How to install AppThemes.
 
+### [VScode Intellisense](VScodeIntellisense.md)
+Edit AppThemes with VScode Intellisense.
+
 ### [EditAppTheme](EditAppTheme.md)
 A guide to editing AppThemes.
 
