@@ -23,6 +23,9 @@ namespace DNNrocketAPI.render
 {
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
+        /// <summary>
+        /// Adds resource paths to the process data for later use by resource key tokens. Can include portal-specific, app-theme-specific, and optionally the core API resx paths.
+        /// </summary>
         public IEncodedString AddProcessDataResx(AppThemeLimpet appTheme, bool includeAPIresx = false)
         {
             if (appTheme != null)
@@ -39,6 +42,9 @@ namespace DNNrocketAPI.render
             }
             return new RawString(""); //return nothing
         }
+        /// <summary>
+        /// Renders a dropdown list of enabled languages for the portal, with flags.
+        /// </summary>
         public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataLangKeys = new Dictionary<string, string>();
@@ -53,12 +59,18 @@ namespace DNNrocketAPI.render
             }
             return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
         }
+        /// <summary>
+        /// Renders a dropdown list of available currencies.
+        /// </summary>
         public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataLangKeys = new Dictionary<string, string>();
             var enabledCurrency = DNNrocketUtils.GetCurrencyList();
             return DropDownList(info, xpath, enabledCurrency, attributes, defaultValue, localized, row, listname);
         }
+        /// <summary>
+        /// Renders a dropdown list of culture codes for the portal.
+        /// </summary>
         public IEncodedString DropDownCultureCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var cultureCodes = new Dictionary<string, string>();
@@ -69,12 +81,18 @@ namespace DNNrocketAPI.render
             }
             return DropDownList(info, xpath, cultureCodes, attributes, defaultValue, localized, row, listname);
         }
+        /// <summary>
+        /// Renders a dropdown list of country codes.
+        /// </summary>
         public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var countryDict = DNNrocketUtils.GetCountryCodeList(info.PortalId);
             return DropDownList(info, xpath, countryDict, attributes, defaultValue, localized, row, listname);
         }
 
+        /// <summary>
+        /// Renders a dropdown list of active system keys.
+        /// </summary>
         public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataSytemKeys = new Dictionary<string, string>();
@@ -101,6 +119,9 @@ namespace DNNrocketAPI.render
         /// <param name="lang"></param>
         /// <param name="resourceExtension"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Output CSV list of resx values. Example: @ResourceCSV("RocketIntra", "test1,test2,test3")
+        /// </summary>
         public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
         {
             var csvList = keyListCSV.Split(',');
@@ -112,34 +133,55 @@ namespace DNNrocketAPI.render
             }
             return new RawString(strOut.TrimEnd(','));
         }
+        /// <summary>
+        /// Renders a button with text followed by an icon, based on a button type.
+        /// </summary>
         public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = "")
         {
             return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang) + "&nbsp;" + ResourceKeyString("Icons." + buttontype, lang, "Icon"));
         }
+        /// <summary>
+        /// Renders a button with an icon followed by text, based on a button type.
+        /// </summary>
         public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = "")
         {
             return ButtonText(buttontype, lang);
         }
+        /// <summary>
+        /// Renders a button with an icon followed by text.
+        /// </summary>
         public IEncodedString ButtonText(ButtonTypes buttontype, String lang = "")
         {
             return new RawString(ResourceKeyString("Icons." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
         }
+        /// <summary>
+        /// Renders a button with only an icon, using the button text as the title attribute for accessibility.
+        /// </summary>
         public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")
         {
             var rtn = ResourceKeyString("Icons." + buttontype, lang, "Icon");
             if (!rtn.Contains("title=")) rtn = rtn.Replace("<span ","<span title=\"" + ResourceKeyString("DNNrocket." + buttontype, lang) + "\"");
             return new RawString(rtn);
         }
+        /// <summary>
+        /// Gets a resource string, automatically prepending the key with a module reference and an underscore.
+        /// </summary>
         public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             if (moduleRef != "") moduleRef = moduleRef + "_";
             return new RawString(ResourceKeyString(moduleRef + resourceFileKey, lang, resourceExtension));
         }
+        /// <summary>
+        /// Gets a resource string from the resource paths previously added via AddProcessDataResx.
+        /// </summary>
         public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             return new RawString(ResourceKeyString(resourceFileKey, lang, resourceExtension));
         }
 
+        /// <summary>
+        /// Gets a resource string and escapes single quotes for safe use within JavaScript code.
+        /// </summary>
         public IEncodedString ResourceKeyJS(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             var strOut = ResourceKeyString(resourceFileKey, lang, resourceExtension);
@@ -166,6 +208,9 @@ namespace DNNrocketAPI.render
             return RenderLanguageSelector(scmd, new Dictionary<string, string>(), appThemeSystem, model);
         }
 
+        /// <summary>
+        /// Renders a language selector component with a dictionary for selector fields.
+        /// </summary>
         public IEncodedString RenderLanguageSelector(string scmd, Dictionary<string,string> sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);
@@ -201,6 +246,9 @@ namespace DNNrocketAPI.render
             model.SetSetting("sfields", sfields);
             return RenderTemplate("LanguageChange.cshtml", appThemeDNNrocket, model, true);
         }
+        /// <summary>
+        /// Renders a remote language selector component.
+        /// </summary>
         public IEncodedString RenderRemoteLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);
@@ -233,6 +281,12 @@ namespace DNNrocketAPI.render
         {
             return RenderTemplate(appTheme.GetTemplate(razorTemplateName, moduleRef), model, cacheOff);
         }
+        /// <summary>
+        /// Renders a Razor template string with the given model.
+        /// </summary>
+        /// <summary>
+        /// Renders a Razor template string with the given model.
+        /// </summary>
         public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
         {
             var strOut = "";
@@ -248,6 +302,9 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut);
         }
+        /// <summary>
+        /// Renders a plugin based on its registered interface key. The 'systemdata' object must be available in the model.
+        /// </summary>
         public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)
         {
             var strOut = "";
@@ -275,6 +332,9 @@ namespace DNNrocketAPI.render
             strOut = pr.RenderedText;
             return new RawString(strOut);
         }
+        /// <summary>
+        /// Renders a display of the XML model from a SimplisityInfo object for debugging purposes.
+        /// </summary>
         public IEncodedString RenderXml(SimplisityInfo info, string xmlidx = "")
         {
             var strOut = "";
@@ -303,6 +363,9 @@ namespace DNNrocketAPI.render
             var razorTempl = RenderRazorUtils.GetSystemRazorTemplate("",razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
             return new RawString(RenderRazorUtils.RazorObjectRender(razorTempl, info, dataObjects, settings, sessionParams, debugMode));
         }        
+        /// <summary>
+        /// Renders an image selection interface.
+        /// </summary>
         public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
@@ -317,6 +380,9 @@ namespace DNNrocketAPI.render
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.ImageFolderRel, singleselect, autoreturn);
         }
 
+        /// <summary>
+        /// Renders a document selection interface.
+        /// </summary>
         public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)
         {
             return new RawString(DNNrocketUtils.RenderDocumentSelect(systemKey, docFolderRel, singleselect, autoreturn));
@@ -330,6 +396,9 @@ namespace DNNrocketAPI.render
         {
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
         }
+        /// <summary>
+        /// Renders a lock/unlock icon for managing the translation state of a field. It includes a hidden checkbox to store the state.
+        /// </summary>
         public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)
         {
             var xpathSplit = xpath.Split('/');
@@ -361,6 +430,9 @@ namespace DNNrocketAPI.render
             }
             return new RawString(strOut + CheckBox(info, xpathlock, "", " class='translationlockcheckbox' style='display:none;'", false, false, row).ToString());
         }
+        /// <summary>
+        /// Renders a translation icon that can be clicked to trigger a translation action for a specific field.
+        /// </summary>
         public IEncodedString Translate(SimplisityInfo info, string xpath, bool active = true, int row = 0)
         {
             if (!active) return new RawString("");
@@ -376,6 +448,9 @@ namespace DNNrocketAPI.render
             var strOut = "<img class='translatefield translate' itemlistref='" + itemlistref + "' xpath='" + xpath + "' fieldid='" + fieldId + "' itemid='" + info.ItemID + "' title='" + ResourceKeyString("DNNrocket.translate") + "' src='/DesktopModules/DNNrocket/API/images/translate.png' style='width:16px;cursor:pointer;' alt='" + ResourceKeyString("DNNrocket.translate") + "' />";
             return new RawString(strOut);
         }
+        /// <summary>
+        /// Generates an 'onkeyup' HTML attribute. When the user types in a field, this script will automatically set the corresponding translation lock to 'locked'.
+        /// </summary>
         public IEncodedString TranslationKeyUp(string fieldId, bool active = true, int row = 0)
         {
             if (!active) 
@@ -388,6 +463,9 @@ namespace DNNrocketAPI.render
                 return new RawString(strOut);
             }
         }
+        /// <summary>
+        /// Displays the flag image for the current editing culture code from session parameters.
+        /// </summary>
         public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
         {
             var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
@@ -400,6 +478,9 @@ namespace DNNrocketAPI.render
             var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
             return new RawString(strOut);
         }
+        /// <summary>
+        /// Displays a flag image for a given culture code, if the image file exists.
+        /// </summary>
         public IEncodedString DisplayFlag(string cultureCode, string classvalues = "")
         {
             var flagRelPath = "/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png";
@@ -410,6 +491,9 @@ namespace DNNrocketAPI.render
             }
             return new RawString("");
         }
+        /// <summary>
+        /// Displays a flag image from a remote engine URL for a given culture code.
+        /// </summary>
         public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = "")
         {
             var flagRelPath = "/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png";
@@ -450,6 +534,9 @@ namespace DNNrocketAPI.render
         /// <param name="extraurlparams"></param>
         /// <param name="imgType">Defines outpupt type: empty,png,jpg. Default = webp </param>
         /// <returns></returns>
+        /// <summary>
+        /// Display Thumbnail Image. Creates and returns a URL for a resized version of an image. Supports various output formats and cropping. By default, PNGs remain PNGs, and other formats are converted to WEBP. The cache holds a lock on the image file, so use DNNrocketUtils.ClearThumbnailLock() before deleting the original image.
+        /// </summary>
         public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)
         {
             if (String.IsNullOrEmpty(imgRelPath)) imgRelPath = "/DesktopModules/DNNrocket/api/images/noimage2.png";
@@ -481,6 +568,9 @@ namespace DNNrocketAPI.render
         /// </summary>
         /// <param name="sInfo"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Renders all nodes under 'genxml/hidden/*' as hidden input fields in the HTML. This is useful for passing data from the model to client-side scripts.
+        /// </summary>
         public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)
         {
             var strOut = "";
@@ -517,6 +607,12 @@ namespace DNNrocketAPI.render
         {
             return Editor(info, xpath, new SimplisityRazor(), row, listname, "EditorCKEditor4Default.cshtml");
         }
+        /// <summary>
+        /// Legacy CKEditor 4 implementation. Consider using @Editor() instead.
+        /// </summary>
+        /// <summary>
+        /// Legacy CKEditor 4 implementation. Consider using @Editor() instead.
+        /// </summary>
         public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
@@ -562,6 +658,9 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut + " " + textarea + " " + scriptQuill);
         }
+        /// <summary>
+        /// Renders a rich text editor (defaulting to Jodit). The specific editor template can be configured in the portal settings or specified directly.
+        /// </summary>
         public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorJoditDefault.cshtml")
         {
             var editorTemplate = PortalUtils.EditorTemplate();
@@ -585,6 +684,12 @@ namespace DNNrocketAPI.render
 
         #endregion
 
+        /// <summary>
+        /// Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters.
+        /// </summary>
+        /// <summary>
+        /// Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters.
+        /// </summary>
         public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)
         {
             if (portalSettings == null)
@@ -604,6 +709,9 @@ namespace DNNrocketAPI.render
             return TabSelectListOnTabId(info, xpath, attributes, allowEmpty, localized, row, listname, showAllTabs);
         }
 
+        /// <summary>
+        /// Renders a dropdown list of portal tabs (pages), structured as a tree. The value of each option is the TabId.
+        /// </summary>
         public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
@@ -630,6 +738,9 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Gets the URL for a tab by its unique GUID.
+        /// </summary>
         public IEncodedString GetTabUrlByGuid(String tabguid)
         {
             var strOut = "";
@@ -656,6 +767,9 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Creates an anchor tag linking to an internal DNN page. The tab ID is read from a SimplisityInfo field.
+        /// </summary>
         public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
         {
             string[] paramData = new string[0];
@@ -667,6 +781,9 @@ namespace DNNrocketAPI.render
             return GetLinkURL(url, openInNewWindow, text, attributes);
         }
 
+        /// <summary>
+        /// Creates an anchor tag for a URL stored in a SimplisityInfo field. Automatically handles adding 'https://' if missing.
+        /// </summary>
         public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
         {
             var url = info.GetXmlProperty(xpath);
@@ -695,6 +812,9 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a dropdown list of data sources (MODULEPARAMS) for a given system key.
+        /// </summary>
         public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
         {
             var strOut = "";
@@ -732,6 +852,9 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Generates a tree-structured HTML list of portal tabs with checkboxes for selection.
+        /// </summary>
         public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
@@ -794,6 +917,9 @@ namespace DNNrocketAPI.render
             return rtnString;
         }
 
+        /// <summary>
+        /// Renders a dropdown list of modules for a given portal, showing module references.
+        /// </summary>
         public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = "", bool addEmpty = true )
         {
             try
@@ -843,6 +969,9 @@ namespace DNNrocketAPI.render
         /// <param name="rowData">The row data.</param>
         /// <param name="defaultValue">Default Value</param>
         /// <returns></returns>
+        /// <summary>
+        /// Creates a checkbox for ECOMode in the settings of a module.
+        /// </summary>
         public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)
         {
             return CheckBox(rowData, "genxml/settings/ecomode", "&nbsp;" + ResourceKey("DNNrocket.ecomode").ToString(), "class='w3-check' ", defaultValue, false, 0);

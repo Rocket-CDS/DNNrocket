@@ -66,6 +66,9 @@ namespace DNNrocketAPI.Components
 {
     public static class DNNrocketUtils
     {
+        /// <summary>
+        /// Handles a 404 Not Found error by redirecting to the portal's defined 404 page or by returning a standard 404 response.
+        /// </summary>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
@@ -84,6 +87,9 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Appends a version number based on the file's last modified date to a relative path. Useful for cache-busting CSS and JS files.
+        /// </summary>
         public static string AppendFileModifiedDate(string relPath, string paramname = "v", bool useCache = true)
         {
             var c = (string)CacheUtils.GetCache(relPath);
@@ -105,6 +111,9 @@ namespace DNNrocketAPI.Components
             }
             return c;
         }
+        /// <summary>
+        /// Creates a dictionary for a standard API response, containing an HTML output string and an optional JSON object.
+        /// </summary>
         public static Dictionary<string, object> ReturnString(string strOut, object jsonOut = null)
         {
             var rtnDic = new Dictionary<string, object>();
@@ -112,18 +121,30 @@ namespace DNNrocketAPI.Components
             rtnDic.Add("outputjson", jsonOut);
             return rtnDic;
         }
+        /// <summary>
+        /// Decodes an HTML-encoded string.
+        /// </summary>
         public static string HtmlOf(String htmlString)
         {
             return System.Web.HttpUtility.HtmlDecode(htmlString);
         }
+        /// <summary>
+        /// Decodes an HTML-encoded string.
+        /// </summary>
         public static string HtmlDecode(String htmlString)
         {
             return System.Web.HttpUtility.HtmlDecode(htmlString);
         }
+        /// <summary>
+        /// Encodes a plain text string into an HTML-safe string.
+        /// </summary>
         public static string HtmlEncode(String planStr)
         {
             return System.Web.HttpUtility.HtmlEncode(planStr);
         }
+        /// <summary>
+        /// Gets a request parameter from the form or query string.
+        /// </summary>
         public static string RequestParam(HttpContextBase context, string paramName)
         {
             string result = null;
@@ -157,6 +178,9 @@ namespace DNNrocketAPI.Components
             return (result == null) ? String.Empty : result.Trim();
         }
 
+        /// <summary>
+        /// Gets a request parameter from the query string.
+        /// </summary>
         public static string RequestQueryStringParam(HttpRequestBase Request, string paramName)
         {
             var result = String.Empty;
@@ -208,10 +232,16 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Creates a zip archive from a folder.
+        /// </summary>
         public static void ZipFolder(string folderMapPath, string zipFileMapPath)
         {
             ZipFile.CreateFromDirectory(folderMapPath, zipFileMapPath);
         }
+        /// <summary>
+        /// Extracts a zip archive to a specified folder.
+        /// </summary>
         public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath, bool overwrite)
         {
             if (!Directory.Exists(outFolderMapPath)) Directory.CreateDirectory(outFolderMapPath);
@@ -269,6 +299,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets a list of FileInfo objects for all files in a specified folder.
+        /// </summary>
         public static List<System.IO.FileInfo> GetFiles(string FolderMapPath)
         {
             DirectoryInfo di = new DirectoryInfo(FolderMapPath);
@@ -283,6 +316,9 @@ namespace DNNrocketAPI.Components
             return files;
         }
 
+        /// <summary>
+        /// Gets a dictionary of regions for a given country code from a DNN list.
+        /// </summary>
         public static Dictionary<string, string> GetRegionList(string countrycode, string dnnlistname = "Region")
         {
             var parentkey = "Country." + countrycode;
@@ -301,6 +337,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets a dictionary of all country codes and their names for a given portal.
+        /// </summary>
         public static Dictionary<String, String> GetCountryCodeList(int portalId = -1)
         {
             var rtnDic = new Dictionary<String, String>();
@@ -316,6 +355,9 @@ namespace DNNrocketAPI.Components
             }
             return rtnDic;
         }
+        /// <summary>
+        /// Gets the name of a country from its country code.
+        /// </summary>
         public static string GetCountryName(string countryCode, int portalId = -1)
         {
             var l = GetCountryCodeList(portalId);
@@ -324,6 +366,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets the name of a region from a combined country and region code key.
+        /// </summary>
         public static string GetRegionName(string countryRegionCodeKey, string dnnlistname = "Region")
         {
             var codes = countryRegionCodeKey.Split(':');
@@ -344,6 +389,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets a dictionary of enabled culture codes and their native names for a portal.
+        /// </summary>
         public static Dictionary<string, string> GetCultureCodeNameList(int portalId = -1)
         {
             var rtnList = new Dictionary<string, string>();
@@ -359,6 +407,9 @@ namespace DNNrocketAPI.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Gets a dictionary of all culture codes and their display names available in the .NET framework.
+        /// </summary>
         public static Dictionary<string, string> GetAllCultureCodeNameList()
         {
             var rtnList = new Dictionary<string, string>();
@@ -371,6 +422,9 @@ namespace DNNrocketAPI.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Gets the display name for a given culture code.
+        /// </summary>
         public static string GetCultureCodeName(string cultureCode)
         {
             var d = GetAllCultureCodeNameList();
@@ -378,6 +432,9 @@ namespace DNNrocketAPI.Components
             return d[cultureCode];
         }
 
+        /// <summary>
+        /// Gets a list of enabled culture codes for a portal.
+        /// </summary>
         public static List<string> GetCultureCodeList(int portalId = -1)
         {
             var rtnList = new List<string>();
@@ -392,6 +449,9 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        /// <summary>
+        /// Gets a list of unique two-letter language codes (e.g., 'en', 'fr') enabled for a portal.
+        /// </summary>
         public static List<string> GetPortalLanguageList(int portalId = -1)
         {
             var rtnList = new List<string>();
@@ -402,6 +462,9 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }        
+        /// <summary>
+        /// Gets a dictionary of available currencies for a portal from the 'Currency' DNN list.
+        /// </summary>
         public static Dictionary<string, string> GetCurrencyList(int portalId = -1)
         {
             var rtnList = new Dictionary<string, string>();
@@ -418,6 +481,9 @@ namespace DNNrocketAPI.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Gets a list of SimplisityInfo objects representing all available .NET cultures, including display name, code, and a flag image URL.
+        /// </summary>
         public static List<SimplisityInfo> GetAllCultureCodeList()
         {
             var rtnList = new List<SimplisityInfo>();
@@ -440,6 +506,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Fetches the content of a URL as a string. Can optionally pass data in the request header.
+        /// </summary>
         public static string GetDataResponseAsString(string dataurl, string headerFieldId = "", string headerFieldData = "")
         {
             string strOut = "";
@@ -480,6 +549,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets a localized string from a resource file.
+        /// </summary>
         public static string GetLocalizedString(string Key, string resourceFileRoot, string lang)
         {
             return Localization.GetString(Key, resourceFileRoot, lang);
@@ -493,6 +565,9 @@ namespace DNNrocketAPI.Components
         /// </summary>
         /// <param name="classObject"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Serializes an object into an XML string.
+        /// </summary>
         public static string ConvertObjectToXMLString(object classObject)
         {
             string xmlString = null;
@@ -513,6 +588,9 @@ namespace DNNrocketAPI.Components
         /// <typeparam name="T"></typeparam>
         /// <param name="xmlString"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Deserializes an XML string into an object of a specified type.
+        /// </summary>
         public static T ConvertXmlStringtoObject<T>(string xmlString)
         {
             T classObject;
@@ -524,6 +602,9 @@ namespace DNNrocketAPI.Components
             }
             return classObject;
         }
+        /// <summary>
+        /// Gets the version string of a DNN module.
+        /// </summary>
         public static string GetModuleVersion(int moduleId)
         {
             var strVersion = "";
@@ -535,6 +616,9 @@ namespace DNNrocketAPI.Components
             }
             return strVersion;
         }
+        /// <summary>
+        /// Gets the version string of an installed DNN library package.
+        /// </summary>
         public static string GetLibraryVersion(string packageName)
         {
             var strVersion = "";
@@ -547,6 +631,9 @@ namespace DNNrocketAPI.Components
             return strVersion;
         }
 
+        /// <summary>
+        /// Creates a folder using the DNN FolderManager to work around potential medium trust issues.
+        /// </summary>
         public static void CreateFolder(string fullfolderPath)
         {
             // This function is to get around medium trust not allowing createfolder in .Net 2.0. 
@@ -579,6 +666,9 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Creates the default set of DNNrocket roles (Collaborator, Editor, Manager, etc.) for a given portal.
+        /// </summary>
         public static void CreateDefaultRocketRoles(int portalId)
         {
             CreateRole(portalId, DNNrocketRoles.Collaborator);
@@ -587,12 +677,18 @@ namespace DNNrocketAPI.Components
             CreateRole(portalId, DNNrocketRoles.Premium);
             CreateRole(portalId, DNNrocketRoles.Administrators);
         }
+        /// <summary>
+        /// Checks if the default 'Collaborator' role exists for a given portal.
+        /// </summary>
         public static bool DefaultRoleExist(int portalId)
         {
             var role = RoleController.Instance.GetRoleByName(portalId, DNNrocketRoles.Collaborator); // use Collaborator, less likely to be created by another module.
             if (role == null) return false;
             return true;
         }
+        /// <summary>
+        /// Creates a new security role in a portal if it does not already exist.
+        /// </summary>
         public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = 0, string billingFrequency = "M", float trialFee = 0, int trialPeriod = 0, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
         {
             try
@@ -622,10 +718,16 @@ namespace DNNrocketAPI.Components
                 LogUtils.LogException(ex);
             }
         }
+        /// <summary>
+        /// Gets a RoleInfo object for a role by its name.
+        /// </summary>
         public static RoleInfo GetRoleByName(int portalId, string roleName)
         {
             return RoleController.Instance.GetRoleByName(portalId, roleName);
         }
+        /// <summary>
+        /// Grants 'EDIT' and 'DEPLOY' permissions for a specific role to a module.
+        /// </summary>
         public static void AddRoleToModule(int portalId, int moduleid, int roleid)
         {
             var moduleInfo = GetModuleInfo(moduleid);
@@ -713,6 +815,9 @@ namespace DNNrocketAPI.Components
 
             }
         }
+        /// <summary>
+        /// Removes permissions for a specific role from a module.
+        /// </summary>
         public static void RemoveRoleToModule(int portalId, int moduleid, int roleid)
         {
             var moduleInfo = GetModuleInfo(moduleid);
@@ -766,6 +871,9 @@ namespace DNNrocketAPI.Components
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
+        /// <summary>
+        /// Updates the title of a module.
+        /// </summary>
         public static void UpdateModuleTitle(int tabid, int moduleid, string title)
         {
             var modInfo = GetModuleInfo(tabid, moduleid);
@@ -781,6 +889,9 @@ namespace DNNrocketAPI.Components
             var objMInfo = objMCtrl.GetModule(moduleId);
             return objMInfo;
         }
+        /// <summary>
+        /// Checks if a module is marked as deleted.
+        /// </summary>
         public static bool ModuleIsDeleted(int tabid, int moduleid)
         {
             var modInfo = GetModuleInfo(tabid, moduleid);
@@ -790,6 +901,9 @@ namespace DNNrocketAPI.Components
             }
             return true;
         }
+        /// <summary>
+        /// Checks if a module exists on a specific tab.
+        /// </summary>
         public static bool ModuleExists(int tabid, int moduleid)
         {
             var modInfo = GetModuleInfo(tabid, moduleid);
@@ -798,12 +912,18 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets the Tab ID for a module by its unique GUID.
+        /// </summary>
         public static int GetModuleTabId(Guid uniqueId)
         {
             var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
             if (mod != null) return mod.TabID;
             return -1;
         }
+        /// <summary>
+        /// Gets a TabInfo object for a given tab ID and portal ID.
+        /// </summary>
         public static TabInfo GetTabInfo(int portalid, int tabid, bool ignoreCache = false)
         {
             if (tabid <= 0) return null;
@@ -828,12 +948,18 @@ namespace DNNrocketAPI.Components
             if (tI == null) return new SimplisityRecord();
             return ConvertTabInfoToRecord(tI);
         }
+        /// <summary>
+        /// Gets a dictionary of tabs in a hierarchical (tree) structure, suitable for a dropdown list.
+        /// </summary>
         public static Dictionary<int, string> GetTreeTabList(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
             return GetTreeTabList(rtnList, tabList, 0, 0,"", showAllTabs);
         }
+        /// <summary>
+        /// Gets a list of all tabs in a portal as SimplisityRecord objects.
+        /// </summary>
         public static List<SimplisityRecord> GetTabList(int portalId)
         {
             var rtnList = new List<SimplisityRecord>();
@@ -892,6 +1018,9 @@ namespace DNNrocketAPI.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Gets a dictionary of tabs in a hierarchical structure, where the key is the TabId.
+        /// </summary>
         public static Dictionary<int, string> GetTreeTabListOnTabId(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
@@ -926,6 +1055,9 @@ namespace DNNrocketAPI.Components
 
 
 
+        /// <summary>
+        /// Gets a specific value from a resource file based on the key and extension.
+        /// </summary>
         public static String GetResourceString(String resourcePath, String resourceKey, String resourceExt = "Text", String lang = "")
         {
             var resDic = GetResourceData(resourcePath, resourceKey, lang);
@@ -943,6 +1075,9 @@ namespace DNNrocketAPI.Components
             return "";
         }
 
+        /// <summary>
+        /// Gets a dictionary of all resource values (Text, Help, etc.) for a given resource key.
+        /// </summary>
         public static Dictionary<String, String> GetResourceData(String resourcePath, String resourceKey, String lang = "")
         {
             if (lang == "") lang = GetCurrentCulture();
@@ -987,6 +1122,9 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        /// <summary>
+        /// Constructs the relative path to a resource file based on path, filename, and culture code.
+        /// </summary>
         public static string GetResourceFileRelPath(String resourcePath, String resourceFileName, String cultureCode = "")
         {
             if (cultureCode == "") cultureCode = GetCurrentCulture();
@@ -1005,6 +1143,9 @@ namespace DNNrocketAPI.Components
             }
             return relativefilename;
         }
+        /// <summary>
+        /// Gets the full physical map path for a resource file.
+        /// </summary>
         public static string GetResourceFileMapPath(String resourcePath, String resourceFileName, String cultureCode = "")
         {
             var relPath = GetResourceFileRelPath(resourcePath, resourceFileName, cultureCode);
@@ -1012,6 +1153,9 @@ namespace DNNrocketAPI.Components
             if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName)) return "";
             return fullFileName;
         }
+        /// <summary>
+        /// Extracts all key-value pairs from a .resx file that end with a specific key extension.
+        /// </summary>
         public static Dictionary<string, string> ResxValues(string resourceFileName, string cultureCode, string keyExtension)
         {
             var rtnList = new Dictionary<string, string>();
@@ -1049,6 +1193,9 @@ namespace DNNrocketAPI.Components
 
         #region "encryption"
 
+        /// <summary>
+        /// Encrypts a string using the portal's GUID as the default passkey.
+        /// </summary>
         public static String Encrypt(String value, String passkey = "")
         {
             var objSec = new PortalSecurity();
@@ -1061,6 +1208,9 @@ namespace DNNrocketAPI.Components
             return objSec.Encrypt(passkey, value);
         }
 
+        /// <summary>
+        /// Decrypts a string using the portal's GUID as the default passkey.
+        /// </summary>
         public static String Decrypt(String value, String passkey = "")
         {
             var objSec = new PortalSecurity();
@@ -1076,6 +1226,9 @@ namespace DNNrocketAPI.Components
         #endregion
 
 
+        /// <summary>
+        /// Deletes a cookie by setting its expiration date to the past.
+        /// </summary>
         public static void DeleteCookieValue(string name)
         {
             if (HttpContext.Current != null)
@@ -1088,6 +1241,9 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Sets a cookie with a specified name and value.
+        /// </summary>
         public static void SetCookieValue(string name, string value)
         {
             if (value != null && HttpContext.Current != null)
@@ -1100,6 +1256,9 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Gets the value of a cookie by its name.
+        /// </summary>
         public static string GetCookieValue(string name)
         {
             if (HttpContext.Current != null && HttpContext.Current.Request.Cookies[name] != null)
@@ -1109,12 +1268,18 @@ namespace DNNrocketAPI.Components
             return "";
         }
 
+        /// <summary>
+        /// Checks if a given culture code is enabled for the current portal.
+        /// </summary>
         public static bool ValidCulture(string cultureCode)
         {
             var l = GetCultureCodeList();
             return l.Contains(cultureCode);
         }
 
+        /// <summary>
+        /// Sets the editing culture by storing it in a cookie.
+        /// </summary>
         public static string SetEditCulture(string editlang)
         {
             if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
@@ -1122,6 +1287,9 @@ namespace DNNrocketAPI.Components
             return editlang;
         }
 
+        /// <summary>
+        /// Gets the current editing culture from the URL parameter 'editlang' or the 'simplisity_editlanguage' cookie.
+        /// </summary>
         public static string GetEditCulture()
         {
             if (HttpContext.Current != null && HttpContext.Current.Request != null)
@@ -1150,6 +1318,9 @@ namespace DNNrocketAPI.Components
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             return currentCulture.Name;
         }
+        /// <summary>
+        /// Sets the current thread's culture and updates the 'language' and 'simplisity_language' cookies.
+        /// </summary>
         public static void SetCurrentCulture(string cultureCode)
         {
             SetCookieValue("language", cultureCode);
@@ -1186,6 +1357,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Gets the name of the current thread's culture.
+        /// </summary>
         public static string GetCurrentCulture()
         {
             // The API maybe wrong, so this should be set by code.
@@ -1193,11 +1367,17 @@ namespace DNNrocketAPI.Components
             return currentCulture.Name;
         }
 
+        /// <summary>
+        /// Gets the country code part (e.g., 'US') from the current culture.
+        /// </summary>
         public static string GetCurrentCountryCode()
         {
             var cc = GetCurrentCulture();
             return GetCountryCode(cc);
         }
+        /// <summary>
+        /// Extracts the country code part from a full culture code.
+        /// </summary>
         public static string GetCountryCode(string cultureCode)
         {
             var cc = cultureCode;
@@ -1207,6 +1387,9 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        /// <summary>
+        /// Gets the language code part (e.g., 'en') from the current culture.
+        /// </summary>
         public static string GetCurrentLanguageCode()
         {
             var cc = GetCurrentCulture();
@@ -1215,6 +1398,9 @@ namespace DNNrocketAPI.Components
             if (c.Length > 0) rtn = c[0];
             return rtn;
         }
+        /// <summary>
+        /// Extracts the language code part from a full culture code.
+        /// </summary>
         public static string GetLanguageCode(string cultureCode)
         {
             var cc = cultureCode;
@@ -1223,20 +1409,32 @@ namespace DNNrocketAPI.Components
             if (c.Length > 0) rtn = c[0];
             return rtn;
         }
+        /// <summary>
+        /// Returns the relative path to the system theme image directory.
+        /// </summary>
         public static string SystemThemeImgDirectoryRel()
         {
             return "/DesktopModules/RocketThemes/idximg";
         }
+        /// <summary>
+        /// Returns the physical map path to the system theme image directory.
+        /// </summary>
         public static string SystemThemeImgDirectoryMapPath()
         {
             return DNNrocketUtils.MapPath(SystemThemeImgDirectoryRel());
         }
+        /// <summary>
+        /// Converts a relative web path to a physical file system path.
+        /// </summary>
         public static string MapPath(string relpath)
         {
             if (String.IsNullOrWhiteSpace(relpath)) return "";
             relpath = "/" + relpath.TrimStart('/');
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
+        /// <summary>
+        /// Converts a physical file system path back to a relative web path.
+        /// </summary>
         public static string MapPathReverse(string fullMapPath)
         {
             if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
@@ -1261,6 +1459,9 @@ namespace DNNrocketAPI.Components
             return relativePath.StartsWith("/") ? relativePath : "/" + relativePath;
         }
 
+        /// <summary>
+        /// Gets the email address of the specified portal or the current portal.
+        /// </summary>
         public static string Email(int portalId = -1)
         {
             if (portalId >= 0)
@@ -1269,6 +1470,9 @@ namespace DNNrocketAPI.Components
                 return PortalSettings.Current.Email;
         }
 
+        /// <summary>
+        /// Gets the entity type code from an interface's info, defaulting to the uppercase interface key if not specified.
+        /// </summary>
         public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)
         {
             var rtn = "";
@@ -1283,6 +1487,9 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        /// <summary>
+        /// Generates a unique file name for a given folder by appending an index if the file already exists.
+        /// </summary>
         public static string GetUniqueFileName(string fileName, string folderMapPath, int idx = 1, string originalFileName = "")
         {
             if (originalFileName == "") originalFileName = fileName;
@@ -1299,6 +1506,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Encrypts a file name and replaces any invalid file name characters.
+        /// </summary>
         public static string EncryptFileName(string encryptkey, string fileName)
         {
             var fn = GeneralUtils.Encrypt(encryptkey, fileName);
@@ -1309,6 +1519,9 @@ namespace DNNrocketAPI.Components
             return fn;
         }
 
+        /// <summary>
+        /// Gets a system's SimplisityInfo data by its system key.
+        /// </summary>
         public static SimplisityInfo GetSystemByName(string systemkey)
         {
             var objCtrl = new DNNrocketController();
@@ -1320,6 +1533,9 @@ namespace DNNrocketAPI.Components
         /// <param name="moduleId"></param>
         /// <param name="tabId"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Gets the DNNrocket system key associated with a module, derived from its module name (e.g., 'systemkey_interfacekey').
+        /// </summary>
         public static string GetModuleSystemKey(int moduleId, int tabId)
         {
             var cacheKey = "systemkey.moduleid" + moduleId + ".tabid" + tabId;
@@ -1345,6 +1561,9 @@ namespace DNNrocketAPI.Components
         /// <param name="moduleId"></param>
         /// <param name="tabId"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Gets the DNNrocket interface key associated with a module, derived from its module name (e.g., 'systemkey_interfacekey').
+        /// </summary>
         public static string GetModuleInterfaceKey(int moduleId, int tabId)
         {
             var cacheKey = "interfacekey.moduleid" + moduleId + ".tabid" + tabId;
@@ -1364,6 +1583,9 @@ namespace DNNrocketAPI.Components
             }
             return interfacekey;
         }
+        /// <summary>
+        /// Gets a list of all non-deleted module IDs in a portal.
+        /// </summary>
         public static List<int> GetAllModulesInPortal(int portalId)
         {
             var rtn = new List<int>();
@@ -1383,6 +1605,9 @@ namespace DNNrocketAPI.Components
 
             return rtn;
         }
+        /// <summary>
+        /// Gets a list of all non-deleted module IDs on a specific page (tab).
+        /// </summary>
         public static List<int> GetAllModulesOnPage(int tabId)
         {
             var rtn = new List<int>();
@@ -1394,6 +1619,9 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        /// <summary>
+        /// Gets the system information for a module, caching the result.
+        /// </summary>
         public static SimplisityInfo GetModuleSystemInfo(string systemkey, int moduleId, bool loadSystemXml = true)
         {
             var objCtrl = new DNNrocketController();
@@ -1413,6 +1641,9 @@ namespace DNNrocketAPI.Components
             }
             return systemInfo;
         }
+        /// <summary>
+        /// Executes a command on an API provider (APInterface) and returns the result.
+        /// </summary>
         public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, RocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
@@ -1481,6 +1712,9 @@ namespace DNNrocketAPI.Components
             return rtnDic;
         }
 
+        /// <summary>
+        /// Executes the 'BeforeEvent' method on all active event providers for a system.
+        /// </summary>
         public static Dictionary<string, object> EventProviderBefore(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
@@ -1503,6 +1737,9 @@ namespace DNNrocketAPI.Components
             return rtnDic;
         }
 
+        /// <summary>
+        /// Executes the 'AfterEvent' method on all active event providers for a system.
+        /// </summary>
         public static Dictionary<string, object> EventProviderAfter(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
@@ -1536,6 +1773,9 @@ namespace DNNrocketAPI.Components
         /// <param name="templateControlRelPath"></param>
         /// <param name="themeFolder"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Renders an image selection interface using a specified Razor template.
+        /// </summary>
         public static string RenderImageSelect(string systemkey, string imageFolderRel, bool selectsingle = true, bool autoreturn = false)
         {
 
@@ -1573,6 +1813,9 @@ namespace DNNrocketAPI.Components
         {
             return RenderDocumentSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, selectsingle, autoreturn);
         }
+        /// <summary>
+        /// Renders a document selection interface using a specified Razor template.
+        /// </summary>
         public static string RenderDocumentSelect(string systemkey, string documentFolderRel, bool selectsingle = true, bool autoreturn = false)
         {
             string razorTemplateName = "DocSelect.cshtml";
@@ -1608,6 +1851,9 @@ namespace DNNrocketAPI.Components
             return strOut;
         }
 
+        /// <summary>
+        /// Forces a file to be downloaded by the browser.
+        /// </summary>
         public static void ForceDocDownload(string docFilePath, string fileName, HttpResponse response)
         {
             if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
@@ -1630,6 +1876,9 @@ namespace DNNrocketAPI.Components
 
         }
 
+        /// <summary>
+        /// Forces a string of data to be downloaded by the browser as a file.
+        /// </summary>
         public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
         {
             response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
@@ -1638,6 +1887,9 @@ namespace DNNrocketAPI.Components
             response.End();
         }
 
+        /// <summary>
+        /// Updates the XPath for a list of fields in a SimplisityRecord based on their type and name.
+        /// </summary>
         public static SimplisityRecord UpdateFieldXpath(SimplisityInfo postInfo, SimplisityRecord record, string listname)
         {
             record.RemoveRecordList(listname);
@@ -1705,6 +1957,9 @@ namespace DNNrocketAPI.Components
         /// Generates a new backup file name, based on the date and time.  (May not be unique)
         /// </summary>
         /// <returns></returns>
+        /// <summary>
+        /// Generates a new backup file name in a structured backup directory, based on the current date and time.
+        /// </summary>
         public static string BackUpNewFileName(string backupRootFolder, string moduleName, string fileAppendix = "BackUp.xml")
         {
             if (!Directory.Exists(PortalUtils.BackUpDirectoryMapPath() + "\\" +  backupRootFolder))
@@ -1726,6 +1981,9 @@ namespace DNNrocketAPI.Components
         /// </summary>
         /// <param name="siteName">The site name: leave it NULL to recycle the current site's App Pool.</param>
         /// <returns>TRUE if the site's App Pool has been recycled; FALSE if no site has been found with the given name.</returns>
+        /// <summary>
+        /// Recycles the application pool by 'touching' the web.config file.
+        /// </summary>
         public static bool RecycleApplicationPool(string siteName = null)
         {
             try
@@ -1740,6 +1998,9 @@ namespace DNNrocketAPI.Components
 
         }
 
+        /// <summary>
+        /// Clones a module from one tab to another.
+        /// </summary>
         public static void CloneModule(int moduleid, int fromTabId, int toTabId)
         {
             if ((toTabId > 0) && (fromTabId > 0) && (fromTabId != toTabId))
@@ -1768,6 +2029,9 @@ namespace DNNrocketAPI.Components
         }
 
 
+        /// <summary>
+        /// Clears file locks on thumbnail images by disposing of them from the cache.
+        /// </summary>
         public static void ClearThumbnailLock()
         {
             //Images in Cache still retain the file lock, we must dispose of then out of cache.
@@ -1786,6 +2050,9 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Deletes all data from the 'DNNrocketTemp' table.
+        /// </summary>
         public static void ClearTempDB()
         {
             var objCtrl = new DNNrocketController();
@@ -1798,18 +2065,30 @@ namespace DNNrocketAPI.Components
         {
             SetCache(cacheKey, objObject, 2);
         }
+        /// <summary>
+        /// Sets an object in the DNN cache with a specified expiration.
+        /// </summary>
         public static void SetCache(string cacheKey, object objObject, int keephours)
         {
             DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(0, keephours, 0, 0));
         }
+        /// <summary>
+        /// Gets an object from the DNN cache.
+        /// </summary>
         public static object GetCache(string cacheKey)
         {
             return DataCache.GetCache(cacheKey);
         }
+        /// <summary>
+        /// Removes an object from the DNN cache.
+        /// </summary>
         public static void RemoveCache(string cacheKey)
         {
             DataCache.RemoveCache(cacheKey);
         }
+        /// <summary>
+        /// Clears the entire DNN cache.
+        /// </summary>
         public static void ClearAllCache()
         {
             DataCache.ClearCache();
@@ -1819,6 +2098,9 @@ namespace DNNrocketAPI.Components
             DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);
         }
 
+        /// <summary>
+        /// Clears the cache for a specific portal.
+        /// </summary>
         public static void ClearPortalCache(int portalId)
         {
             DataCache.ClearPortalCache(portalId, true);
@@ -1883,15 +2165,24 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId, false, portalSettings, controlKey, cultureCode, param).ToString();
         }
+        /// <summary>
+        /// A wrapper for the DNN Globals.NavigateURL method to generate URLs for pages.
+        /// </summary>
         public static string NavigateURL(int tabId, bool isSuperTab, PortalSettings portalSettings, string controlKey, string cultureCode, string[] param)
         {
             return Globals.NavigateURL(tabId, isSuperTab, portalSettings, controlKey, cultureCode, param).ToString();
         }
         #endregion
+        /// <summary>
+        /// Converts a string into a URL-friendly format.
+        /// </summary>
         public static string UrlFriendly(string textstring)
         {
             return GeneralUtils.UrlFriendly(textstring);
         }
+        /// <summary>
+        /// Converts a time string (e.g., 'HH:mm:ss') into a double representation of hours.
+        /// </summary>
         public static double ConvertTimeToDouble(string timeString)
         {
             if (timeString == "") return -1;
@@ -1901,6 +2192,9 @@ namespace DNNrocketAPI.Components
             return -1;
         }
 
+        /// <summary>
+        /// Obfuscates an email address in HTML to protect it from scrapers.
+        /// </summary>
         public static string ProtectEmail(this string email, string subject = "", string visibleText = "")
         {
             if (string.IsNullOrEmpty(email)) return "";
@@ -1921,6 +2215,9 @@ namespace DNNrocketAPI.Components
             var result = $"<a href='#' {dataAttribs} onfocus=\"{onfocus}\">{visibleText}{onload}</a>";
             return result;
         }
+        /// <summary>
+        /// Truncates a string to a maximum number of characters, ensuring it doesn't cut off in the middle of a word.
+        /// </summary>
         public static string TruncateWords(this string text, int maxCharacters, string trailingText)
         {
             if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
@@ -1947,6 +2244,9 @@ namespace DNNrocketAPI.Components
         /// <param name="maxCharacters"></param>
         /// <param name="trailingText"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Truncates a string to a maximum number of characters.
+        /// </summary>
         public static string Truncate(this string text, int maxCharacters, string trailingText)
         {
             if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
@@ -1955,6 +2255,9 @@ namespace DNNrocketAPI.Components
                 return text.Substring(0, maxCharacters) + trailingText;
         }
         private static string lockobjectUpdateSqlIndex = "lockit";
+        /// <summary>
+        /// Updates or creates a SQL index record in the DNNrocket database.
+        /// </summary>
         public static void UpdateSqlIndex(SimplisityRecord idx)
         {
             lock (lockobjectUpdateSqlIndex)
@@ -2001,10 +2304,16 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        /// <summary>
+        /// Determines if the current request is from a mobile device.
+        /// </summary>
         public static bool IsMobile()
         {
             return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
         }
+        /// <summary>
+        /// Updates fields in a SimplisityInfo object from another SimplisityInfo object based on an XPath selector.
+        /// </summary>
         public static SimplisityInfo UpdateSimplsityInfoFields(SimplisityInfo newInfo, SimplisityInfo postInfo, string xpathListSelect)
         {
             var textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
@@ -2017,6 +2326,9 @@ namespace DNNrocketAPI.Components
             }
             return newInfo;
         }
+        /// <summary>
+        /// Updates fields in a SimplisityRecord object from a SimplisityInfo object based on an XPath selector.
+        /// </summary>
         public static SimplisityRecord UpdateSimplsityRecordFields(SimplisityRecord newRec, SimplisityInfo postInfo, string xpathListSelect)
         {
             var textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
@@ -2037,6 +2349,9 @@ namespace DNNrocketAPI.Components
         /// <param name="key"></param>
         /// <param name="requesturl"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Parses a URL to get a specific query parameter value, checking both friendly URL format and standard query string.
+        /// </summary>
         public static string ParseQueryString(string key, string requesturl)
         {
             // check for friendly url (default)
@@ -2057,6 +2372,9 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
+        /// <summary>
+        /// Gets a list of ModuleBase objects for all modules in a portal.
+        /// </summary>
         public static List<ModuleBase> GetModList(int portalId, bool includeDeleted = false)
         {
             var rtnList = new List<ModuleBase>();
@@ -2076,6 +2394,9 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
+        /// <summary>
+        /// Gets a portal-level content record by its reference ID, using caching.
+        /// </summary>
         public static SimplisityRecord GetPortalContentRecByRefId(int portalId, string systemKey, string tableName)
         {
             var entityTypeCode = "PortalSettingsRef_" + systemKey + portalId;
@@ -2092,6 +2413,9 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+        /// <summary>
+        /// Deletes a document from the DNN search index.
+        /// </summary>
         public static void DeleteSearchDocument(int portalId, string queryString)
         {
             var searchDoc = new SearchDocument
@@ -2101,6 +2425,9 @@ namespace DNNrocketAPI.Components
             };
             InternalSearchController.Instance.DeleteSearchDocument(searchDoc);
         }
+        /// <summary>
+        /// Gets a dictionary of configured query parameter keys and their associated data for a portal.
+        /// </summary>
         public static Dictionary<string, QueryParamsData> GetQueryKeys(int portalId)
         {
             var cacheKeyQueryparams = "PLSETTINGSqueryparams" + portalId;
@@ -2134,6 +2461,9 @@ namespace DNNrocketAPI.Components
             }
             return paramidList;
         }
+        /// <summary>
+        /// Deletes files in a folder that are older than a specified number of days.
+        /// </summary>
         public static void DeleteOldFiles(string folderPath, uint maximumAgeInDays, params string[] filesToExclude)
         {
             DateTime minimumDate = DateTime.Now.AddDays(-maximumAgeInDays);
@@ -2149,6 +2479,9 @@ namespace DNNrocketAPI.Components
         {
             return exclusions.Contains(item, StringComparer.CurrentCultureIgnoreCase);
         }
+        /// <summary>
+        /// Deletes a single file if it is older than a specified date.
+        /// </summary>
         public static void DeleteFileIfOlderThan(string path, DateTime date)
         {
             var RetriesOnError = 3;
@@ -2171,6 +2504,9 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Starts a new background thread.
+        /// </summary>
         public static void StartBackgroundThread(ThreadStart threadStart)
         {
             if (threadStart != null)
@@ -2180,6 +2516,9 @@ namespace DNNrocketAPI.Components
                 thread.Start();
             }
         }
+        /// <summary>
+        /// Gets a list of dependency records for an app theme, processing URL tokens.
+        /// </summary>
         public static List<SimplisityRecord> DependanciesList(string moduleRef, AppThemeBase appTheme, string domainUrl, string appThemeSystemFolder)
         {
             var rtn = new List<SimplisityRecord>();
@@ -2215,6 +2554,9 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+        /// <summary>
+        /// Gets a cached list of Dependency objects to be injected into a page.
+        /// </summary>
         public static List<Dependency> InjectDependencies(string moduleRef, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder)
         {
             var rtn = (List<Dependency>)CacheUtils.GetCache("dependencyList" + moduleRef, moduleRef);
@@ -2238,6 +2580,9 @@ namespace DNNrocketAPI.Components
         {
             InjectDependacies(moduleRef, page, appTheme, ecoMode, skinSrc, domainUrl, appThemeSystemFolder, "");
         }
+        /// <summary>
+        /// Injects CSS and JS dependencies into a WebForms page.
+        /// </summary>
         public static void InjectDependacies(string moduleRef, Page page, AppThemeBase appTheme, bool ecoMode, string skinSrc, string domainUrl, string appThemeSystemFolder, string displayTemplate)
         {
             var cssDep = (Dictionary<string, string>)CacheUtils.GetCache("cssdep" + moduleRef, moduleRef);
@@ -2325,6 +2670,9 @@ namespace DNNrocketAPI.Components
             var relUrl = appTheme.GetTemplateRelPath(Path.GetFileName(urlstr), moduleRef);
             return string.IsNullOrEmpty(relUrl) ? urlstr : relUrl;
         }
+        /// <summary>
+        /// Checks if a module is marked as deleted by its ID.
+        /// </summary>
         public static bool IsModuleDeleted(int moduleId)
         {
             var objModCtrl = new ModuleController();
@@ -2360,10 +2708,16 @@ namespace DNNrocketAPI.Components
             objCtrl.Update(sInfo, "DNNrocketTemp");
             return key;
         }
+        /// <summary>
+        /// Saves a SimplisityInfo object to temporary database storage with an expiration.
+        /// </summary>
         public static string SetTempStorage(SimplisityInfo value, string key = "", int keephours = 24)
         {
             return SaveTempStorage(value.XMLData, key, keephours);
         }
+        /// <summary>
+        /// Retrieves a SimplisityInfo object from temporary storage.
+        /// </summary>
         public static SimplisityInfo GetTempStorage(string key, bool deleteAfterRead = false)
         {
             var objCtrl = new DNNrocketController();            
@@ -2371,10 +2725,16 @@ namespace DNNrocketAPI.Components
             if (deleteAfterRead && rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
             return rtn;
         }
+        /// <summary>
+        /// Saves a SimplisityRecord object to temporary database storage.
+        /// </summary>
         public static string SetTempRecordStorage(SimplisityRecord value, string key = "", int keephours = 24)
         {
             return SaveTempStorage(value.XMLData, key, keephours);
         }
+        /// <summary>
+        /// Retrieves a SimplisityRecord object from temporary storage.
+        /// </summary>
         public static SimplisityRecord GetTempRecordStorage(string key, bool deleteAfterRead = false)
         {
             var objCtrl = new DNNrocketController();
@@ -2382,12 +2742,18 @@ namespace DNNrocketAPI.Components
             if (deleteAfterRead && rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
             return rtn;
         }
+        /// <summary>
+        /// Deletes an item from temporary storage by its key.
+        /// </summary>
         public static void DeleteTempStorage(string key)
         {
             var objCtrl = new DNNrocketController();
             var rtn = objCtrl.GetByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
             if (rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
         }
+        /// <summary>
+        /// Deletes all expired items from the temporary storage table.
+        /// </summary>
         public static void ClearOldTempStorage()
         {
             var objCtrl = new DNNrocketController();
@@ -2399,6 +2765,9 @@ namespace DNNrocketAPI.Components
 
         #region "Export/Import"
 
+        /// <summary>
+        /// Initiates a DNN website import process from a given package file.
+        /// </summary>
         public static ExportImportJob ImportWebsite(int portalId, string importDataMapPath)
         {
             try

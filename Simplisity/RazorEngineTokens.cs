@@ -20,6 +20,12 @@ namespace Simplisity
 
         #region "token to add meta data for tokens"
 
+        /// <summary>
+        /// Adds a key-value pair to the process data dictionary for later use.
+        /// </summary>
+        /// <summary>
+        /// Adds metadata to the current rendering process. This data can be used by other tokens or within the same template. Returns an empty string.
+        /// </summary>
         public IEncodedString AddProcessData(String metaType, String metaValue)
         {
             var l = new List<String>();
@@ -34,6 +40,9 @@ namespace Simplisity
             return new RawString(""); //return nothing
         }
 
+        /// <summary>
+        /// Adds a key-value pair to the pre-process data cache for a specific template.
+        /// </summary>
         public IEncodedString AddProcessData(String metaKey, String metaValue, String templateFullName)
         {
             // if we have a templatename add to preprocess cache meta data.
@@ -49,6 +58,12 @@ namespace Simplisity
         /// <param name="templateFullName">This is the cache key that is used and MUST be {theme}.{templatename}.{templateExtension}  e.g. Classic.list.cshtml</param>
         /// <param name="moduleId">moduleid to identify individual modules (required for filters)</param>
         /// <returns></returns>
+        /// <summary>
+        /// Adds a key-value pair to the pre-process data dictionary for later use.
+        /// </summary>
+        /// <summary>
+        /// Adds metadata to a specific cache list before the Razor template is rendered. This allows module code to use this data (e.g., for database queries) before rendering. It requires a unique template name and module ID to create a specific cache key.
+        /// </summary>
         public IEncodedString AddPreProcessData(String metaKey, String metaValue,String templateFullName,String moduleId)
         {
 
@@ -69,12 +84,21 @@ namespace Simplisity
             return AddProcessData(metaKey, metaValue);
         }
 
+        /// <summary>
+        /// Adds a CSS link to the page header.
+        /// </summary>
+        /// <summary>
+        /// Generates a <link> tag to include a CSS file in the HTML header.
+        /// </summary>
         public IEncodedString AddCssLinkHeader(string cssRelPath)
         {
             var rtn = "<link rel='stylesheet' href='" + cssRelPath + "' />";
             return new RawString(rtn); 
         }
 
+        /// <summary>
+        /// Generates a <script> tag to include a JavaScript file in the HTML header.
+        /// </summary>
         public IEncodedString AddJsScriptHeader(string jsRelPath)
         {
             var rtn = "<script type='text/javascript' src='" + jsRelPath + "'></script>";
@@ -85,6 +109,12 @@ namespace Simplisity
 
         #region "general html control tokens"
 
+        /// <summary>
+        /// Renders a hidden input field.
+        /// </summary>
+        /// <summary>
+        /// Renders a hidden input field bound to a SimplisityInfo data model.
+        /// </summary>
         public IEncodedString HiddenField(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -100,6 +130,12 @@ namespace Simplisity
 
             return new RawString(strOut);
         }
+        /// <summary>
+        /// Renders a text input field.
+        /// </summary>
+        /// <summary>
+        /// Renders a text input field bound to a SimplisityInfo data model.
+        /// </summary>
         public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "", string type = "text")
         {
             if (info == null) info = new SimplisityInfo();
@@ -122,6 +158,9 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a date input field (type='date') bound to a SimplisityInfo data model. The value is formatted as 'yyyy-MM-dd'.
+        /// </summary>
         public IEncodedString TextBoxDate(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -156,6 +195,12 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a textarea field.
+        /// </summary>
+        /// <summary>
+        /// Renders a textarea field bound to a SimplisityInfo data model.
+        /// </summary>
         public IEncodedString TextArea(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -172,6 +217,12 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a checkbox input field.
+        /// </summary>
+        /// <summary>
+        /// Renders a single checkbox with a label, bound to a boolean value in a SimplisityInfo data model.
+        /// </summary>
         public IEncodedString CheckBox(SimplisityInfo info, String xpath,String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -186,6 +237,9 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a list of checkboxes from a dictionary or comma-separated strings. Each checkbox corresponds to a sub-node in the SimplisityInfo data model.
+        /// </summary>
         public IEncodedString CheckBoxList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", bool defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             var datatext = "";
@@ -197,6 +251,9 @@ namespace Simplisity
             }
             return CheckBoxList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, localized, row, listname);
         }
+        /// <summary>
+        /// Renders a list of checkboxes from a dictionary or comma-separated strings. Each checkbox corresponds to a sub-node in the SimplisityInfo data model.
+        /// </summary>
         public IEncodedString CheckBoxList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", bool defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -242,6 +299,9 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a list of radio buttons from a dictionary or comma-separated strings, bound to a single field in the SimplisityInfo data model.
+        /// </summary>
         public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", string defaultValue = "", string labelattributes = "", bool localized = false, int row = 0, string listname = "", string inputclass = "")
         {
             var datatext = "";
@@ -253,6 +313,9 @@ namespace Simplisity
             }
             return RadioButtonList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, labelattributes, localized, row, listname, inputclass);
         }
+        /// <summary>
+        /// Renders a list of radio buttons from a dictionary or comma-separated strings, bound to a single field in the SimplisityInfo data model.
+        /// </summary>
         public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", string defaultValue = "",string labelattributes = "", bool localized = false, int row = 0, string listname = "", string inputclass = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -287,6 +350,9 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a dropdown list from a key-value dictionary.
+        /// </summary>
         public IEncodedString DropDownList(SimplisityInfo info, String xpath, Dictionary<string,string> dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -318,6 +384,12 @@ namespace Simplisity
            return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a dropdown list from comma-separated strings of values and text.
+        /// </summary>
+        /// <summary>
+        /// Renders a dropdown list (select) from a dictionary or comma-separated strings, bound to a single field in the SimplisityInfo data model.
+        /// </summary>
         public IEncodedString DropDownList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
@@ -347,6 +419,9 @@ namespace Simplisity
         /// <param name="info"></param>
         /// <param name="row"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Outputs hidden fields required for a sortable list to correctly process the sort order. This includes a unique item reference and the current row index.
+        /// </summary>
         public IEncodedString SortableListIndex(SimplisityInfo info, int row)
         {
             var listitemref = info.GetXmlProperty("genxml/hidden/simplisity-listitemref");
@@ -362,12 +437,18 @@ namespace Simplisity
 
         #region "extra tokens"
 
+        /// <summary>
+        /// Formats an email address from the data model as a 'mailto:' link.
+        /// </summary>
         public IEncodedString EmailOf(SimplisityInfo info, String xpath, string subject = "", string visibleText = "")
         {
             var strOut = info.GetXmlProperty(xpath);
             strOut = GeneralUtils.FormatAsMailTo(strOut, subject, visibleText);
             return new RawString(strOut);
         }
+        /// <summary>
+        /// HTML-decodes a string from the data model or a direct string, rendering it as raw HTML.
+        /// </summary>
         public IEncodedString HtmlOf(SimplisityInfo info, String xpath)
         {
             var strOut = info.GetXmlProperty(xpath);
@@ -379,6 +460,9 @@ namespace Simplisity
         {
             return new RawString(System.Web.HttpUtility.HtmlDecode(htmlString));
         }
+        /// <summary>
+        /// Formats a date from the data model or a DateTime object into a string using a specific culture and format.
+        /// </summary>
         public IEncodedString DateOf(SimplisityInfo info, String xpath, String cultureCode, String format = "d")
         {
             return DateOf(info, xpath, false, cultureCode, format);
@@ -406,6 +490,9 @@ namespace Simplisity
         /// <param name="value">The value.</param>
         /// <param name="showdots">if set to <c>true</c> [showdots].</param>
         /// <returns></returns>
+        /// <summary>
+        /// Shortens a string to a specified length and appends '...' if it was truncated.
+        /// </summary>
         public IEncodedString Succinct(string value, int size, bool showdots = true)
         {
             var x = size;
@@ -417,6 +504,9 @@ namespace Simplisity
             if (showdots && value.Length > size) rtn += "...";
             return new RawString(rtn);
         }
+        /// <summary>
+        /// Converts newline characters in a string to <br/> tags and HTML-encodes the content.
+        /// </summary>
         public IEncodedString BreakOf(SimplisityInfo info, String xpath)
         {
             var strOut = info.GetXmlProperty(xpath);
@@ -438,6 +528,9 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Displays a formatted list (ul/li) of the selected items from a checkbox list.
+        /// </summary>
         public IEncodedString CheckBoxListOf(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "")
         {
             var strOut = "";
@@ -457,6 +550,9 @@ namespace Simplisity
             return new RawString(strOut.ToString());
         }
 
+        /// <summary>
+        /// Renders a dropdown list of files from a specified directory.
+        /// </summary>
         public IEncodedString FileSelectList(string selectedfilename, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true)
         {
             var nbi = new SimplisityInfo();
@@ -464,6 +560,9 @@ namespace Simplisity
             return FileSelectList(nbi, "genxml/selectedfilename", mappathRootFolder, attributes, allowEmpty);
         }
 
+        /// <summary>
+        /// Renders a dropdown list of files from a specified directory.
+        /// </summary>
         public IEncodedString FileSelectList(SimplisityInfo info, String xpath, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true, bool localized = false)
         {
             var dirlist = System.IO.Directory.GetFiles(mappathRootFolder);
@@ -494,6 +593,12 @@ namespace Simplisity
         }
 
 
+        /// <summary>
+        /// Renders a dropdown list of subdirectories from a specified directory.
+        /// </summary>
+        /// <summary>
+        /// Renders a dropdown list of subdirectories from a specified directory.
+        /// </summary>
         public IEncodedString FolderSelectList(SimplisityInfo info, String xpath, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true, bool localized = false)
         {
             var dirlist = new string[0]; ;
@@ -532,6 +637,12 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
+        /// <summary>
+        /// Renders a hidden input containing a base64 encoded string of a dictionary, used for secure field submission.
+        /// </summary>
+        /// <summary>
+        /// Generates a 's-fields' HTML attribute containing a JSON object from a series of key-value pairs. This is used for client-side scripting with Simplisity.
+        /// </summary>
         public IEncodedString SFields(params string[] sFields)
         {
             var strOut = "";
