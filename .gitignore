@@ -355,3 +355,4 @@ CreateInstallZip.bat
 RocketPortal/WebsiteBuilds/AS_*.rules
 RocketWebpUtils
 .Documentation/_site
+Documentation/_site
