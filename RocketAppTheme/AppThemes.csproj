@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Documentation\**" />
     <Compile Remove="Installation\**" />
     <Compile Remove="SystemThemes\**" />
     <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
@@ -36,6 +37,7 @@
     <Compile Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
     <Compile Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
     <Compile Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <EmbeddedResource Remove="Documentation\**" />
     <EmbeddedResource Remove="Installation\**" />
     <EmbeddedResource Remove="SystemThemes\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
@@ -63,6 +65,7 @@
     <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <None Remove="Documentation\**" />
     <None Remove="Installation\**" />
     <None Remove="SystemThemes\**" />
     <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
@@ -114,10 +117,6 @@
     <EmbeddedResource Update="Themes\config-w3\1.0\EditorTokens\snippets.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Documentation\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

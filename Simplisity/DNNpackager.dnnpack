@@ -26,4 +26,12 @@
 		<value>Simplisity.dll</value>
     <value>Simplisity.pdb</value>
   </assembly>
+
+	<json>
+		<file>
+			<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Simplisity\GeneralUtils.cs</input>
+			<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\GeneralUtils.json</output>
+		</file>
+	</json>
+
 </root>

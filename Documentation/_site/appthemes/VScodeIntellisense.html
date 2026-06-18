@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>VScode Intellisense | RocketCDS Documentation </title>
+      <title>Rocket Intelli VS Code Extension | RocketCDS Documentation </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="VScode Intellisense | RocketCDS Documentation ">
+      <meta name="title" content="Rocket Intelli VS Code Extension | RocketCDS Documentation ">
       
       
       <link rel="icon" href="../logo/favicon.ico">
@@ -85,9 +85,44 @@
         </div>
 
         <article data-uid="">
-<h1 id="vscode-intellisense">VScode Intellisense</h1>
+<h1 id="rocket-intelli-vs-code-extension">Rocket Intelli VS Code Extension</h1>
 
-<p><em>Content coming soon</em></p>
+<p>This document provides instructions on how to install and use the &quot;Rocket Intelli&quot; Visual Studio Code extension for enhanced IntelliSense in Razor (<code>.cshtml</code>) and Blazor (<code>.razor</code>) files, with special support for DNNrocket framework tokens.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Custom IntelliSense</strong>: Provides auto-completion for custom Rocket framework tokens within Razor and CSHTML files.</li>
+<li><strong>Trigger-based Completion</strong>: IntelliSense is automatically triggered by typing the <code>@</code> character, suggesting relevant tokens.</li>
+<li><strong>Enhanced Development Workflow</strong>: Speeds up development by providing quick access to the available token syntax and descriptions.</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li><strong>Visual Studio Code</strong>: Version 1.80.0 or higher.</li>
+<li><strong>Node.js and npm</strong>: Required if you plan to develop or build the extension from the source.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>The extension is provided as a <code>.vsix</code> file. You can install it directly within Visual Studio Code.</p>
+<ol>
+<li><strong>Download the VSIX file</strong>: Obtain the <code>rocket-intelli-0.0.1.vsix</code> file from the <a href="https://github.com/Rocket-CDS/rocket-Intelli">GitHub repository</a>.</li>
+<li><strong>Open VS Code</strong>: Launch Visual Studio Code.</li>
+<li><strong>Open the Extensions View</strong>: Click on the Extensions icon in the Activity Bar on the side of the window or press <code>Ctrl+Shift+X</code>.</li>
+<li><strong>Install from VSIX</strong>:
+<ul>
+<li>Click the <strong>...</strong> (More Actions) menu in the top-right corner of the Extensions view.</li>
+<li>Select <strong>Install from VSIX...</strong> from the dropdown menu.</li>
+<li>Navigate to and select the <code>rocket-intelli-0.0.1.vsix</code> file you downloaded.</li>
+</ul>
+</li>
+<li><strong>Reload VS Code</strong>: If prompted, reload Visual Studio Code to activate the extension.</li>
+</ol>
+<h2 id="usage">Usage</h2>
+<p>Once installed, the extension will automatically activate when you open a <code>.cshtml</code> or <code>.razor</code> file.</p>
+<p>To trigger IntelliSense, simply type the <code>@</code> character inside your Razor file. A list of available DNNrocket tokens and methods will appear. You can navigate the list using the arrow keys and press <code>Enter</code> or <code>Tab</code> to insert the selected token.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-razor">&lt;div class=&quot;my-class&quot;&gt;
+    @DNNrocket.GetSetting(&quot;mykey&quot;)
+&lt;/div&gt;
+</code></pre>
+<p>When you type <code>@</code>, the extension will suggest tokens like <code>DNNrocket.GetSetting</code>.</p>
 
 </article>
 

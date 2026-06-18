@@ -1,3 +1,7 @@
+- name: DNNrocketTokens
+  href: DNNrocketTokens.md
+- name: DNNrocketUtils
+  href: DNNrocketUtils.md
 - name: RazorEngineTokens
   href: RazorEngineTokens.md
 - name: RocketContentTokens

@@ -94,14 +94,5 @@
     <Content Include="imgs\RocketContentEdit_EditData.jpg" />
     <Content Include="imgs\RocketContentEdit_Module_Settings.jpg" />
     <Content Include="imgs\RocketContentEdit_RecycleBin.jpg" />
-    <Content Include="razortokens\DNNrocketTokens.xml" />
-    <Content Include="razortokens\DNNrocketUtils.xml" />
-    <Content Include="razortokens\GeneralUtils.xml" />
-    <Content Include="razortokens\RazorEngineTokens.xml" />
-    <Content Include="razortokens\RocketContentTokens.xml" />
-    <Content Include="razortokens\RocketDirectoryTokens.xml" />
-    <Content Include="razortokens\RocketEventsTokens.xml" />
-    <Content Include="razortokens\RocketFormsTokens.xml" />
-    <Content Include="razortokens\UserUtils.xml" />
   </ItemGroup>
 </Project>

@@ -30,4 +30,8 @@
 		<value>RocketAppThemes.dll</value>
     <value>RocketAppThemes.pdb</value>
   </assembly>
+
+	<json>
+	</json>
+
 </root>
