@@ -34,7 +34,7 @@ rocketdirectoryapi.{YourThemeName}/
 
 The article list, typically rendered into a container via AJAX.
 
-```razor
+```
 @inherits RocketDirectoryAPI.Components.RocketDirectoryAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -68,7 +68,7 @@ The article list, typically rendered into a container via AJAX.
 
 The single article detail page.
 
-```razor
+```
 @inherits RocketDirectoryAPI.Components.RocketDirectoryAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -96,7 +96,7 @@ The single article detail page.
 
 `articleData` is typed — use its properties directly or fall back to `info.GetXmlProperty`.
 
-```razor
+```
 @{
     var info = articleData.Info;
 }
@@ -119,7 +119,7 @@ The single article detail page.
 
 ## 4. Article Images
 
-```razor
+```
 @* first image only *@
 @{
     var img = articleData.GetImage(0);
@@ -143,7 +143,7 @@ The single article detail page.
 
 ## 5. Article Documents and Links
 
-```razor
+```
 @* documents *@
 @if (articleData.GetDocList().Count > 0)
 {
@@ -169,7 +169,7 @@ The single article detail page.
 
 ## 6. Models (Price Variants)
 
-```razor
+```
 @foreach (var model in articleData.GetModels())
 {
     <div>
@@ -188,7 +188,7 @@ The single article detail page.
 
 ## 7. Categories
 
-```razor
+```
 @* categories the current article belongs to *@
 @foreach (var catData in articleData.GetCategories())
 {
@@ -217,7 +217,7 @@ The single article detail page.
 
 Properties are global taxonomy items (tags, attributes, filters).
 
-```razor
+```
 @* tags the article has assigned *@
 @foreach (var prop in articleData.GetProperties())
 {
@@ -249,7 +249,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 ## 9. Reviews
 
-```razor
+```
 @{ var reviews = articleData.GetReviews(); }
 @if (reviews.Count > 0)
 {
@@ -270,7 +270,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 ## 10. URL Helpers
 
-```razor
+```
 @* link to detail page for an article *@
 <a href="@DetailUrl(moduleData.DetailPageTabId(), articleData)">@articleData.Name</a>
 
@@ -290,7 +290,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 Checkboxes that refresh the list without a full page reload.
 
-```razor
+```
 @* put JS call helper near the list container *@
 @FilterJsApiCall(moduleData, sessionParams)
 
@@ -314,7 +314,7 @@ Checkboxes that refresh the list without a full page reload.
 
 ## 12. Reading Module Settings
 
-```razor
+```
 @{
     var cssClass  = moduleData.GetSetting("cssclass");
     var imageSize = moduleData.GetSettingInt("imageresize");
@@ -334,7 +334,7 @@ Checkboxes that refresh the list without a full page reload.
 
 All field xPaths **must** use the `genxml/settings/` prefix.
 
-```razor
+```
 @inherits RocketDirectoryAPI.Components.RocketDirectoryAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{
@@ -382,7 +382,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 
 The edit form for a single article in the admin panel.
 
-```razor
+```
 @inherits RocketDirectoryAPI.Components.RocketDirectoryAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{

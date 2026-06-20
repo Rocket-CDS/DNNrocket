@@ -32,7 +32,7 @@ rocketnewsapi.{YourThemeName}/
 
 Because `RocketNewsAPITokens` does not expose typed properties, you cast data objects from the model manually at the top of each template.
 
-```razor
+```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
 @using RocketDirectoryAPI.Components
 @{
@@ -52,7 +52,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 ## 2. Example Empty ListView.cshtml
 
-```razor
+```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
 @using RocketDirectoryAPI.Components
 @{
@@ -91,7 +91,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 ## 3. Example Empty DetailView.cshtml
 
-```razor
+```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
 @using RocketDirectoryAPI.Components
 @{
@@ -128,7 +128,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 Once you have `articleData` from `Model.GetDataObject`, use it identically to RocketDirectoryAPI.
 
-```razor
+```
 @{
     var info = articleData.Info;
 }
@@ -156,7 +156,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ## 5. Category Navigation
 
-```razor
+```
 @{
     var categoryDataList = (RocketDirectoryAPI.Components.CategoryLimpetList)Model.GetDataObject("categorylist");
     var moduleData       = (RocketDirectoryAPI.Components.ModuleContentLimpet)Model.GetDataObject("modulesettings");
@@ -176,7 +176,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ## 6. Example ThemeSettings.cshtml
 
-```razor
+```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
 @using RocketDirectoryAPI.Components
 @{
@@ -214,7 +214,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ## 7. Example AdminDetail.cshtml
 
-```razor
+```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
 @using RocketDirectoryAPI.Components
 @{

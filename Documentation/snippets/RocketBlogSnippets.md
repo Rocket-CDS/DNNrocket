@@ -30,7 +30,7 @@ rocketblogapi.{YourThemeName}/
 
 ## 1. Example Empty ListView.cshtml
 
-```razor
+```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -62,7 +62,7 @@ rocketblogapi.{YourThemeName}/
 
 ## 2. Example Empty DetailView.cshtml
 
-```razor
+```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -100,7 +100,7 @@ rocketblogapi.{YourThemeName}/
 
 Blog posts use the same xPath patterns as RocketDirectory articles. Use `articleData.PublishedDate` for the post date.
 
-```razor
+```
 @{
     var info = articleData.Info;
 }
@@ -120,7 +120,7 @@ Blog posts use the same xPath patterns as RocketDirectory articles. Use `article
 
 ## 4. Category Navigation
 
-```razor
+```
 @* category list for sidebar or menu *@
 @foreach (var catData in categoryDataList.GetCategoryList())
 {
@@ -139,7 +139,7 @@ Blog posts use the same xPath patterns as RocketDirectory articles. Use `article
 
 All field xPaths **must** use the `genxml/settings/` prefix.
 
-```razor
+```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{
@@ -175,7 +175,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 
 ## 6. Example AdminDetail.cshtml
 
-```razor
+```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{

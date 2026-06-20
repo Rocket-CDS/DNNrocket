@@ -32,7 +32,7 @@ rocketcontentapi.{YourThemeName}/
 
 The bare-bones starting point for any front-end template.
 
-```razor
+```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -61,7 +61,7 @@ The bare-bones starting point for any front-end template.
 
 Inside the row loop, `info` is the `SimplisityInfo` for that row.
 
-```razor
+```
 @* plain text field *@
 <p>@info.GetXmlProperty("genxml/textbox/title")</p>
 
@@ -86,7 +86,7 @@ Inside the row loop, `info` is the `SimplisityInfo` for that row.
 
 Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
-```razor
+```
 @{
     var cssClass  = moduleData.GetSetting("cssclass");
     var imageSize = moduleData.GetSettingInt("imageresize");
@@ -102,7 +102,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ## 4. Row Images
 
-```razor
+```
 @foreach (var img in articleRowData.GetImages())
 {
     if (img.RelPath != "")
@@ -125,7 +125,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ## 5. Row Documents
 
-```razor
+```
 @if (articleRowData.GetDocList().Count > 0)
 {
     <ul>
@@ -141,7 +141,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ## 6. Row Links
 
-```razor
+```
 @if (articleRowData.Getlinks().Count > 0)
 {
     @foreach (var lnk in articleRowData.Getlinks())
@@ -158,7 +158,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 Use `[INJECT: apptheme, filename.cshtml]` to pull in a separate layout partial from the same AppTheme folder.  
 The injected file shares the same model and all typed properties.
 
-```razor
+```
 @foreach (var articleRowData in articleData.GetRows())
 {
     Model.SetDataObject("articlerow", articleRowData);
@@ -185,7 +185,7 @@ The injected file shares the same model and all typed properties.
 
 Use `RenderTemplate` to call any `.cshtml` from the AppTheme folder passing the current model.
 
-```razor
+```
 @RenderTemplate("htmltext.cshtml", moduleData.ModuleRef, appThemeView, Model, true)
 ```
 
@@ -198,7 +198,7 @@ Use `RenderTemplate` to call any `.cshtml` from the AppTheme folder passing the 
 Provides the settings UI shown in the module settings panel.  
 All field xPaths **must** use the `genxml/settings/` prefix.
 
-```razor
+```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @{
     var appThemeAdmin = (DNNrocketAPI.Components.AppThemeLimpet)Model.GetDataObject("appthemeadmin");
@@ -249,7 +249,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 The edit form for a single content row in the admin panel.  
 `@RowKey(info)` is **required** — it generates the hidden fields that identify the row.
 
-```razor
+```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{
@@ -289,7 +289,7 @@ The edit form for a single content row in the admin panel.
 
 The compact row summary line shown in the admin content list (one line per row).
 
-```razor
+```
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{

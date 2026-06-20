@@ -55,7 +55,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 ## 2. Example Empty ListView.cshtml
 
-```razor
+```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -89,7 +89,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 ## 3. Example Empty DetailView.cshtml
 
-```razor
+```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 <!--inject-->
@@ -121,7 +121,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 Dates are stored in custom xPath fields on the article.
 
-```razor
+```
 @{
     var info      = articleData.Info;
     var startDate = info.GetXmlPropertyDate("genxml/textbox/eventstartdate");
@@ -140,7 +140,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 5. Next and Past Event Lists
 
-```razor
+```
 @{
     var nextEvents   = (RocketEventsAPI.Components.EventListData)Model.GetDataObject("eventnextlist");
     var pastEvents   = (RocketEventsAPI.Components.EventListData)Model.GetDataObject("eventpassedlist");
@@ -171,7 +171,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 6. Events Grouped by Month
 
-```razor
+```
 @{
     var byMonth = (System.Collections.Generic.Dictionary<System.DateTime, System.Collections.Generic.List<RocketDirectoryAPI.Components.ArticleLimpet>>)Model.GetDataObject("eventlistbymonth");
 }
@@ -192,7 +192,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 7. Calendar Grid (Events by Day)
 
-```razor
+```
 @{
     var byDay = (System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<RocketDirectoryAPI.Components.ArticleLimpet>>)Model.GetDataObject("eventlistbyday");
 }
@@ -215,7 +215,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 8. Month Navigation
 
-```razor
+```
 @{
     var prevMonth = calMonthStartDate.AddMonths(-1);
     var nextMonth = calMonthStartDate.AddMonths(1);
@@ -233,7 +233,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 9. Example ThemeSettings.cshtml
 
-```razor
+```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{
@@ -264,7 +264,7 @@ Dates are stored in custom xPath fields on the article.
 
 ## 10. Example AdminDetail.cshtml
 
-```razor
+```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
 @AssignDataModel(Model)
 @{

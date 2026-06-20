@@ -81,7 +81,7 @@ Press `Enter` or `Tab` to insert the selected token. Parameter hints appear auto
 
 **Example:**
 
-```razor
+```
 <div class="my-class">
     @DNNrocket.GetSetting("mykey")
 </div>

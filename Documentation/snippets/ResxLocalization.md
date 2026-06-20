@@ -58,7 +58,7 @@ ResourceKey(String resourceFileKey, String lang = "", String resourceExtension =
   - Full resource path becomes: `<FileName>.Text`
 
 #### Usage Examples:
-```razor
+```
 @ResourceKey("ProjectName.pagetitle")
 @ResourceKey("ContactForm.submitbutton")
 @ResourceKey("TransportEstimate.calculationerror")
