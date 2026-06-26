@@ -28,7 +28,7 @@ rocketnewsapi.{YourThemeName}/
 
 ---
 
-## 1. Accessing Data in News Templates
+## Accessing Data in News Templates
 
 Because `RocketNewsAPITokens` does not expose typed properties, you cast data objects from the model manually at the top of each template.
 
@@ -50,7 +50,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 ---
 
-## 2. Example Empty ListView.cshtml
+## Example Empty ListView.cshtml
 
 ```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
@@ -89,7 +89,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 ---
 
-## 3. Example Empty DetailView.cshtml
+## Example Empty DetailView.cshtml
 
 ```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
@@ -124,7 +124,7 @@ Because `RocketNewsAPITokens` does not expose typed properties, you cast data ob
 
 ---
 
-## 4. Reading Article Data
+## Reading Article Data
 
 Once you have `articleData` from `Model.GetDataObject`, use it identically to RocketDirectoryAPI.
 
@@ -154,7 +154,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ---
 
-## 5. Category Navigation
+## Category Navigation
 
 ```
 @{
@@ -174,7 +174,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ---
 
-## 6. Example ThemeSettings.cshtml
+## Example ThemeSettings.cshtml
 
 ```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>
@@ -212,7 +212,7 @@ Once you have `articleData` from `Model.GetDataObject`, use it identically to Ro
 
 ---
 
-## 7. Example AdminDetail.cshtml
+## Example AdminDetail.cshtml
 
 ```
 @inherits RocketNewsAPI.Components.RocketNewsAPITokens<Simplisity.SimplisityRazor>

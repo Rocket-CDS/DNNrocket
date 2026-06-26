@@ -28,7 +28,7 @@ rocketcontentapi.{YourThemeName}/
 
 ---
 
-## 1. Example Empty View.cshtml
+## Example Empty View.cshtml
 
 The bare-bones starting point for any front-end template.
 
@@ -57,7 +57,7 @@ The bare-bones starting point for any front-end template.
 
 ---
 
-## 2. Reading Row Text Fields
+## Reading Row Text Fields
 
 Inside the row loop, `info` is the `SimplisityInfo` for that row.
 
@@ -82,7 +82,7 @@ Inside the row loop, `info` is the `SimplisityInfo` for that row.
 
 ---
 
-## 3. Reading Module Settings
+## Reading Module Settings
 
 Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
@@ -100,7 +100,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ---
 
-## 4. Row Images
+## Row Images
 
 ```
 @foreach (var img in articleRowData.GetImages())
@@ -123,7 +123,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ---
 
-## 5. Row Documents
+## Row Documents
 
 ```
 @if (articleRowData.GetDocList().Count > 0)
@@ -139,7 +139,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ---
 
-## 6. Row Links
+## Row Links
 
 ```
 @if (articleRowData.Getlinks().Count > 0)
@@ -153,7 +153,7 @@ Module-level settings (set in `ThemeSettings.cshtml`) are read via `moduleData`.
 
 ---
 
-## 7. Injecting a Sub-Layout File
+## Injecting a Sub-Layout File
 
 Use `[INJECT: apptheme, filename.cshtml]` to pull in a separate layout partial from the same AppTheme folder.  
 The injected file shares the same model and all typed properties.
@@ -181,7 +181,7 @@ The injected file shares the same model and all typed properties.
 
 ---
 
-## 8. Rendering a Shared Sub-Template
+## Rendering a Shared Sub-Template
 
 Use `RenderTemplate` to call any `.cshtml` from the AppTheme folder passing the current model.
 
@@ -193,7 +193,7 @@ Use `RenderTemplate` to call any `.cshtml` from the AppTheme folder passing the 
 
 ---
 
-## 9. Example ThemeSettings.cshtml
+## Example ThemeSettings.cshtml
 
 Provides the settings UI shown in the module settings panel.  
 All field xPaths **must** use the `genxml/settings/` prefix.
@@ -244,7 +244,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 
 ---
 
-## 10. Example AdminDetail.cshtml
+## Example AdminDetail.cshtml
 
 The edit form for a single content row in the admin panel.  
 `@RowKey(info)` is **required** — it generates the hidden fields that identify the row.
@@ -285,7 +285,7 @@ The edit form for a single content row in the admin panel.
 
 ---
 
-## 11. Example AdminRow.cshtml
+## Example AdminRow.cshtml
 
 The compact row summary line shown in the admin content list (one line per row).
 

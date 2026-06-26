@@ -28,7 +28,7 @@ rocketblogapi.{YourThemeName}/
 
 ---
 
-## 1. Example Empty ListView.cshtml
+## Example Empty ListView.cshtml
 
 ```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
@@ -60,7 +60,7 @@ rocketblogapi.{YourThemeName}/
 
 ---
 
-## 2. Example Empty DetailView.cshtml
+## Example Empty DetailView.cshtml
 
 ```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>
@@ -96,7 +96,7 @@ rocketblogapi.{YourThemeName}/
 
 ---
 
-## 3. Blog-Specific Article Fields
+## Blog-Specific Article Fields
 
 Blog posts use the same xPath patterns as RocketDirectory articles. Use `articleData.PublishedDate` for the post date.
 
@@ -118,7 +118,7 @@ Blog posts use the same xPath patterns as RocketDirectory articles. Use `article
 
 ---
 
-## 4. Category Navigation
+## Category Navigation
 
 ```
 @* category list for sidebar or menu *@
@@ -135,7 +135,7 @@ Blog posts use the same xPath patterns as RocketDirectory articles. Use `article
 
 ---
 
-## 5. Example ThemeSettings.cshtml
+## Example ThemeSettings.cshtml
 
 All field xPaths **must** use the `genxml/settings/` prefix.
 
@@ -173,7 +173,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 
 ---
 
-## 6. Example AdminDetail.cshtml
+## Example AdminDetail.cshtml
 
 ```
 @inherits RocketBlogAPI.Components.RocketBlogAPITokens<Simplisity.SimplisityRazor>

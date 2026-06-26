@@ -30,7 +30,7 @@ rocketdirectoryapi.{YourThemeName}/
 
 ---
 
-## 1. Example Empty ListView.cshtml
+## Example Empty ListView.cshtml
 
 The article list, typically rendered into a container via AJAX.
 
@@ -64,7 +64,7 @@ The article list, typically rendered into a container via AJAX.
 
 ---
 
-## 2. Example Empty DetailView.cshtml
+## Example Empty DetailView.cshtml
 
 The single article detail page.
 
@@ -92,7 +92,7 @@ The single article detail page.
 
 ---
 
-## 3. Reading Article Data
+## Reading Article Data
 
 `articleData` is typed — use its properties directly or fall back to `info.GetXmlProperty`.
 
@@ -117,7 +117,7 @@ The single article detail page.
 
 ---
 
-## 4. Article Images
+## Article Images
 
 ```
 @* first image only *@
@@ -141,7 +141,7 @@ The single article detail page.
 
 ---
 
-## 5. Article Documents and Links
+## Article Documents and Links
 
 ```
 @* documents *@
@@ -167,7 +167,7 @@ The single article detail page.
 
 ---
 
-## 6. Models (Price Variants)
+## Models (Price Variants)
 
 ```
 @foreach (var model in articleData.GetModels())
@@ -186,7 +186,7 @@ The single article detail page.
 
 ---
 
-## 7. Categories
+## Categories
 
 ```
 @* categories the current article belongs to *@
@@ -213,7 +213,7 @@ The single article detail page.
 
 ---
 
-## 8. Properties and Tags
+## Properties and Tags
 
 Properties are global taxonomy items (tags, attributes, filters).
 
@@ -247,7 +247,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 ---
 
-## 9. Reviews
+## Reviews
 
 ```
 @{ var reviews = articleData.GetReviews(); }
@@ -268,7 +268,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 ---
 
-## 10. URL Helpers
+## URL Helpers
 
 ```
 @* link to detail page for an article *@
@@ -286,7 +286,7 @@ Properties are global taxonomy items (tags, attributes, filters).
 
 ---
 
-## 11. Property Filters (AJAX)
+## Property Filters (AJAX)
 
 Checkboxes that refresh the list without a full page reload.
 
@@ -312,7 +312,7 @@ Checkboxes that refresh the list without a full page reload.
 
 ---
 
-## 12. Reading Module Settings
+## Reading Module Settings
 
 ```
 @{
@@ -330,7 +330,7 @@ Checkboxes that refresh the list without a full page reload.
 
 ---
 
-## 13. Example ThemeSettings.cshtml
+## Example ThemeSettings.cshtml
 
 All field xPaths **must** use the `genxml/settings/` prefix.
 
@@ -378,7 +378,7 @@ All field xPaths **must** use the `genxml/settings/` prefix.
 
 ---
 
-## 14. Example AdminDetail.cshtml
+## Example AdminDetail.cshtml
 
 The edit form for a single article in the admin panel.
 

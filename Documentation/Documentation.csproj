@@ -55,6 +55,7 @@
     <None Include="snippets\RocketContentSnippets.md" />
     <None Include="snippets\RocketDirectorySnippets.md" />
     <None Include="snippets\RocketEventsSnippets.md" />
+    <None Include="snippets\RocketFormSnippets.md" />
     <None Include="snippets\RocketNewsSnippets.md" />
     <None Include="snippets\toc.yml" />
     <None Include="toc.yml" />

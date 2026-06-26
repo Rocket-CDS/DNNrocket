@@ -28,7 +28,7 @@ rocketeventsapi.{YourThemeName}/
 
 ---
 
-## 1. Typed Properties Available in Event Templates
+## Typed Properties Available in Event Templates
 
 `AssignDataModel` populates these extra properties on top of the standard RocketDirectory ones:
 
@@ -53,7 +53,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 ---
 
-## 2. Example Empty ListView.cshtml
+## Example Empty ListView.cshtml
 
 ```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
@@ -87,7 +87,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 ---
 
-## 3. Example Empty DetailView.cshtml
+## Example Empty DetailView.cshtml
 
 ```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
@@ -117,7 +117,7 @@ Pre-built event lists are available in the model via `Model.GetDataObject()`:
 
 ---
 
-## 4. Event Start / End Dates
+## Event Start / End Dates
 
 Dates are stored in custom xPath fields on the article.
 
@@ -138,7 +138,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 5. Next and Past Event Lists
+## Next and Past Event Lists
 
 ```
 @{
@@ -169,7 +169,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 6. Events Grouped by Month
+## Events Grouped by Month
 
 ```
 @{
@@ -190,7 +190,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 7. Calendar Grid (Events by Day)
+## Calendar Grid (Events by Day)
 
 ```
 @{
@@ -213,7 +213,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 8. Month Navigation
+## Month Navigation
 
 ```
 @{
@@ -231,7 +231,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 9. Example ThemeSettings.cshtml
+## Example ThemeSettings.cshtml
 
 ```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>
@@ -262,7 +262,7 @@ Dates are stored in custom xPath fields on the article.
 
 ---
 
-## 10. Example AdminDetail.cshtml
+## Example AdminDetail.cshtml
 
 ```
 @inherits RocketEventsAPI.Components.RocketEventsAPITokens<Simplisity.SimplisityRazor>

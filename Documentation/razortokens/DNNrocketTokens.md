@@ -43,7 +43,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString AddProcessDataResx(AppThemeLimpet appTheme, bool includeAPIresx = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.AddProcessDataResx(appTheme, true)</code></pre>
+		<pre><code>@AddProcessDataResx(appTheme, true)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -53,7 +53,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DropDownLanguageList(Model.Info, "genxml/dropdown/language")</code></pre>
+		<pre><code>@DropDownLanguageList(Model.Info, "genxml/dropdown/language")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -63,7 +63,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DropDownCurrencyList(Model.Info, "genxml/dropdown/currency")</code></pre>
+		<pre><code>@DropDownCurrencyList(Model.Info, "genxml/dropdown/currency")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -73,7 +73,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DropDownCultureCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DropDownCultureCodeList(Model.Info, "genxml/dropdown/culturecode")</code></pre>
+		<pre><code>@DropDownCultureCodeList(Model.Info, "genxml/dropdown/culturecode")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -83,7 +83,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DropDownCountryCodeList(Model.Info, "genxml/dropdown/countrycode")</code></pre>
+		<pre><code>@DropDownCountryCodeList(Model.Info, "genxml/dropdown/countrycode")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -93,7 +93,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DropDownSystemKeyList(Model.Info, "genxml/dropdown/systemkey")</code></pre>
+		<pre><code>@DropDownSystemKeyList(Model.Info, "genxml/dropdown/systemkey")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -103,7 +103,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ResourceCSV("MyResources", "key1,key2,key3")</code></pre>
+		<pre><code>@ResourceCSV("MyResources", "key1,key2,key3")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -113,7 +113,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ButtonTextIcon(ButtonTypes.Save)</code></pre>
+		<pre><code>@ButtonTextIcon(ButtonTypes.Save)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -123,7 +123,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ButtonIconText(ButtonTypes.Save)</code></pre>
+		<pre><code>@ButtonIconText(ButtonTypes.Save)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -133,7 +133,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ButtonText(ButtonTypes buttontype, String lang = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ButtonText(ButtonTypes.Delete)</code></pre>
+		<pre><code>@ButtonText(ButtonTypes.Delete)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -143,7 +143,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ButtonIcon(ButtonTypes.Edit)</code></pre>
+		<pre><code>@ButtonIcon(ButtonTypes.Edit)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -153,7 +153,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ResourceKeyMod("MyModRef", "MyKey")</code></pre>
+		<pre><code>@ResourceKeyMod("MyModRef", "MyKey")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -163,7 +163,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ResourceKey("WelcomeMessage")</code></pre>
+		<pre><code>@ResourceKey("WelcomeMessage")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -173,7 +173,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ResourceKeyJS(String resourceFileKey, String lang = "", String resourceExtension = "Text")</code></pre>
 		<strong>Example</strong>
-		<pre><code>var message = '@DnnRocket.ResourceKeyJS("AlertMessage")';</code></pre>
+		<pre><code>var message = '@ResourceKeyJS("AlertMessage")';</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -183,7 +183,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderLanguageSelector(string scmd, Dictionary&lt;string, string&gt; sfieldDict, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderLanguageSelector("changelang", new Dictionary&lt;string, string&gt;(), appThemeSystem, Model)</code></pre>
+		<pre><code>@RenderLanguageSelector("changelang", new Dictionary&lt;string, string&gt;(), appThemeSystem, Model)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -193,7 +193,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderRemoteLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderRemoteLanguageSelector("changelang", "{}", appThemeSystem, Model)</code></pre>
+		<pre><code>@RenderRemoteLanguageSelector("changelang", "{}", appThemeSystem, Model)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -203,7 +203,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderTemplate("&lt;div&gt;Hello @Model.Get('name')&lt;/div&gt;", myModel)</code></pre>
+		<pre><code>@RenderTemplate("&lt;div&gt;Hello @Model.Get('name')&lt;/div&gt;", myModel)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -213,7 +213,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderPlugin("myplugin", "showdetails", Model)</code></pre>
+		<pre><code>@RenderPlugin("myplugin", "showdetails", Model)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -223,7 +223,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderXml(SimplisityInfo info, string xmlidx = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderXml(Model.Info)</code></pre>
+		<pre><code>@RenderXml(Model.Info)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -233,7 +233,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderImageSelect("mysystem", "/Portals/0/Images")</code></pre>
+		<pre><code>@RenderImageSelect("mysystem", "/Portals/0/Images")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -243,7 +243,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.RenderDocumentSelect("mysystem", "/Portals/0/Documents")</code></pre>
+		<pre><code>@RenderDocumentSelect("mysystem", "/Portals/0/Documents")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -253,7 +253,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.TranslationLock(Model.Info, "genxml/textbox/title")</code></pre>
+		<pre><code>@TranslationLock(Model.Info, "genxml/textbox/title")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -263,7 +263,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString Translate(SimplisityInfo info, string xpath, bool active = true, int row = 0)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.Translate(Model.Info, "genxml/textbox/summary")</code></pre>
+		<pre><code>@Translate(Model.Info, "genxml/textbox/summary")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -273,7 +273,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString TranslationKeyUp(string fieldId, bool active = true, int row = 0)</code></pre>
 		<strong>Example</strong>
-		<pre><code>&lt;input type='text' @DnnRocket.TranslationKeyUp("title") /&gt;</code></pre>
+		<pre><code>&lt;input type='text' @TranslationKeyUp("title") /&gt;</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -283,7 +283,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.EditFlag(Model.SessionParams, "my-flag-class")</code></pre>
+		<pre><code>@EditFlag(Model.SessionParams, "my-flag-class")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -293,7 +293,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DisplayFlag(string cultureCode, string classvalues = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DisplayFlag("fr-FR")</code></pre>
+		<pre><code>@DisplayFlag("fr-FR")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -303,7 +303,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DisplayEngineFlag("https://myothersite.com", "de-DE")</code></pre>
+		<pre><code>@DisplayEngineFlag("https://myothersite.com", "de-DE")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -313,7 +313,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ImageUrl("", "/Portals/0/my-image.jpg", 200, 200, "webp", true)</code></pre>
+		<pre><code>@ImageUrl("", "/Portals/0/my-image.jpg", 200, 200, "webp", true)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -323,7 +323,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.InjectHiddenFieldData(Model.Info)</code></pre>
+		<pre><code>@InjectHiddenFieldData(Model.Info)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -333,7 +333,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false, string filename = "ckeditor4startup1.js")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.CKEditor4legacy(Model.Info, "genxml/richtext/content")</code></pre>
+		<pre><code>@CKEditor4legacy(Model.Info, "genxml/richtext/content")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -343,7 +343,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = "", string editorRazorTemplate = "EditorJoditDefault.cshtml")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.Editor(Model.Info, "genxml/richtext/content", Model)</code></pre>
+		<pre><code>@Editor(Model.Info, "genxml/richtext/content", Model)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -353,7 +353,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.LinkInternalUrl(0, 55, "en-US")</code></pre>
+		<pre><code>@LinkInternalUrl(0, 55, "en-US")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -363,7 +363,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.TabSelectListOnTabId(Model.Info, "genxml/dropdown/pagelink")</code></pre>
+		<pre><code>@TabSelectListOnTabId(Model.Info, "genxml/dropdown/pagelink")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -373,7 +373,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString GetTabUrlByGuid(String tabguid)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.GetTabUrlByGuid("a1b2c3d4-e5f6-7890-1234-567890abcdef")</code></pre>
+		<pre><code>@GetTabUrlByGuid("a1b2c3d4-e5f6-7890-1234-567890abcdef")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -383,7 +383,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.LinkPageURL(Model.Info, "genxml/data/linkedpageid", text: "Read More")</code></pre>
+		<pre><code>@LinkPageURL(Model.Info, "genxml/data/linkedpageid", text: "Read More")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -393,7 +393,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.LinkURL(Model.Info, "genxml/textbox/websiteurl", true, "Visit Website")</code></pre>
+		<pre><code>@LinkURL(Model.Info, "genxml/textbox/websiteurl", true, "Visit Website")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -403,7 +403,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.DataSourceList(Model.Info, 1, "genxml/dropdown/datasource")</code></pre>
+		<pre><code>@DataSourceList(Model.Info, 1, "genxml/dropdown/datasource")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -413,7 +413,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString GetTreeTabList(int portalId, List&lt;int&gt; selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.GetTreeTabList(0, new List&lt;int&gt;(), "mytree")</code></pre>
+		<pre><code>@GetTreeTabList(0, new List&lt;int&gt;(), "mytree")</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -423,7 +423,7 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = "", bool addEmpty = true)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.ModSelectList(Model.Info, "genxml/dropdown/moduleid", 0)</code></pre>
+		<pre><code>@ModSelectList(Model.Info, "genxml/dropdown/moduleid", 0)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -433,6 +433,6 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@DnnRocket.CheckBoxRowECOMode(Model.Info)</code></pre>
+		<pre><code>@CheckBoxRowECOMode(Model.Info)</code></pre>
 	</div>
 </details>
