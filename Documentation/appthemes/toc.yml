@@ -2,14 +2,16 @@
   href: AppThemeEngine.md
 - name: Install AppThemes
   href: InstallAppThemes.md
-- name: VScode Intellisense
-  href: VScodeIntellisense.md
-- name: Edit an AppTheme
-  href: EditAppTheme.md
 - name: Create an AppTheme
   href: CreateAppTheme.md
+- name: Edit an AppTheme
+  href: EditAppTheme.md
 - name: RocketContent AppTheme
   href: RocketContentAppTheme.md
 - name: RocketDirectory AppTheme
   href: RocketDirectoryAppTheme.md
+- name: VScode Intellisense
+  href: VScodeIntellisense.md
+- name: AI Instructions
+  href: AI_Instructions.md
 

@@ -7,6 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="appthemes\AI_Instructions.md" />
     <None Include="appthemes\AppThemeEngine.md" />
     <None Include="appthemes\VScodeIntellisense.md" />
     <None Include="appthemes\InstallAppThemes.md" />

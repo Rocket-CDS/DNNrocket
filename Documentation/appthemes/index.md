@@ -8,14 +8,11 @@ What is the AppTheme Engine.
 ### [Install AppThemes](InstallAppThemes.md)
 How to install AppThemes.
 
-### [VScode Intellisense](VScodeIntellisense.md)
-Edit AppThemes with VScode Intellisense.
+### [CreateAppTheme](CreateAppTheme.md)
+A guide to creating new AppThemes.
 
 ### [EditAppTheme](EditAppTheme.md)
 A guide to editing AppThemes.
-
-### [CreateAppTheme](CreateAppTheme.md)
-A guide to creating new AppThemes.
 
 ### [RocketContent AppTheme](RocketContentAppTheme.md)
 A guide to the RocketContent AppTheme.
@@ -23,3 +20,8 @@ A guide to the RocketContent AppTheme.
 ### [RocketDirectory AppTheme](RocketDirectoryAppTheme.md)
 A guide to the RocketDirectory AppTheme.
 
+### [VScode Intellisense](VScodeIntellisense.md)
+Edit AppThemes with VScode Intellisense.
+
+### [AI Instructions](AI_Instructions.md)
+This document is an instruction set for an AI assistant. 
