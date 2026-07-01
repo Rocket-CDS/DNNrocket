@@ -1,5 +1,35 @@
 ﻿rpadmin = function () {
 
+    function CopyValueToClipboard(element) {
+        var value = $(element).val();
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(value).then(function () {
+                $('.action-clipboardicon').removeClass('w3-text-green');
+                $('#icon' + $(element).attr('id')).addClass('w3-text-green');
+                console.log('Copying value was successful');
+            }).catch(function () {
+                console.log('Oops, unable to copy');
+            });
+        } else {
+            var textArea = document.createElement("textarea");
+            textArea.value = value;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                var successful = document.execCommand('copy');
+                if (successful) {
+                    $('.action-clipboardicon').removeClass('w3-text-green');
+                    $('#icon' + $(element).attr('id')).addClass('w3-text-green');
+                }
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Copying value command was ' + msg);
+            } catch (err) {
+                console.log('Oops, unable to copy');
+            }
+            textArea.remove();
+        }
+    }
+
 
     function CopyTextToClipboard(element) {
         var textArea = document.createElement("textarea");
@@ -48,6 +78,7 @@
 
     return {
         moveToTop: moveToTop,
+        CopyValueToClipboard: CopyValueToClipboard,
         CopyTextToClipboard: CopyTextToClipboard,
         popupmsg: popupmsg
     }

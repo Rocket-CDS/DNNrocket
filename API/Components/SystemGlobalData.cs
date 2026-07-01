@@ -21,12 +21,8 @@ namespace DNNrocketAPI.Components
         }
         public void Save(SimplisityInfo postInfo)
         {
-            var ac = AccessCode;
-            var ap = AccessPassword;
-             var objCtrl = new DNNrocketController();
+            var objCtrl = new DNNrocketController();
             Info.XMLData = postInfo.XMLData;
-            AccessCode = ac;
-            AccessPassword = ap;
             Update();
         }
         public void Update()
