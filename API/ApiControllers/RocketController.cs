@@ -152,6 +152,7 @@ namespace DNNrocketAPI.ApiControllers
                 var systemkey = "";
                 if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
                 if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
+                if (systemkey == "" || systemkey == "undefined") systemkey = paramCmd.Split('_')[0];
 
                 var systemData = SystemSingleton.Instance(systemkey);
                 var interfacekey = paramCmd.Split('_')[0];
@@ -193,6 +194,10 @@ namespace DNNrocketAPI.ApiControllers
             {
                 paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                 paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
+
+                // Add UserHostAddress, sometimes needed for login security
+                paramInfo.SetXmlProperty("genxml/hidden/UserHostAddress", context.Request.UserHostAddress);
+                paramInfo.SetXmlProperty("genxml/hidden/UserHostName", context.Request.UserHostName);
 
                 _debugapi = paramInfo.GetXmlPropertyBool("genxml/hidden/debugapi");
                 if (_debugapi)
@@ -474,6 +479,15 @@ namespace DNNrocketAPI.ApiControllers
 
                 returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, "");
 
+                if (returnDictionary.ContainsKey("redirect"))
+                {
+                    var redirectResp = this.Request.CreateResponse(HttpStatusCode.Redirect);
+                    if (Uri.TryCreate((string)returnDictionary["redirect"], UriKind.RelativeOrAbsolute, out var uri))
+                    {
+                        redirectResp.Headers.Location = uri;
+                    }
+                    return redirectResp;
+                }
                 if (returnDictionary.ContainsKey("outputhtml"))
                 {
                     strOut = (string)returnDictionary["outputhtml"];

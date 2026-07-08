@@ -356,3 +356,7 @@ RocketPortal/WebsiteBuilds/AS_*.rules
 RocketWebpUtils
 .Documentation/_site
 Documentation/_site
+RocketCDS_ProspectApp.dnn
+RocketCDS_ProspectApp.dnnpack
+RocketCDS_ProspectAppUpgrade.dnn
+RocketCDS_ProspectAppUpgrade.dnnpack

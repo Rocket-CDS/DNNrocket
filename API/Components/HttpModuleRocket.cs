@@ -1,4 +1,6 @@
 ﻿using DNNrocketAPI.Components;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.UI.Skins;
 using System;
@@ -91,6 +93,9 @@ namespace DNNrocketAPI.Components
                 var ctl = GetCtlParameter(context);
                 if (string.IsNullOrEmpty(ctl)) return;
 
+                // Only apply the Rocket skin for Rocket modules
+                if (!IsRocketModule(context)) return;
+
                 // Determine which skin to apply
                 string newSkinSrc = DetermineSkinToApply(portalSettings, ctl);
                 if (string.IsNullOrEmpty(newSkinSrc)) return;
@@ -164,6 +169,34 @@ namespace DNNrocketAPI.Components
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns true only when the module referenced by the "mid" query string parameter
+        /// has a DesktopModule.ModuleName that starts with "Rocket".
+        /// </summary>
+        private bool IsRocketModule(HttpContext context)
+        {
+            var midStr = DNNrocketUtils.RequestQueryStringParam(context, "mid");
+            if (string.IsNullOrEmpty(midStr)) midStr = DNNrocketUtils.RequestQueryStringParam(context, "moduleid");
+            if (string.IsNullOrEmpty(midStr)) return false;
+
+            if (!int.TryParse(midStr, out int moduleId)) return false;
+
+            try
+            {
+                var moduleController = new ModuleController();
+                var moduleInfo = moduleController.GetModule(moduleId, Null.NullInteger, true);
+                if (moduleInfo == null) return false;
+                if (moduleInfo.DesktopModule == null) return false;
+
+                return moduleInfo.DesktopModule.ModuleName.StartsWith("Rocket", StringComparison.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return false;
             }
         }
 

@@ -28,6 +28,7 @@ using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.DDRMenu;
+using Newtonsoft.Json;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -2679,6 +2680,30 @@ namespace DNNrocketAPI.Components
             var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
             if (objModInfo == null) return true;
             return objModInfo.IsDeleted;
+        }
+
+        public static string ExecSqlXmlJson(string sqlCmd)
+        {
+            var objCtrl = new DNNrocketController();
+            var xmlList = objCtrl.ExecSqlXml(sqlCmd);
+            if (string.IsNullOrEmpty(xmlList))
+                return "[]";
+
+            var xml = new XmlDocument();
+            xml.LoadXml("<root>" + xmlList + "</root>");
+
+            var list = new List<Dictionary<string, string>>();
+            foreach (XmlNode row in xml.SelectNodes("/root/row"))
+            {
+                var dict = new Dictionary<string, string>();
+                foreach (XmlAttribute attr in row.Attributes)
+                    dict[attr.Name] = attr.Value;
+                list.Add(dict);
+            }
+
+            var jsonString = JsonConvert.SerializeObject(list);
+            var jsonToConvert = jsonString.TrimStart().StartsWith("[") ? "{\"genxml\":" + jsonString + "}" : jsonString;
+            return jsonToConvert;
         }
 
 

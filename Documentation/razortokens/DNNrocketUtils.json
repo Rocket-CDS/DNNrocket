@@ -3177,6 +3177,24 @@
   },
   {
     "type": "csharp-method",
+    "name": "ExecSqlXmlJson",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
+    "description": "",
+    "signature": "public static string ExecSqlXmlJson(string sqlCmd)",
+    "classname": "DNNrocketUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "sqlCmd",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
     "name": "SetTempStorage",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
     "description": "Saves a SimplisityInfo object to temporary database storage with an expiration.",
