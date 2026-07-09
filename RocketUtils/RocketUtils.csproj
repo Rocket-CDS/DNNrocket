@@ -19,6 +19,9 @@
     <Reference Include="Magick.NET.Core">
       <HintPath>_external\Magick.NET.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\API\_external\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ThoughtWorks.QRCode">
       <HintPath>_external\ThoughtWorks.QRCode.dll</HintPath>
     </Reference>

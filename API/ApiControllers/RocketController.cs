@@ -173,6 +173,12 @@ namespace DNNrocketAPI.ApiControllers
             if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
             {
                 requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                if (IsXml(requestJson)) // Allow XML to be passed by the API call.
+                {
+                    var sReturn = new SimplisityInfo();
+                    sReturn.XMLData = requestJson;
+                    return sReturn;
+                }
                 postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, "");
                 postInfo.PortalId = PortalUtils.GetPortalId();
 
@@ -185,15 +191,29 @@ namespace DNNrocketAPI.ApiControllers
             }
             return postInfo;
         }
+        private bool IsXml(string paramJson)
+        {
+            if (string.IsNullOrWhiteSpace(paramJson))
+                return false;
 
+            var trimmed = paramJson.TrimStart();
+            return trimmed.StartsWith("<");
+        }
         private SimplisityInfo BuildParamInfo(HttpContextWrapper context, bool requestContent = false)
         {
-            var paramJson = "";
+            var paramJson = DNNrocketUtils.RequestParam(context, "paramjson");
+            var paramJsonDecode = "";
             var paramInfo = new SimplisityInfo();
-            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+            if (paramJson != "")
             {
-                paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
-                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
+                paramJsonDecode = HttpUtility.UrlDecode(paramJson);
+                if (IsXml(paramJsonDecode)) // Allow XML to be passed by the API call.
+                {
+                    var sReturn = new SimplisityInfo();
+                    sReturn.XMLData = paramJson;
+                    return sReturn;
+                }
+                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJsonDecode, "");
 
                 // Add UserHostAddress, sometimes needed for login security
                 paramInfo.SetXmlProperty("genxml/hidden/UserHostAddress", context.Request.UserHostAddress);

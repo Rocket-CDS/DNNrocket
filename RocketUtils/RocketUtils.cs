@@ -1,10 +1,59 @@
-﻿using System;
+﻿using Simplisity;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace RocketUtils
 {
     public static class RocketUtils
     {
+        private static readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
+
+        /// <summary>
+        /// Calls the DNNrocket Action API endpoint as if it were a normal simplisity.js JSON call.
+        /// Converts <paramref name="postInfo"/> to <c>inputjson</c> postdata format and <paramref name="paramInfo"/>
+        /// to <c>paramjson</c> format, then HTTP-POSTs to <paramref name="url"/> with <c>?cmd=<paramref name="sCmd"/></c>.
+        /// Cookies from the current request are forwarded so the call executes in the same authenticated session.
+        /// </summary>
+        /// <param name="domainurl">Domain URL  (e.g. https://my.site.com).</param>
+        /// <param name="sCmd">The command to execute (appended as ?cmd= to the URL).</param>
+        /// <param name="postInfo">The data info posted as inputjson.</param>
+        /// <param name="paramInfo">Optional parameter info posted as paramjson; pass null for an empty paramjson.</param>
+        /// <returns>The response body as a string, or an error message prefixed with "ERROR".</returns>
+        public static async Task<string> CallAction(string domainurl, string sCmd, SimplisityInfo postInfo, SimplisityInfo paramInfo = null)
+        {
+            try
+            {
+                var fullurl = domainurl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action";
+                var separator = fullurl.Contains("?") ? "&" : "?";
+                var fullUrl = fullurl.TrimEnd(' ') + separator + "cmd=" + Uri.EscapeDataString(sCmd);
+
+                var inputJson = postInfo.XMLData;
+                var paramJson = paramInfo.XMLData;
+
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+                var content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["inputjson"] = inputJson,
+                    ["paramjson"] = paramJson
+                });
+
+                var response = await _httpClient.PostAsync(fullUrl, content).ConfigureAwait(false);
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                return "ERROR - CallAction url=" + domainurl + " cmd=" + sCmd + " ex=" + ex.ToString();
+            }
+        }
+
         public static string GetUniqueFileName(string fileName, string folderMapPath, int idx = 1, string originalFileName = "")
         {
             if (originalFileName == "") originalFileName = fileName;
