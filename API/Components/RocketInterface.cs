@@ -19,11 +19,21 @@ namespace DNNrocketAPI.Components
             Info = new SimplisityInfo();
             if (systemInfo != null)
             {
-                var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
-                if (interfaceInfo != null)
+                var providerDataInfo = systemInfo.GetListItem("providerdata", "genxml/textbox/interfacekey", interfaceKey);
+                if (providerDataInfo != null)
                 {
-                    Info = interfaceInfo;
+                    Info = providerDataInfo;
                     Exists = true;
+                }
+                if (!Exists)
+                {
+                    // if we do not have a provider for the API, then look for a UI interface.
+                    var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
+                    if (interfaceInfo != null)
+                    {
+                        Info = interfaceInfo;
+                        Exists = true;
+                    }
                 }
             }
         }
