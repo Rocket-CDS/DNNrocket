@@ -180,13 +180,17 @@ namespace DNNrocketAPI.Components
                 var roleInfo = DNNrocketUtils.GetRoleByName(newModule.PortalID, roleName);
                 if (roleInfo != null)
                 {
+                    var permissionID = 2;
+                    var pController = new PermissionController();
+                    var permissions = pController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                    if (permissions != null && permissions.Count > 0) permissionID = ((PermissionInfo)permissions[0]).PermissionID;
 
                     //add admin edit permission
                     ModulePermissionInfo modulePermissionInfo2 = new ModulePermissionInfo();
                     modulePermissionInfo2.ModuleID = moduleId;
                     modulePermissionInfo2.AllowAccess = true;
                     //view permission id, 1 = view, 2 = edit
-                    modulePermissionInfo2.PermissionID = 2;
+                    modulePermissionInfo2.PermissionID = permissionID;
                     //administrator role id (from Roles table in dnn database)
                     modulePermissionInfo2.RoleID = roleInfo.RoleID;
 
