@@ -214,9 +214,9 @@ namespace DNNrocketAPI.Components
         public static List<int> GetPortals()
         {
             var rtnList = new List<int>();
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                rtnList.Add(portal.PortalID);
+                rtnList.Add(portal.PortalId);
             }
             return rtnList;
         }
@@ -241,7 +241,7 @@ namespace DNNrocketAPI.Components
                 var controller = new PortalController();
                 var portal = controller.GetPortal(guid);
                 if (portal == null) return -1;
-                return portal.PortalID;
+                return ((DotNetNuke.Abstractions.Portals.IPortalInfo)portal).PortalId;
             }
             catch (Exception)
             {
@@ -390,9 +390,9 @@ namespace DNNrocketAPI.Components
         {
             var rtnList = new List<int>();
             var allportals = GetAllPortals();
-            foreach (var p in allportals)
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo p in allportals)
             {
-                rtnList.Add(p.PortalID);
+                rtnList.Add(p.PortalId);
             }
             return rtnList;
         }
@@ -401,10 +401,10 @@ namespace DNNrocketAPI.Components
         {
             var rtnList = new List<SimplisityRecord>();
             var allportals = GetAllPortals();
-            foreach (var p in allportals)
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo p in allportals)
             {
                 var r = new SimplisityRecord();
-                r.PortalId = p.PortalID;
+                r.PortalId = p.PortalId;
                 r.XMLData = DNNrocketUtils.ConvertObjectToXMLString(p);
                 rtnList.Add(r);
             }
@@ -511,7 +511,7 @@ namespace DNNrocketAPI.Components
             var rtnList = new Dictionary<string, string>();
             foreach (var pa in padic)
             {
-                if (pa.Value.PortalID == portalId)
+                if (((DotNetNuke.Abstractions.Portals.IPortalAliasInfo)pa.Value).PortalId == portalId)
                 {
                     rtnList.Add(pa.Key, pa.Value.CultureCode);
                 }
@@ -524,7 +524,7 @@ namespace DNNrocketAPI.Components
             var rtnList = new List<string>();
             foreach (var pa in padic)
             {
-                if (pa.Value.PortalID == portalId)
+                if (((DotNetNuke.Abstractions.Portals.IPortalAliasInfo)pa.Value).PortalId == portalId)
                 {
                     rtnList.Add(pa.Key);
                 }
@@ -691,7 +691,7 @@ namespace DNNrocketAPI.Components
             var portalalias = DefaultPortalAlias(portalid);
             foreach (var pa in padic)
             {
-                if (pa.Value.PortalID == portalid)
+                if (((DotNetNuke.Abstractions.Portals.IPortalAliasInfo)pa.Value).PortalId == portalid)
                 {
                     if (lang == pa.Value.CultureCode)
                     {
@@ -700,6 +700,18 @@ namespace DNNrocketAPI.Components
                 }
             }
             return portalalias;
+        }
+        public static int GetPortalIdByAlias(string portalAlias)
+        {
+            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
+            foreach (var pa in padic)
+            {
+                if (string.Equals(pa.Key, portalAlias, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ((DotNetNuke.Abstractions.Portals.IPortalAliasInfo)pa.Value).PortalId;
+                }
+            }
+            return -1;
         }
         public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)
         {
