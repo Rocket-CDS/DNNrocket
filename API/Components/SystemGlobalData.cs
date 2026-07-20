@@ -74,6 +74,7 @@ namespace DNNrocketAPI.Components
             s.SetXmlProperty("genxml/textbox/apiurl", apiModel.ApiUrl);
             s.SetXmlProperty("genxml/textbox/apikey", apiModel.ApiKey);
             s.SetXmlProperty("genxml/textbox/apiref", apiModel.ApiRef);
+            Info.RemoveListItem("externalapi", "genxml/textbox/apiref", apiModel.ApiRef);
             Info.AddListItem("externalapi", s);
         }
         public void AddExternalAPI()

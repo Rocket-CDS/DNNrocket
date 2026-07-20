@@ -26,16 +26,24 @@ namespace RocketUtils
         /// <param name="postInfo">The data info posted as inputjson.</param>
         /// <param name="paramInfo">Optional parameter info posted as paramjson; pass null for an empty paramjson.</param>
         /// <returns>The response body as a string, or an error message prefixed with "ERROR".</returns>
-        public static async Task<string> CallAction(string domainurl, string sCmd, SimplisityInfo postInfo, SimplisityInfo paramInfo = null)
+        public static async Task<string> CallAction(string domainurl, string sCmd, SimplisityInfo postInfo, SimplisityInfo paramInfo = null, Dictionary<string, string> queryString = null)
         {
             try
             {
-                var fullurl = domainurl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action";
-                var separator = fullurl.Contains("?") ? "&" : "?";
-                var fullUrl = fullurl.TrimEnd(' ') + separator + "cmd=" + Uri.EscapeDataString(sCmd);
+                var fullUrl = domainurl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action";
+                var separator = fullUrl.Contains("?") ? "&" : "?";
+                fullUrl += separator + "cmd=" + Uri.EscapeDataString(sCmd);
 
-                var inputJson = postInfo.XMLData;
-                var paramJson = paramInfo.XMLData;
+                if (queryString != null)
+                {
+                    foreach (var q in queryString)
+                    {
+                        fullUrl += "&" + Uri.EscapeDataString(q.Key) + "=" + Uri.EscapeDataString(q.Value ?? string.Empty);
+                    }
+                }
+
+                var inputJson = postInfo?.XMLData ?? string.Empty;
+                var paramJson = paramInfo?.XMLData ?? string.Empty;
 
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
@@ -46,6 +54,7 @@ namespace RocketUtils
                 });
 
                 var response = await _httpClient.PostAsync(fullUrl, content).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
             catch (Exception ex)

@@ -1182,6 +1182,19 @@ namespace DNNrocketAPI.Components
             return skinFolder + "/skin.css";
         }
 
+        public static string GetCurrentScheme()
+        {
+            var request = System.Web.HttpContext.Current?.Request;
+            if (request == null) return "https";
+            return request.IsSecureConnection ? "https" : "http";
+        }
 
+        public static string GetCurrentBaseUrl()
+        {
+            var request = System.Web.HttpContext.Current?.Request;
+            if (request == null) return "";
+            var scheme = request.IsSecureConnection ? "https" : "http";
+            return scheme + "://" + request.Url.Host;
+        }
     }
 }
