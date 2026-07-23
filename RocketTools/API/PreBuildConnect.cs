@@ -561,6 +561,33 @@ namespace RocketTools.API
                         }
                         if (true)
                         {
+                            // Import only skin-related portal settings
+                            var skinSettingKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                "DefaultPortalSkin",
+                                "DefaultPortalContainer",
+                                "DefaultAdminSkin",
+                                "DefaultAdminContainer"
+                            };
+                            var pl = rocketSettings.GetRecordList("portalsettings");
+                            foreach (var ps in pl)
+                            {
+                                var settingName = ps.GetXmlProperty("row/@SettingName");
+                                if (!skinSettingKeys.Contains(settingName)) continue;
+
+                                var settingValue = ps.GetXmlProperty("row/@SettingValue");
+                                var cultureCode = ps.GetXmlProperty("row/@CultureCode");
+
+                                // Delete existing row first, then insert fresh
+                                objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}PortalSettings] where PortalID = " + portalId + " and SettingName = '" + settingName + "'");
+
+                                var sqlCmd = "insert into {databaseOwner}[{objectQualifier}PortalSettings] (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode) "
+                                    + "values (" + portalId + ", '" + settingName + "', '" + settingValue + "', " + userId + ", GETDATE(), -1, GETDATE(), " + (string.IsNullOrEmpty(cultureCode) ? "NULL" : "'" + cultureCode + "'") + ")";
+                                objCtrl.ExecSql(sqlCmd);
+                            }
+                        }
+                        if (true)
+                        {
 
                             var homeTabPath = GetTabPath(rocketSettings.GetXmlPropertyInt("genxml/hometab/hometabid"));
                             var homeTabId = GetTabId(portalId, homeTabPath);
