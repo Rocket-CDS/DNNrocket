@@ -7,6 +7,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using ClientDependency.Core;
 
 namespace DNNrocketAPI.Components
 {
@@ -213,24 +214,24 @@ namespace DNNrocketAPI.Components
             }
             return null;
         }
-
         private string DetermineSkinToApply(PortalSettings portalSettings, string ctlValue)
         {
             if (string.IsNullOrEmpty(ctlValue)) return null;
 
+            var rocketAdmin = PortalController.GetPortalSetting("rocketadminskin", portalSettings.PortalId, "[G]Skins/rocketedit/rocketadmin");
+            var rocketEdit = PortalController.GetPortalSetting("rocketeditskin", portalSettings.PortalId, "[G]Skins/rocketedit/rocketedit");
+
             switch (ctlValue.ToLower())
             {
                 case "adminpanel":
-                    return "[G]Skins/rocketedit/rocketadmin";
-
+                    return rocketAdmin;
                 case "edit":
                 case "rocketedit":
                 case "apptheme":
                 case "module":
                 case "settings":
                 case "recyclebin":
-                    return "[G]Skins/rocketedit/rocketedit";
-
+                    return rocketEdit;
                 default:
                     return null;
             }
