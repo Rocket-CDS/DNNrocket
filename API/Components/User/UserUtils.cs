@@ -215,20 +215,57 @@ namespace DNNrocketAPI.Components
         }
         public static bool ChangePassword(int portalId, int userId, string newPassword)
         {
+            var c = ChangePasswordAction(portalId, userId, newPassword);
+            if (c == 0) return true;
+            return false;
+        }
+        /// <summary>
+        /// 
+        /// 0 = OK
+        /// 1 = password length fail
+        /// 2 = Validate minimum non-alphanumeric characters fail
+        /// 3 = Validate password strength regex fail
+        /// 4 = general fail
+        /// 
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="userId"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public static int ChangePasswordAction(int portalId, int userId, string newPassword)
+        {
             try
             {
                 var objUser = UserController.GetUserById(portalId, userId);
                 if (objUser != null)
                 {
+                    // Validate minimum length from ASP.NET Membership provider
+                    if (newPassword.Length < Membership.MinRequiredPasswordLength)
+                        return 1;
+
+                    // Validate minimum non-alphanumeric characters
+                    int nonAlphaCount = newPassword.Count(c => !char.IsLetterOrDigit(c));
+                    if (nonAlphaCount < Membership.MinRequiredNonAlphanumericCharacters)
+                        return 2;
+
+                    // Validate password strength regex (if configured)
+                    if (!string.IsNullOrEmpty(Membership.PasswordStrengthRegularExpression))
+                    {
+                        if (!System.Text.RegularExpressions.Regex.IsMatch(newPassword, Membership.PasswordStrengthRegularExpression))
+                            return 3;
+                    }
+
                     MembershipUser user = Membership.GetUser(objUser.Username);
-                    return user.ChangePassword(user.ResetPassword(), newPassword);
+                    var cp = user.ChangePassword(user.ResetPassword(), newPassword);
+                    if (!cp) return 4;
+                    return 0;
                 }
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
             }
-            return false;
+            return 4;
         }
         public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
         {
@@ -654,6 +691,51 @@ namespace DNNrocketAPI.Components
         }
         #endregion
 
+        /// <summary>
+        /// Returns the key/value pairs of a DNN profile list field (e.g. a dropdown such as "Location").
+        /// The list entries are looked up from the DNN Lists table using the profile property's list name.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="fieldName">The profile property name (e.g. "Location").</param>
+        /// <returns>A dictionary where the key is the list entry Value and the value is the display Text.</returns>
+        public static Dictionary<string, string> GetUserProfileListField(int portalId, string fieldName)
+        {
+            var result = new Dictionary<string, string>();
+            try
+            {
+                // In DNN, dropdown profile properties store their options as a named list
+                // in the Lists table. The list name matches the profile property's DataType
+                // list name, which by convention is the same as the property name.
+                // First try to resolve the list name from the ProfilePropertyDefinition.
+                var listName = fieldName;
+                var propertyDefinition = ProfileController.GetPropertyDefinitionByName(portalId, fieldName);
+                if (propertyDefinition != null)
+                {
+                    // DataType is an EntryID in the "DataType" list; the associated list name
+                    // for the dropdown entries is stored as the list source / property name.
+                    // For a custom list the list name in Lists table equals the property name.
+                    var listController = new ListController();
+                    var dataTypeEntry = listController.GetListEntryInfo("DataType", propertyDefinition.DataType);
+                    if (dataTypeEntry != null && !string.IsNullOrEmpty(dataTypeEntry.Value) && dataTypeEntry.Value != "List") return result;
+                }
+
+                var listEntries = new ListController().GetListEntryInfoItems(listName, string.Empty, portalId);
+                if (listEntries != null)
+                {
+                    foreach (ListEntryInfo entry in listEntries)
+                    {
+                        if (!result.ContainsKey(entry.Value))
+                            result.Add(entry.Value, entry.Text);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Return empty dictionary on error
+                var ms = ex.ToString();
+            }
+            return result;
+        }
         public static Dictionary<string, string> GetUserProfileProperties(int portalId, int userId)
         {
             var userInfo = UserController.GetUserById(portalId, userId);
@@ -665,31 +747,75 @@ namespace DNNrocketAPI.Components
             var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
             return GetUserProfileProperties(userInfo);
         }
+
         private static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
         {
             var prop = new Dictionary<string, string>();
-            if (userInfo != null)
+            if (userInfo == null) return prop;
+
+            // Bypass the DNN Profile API for reading - it is unreliable for custom fields
+            // that have never been set, and for cache reasons. Query the tables directly.
+            var objCtrl = new DNNrocketController();
+            var sql = @"
+        SELECT ppd.PropertyName, ISNULL(up.PropertyValue, '') AS PropertyValue
+        FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ppd
+        LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] up 
+            ON ppd.PropertyDefinitionID = up.PropertyDefinitionID 
+            AND up.UserID = " + userInfo.UserID + @"
+        WHERE ppd.PortalID = " + userInfo.PortalID + @" AND ppd.Deleted = 0
+        ORDER BY ppd.ViewOrder
+        FOR XML RAW";
+
+            var xmlList = objCtrl.ExecSqlXmlList(sql);
+            foreach (var row in xmlList)
             {
-                foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
-                {
-                    prop.Add(p.PropertyName, p.PropertyValue);
-                }
-                if (!prop.ContainsKey("Email")) prop.Add("Email", userInfo.Email);
-                if (!prop.ContainsKey("Username")) prop.Add("Username", userInfo.Username);
-                if (!prop.ContainsKey("DisplayName")) prop.Add("DisplayName", userInfo.DisplayName);
+                var name = row.GetXmlProperty("row/@PropertyName");
+                var value = row.GetXmlProperty("row/@PropertyValue");
+                if (!string.IsNullOrEmpty(name) && !prop.ContainsKey(name))
+                    prop[name] = value;
             }
+
+            if (!prop.ContainsKey("Email")) prop["Email"] = userInfo.Email;
+            if (!prop.ContainsKey("Username")) prop["Username"] = userInfo.Username;
+            if (!prop.ContainsKey("DisplayName")) prop["DisplayName"] = userInfo.DisplayName;
+
             return prop;
         }
         private static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
         {
+            if (userInfo == null) return;
+
+            // Load the user's existing profile properties from DB
+            ProfileController.GetUserProfile(ref userInfo);
+
             foreach (var p in properties)
             {
-                userInfo.Profile.SetProfileProperty(p.Key, p.Value);
+                var propDef = userInfo.Profile.GetProperty(p.Key);
+
+                if (propDef == null)
+                {
+                    // Property has never been set for this user - it won't be in the loaded collection.
+                    // Get the portal-level definition (which has the correct PropertyDefinitionID)
+                    // and add it to the user's profile so UpdateUserProfile can persist it.
+                    propDef = ProfileController.GetPropertyDefinitionByName(userInfo.PortalID, p.Key);
+                    if (propDef != null)
+                    {
+                        propDef.PropertyValue = p.Value; // marks IsDirty = true
+                        userInfo.Profile.ProfileProperties.Add(propDef);
+                    }
+                }
+                else
+                {
+                    propDef.PropertyValue = p.Value; // marks IsDirty = true
+                }
             }
-            if (properties.ContainsKey("DisplayName")) // Special processing for DisplayName
+
+            if (properties.ContainsKey("DisplayName"))
             {
                 userInfo.UpdateDisplayName(properties["DisplayName"]);
             }
+
+            ProfileController.UpdateUserProfile(userInfo);
             UserController.UpdateUser(userInfo.PortalID, userInfo);
         }
         public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)

@@ -230,6 +230,34 @@
   },
   {
     "type": "csharp-method",
+    "name": "ChangePasswordAction",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "0 = OK 1 = password length fail 2 = Validate minimum non-alphanumeric characters fail 3 = Validate password strength regex fail 4 = general fail",
+    "signature": "public static int ChangePasswordAction(int portalId, int userId, string newPassword)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "newPassword",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
     "name": "DoLogin",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
@@ -702,6 +730,29 @@
       }
     ],
     "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserProfileListField",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Returns the key/value pairs of a DNN profile list field (e.g. a dropdown such as \u0022Location\u0022). The list entries are looked up from the DNN Lists table using the profile property\u0027s list name.",
+    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileListField(int portalId, string fieldName)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID."
+      },
+      {
+        "name": "fieldName",
+        "type": "string",
+        "description": "The profile property name (e.g. \u0022Location\u0022)."
+      }
+    ],
+    "returns": "Dictionary\u003Cstring, string\u003E"
   },
   {
     "type": "csharp-method",
