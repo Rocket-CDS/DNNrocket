@@ -40,6 +40,10 @@
 			<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\API\Components\User\UserUtils.cs</input>
 			<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\UserUtils.json</output>
 		</file>
+		<file>
+			<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\API\Components\PortalUtils.cs</input>
+			<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\PortalUtils.json</output>
+		</file>
 	</json>
 
 </root>

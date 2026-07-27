@@ -33,6 +33,7 @@
     <None Include="razortokens\GeneralUtils.json" />
     <None Include="razortokens\GeneralUtils.md" />
     <None Include="razortokens\index.md" />
+    <None Include="razortokens\PortalUtils.json" />
     <None Include="razortokens\RazorEngineTokens.json" />
     <None Include="razortokens\RazorEngineTokens.md" />
     <None Include="razortokens\RocketContentTokens.json" />
@@ -44,6 +45,7 @@
     <None Include="razortokens\RocketFormsTokens.json" />
     <None Include="razortokens\RocketFormsTokens.md" />
     <None Include="razortokens\toc.yml" />
+    <None Include="razortokens\PortalUtils.md" />
     <None Include="razortokens\UserUtils.json" />
     <None Include="razortokens\UserUtils.md" />
     <None Include="README.md" />

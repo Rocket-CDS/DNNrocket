@@ -19,6 +19,68 @@ dotnet tool install -g docfx
 ### Option 3: Download Manually
 Download from [DocFx Releases](https://github.com/dotnet/docfx/releases) and add to your PATH.
 
+## Populating razortoken .md Documentation Files
+
+> **For humans and AI:** This section explains how the files in `Documentation\razortokens\` are created and kept up to date.
+
+Each `.md` file in `Documentation\razortokens\` (e.g. `UserUtils.md`, `PortalUtils.md`) documents all the public methods in a corresponding C# utility class. The process is two steps:
+
+### Step 1 — Generate the `.json` file from C# source
+
+The `.dnnpack` config file has a `<json>` section that maps a C# source file to an output `.json` file. Running the package build process parses the source and writes a structured JSON summary of every public, non-obsolete method.
+
+Example `.dnnpack` config entry:
+```xml
+<json>
+  <file>
+    <input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\API\Components\PortalUtils.cs</input>
+    <output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\PortalUtils.json</output>
+  </file>
+</json>
+```
+
+Each JSON entry has: `name`, `signature`, `description`, `parameters` (name + type + description), and `returns`.
+
+### Step 2 — Generate the `.md` file from the `.json` file (using AI)
+
+Once the `.json` file exists, open it and ask AI (GitHub Copilot or similar) to:
+
+> "Generate a `PortalUtils.md` documentation file for the `razortokens` folder using the same HTML accordion format as `UserUtils.md`, based on the entries in `PortalUtils.json`. Infer a plain-English description for each method from its name and parameters where the `description` field in the JSON is empty."
+
+The resulting `.md` uses `<details class="clean-accordion">` HTML blocks (the CSS style block is included at the top of the file — copy it from any existing `.md` in the same folder).
+
+### Rules for the `.md` format
+
+- The CSS `<style>` block at the top of the file must be included exactly as in `UserUtils.md`.
+- Each method is a `<details class="clean-accordion">` block with a `<summary>` showing the method name.
+- The `<div class="token-details">` contains: **Description**, **Signature** (in a `<pre><code>` block), and optionally **Parameters** (as a `<ul>`).
+- Overloaded methods should have a disambiguating suffix in the `<summary>`, e.g. `LoginTabId (by portal ID)` vs `LoginTabId (current portal)`.
+- Descriptions with empty `""` values in the JSON should be inferred by AI from the method name and context.
+
+## Build JSON for intellisense
+
+JSON files for intellisense can be automatically created.  
+
+In the *.dnnpack config file add a "json" node that defines each file with what output file we want.
+
+```
+<json>
+	<file>
+		<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\API\Components\DNNrocketUtils.cs</input>
+		<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\DNNrocketUtils.json</output>
+	</file>
+	<file>
+		<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\API\render\DNNrocketTokens.cs</input>
+		<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\DNNrocketTokens.json</output>
+	</file>
+</json>
+```
+
+Each file listed should be a code file, the program will process the code files to make a json summary of each 
+
+Any methods as marked as [Obsolete] will be ignored.
+Any methods private methods will be ignored.
+
 ## Building the Documentation
 
 ### Build and Serve (Recommended for Development)

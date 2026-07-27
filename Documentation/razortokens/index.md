@@ -11,6 +11,7 @@ Browse the topics below to find the tokens or methods you need.
 *   [RazorEngineTokens](./RazorEngineTokens.md): Base tokens for the Simplisity Razor Engine.
 *   [GeneralUtils](./GeneralUtils.md): General utility methods from the Simplisity framework.
 *   [UserUtils](./UserUtils.md): Utility methods for user management.
+*   [PortalUtils](./PortalUtils.md): Utility methods for portal management.
 
 ## Rocket Modules
 

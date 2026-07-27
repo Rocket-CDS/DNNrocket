@@ -1,0 +1,1279 @@
+[
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentPortalId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetCurrentPortalId()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DeletePortal",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void DeletePortal(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "CreatePortal",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = \u0022NewPortal\u0022, string cultureCode = \u0022en-US\u0022, bool useEmailAsUserName = true)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalName",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "strPortalAlias",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "useEmailAsUserName",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "BuildPortal",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void BuildPortal(int portalid, int portalAdminUserId, string buildconfigfile)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalid",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "portalAdminUserId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "buildconfigfile",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "BuildDefaultSystems",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void BuildDefaultSystems(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ActivateSystem",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void ActivateSystem(int portalId, SystemLimpet systemData, SimplisityInfo postInfo = null)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "systemData",
+        "type": "SystemLimpet",
+        "description": ""
+      },
+      {
+        "name": "postInfo",
+        "type": "SimplisityInfo",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortals",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static List\u003Cint\u003E GetPortals()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "List\u003Cint\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetPortalId()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalIdBySiteKey",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetPortalIdBySiteKey(string siteKey)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "siteKey",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortal",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static PortalInfo GetPortal(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "PortalInfo"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static String GetPortalName(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "String"
+  },
+  {
+    "type": "csharp-method",
+    "name": "Registration",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "Set portal Registration type.",
+    "signature": "public static void Registration(int portalId, int regType)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "regType",
+        "type": "int",
+        "description": "NoRegistration = 0, PrivateRegistration = 1, PublicRegistration = 2, VerifiedRegistration = 3"
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "EnablePopups",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void EnablePopups(int portalId, bool value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SSLSetup",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void SSLSetup(int portalId, int value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "PageHeadTextUpdate",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void PageHeadTextUpdate(int portalId, string value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "PageHeadTextAppend",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void PageHeadTextAppend(int portalId, string value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UpdatePortalSetting",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "settingName",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "settingValue",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UseEmailAsUserName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void UseEmailAsUserName(int portalId, bool value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalSettings",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static PortalSettings GetPortalSettings()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "PortalSettings"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalSettings",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static PortalSettings GetPortalSettings(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "PortalSettings"
+  },
+  {
+    "type": "csharp-method",
+    "name": "EditorTemplate",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string EditorTemplate()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "LoginTabId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int LoginTabId(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "LoginTabId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int LoginTabId()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalByModuleID",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetPortalByModuleID(int moduleId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "moduleId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetAllPortalIds",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static List\u003Cint\u003E GetAllPortalIds()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "List\u003Cint\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetAllPortalRecords",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static List\u003CSimplisityRecord\u003E GetAllPortalRecords()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "List\u003CSimplisityRecord\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "CreatePortalFolder",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void CreatePortalFolder(DotNetNuke.Entities.Portals.PortalSettings PortalSettings, string FolderName)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "PortalSettings",
+        "type": "DotNetNuke.Entities.Portals.PortalSettings",
+        "description": ""
+      },
+      {
+        "name": "FolderName",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SetUserRegistration",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void SetUserRegistration(int portalId, int value)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserRegistration",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetUserRegistration(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentPortalSettings",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static PortalSettings GetCurrentPortalSettings()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "PortalSettings"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetDomainFromUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetDomainFromUrl(string url)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalAliasesWithCultureCode",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cstring, string\u003E GetPortalAliasesWithCultureCode(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cstring, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalAliases",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static List\u003Cstring\u003E GetPortalAliases(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003Cstring\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DefaultPortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string DefaultPortalAlias(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DefaultPortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string DefaultPortalAlias(int portalId, string cultureCode)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "AddPortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void AddPortalAlias(int portalId, string portalAlias, string cultureCode = \u0022\u0022)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "portalAlias",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DeletePortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void DeletePortalAlias(int portalId, string portalAlias)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "portalAlias",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SetPrimaryPortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void SetPrimaryPortalAlias(int portalId, string portalAlias, bool isPrimary = true)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "portalAlias",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "isPrimary",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SetSearchTabId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void SetSearchTabId(int portalId, int tabId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "tabId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SetDefaultLanguage",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void SetDefaultLanguage(int portalId, string cultureCode)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetDefaultLanguage",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetDefaultLanguage(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RootDomain",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string RootDomain(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DomainSubUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string DomainSubUrl(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetPortalAlias(string lang, int portalid = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "lang",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "portalid",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalIdByAlias",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static int GetPortalIdByAlias(string portalAlias)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalAlias",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "HomeDNNrocketDirectoryMapPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "HomeDNNrocketDirectoryRel",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string HomeDNNrocketDirectoryRel(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DNNrocketThemesDirectoryMapPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DNNrocketThemesDirectoryRel",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string DNNrocketThemesDirectoryRel(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "TempDirectoryMapPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string TempDirectoryMapPath(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "BackUpDirectoryMapPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string BackUpDirectoryMapPath(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "TempDirectoryRel",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string TempDirectoryRel(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "HomeDirectoryMapPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string HomeDirectoryMapPath(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "HomeDirectoryRel",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string HomeDirectoryRel(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "CreateRocketDirectories",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void CreateRocketDirectories(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "PortalExists",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static bool PortalExists(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "AddLanguage",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void AddLanguage(int portalId, string cultureCode)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RemoveLanguage",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void RemoveLanguage(int portalId, string cultureCode)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UpdatePortalCopyright",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "Updates the copyright message (footer text) for a specific portal",
+    "signature": "public static void UpdatePortalCopyright(int portalId, string copyrightMessage)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID"
+      },
+      {
+        "name": "copyrightMessage",
+        "type": "string",
+        "description": "The new copyright message"
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRootDomainUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetRootDomainUrl(int portalId = -1)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ClearPortalContent",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static void ClearPortalContent(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentPageSkinCssPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentPageSkinCssPath()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentPortalCssPath",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentPortalCssPath()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetEffectiveSkinSrcForCurrentPage",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetEffectiveSkinSrcForCurrentPage()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetPortalThemeSkinSrc",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetPortalThemeSkinSrc(int portalId)",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentScheme",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentScheme()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentBaseUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\PortalUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentBaseUrl()",
+    "classname": "PortalUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  }
+]

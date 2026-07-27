@@ -16,3 +16,5 @@
   href: GeneralUtils.md
 - name: UserUtils
   href: UserUtils.md
+- name: PortalUtils
+  href: PortalUtils.md

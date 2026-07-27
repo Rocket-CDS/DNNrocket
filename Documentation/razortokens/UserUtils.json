@@ -707,8 +707,8 @@
     "type": "csharp-method",
     "name": "UpdateEmail",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static UserData UpdateEmail(int portalId, int userId, string email)",
+    "description": "Updates the user\u0027s email address and, if the portal is configured to use email as username, also updates the username to match the new email.",
+    "signature": "public static UserData UpdateEmail(int portalId, int userId, string newEmail)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -716,17 +716,17 @@
       {
         "name": "portalId",
         "type": "int",
-        "description": ""
+        "description": "The portal ID the user belongs to."
       },
       {
         "name": "userId",
         "type": "int",
-        "description": ""
+        "description": "The ID of the user to update."
       },
       {
-        "name": "email",
+        "name": "newEmail",
         "type": "string",
-        "description": ""
+        "description": "The new email address."
       }
     ],
     "returns": "UserData"
