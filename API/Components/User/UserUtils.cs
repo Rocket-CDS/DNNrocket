@@ -11,6 +11,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
@@ -33,6 +34,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
@@ -237,29 +239,51 @@ namespace DNNrocketAPI.Components
             try
             {
                 var objUser = UserController.GetUserById(portalId, userId);
-                if (objUser != null)
+                if (objUser == null)
+                    return 4;
+
+                // Validate minimum length from ASP.NET Membership provider
+                if (newPassword.Length < Membership.MinRequiredPasswordLength)
+                    return 1;
+
+                // Validate minimum non-alphanumeric characters
+                int nonAlphaCount = newPassword.Count(c => !char.IsLetterOrDigit(c));
+                if (nonAlphaCount < Membership.MinRequiredNonAlphanumericCharacters)
+                    return 2;
+
+                // Validate password strength regex (if configured)
+                if (!string.IsNullOrEmpty(Membership.PasswordStrengthRegularExpression))
                 {
-                    // Validate minimum length from ASP.NET Membership provider
-                    if (newPassword.Length < Membership.MinRequiredPasswordLength)
-                        return 1;
-
-                    // Validate minimum non-alphanumeric characters
-                    int nonAlphaCount = newPassword.Count(c => !char.IsLetterOrDigit(c));
-                    if (nonAlphaCount < Membership.MinRequiredNonAlphanumericCharacters)
-                        return 2;
-
-                    // Validate password strength regex (if configured)
-                    if (!string.IsNullOrEmpty(Membership.PasswordStrengthRegularExpression))
-                    {
-                        if (!System.Text.RegularExpressions.Regex.IsMatch(newPassword, Membership.PasswordStrengthRegularExpression))
-                            return 3;
-                    }
-
-                    MembershipUser user = Membership.GetUser(objUser.Username);
-                    var cp = user.ChangePassword(user.ResetPassword(), newPassword);
-                    if (!cp) return 4;
-                    return 0;
+                    if (!Regex.IsMatch(newPassword, Membership.PasswordStrengthRegularExpression))
+                        return 3;
                 }
+
+                // Use DNN's own method — this correctly calls the MembershipProvider
+                // and avoids bypassing any internal hooks
+                bool changed = UserController.ResetAndChangePassword(objUser, newPassword);
+                if (!changed)
+                    return 4;
+
+                // 1. Clear DNN's user cache so the stale UserInfo is not reused
+                DataCache.ClearUserCache(portalId, objUser.Username);
+
+                // 2. If this is the CURRENT user changing their own password,
+                //    delete their active auth cookie so they are forced to re-login
+                var currentAuthCookie = HttpContext.Current?.Request.Cookies[FormsAuthentication.FormsCookieName];
+                if (currentAuthCookie != null)
+                {
+                    AuthCookieController.Instance.DeleteByValue(currentAuthCookie.Value);
+
+                    // Expire the cookie on the client side as well
+                    var expiredCookie = new HttpCookie(FormsAuthentication.FormsCookieName)
+                    {
+                        Expires = DateTime.Now.AddDays(-1),
+                        Path = FormsAuthentication.FormsCookiePath,
+                        Secure = FormsAuthentication.RequireSSL,
+                    };
+                    HttpContext.Current.Response.Cookies.Set(expiredCookie);
+                }
+                return 0;
             }
             catch (Exception ex)
             {
@@ -651,14 +675,34 @@ namespace DNNrocketAPI.Components
                 UserController.UpdateUser(portalId, userInfo);
             }
         }
-
-        public static UserData UpdateEmail(int portalId, int userId, string email)
+        /// <summary>
+        /// Updates the user's email address and, if the portal is configured to use email as
+        /// username, also updates the username to match the new email.
+        /// </summary>
+        /// <param name="portalId">The portal ID the user belongs to.</param>
+        /// <param name="userId">The ID of the user to update.</param>
+        /// <param name="newEmail">The new email address.</param>
+        /// <exception cref="ArgumentException">Thrown when the user cannot be found.</exception>
+        public static UserData UpdateEmail(int portalId, int userId, string newEmail)
         {
-            var userInfo = UserController.GetUserById(portalId, userId);
-            if (userInfo != null)
+            var portalSettings = new PortalSettings(portalId);
+
+            var user = UserController.Instance.GetUserById(portalId, userId);
+            if (user == null)
             {
-                userInfo.Email = email;
-                UserController.UpdateUser(portalId, userInfo);
+                throw new ArgumentException($"User with ID {userId} was not found in portal {portalId}.");
+            }
+
+            // Update the email on the user object.
+            user.Email = newEmail;
+
+            // Persist all user details (including the new email) to the database.
+            UserController.UpdateUser(portalId, user);
+
+            // If the portal requires email and username to be the same, sync the username.
+            if (portalSettings.Registration.UseEmailAsUserName && !user.Username.Equals(newEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                UserController.ChangeUsername(user.UserID, newEmail);
             }
             return GetUserData(portalId, userId);
         }
