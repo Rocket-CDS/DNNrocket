@@ -32,6 +32,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.PeerToPeer;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -77,14 +78,21 @@ namespace DNNrocketAPI.Components
                 var userInfo = UserController.Instance.GetUserById(portalId, userId);
                 if (userInfo != null)
                 {
+                    var username = userInfo.Username;
                     UserController.RemoveUser(userInfo);
+
+                    // Force ASP.NET Membership provider to drop its internal user cache
+                    // This cache survives requests and causes stale UserIDs on re-add
+                    System.Web.Security.Membership.GetUser(username, false);
+
+                    // Clear DNN's own cache layers
+                    DataCache.ClearPortalCache(portalId, true);
                 }
             }
             catch (Exception ex)
             {
                 LogUtils.LogException(ex);
             }
-
         }
         /// <summary>
         /// Move user to recycle bin.
@@ -555,25 +563,42 @@ namespace DNNrocketAPI.Components
                 userInfo.Profile.LastName = userInfo.LastName;
 
                 var status = UserController.CreateUser(ref userInfo);
-                if (status == UserCreateStatus.Success
-                    || status == UserCreateStatus.DuplicateUserName
+
+                if (status == UserCreateStatus.Success)
+                {
+                    // userInfo is updated by ref - use it directly, NEVER call GetUserByName here
+                    // GetUserByName hits the cache and can return the old deleted UserID
+                    objUser = userInfo;
+                    try { UserController.AddUserPortal(portalId, objUser.UserID); } catch { /* already mapped */ }
+                }
+                else if (status == UserCreateStatus.DuplicateUserName
                     || status == UserCreateStatus.UserAlreadyRegistered
                     || status == UserCreateStatus.UsernameAlreadyExists)
                 {
+                    DataCache.ClearPortalCache(portalId, true);
                     objUser = UserController.GetUserByName(username);
-                    UserController.AddUserPortal(portalId, objUser.UserID);
-                    status = UserCreateStatus.Success;
-                }
-                else
-                {
-                    if (status == UserCreateStatus.DuplicateEmail)
+                    if (objUser != null && objUser.UserID > 0)
                     {
-                        objUser = UserController.GetUserByEmail(portalId, email);
-                        UserController.AddUserPortal(portalId, objUser.UserID);
+                        try { UserController.AddUserPortal(portalId, objUser.UserID); } catch { /* already mapped */ }
+                        status = UserCreateStatus.Success;
+                    }
+                    else
+                    {
+                        status = UserCreateStatus.UnexpectedError;
+                    }
+                }
+                else if (status == UserCreateStatus.DuplicateEmail)
+                {
+                    DataCache.ClearPortalCache(portalId, true);
+                    objUser = UserController.GetUserByEmail(portalId, email);
+                    if (objUser != null && objUser.UserID > 0)
+                    {
+                        try { UserController.AddUserPortal(portalId, objUser.UserID); } catch { /* already mapped */ }
                         status = UserCreateStatus.Success;
                     }
                 }
-                if (status == UserCreateStatus.Success)
+
+                if (status == UserCreateStatus.Success && objUser != null)
                 {
                     if (objUser.IsDeleted) UserController.RestoreUser(ref objUser);
                     if (objUser.Membership.LockedOut) UserController.UnLockUser(objUser);
@@ -589,12 +614,12 @@ namespace DNNrocketAPI.Components
                         }
                     }
                 }
+
                 return GetUserCreateStatus(status); // return status: "" for success
             }
             return ""; // Invalid Data - return success flag.
                        // We should read user after return, using the "portalid,email" to see if valid and get the userid. 
         }
-
         public static UserData GetUserDataByUsername(int portalId, string username)
         {
             var userId = GetUserIdByUserName(portalId, username);
