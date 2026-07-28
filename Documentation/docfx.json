@@ -27,6 +27,10 @@
       {
         "files": [ "tutorial/**.md", "tutorial/**/toc.yml" ],
         "src": "."
+      },
+      {
+        "files": [ "simplisity/**.md", "simplisity/**/toc.yml" ],
+        "src": "."
       }
     ],
     "resource": [

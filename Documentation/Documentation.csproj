@@ -49,6 +49,15 @@
     <None Include="razortokens\UserUtils.json" />
     <None Include="razortokens\UserUtils.md" />
     <None Include="README.md" />
+    <None Include="simplisity\AjaxDropDownList.md" />
+    <None Include="simplisity\ClassEvents.md" />
+    <None Include="simplisity\CommandAttributes.md" />
+    <None Include="simplisity\FieldData.md" />
+    <None Include="simplisity\index.md" />
+    <None Include="simplisity\Methods.md" />
+    <None Include="simplisity\SimplisityJS.md" />
+    <None Include="simplisity\toc.yml" />
+    <None Include="simplisity\UtilityFunctions.md" />
     <None Include="snippets\fileuploadbase64.md" />
     <None Include="snippets\LargeFileUpload.md" />
     <None Include="snippets\ResxLocalization.md" />
