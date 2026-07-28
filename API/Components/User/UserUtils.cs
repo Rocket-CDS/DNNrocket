@@ -248,7 +248,10 @@ namespace DNNrocketAPI.Components
             {
                 var objUser = UserController.GetUserById(portalId, userId);
                 if (objUser == null)
+                {
+                    LogUtils.LogSystem("ChangePasswordAction: user not found, userId=" + userId);
                     return 4;
+                }
 
                 // Validate minimum length from ASP.NET Membership provider
                 if (newPassword.Length < Membership.MinRequiredPasswordLength)
@@ -266,23 +269,62 @@ namespace DNNrocketAPI.Components
                         return 3;
                 }
 
-                // Use DNN's own method — this correctly calls the MembershipProvider
-                // and avoids bypassing any internal hooks
-                bool changed = UserController.ResetAndChangePassword(objUser, newPassword);
-                if (!changed)
+                // ── DIAGNOSTIC: dump membership state ──────────────────────────
+                var membershipUser = System.Web.Security.Membership.GetUser(objUser.Username);
+                if (membershipUser == null)
+                {
+                    LogUtils.LogSystem("ChangePasswordAction: MembershipUser not found - " + objUser.Username);
                     return 4;
+                }
+                LogUtils.LogSystem(string.Format(
+                    "ChangePasswordAction: user={0}, IsApproved={1}, IsLockedOut={2}, LastPasswordChanged={3}, MinPwdAge(days) not directly exposed",
+                    objUser.Username,
+                    membershipUser.IsApproved,
+                    membershipUser.IsLockedOut,
+                    membershipUser.LastPasswordChangedDate));
 
-                // 1. Clear DNN's user cache so the stale UserInfo is not reused
+                // ── STEP 1: Reset to a DNN temp password ───────────────────────
+                string tempPassword;
+                try
+                {
+                    tempPassword = membershipUser.ResetPassword();
+                    LogUtils.LogSystem("ChangePasswordAction: ResetPassword() succeeded for " + objUser.Username);
+                }
+                catch (Exception exReset)
+                {
+                    LogUtils.LogSystem("ChangePasswordAction: ResetPassword() FAILED - " + exReset.Message);
+                    return 4;
+                }
+
+                // ── STEP 2: Change from temp → new ─────────────────────────────
+                bool changed;
+                try
+                {
+                    changed = membershipUser.ChangePassword(tempPassword, newPassword);
+                    LogUtils.LogSystem("ChangePasswordAction: ChangePassword() result=" + changed + " for " + objUser.Username);
+                }
+                catch (Exception exChange)
+                {
+                    // SqlMembershipProvider throws here for min-age violations
+                    LogUtils.LogSystem("ChangePasswordAction: ChangePassword() THREW - " + exChange.Message);
+                    return 4;
+                }
+
+                if (!changed)
+                {
+                    LogUtils.LogSystem("ChangePasswordAction: ChangePassword() returned false (password history / min-age policy?) for " + objUser.Username);
+                    return 4;
+                }
+                // ───────────────────────────────────────────────────────────────
+
+                // Clear DNN's user cache
                 DataCache.ClearUserCache(portalId, objUser.Username);
 
-                // 2. If this is the CURRENT user changing their own password,
-                //    delete their active auth cookie so they are forced to re-login
+                // Expire auth cookie if this is the current user
                 var currentAuthCookie = HttpContext.Current?.Request.Cookies[FormsAuthentication.FormsCookieName];
                 if (currentAuthCookie != null)
                 {
                     AuthCookieController.Instance.DeleteByValue(currentAuthCookie.Value);
-
-                    // Expire the cookie on the client side as well
                     var expiredCookie = new HttpCookie(FormsAuthentication.FormsCookieName)
                     {
                         Expires = DateTime.Now.AddDays(-1),
