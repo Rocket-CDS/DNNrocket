@@ -133,6 +133,21 @@ namespace DNNrocketAPI.Components
             }
 
         }
+        public static void SetRemovalRequest(int portalId, int userId, bool remove = true)
+        {
+            try
+            {
+                var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                if (userInfo != null)
+                {
+                    UserController.UserRequestsRemoval(userInfo, remove);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+        }
         public static string GetCurrentUserDisplayName()
         {
             if (UserController.Instance.GetCurrentUserInfo() != null)

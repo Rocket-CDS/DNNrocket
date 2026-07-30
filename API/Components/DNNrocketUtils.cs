@@ -2192,10 +2192,36 @@ namespace DNNrocketAPI.Components
             if (samplesplit.Length == 3) return double.Parse(samplesplit[0]) + double.Parse(samplesplit[1]) / 60 + double.Parse(samplesplit[2]) / 6000;
             return -1;
         }
+        public static string GetDomainFromUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return "";
+            try
+            {
+                if (!url.Contains("://"))
+                    url = "http://" + url;
 
+                var host = new Uri(url).Host; // e.g. "www.example.co.uk"
+                var parts = host.Split('.');
+
+                if (parts.Length <= 2)
+                    return host; // already just "example.com"
+
+                // Country-code TLDs (e.g. .co.uk, .com.au) have a 2-char TLD — keep last 3 parts
+                // Standard TLDs (e.g. .com, .org) — keep last 2 parts
+                var tld = parts[parts.Length - 1];
+                return tld.Length == 2
+                    ? string.Join(".", parts, parts.Length - 3, 3)  // e.g. "example.co.uk"
+                    : string.Join(".", parts, parts.Length - 2, 2); // e.g. "example.com"
+            }
+            catch (UriFormatException)
+            {
+                return "";
+            }
+        }
+        
         /// <summary>
-        /// Obfuscates an email address in HTML to protect it from scrapers.
-        /// </summary>
+                 /// Obfuscates an email address in HTML to protect it from scrapers.
+                 /// </summary>
         public static string ProtectEmail(this string email, string subject = "", string visibleText = "")
         {
             if (string.IsNullOrEmpty(email)) return "";

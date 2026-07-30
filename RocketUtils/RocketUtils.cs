@@ -59,7 +59,7 @@ namespace RocketUtils
             }
             catch (Exception ex)
             {
-                return "ERROR - CallAction url=" + domainurl + " cmd=" + sCmd + " ex=" + ex.ToString();
+                return "<genxml><errormsg>ERROR - CallAction url=" + domainurl + " cmd=" + sCmd + "</errormsg></genxml>";
             }
         }
 

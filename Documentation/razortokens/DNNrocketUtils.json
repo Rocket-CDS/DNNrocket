@@ -2605,6 +2605,24 @@
   },
   {
     "type": "csharp-method",
+    "name": "GetDomainFromUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
+    "description": "",
+    "signature": "public static string GetDomainFromUrl(string url)",
+    "classname": "DNNrocketUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
     "name": "ProtectEmail",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
     "description": "Obfuscates an email address in HTML to protect it from scrapers.",

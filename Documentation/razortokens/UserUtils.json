@@ -102,6 +102,34 @@
   },
   {
     "type": "csharp-method",
+    "name": "SetRemovalRequest",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static void SetRemovalRequest(int portalId, int userId, bool remove = true)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "remove",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
     "name": "GetCurrentUserDisplayName",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
