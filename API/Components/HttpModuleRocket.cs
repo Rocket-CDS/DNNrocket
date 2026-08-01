@@ -20,6 +20,7 @@ namespace DNNrocketAPI.Components
         {
             application.BeginRequest += OnBeginRequest; // Earlier!
             application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
+            application.EndRequest += OnEndRequest;
         }
 
         private void OnBeginRequest(object source, EventArgs e)
@@ -234,6 +235,46 @@ namespace DNNrocketAPI.Components
                     return rocketEdit;
                 default:
                     return null;
+            }
+        }
+
+        private void OnEndRequest(object sender, EventArgs e)
+        {
+            try
+            {
+                var app = (HttpApplication)sender;
+                var response = app.Response;
+
+                if (response.StatusCode != 302)
+                    return;
+
+                var location = response.Headers["Location"];
+                if (string.IsNullOrEmpty(location))
+                    return;
+
+                if (location.IndexOf("/Login", StringComparison.OrdinalIgnoreCase) < 0 && location.IndexOf("ctl=Login", StringComparison.OrdinalIgnoreCase) < 0)
+                    return;
+
+                var globalData = new SystemGlobalData();
+                foreach (var apiEntry in globalData.GetExternalAPIs())
+                {
+                    if (!string.IsNullOrEmpty(apiEntry.ApiKey) &&
+                        apiEntry.ApiKey.Contains("LOGINREDIRECT") &&
+                        !string.IsNullOrEmpty(apiEntry.ApiUrl))
+                    {
+                        var returnUrl = Uri.EscapeDataString(app.Request.Url.ToString());
+                        response.Clear();
+                        response.StatusCode = 302;
+                        response.RedirectLocation = apiEntry.ApiUrl;
+                        //response.RedirectLocation = apiEntry.ApiUrl + "?returnUrl=" + returnUrl;
+                        response.End();
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
             }
         }
 

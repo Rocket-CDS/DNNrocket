@@ -99,6 +99,7 @@ namespace DNNrocketAPI.Components
                 e.ApiUrl = a.GetXmlProperty("genxml/textbox/apiurl");
                 e.ApiKey = a.GetXmlProperty("genxml/textbox/apikey");
                 e.ApiRef = a.GetXmlProperty("genxml/textbox/apiref");
+                rtn.Add(e);
             }
             return rtn;
         }
