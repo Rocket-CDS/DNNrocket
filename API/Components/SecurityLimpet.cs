@@ -155,7 +155,7 @@ namespace DNNrocketAPI.Components
                     CacheUtils.SetCache(cacheKey, _info);
                }
                 _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtils.GetCache(_systemKey + "Security" + _userId);
-                if (_commandSecurity == null)
+                if (_commandSecurity == null || _commandSecurity.Count == 0)
                 {
                     _commandSecurity = new ConcurrentDictionary<string, bool>();
                     var cmdNodeList = _info.XMLDoc.SelectNodes("root/commands/command");
