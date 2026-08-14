@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Components
@@ -100,10 +101,25 @@ namespace DNNrocketAPI.Components
         /// </summary>
         /// <param name="exc"></param>
         /// <returns></returns>
+
         public static string LogException(Exception exc, bool clearCache = false)
         {
-            if (clearCache) CacheUtils.ClearAllCache(); // do  not want to repeat the error;
-            Exceptions.LogException(exc);
+            if (clearCache) CacheUtils.ClearAllCache();
+
+            try
+            {
+                // Skip DNN logging for ThreadAbortException to avoid GetScope issues
+                if (!(exc is ThreadAbortException))
+                {
+                    Exceptions.LogException(exc);
+                }
+            }
+            catch (Exception loggingException)
+            {
+                // Fallback: log to file or debug output
+                System.Diagnostics.Trace.WriteLine($"Logging failed: {loggingException.Message}");
+            }
+
             return exc.ToString();
         }
     }
