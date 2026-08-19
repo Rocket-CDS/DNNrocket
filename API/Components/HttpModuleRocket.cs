@@ -266,15 +266,14 @@ namespace DNNrocketAPI.Components
                         response.Clear();
                         response.StatusCode = 302;
                         response.RedirectLocation = apiEntry.ApiUrl;
-                        //response.RedirectLocation = apiEntry.ApiUrl + "?returnUrl=" + returnUrl;
-                        response.End();
                         return;
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogUtils.LogException(ex);
+                // do not use this, to prevent any infite loop.
+                //LogUtils.LogException(ex);
             }
         }
 
