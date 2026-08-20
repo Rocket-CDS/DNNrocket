@@ -136,11 +136,54 @@ ResourceKey(String resourceFileKey, String lang = "", String resourceExtension =
 
 Never use string interpolation ($""), string.Format(), composite formatting ({0}, {1}), templating, or placeholder/replacement mechanisms. When variables must be inserted into a string, use traditional C# concatenation with +, e.g. "Hello " + name + ".".
 
+## Razor Tokens
 
+### @HtmlOf() Instead of @Html.Raw()
+Always use `@HtmlOf()` instead of `@Html.Raw()` for rendering HTML content.
 
+### Using .Replace() with ResourceKey()
 
+**CRITICAL**: `ResourceKey()` returns an `IEncodedString`, NOT a regular string.
 
+To use `.Replace()` on a resource value, you **MUST** call `.ToString()` first:
 
+#### ❌ WRONG - Will cause compilation error:
+```razor
+@HtmlOf(ResourceKey("FileName.key").Replace("text", "<strong>text</strong>"))
+```
+**Error**: 'RazorEngine.Text.IEncodedString' does not contain a definition for 'Replace'
+
+#### ✅ CORRECT - Single Replace:
+```razor
+@HtmlOf(ResourceKey("FileName.key").ToString().Replace("text", "<strong>text</strong>"))
+```
+
+#### ✅ CORRECT - Multiple Chained Replaces:
+When chaining multiple `.Replace()` calls, **MUST** include `.ToString()` after EACH replace:
+```razor
+@HtmlOf(ResourceKey("FileName.description").ToString().Replace("first term", "<strong>first term</strong>").ToString().Replace("second term", "<strong>second term</strong>").ToString().Replace("third term", "<strong>third term</strong>"))
+```
+
+#### Complete Real-World Example:
+```razor
+<p class="has-text-grey-dark is-size-7 mt-3 mb-3">
+    @HtmlOf(ResourceKey("Stripe_paybuttonsPrivateCloud.description").ToString().Replace("enhanced security", "<strong>enhanced security</strong>").ToString().Replace("bespoke plugins", "<strong>bespoke plugins</strong>").ToString().Replace("single-company", "<strong>single-company</strong>"))
+</p>
+```
+
+**Resource File** (plain text, no HTML):
+```xml
+<data name="description.Text" xml:space="preserve">
+  <value>Your environment with enhanced security and bespoke plugins for single-company use.</value>
+</data>
+```
+
+### Why .ToString() is Required
+- `ResourceKey()` returns `IEncodedString` (for XSS protection)
+- `IEncodedString` does not have `.Replace()` method
+- `.ToString()` converts it to `string` which has `.Replace()`
+- After each `.Replace()`, you get a `string`, but must call `.ToString()` again before the next `.Replace()` for consistency
+- Finally wrap with `@HtmlOf()` to safely render the HTML content
 
 
 
