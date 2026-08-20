@@ -132,6 +132,11 @@ ResourceKey(String resourceFileKey, String lang = "", String resourceExtension =
 - **Do NOT create a SqlReports.Designer.cs file**: And prompt/ask if I want it deleted if one exists.
 
 
+### Formatting
+
+Never use string interpolation ($""), string.Format(), composite formatting ({0}, {1}), templating, or placeholder/replacement mechanisms. When variables must be inserted into a string, use traditional C# concatenation with +, e.g. "Hello " + name + ".".
+
+
 
 
 
