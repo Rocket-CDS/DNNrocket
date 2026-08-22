@@ -16,8 +16,7 @@ The Razor templates use a `ResourceKey()` method to display localized text conte
 
 3. **French Resource Files**: `<FileName>.fr-FR.resx`
  - Must contain all resource keys from English file
-   - Leave values empty (no translation required)
- - User will handle translations
+   - Do the translations in context of the project file being changes.
 
 ### Shared Rsource File
 The file called DNNrocket.resx is a shared file from another project, that is always applied.  You should never alter the DNNrocket.resx file and any Resource Keys that use it should be unaltered by you. 
