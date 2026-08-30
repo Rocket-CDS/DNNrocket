@@ -247,22 +247,25 @@ namespace DNNrocketAPI.ApiControllers
             // get all form data (drop the ones we already processed) 
             foreach (string key in context.Request.Form.AllKeys)
             {
-                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson" && key.ToLower() != "remote")
+                if (key != null)
                 {
-                    var keyValue = DNNrocketUtils.RequestParam(context, key);
-                    // NOTE: This does NOT work with an XML format data. (For XML use GeneralUtils.Base64Encode() and GeneralUtils.Base64Decode() in the data node value)
-                    // [TODO: Allow XML format]
-                    paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
-                }
-                if (key.ToLower() == "remote")
-                {
-                    // add any remote data to paramsInfo
-                    var keyValue = DNNrocketUtils.RequestParam(context, key);
-                    var remoteData = new SimplisityInfo();
-                    var remote = HttpUtility.UrlDecode(keyValue);
-                    remote = GeneralUtils.Base64Decode(GeneralUtils.DeCode(remote)); // string uses decimal code, so it's not changed during post.
-                    remoteData.FromXmlItem(remote);
-                    paramInfo.AddXmlNode(remoteData.XMLData, "genxml/remote", "genxml");
+                    if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson" && key.ToLower() != "remote")
+                    {
+                        var keyValue = DNNrocketUtils.RequestParam(context, key);
+                        // NOTE: This does NOT work with an XML format data. (For XML use GeneralUtils.Base64Encode() and GeneralUtils.Base64Decode() in the data node value)
+                        // [TODO: Allow XML format]
+                        paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
+                    }
+                    if (key.ToLower() == "remote")
+                    {
+                        // add any remote data to paramsInfo
+                        var keyValue = DNNrocketUtils.RequestParam(context, key);
+                        var remoteData = new SimplisityInfo();
+                        var remote = HttpUtility.UrlDecode(keyValue);
+                        remote = GeneralUtils.Base64Decode(GeneralUtils.DeCode(remote)); // string uses decimal code, so it's not changed during post.
+                        remoteData.FromXmlItem(remote);
+                        paramInfo.AddXmlNode(remoteData.XMLData, "genxml/remote", "genxml");
+                    }
                 }
             }
 
