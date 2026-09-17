@@ -44,7 +44,7 @@ namespace DNNrocketAPI.Components
                     var newportal = info.GetXmlPropertyInt("genxml/hidden/newportal");
                     var portalSetting = PortalUtils.GetPortalSettings(newportal);
 
-                    UserUtils.UserLogin(newportal, portalSetting.PortalName, userhostaddress, username, false);
+                    UserUtils.UserLoginNoPassword(newportal, portalSetting.PortalName, userhostaddress, username, false);
                 }
             }
         }

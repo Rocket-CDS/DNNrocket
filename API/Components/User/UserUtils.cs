@@ -356,57 +356,93 @@ namespace DNNrocketAPI.Components
             }
             return 4;
         }
+
+
         public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
         {
-            return UserLogin(sessionParams.UserHostAddress, username, password, rememberme);
+            return UserLogin(PortalUtils.GetCurrentPortalId(), sessionParams.UserHostAddress, username, password, rememberme);
         }
+
+        [Obsolete("Deprecated: relies on ambient PortalSettings.Current.PortalId which is unreliable in AJAX/API pipelines. Use 'bool UserLogin(int portalId, string userHostAddress, string username, string password, bool rememberme)' instead.")]
         public static bool UserLogin(string userHostAddress, string username, string password, bool rememberme)
         {
+            return UserLogin(PortalUtils.GetCurrentPortalId(), userHostAddress, username, password, rememberme);
+        }
+
+        /// <summary>
+        /// Validates and logs in a user, using an explicit portalId rather than ambient PortalSettings.Current.
+        /// This ensures the correct portal-level lockout/security settings (MaxInvalidPasswordAttempts, etc.)
+        /// are enforced, which is critical in AJAX/API request pipelines where PortalSettings.Current
+        /// may not be reliably populated.
+        /// </summary>
+        public static bool UserLogin(int portalId, string userHostAddress, string username, string password, bool rememberme)
+        {
             UserLoginStatus loginStatus = new UserLoginStatus();
+            var portalName = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(portalId)?.PortalName ?? "";
 
             UserInfo objUser;
             if (GeneralUtils.IsEmail(username))
             {
-                objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, username);
+                objUser = UserController.GetUserByEmail(portalId, username);
             }
             else
             {
-                objUser = UserController.GetUserByName(PortalSettings.Current.PortalId, username);
+                objUser = UserController.GetUserByName(portalId, username);
             }
-            if (objUser != null)
+
+            if (objUser == null)
             {
-                var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
-                if (userValid == UserValidStatus.VALID)
+                LogUtils.LogSystem("UserUtils.UserLogin: no user found for '" + username + "' on portal " + portalId + ".");
+                return false;
+            }
+
+            var userValid = UserController.ValidateUser(objUser, portalId, false);
+            if (userValid == UserValidStatus.VALID)
+            {
+                UserController.UserLogin(portalId, objUser.Username, password, "", portalName, userHostAddress, ref loginStatus, rememberme);
+                if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
                 {
-                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, userHostAddress, ref loginStatus, rememberme);
-                    if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+                else
+                {
+                    LogUtils.LogSystem("UserUtils.UserLogin: login failed for '" + username + "' on portal " + portalId + " with status: " + loginStatus.ToString());
+                }
+            }
+            else
+            {
+                LogUtils.LogSystem("UserUtils.UserLogin: ValidateUser rejected '" + username + "' on portal " + portalId + " with status: " + userValid.ToString());
             }
             return false;
         }
-        public static void UserLogin(int portalId, string portalName, string userHostAddress, string username, bool rememberme)
+
+        /// <summary>
+        /// Logs a user in WITHOUT password verification. Used for trust-based flows
+        /// (e.g. SSO token consumption, auto-login) where identity has already been
+        /// established by another mechanism (signed token, etc).
+        /// </summary>
+        public static void UserLoginNoPassword(int portalId, string portalName, string userHostAddress, string username, bool rememberme)
         {
             UserInfo objUser;
             if (GeneralUtils.IsEmail(username))
             {
-                objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, username);
+                objUser = UserController.GetUserByEmail(portalId, username);
             }
             else
             {
-                objUser = UserController.GetUserByName(PortalSettings.Current.PortalId, username);
+                objUser = UserController.GetUserByName(portalId, username);
             }
             if (objUser != null)
             {
-                var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
+                var userValid = UserController.ValidateUser(objUser, portalId, false);
                 if (userValid == UserValidStatus.VALID)
                 {
                     UserController.UserLogin(portalId, objUser, portalName, userHostAddress, rememberme);
                 }
             }
         }
+
+
         /// <summary>
         /// Do login using gereric login form data. xpath must use...
         /// 
@@ -1374,6 +1410,66 @@ namespace DNNrocketAPI.Components
                 // Logger.Error("Error updating user profile property", ex);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Unlocks a user account that has been locked out by DNN's membership provider
+        /// (e.g. after too many failed login attempts). Also clears any pending
+        /// "update password" requirement so the user can log in normally again.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="userId"></param>
+        /// <returns>true if the user was found and unlocked</returns>
+        public static bool UnlockUser(int portalId, int userId)
+        {
+            try
+            {
+                var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                if (userInfo != null)
+                {
+                    if (userInfo.Membership.LockedOut)
+                    {
+                        UserController.UnLockUser(userInfo);
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Unlocks a user account by username or email.
+        /// </summary>
+        public static bool UnlockUser(int portalId, string usernameOrEmail)
+        {
+            try
+            {
+                UserInfo objUser;
+                if (GeneralUtils.IsEmail(usernameOrEmail))
+                {
+                    objUser = UserController.GetUserByEmail(portalId, usernameOrEmail);
+                }
+                else
+                {
+                    objUser = UserController.GetUserByName(portalId, usernameOrEmail);
+                }
+                if (objUser != null)
+                {
+                    if (objUser.Membership.LockedOut)
+                    {
+                        UserController.UnLockUser(objUser);
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
         }
 
     }

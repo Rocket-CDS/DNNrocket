@@ -321,12 +321,17 @@
     "type": "csharp-method",
     "name": "UserLogin",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool UserLogin(string userHostAddress, string username, string password, bool rememberme)",
+    "description": "Validates and logs in a user, using an explicit portalId rather than ambient PortalSettings.Current. This ensures the correct portal-level lockout/security settings (MaxInvalidPasswordAttempts, etc.) are enforced, which is critical in AJAX/API request pipelines where PortalSettings.Current may not be reliably populated.",
+    "signature": "public static bool UserLogin(int portalId, string userHostAddress, string username, string password, bool rememberme)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
     "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
       {
         "name": "userHostAddress",
         "type": "string",
@@ -352,10 +357,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "UserLogin",
+    "name": "UserLoginNoPassword",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void UserLogin(int portalId, string portalName, string userHostAddress, string username, bool rememberme)",
+    "description": "Logs a user in WITHOUT password verification. Used for trust-based flows (e.g. SSO token consumption, auto-login) where identity has already been established by another mechanism (signed token, etc).",
+    "signature": "public static void UserLoginNoPassword(int portalId, string portalName, string userHostAddress, string username, bool rememberme)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -1545,6 +1550,52 @@
         "name": "visibilityAllUsers",
         "type": "bool",
         "description": "The visibility mode for the property if it needs to be created (defaults to AdminOnly). True = All Users."
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UnlockUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Unlocks a user account that has been locked out by DNN\u0027s membership provider (e.g. after too many failed login attempts). Also clears any pending \u0022update password\u0022 requirement so the user can log in normally again.",
+    "signature": "public static bool UnlockUser(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UnlockUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Unlocks a user account by username or email.",
+    "signature": "public static bool UnlockUser(int portalId, string usernameOrEmail)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "usernameOrEmail",
+        "type": "string",
+        "description": ""
       }
     ],
     "returns": "bool"
