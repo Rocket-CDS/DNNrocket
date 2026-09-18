@@ -63,6 +63,34 @@ ResourceKey(String resourceFileKey, String lang = "", String resourceExtension =
 @ResourceKey("TransportEstimate.calculationerror")
 ```
 
+### CRITICAL WARNING: Never Pass Fallback/Display Text as the Second Argument
+
+The second parameter of `ResourceKey()` is **`lang`** (a language code), **NOT** a fallback/default display string.
+
+**This mistake has been made repeatedly. Do not repeat it.**
+
+#### ❌ WRONG - passing display text as `lang`:
+```razor
+@ResourceKey("RocketIntraStripe.customer", "Customer")
+@ResourceKey("RocketIntraStripe.expires", "Expires")
+```
+This causes runtime errors such as:
+```
+Caractères non conformes dans le chemin d'accès. templateKey='...'
+```
+because the arbitrary text gets used where a language code (or path segment) is expected.
+
+#### ✅ CORRECT - single-argument call, no fallback text:
+```razor
+@ResourceKey("RocketIntraStripe.customer")
+@ResourceKey("RocketIntraStripe.expires")
+```
+
+#### Rule
+- **Always call `ResourceKey()` with only the `resourceFileKey` argument** unless you have an explicit, valid language code (e.g. `"fr-FR"`) to pass — never pass English fallback/placeholder text.
+- If a resx key doesn't have a value yet, that is fine — create/populate the key in the `.resx` file itself. Do NOT try to work around missing values by passing a second string argument to `ResourceKey()`.
+- Before adding any `ResourceKey()` call with more than one argument, verify the second argument is a real language code, not display text.
+
 ### Implementation Protocol
 1. **Create English .resx**: Add keys with English text values
 2. **Create French .resx**: Add same keys with empty values
