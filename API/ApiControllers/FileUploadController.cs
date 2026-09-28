@@ -26,42 +26,38 @@ namespace DNNrocketAPI.ApiControllers
         [HttpPost]
         public async Task<IHttpActionResult> Upload(HttpRequestMessage request)
         {
-            if (!UserUtils.IsSuperUser()) return NotFound();
+            if (!UserUtils.IsManager()) return NotFound();
 
             if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
             if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
 
-            if (UserUtils.IsSuperUser())
+            if (request.IsChunkUpload()) // jquery fileupload
             {
-                if (request.IsChunkUpload())
-                {
-                    var uploadFileService = new UploadFileService();
-                    UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
+                var uploadFileService = new UploadFileService();
+                UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
 
-                    if (uploadResult.IsComplete)
-                    {
-                        // do other stuff here after file upload complete    
-                        return Ok();
-                    }
-
-                    return StatusCode(HttpStatusCode.Accepted);
-                }
-                else
+                if (uploadResult.IsComplete)
                 {
-                    var data = await Request.Content.ParseMultipartAsync();
-                    var userid = UserUtils.GetCurrentUserId();
-                    foreach (var f in data.Files)
-                    {
-                        if (f.Value.File.Length > 0)
-                        {
-                            var fileName = f.Value.Filename;
-                            FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + Path.GetFileNameWithoutExtension(fileName), f.Value.File);
-                        }
-                    }
+                    // do other stuff here after file upload complete    
                     return Ok();
                 }
+
+                return StatusCode(HttpStatusCode.Accepted);
             }
-            return NotFound();
+            else
+            {
+                var data = await Request.Content.ParseMultipartAsync();
+                var userid = UserUtils.GetCurrentUserId();
+                foreach (var f in data.Files)
+                {
+                    if (f.Value.File.Length > 0)
+                    {
+                        var fileName = f.Value.Filename;
+                        FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + Path.GetFileNameWithoutExtension(fileName), f.Value.File);
+                    }
+                }
+                return Ok();
+            }
         }
 
     }
