@@ -30,7 +30,7 @@ namespace DNNrocketAPI.Components
 
     public class SQLRecord
     {
-        public string ReturnValue;
+        public string ReturnValue { get; set; }
     }
     public class QueryParamsData
     {
