@@ -39,11 +39,11 @@
 <details class="clean-accordion">
 	<summary>AssignDataModel</summary>
 	<div class="token-details">
-		<p><strong>Description:</strong> Assigns and prepares the data model for Razor event templates. It calls the base class's AssignDataModel, sets up date parameters for calendar views, and populates several event lists (next events, past events, monthly events, etc.) into the SimplisityRazor model.</p>
+		<p><strong>Description:</strong> Assigns and prepares the data model for Razor event templates. It calls the base class&#39;s AssignDataModel, sets up date parameters for calendar views, and populates several event lists (next events, past events, monthly events, etc.) into the SimplisityRazor model.</p>
 		<strong>Signature</strong>
 		<pre><code>public new string AssignDataModel(SimplisityRazor sModel)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@{ AssignDataModel(Model); }</code></pre>
+		<pre><code>@AssignDataModel(sModel)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">
@@ -53,54 +53,6 @@
 		<strong>Signature</strong>
 		<pre><code>public IEncodedString RssEventUrl(int portalId, string cmd, int monthDate, int yearDate)</code></pre>
 		<strong>Example</strong>
-		<pre><code>@RssEventUrl(0, "eventsfeed", 12, 2023)</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>monthStartDate</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> The start date of the current month being viewed.</p>
-		<strong>Signature</strong>
-		<pre><code>public DateTime monthStartDate;</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>monthEndDate</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> The end date of the current month being viewed.</p>
-		<strong>Signature</strong>
-		<pre><code>public DateTime monthEndDate;</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>calMonthStartDate</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> The start date of the calendar month being displayed.</p>
-		<strong>Signature</strong>
-		<pre><code>public DateTime calMonthStartDate;</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>articleEventStartDate</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> The start date of the event for the current article.</p>
-		<strong>Signature</strong>
-		<pre><code>public DateTime articleEventStartDate;</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>articleEventEndDate</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> The end date of the event for the current article.</p>
-		<strong>Signature</strong>
-		<pre><code>public DateTime articleEventEndDate;</code></pre>
-	</div>
-</details>
-<details class="clean-accordion">
-	<summary>listUrlParams</summary>
-	<div class="token-details">
-		<p><strong>Description:</strong> An array of URL parameters for the event list.</p>
-		<strong>Signature</strong>
-		<pre><code>public string[] listUrlParams;</code></pre>
+		<pre><code>@RssEventUrl(portalId, cmd, monthDate, yearDate)</code></pre>
 	</div>
 </details>

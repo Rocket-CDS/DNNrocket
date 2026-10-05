@@ -1,22 +1,10 @@
 [
   {
     "type": "csharp-method",
-    "name": "GetCurrentUserId",
+    "name": "AddUserRole",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
-    "signature": "public static int GetCurrentUserId()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "int"
-  },
-  {
-    "type": "csharp-method",
-    "name": "RemoveUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Remove user from recyclebin (hard delete)",
-    "signature": "public static void RemoveUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)",
+    "signature": "public static void AddUserRole(int portalId, int userId, int roleId)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -32,13 +20,8 @@
         "description": ""
       },
       {
-        "name": "notify",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "deleteAdmin",
-        "type": "bool",
+        "name": "roleId",
+        "type": "int",
         "description": ""
       }
     ],
@@ -46,10 +29,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "DeleteUser",
+    "name": "AddUserRole",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Move user to recycle bin.",
-    "signature": "public static void DeleteUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)",
+    "description": "",
+    "signature": "public static void AddUserRole(int portalId, int userId, int roleId, bool notifyUser)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -65,12 +48,12 @@
         "description": ""
       },
       {
-        "name": "notify",
-        "type": "bool",
+        "name": "roleId",
+        "type": "int",
         "description": ""
       },
       {
-        "name": "deleteAdmin",
+        "name": "notifyUser",
         "type": "bool",
         "description": ""
       }
@@ -79,10 +62,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "UnDeleteUser",
+    "name": "AuthoriseUser",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
-    "signature": "public static void UnDeleteUser(int portalId, int userId)",
+    "signature": "public static void AuthoriseUser(int portalId, int userId)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -99,134 +82,6 @@
       }
     ],
     "returns": "void"
-  },
-  {
-    "type": "csharp-method",
-    "name": "SetRemovalRequest",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void SetRemovalRequest(int portalId, int userId, bool remove = true)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "remove",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetCurrentUserDisplayName",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static string GetCurrentUserDisplayName()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "string"
-  },
-  {
-    "type": "csharp-method",
-    "name": "SetCurrentUserDisplayName",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void SetCurrentUserDisplayName(string displayName)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "displayName",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetCurrentUserName",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static string GetCurrentUserName()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "string"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetCurrentUserEmail",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static string GetCurrentUserEmail()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "string"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserRoles",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static List\u003Cstring\u003E GetUserRoles(int portalid = -1, int userId = -1)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalid",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "List\u003Cstring\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ResetPass",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool ResetPass(string emailaddress, bool sendEmail)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "emailaddress",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "sendEmail",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
   },
   {
     "type": "csharp-method",
@@ -286,6 +141,72 @@
   },
   {
     "type": "csharp-method",
+    "name": "CreateUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static string CreateUser(int portalId, string username, string email, string roleName = \u0022\u0022)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "roleName",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DeleteUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Move user to recycle bin.",
+    "signature": "public static void DeleteUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "notify",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "deleteAdmin",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
+  },
+  {
+    "type": "csharp-method",
     "name": "DoLogin",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
@@ -319,82 +240,6 @@
   },
   {
     "type": "csharp-method",
-    "name": "UserLogin",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Validates and logs in a user, using an explicit portalId rather than ambient PortalSettings.Current. This ensures the correct portal-level lockout/security settings (MaxInvalidPasswordAttempts, etc.) are enforced, which is critical in AJAX/API request pipelines where PortalSettings.Current may not be reliably populated.",
-    "signature": "public static bool UserLogin(int portalId, string userHostAddress, string username, string password, bool rememberme)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userHostAddress",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "password",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "rememberme",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "UserLoginNoPassword",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Logs a user in WITHOUT password verification. Used for trust-based flows (e.g. SSO token consumption, auto-login) where identity has already been established by another mechanism (signed token, etc).",
-    "signature": "public static void UserLoginNoPassword(int portalId, string portalName, string userHostAddress, string username, bool rememberme)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "portalName",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "userHostAddress",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "rememberme",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
     "name": "DoLogin",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "Do login using gereric login form data. xpath must use...  var username = postInfo.GetXmlProperty(\u0022genxml/text/username\u0022); var password = postInfo.GetXmlProperty(\u0022genxml/hidden/password\u0022); var rememberme = postInfo.GetXmlPropertyBool(\u0022genxml/checkbox/rememberme\u0022);",
@@ -411,6 +256,776 @@
       {
         "name": "paramInfo",
         "type": "SimplisityInfo",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentUserDisplayName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentUserDisplayName()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentUserEmail",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentUserEmail()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentUserId",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static int GetCurrentUserId()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetCurrentUserName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static string GetCurrentUserName()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRoleById",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static SimplisityRecord GetRoleById(int portalId, int roleId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "roleId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "SimplisityRecord"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRoleByName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static SimplisityRecord GetRoleByName(int portalId, string roleName)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "roleName",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "SimplisityRecord"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRoles",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cint, string\u003E GetRoles(int portalId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cint, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetSuperUsers",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static List\u003CSimplisityRecord\u003E GetSuperUsers()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "List\u003CSimplisityRecord\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserData",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static UserData GetUserData(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserDataByEmail",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static UserData GetUserDataByEmail(int portalId, string email)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserDataByUsername",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static UserData GetUserDataByUsername(int portalId, string username)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserIdByEmail",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static int GetUserIdByEmail(int portalId, string email)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserIdByUserName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static int GetUserIdByUserName(int portalId, string username)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "int"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserProfileListField",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Returns the key/value pairs of a DNN profile list field (e.g. a dropdown such as \u0022Location\u0022). The list entries are looked up from the DNN Lists table using the profile property\u0027s list name.",
+    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileListField(int portalId, string fieldName)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID."
+      },
+      {
+        "name": "fieldName",
+        "type": "string",
+        "description": "The profile property name (e.g. \u0022Location\u0022)."
+      }
+    ],
+    "returns": "Dictionary\u003Cstring, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserProfileProperties",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileProperties(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cstring, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserProfileProperties",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileProperties(string userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "userId",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cstring, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUserRoles",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static List\u003Cstring\u003E GetUserRoles(int portalid = -1, int userId = -1)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalid",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003Cstring\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUsers",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Return list of users in XML SimplisityRecord.  XML Format \u0022user/email user/username user/userid user/displayname\u0022",
+    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, string inRole = \u0022\u0022)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "inRole",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003CSimplisityRecord\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUsers",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, int pageNumber, int pageSize, ref int totalRecord, bool includeDeleted = false, bool superUsersOnly = false)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "pageNumber",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "pageSize",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "totalRecord",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "includeDeleted",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "superUsersOnly",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003CSimplisityRecord\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUsers",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, string searchtext, int returnLimit = 100)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "searchtext",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "returnLimit",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003CSimplisityRecord\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetUsersUserData",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static List\u003CUserData\u003E GetUsersUserData(int portalId, string searchtext, int returnLimit = 100)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "searchtext",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "returnLimit",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "List\u003CUserData\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetValidUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static UserInfo GetValidUser(int PortalId, string username, string password)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "PortalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "UserInfo"
+  },
+  {
+    "type": "csharp-method",
+    "name": "HasModuleAccess",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Check if a user has access to a specific module",
+    "signature": "public static bool HasModuleAccess(int portalId, int userId, int moduleId, string permissionKey = \u0022VIEW\u0022)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "Portal ID"
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": "User ID to check"
+      },
+      {
+        "name": "moduleId",
+        "type": "int",
+        "description": "Module ID to check access for"
+      },
+      {
+        "name": "permissionKey",
+        "type": "string",
+        "description": "Permission key to check (\u0022VIEW\u0022, \u0022EDIT\u0022, \u0022ADMIN\u0022)"
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsAdministrator",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Boolean IsAdministrator()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "Boolean"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsAdministrator",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsAdministrator(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsAuthorised",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsAuthorised()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsAuthorised",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsAuthorised(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsClientOnly",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Boolean IsClientOnly()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "Boolean"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsEditor",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Boolean IsEditor()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "Boolean"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsInRole",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsInRole(int portalId, int userId, string role)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "role",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsInRole",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsInRole(string role)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "role",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsManager",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Boolean IsManager()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "Boolean"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsSuperUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsSuperUser(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsSuperUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsSuperUser()",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsValidUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsValidUser(int PortalId, string username)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "PortalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsValidUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsValidUser(int PortalId, string username, string password)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "PortalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "IsValidUser",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static bool IsValidUser(int portalId, int userId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userId",
+        "type": "int",
         "description": ""
       }
     ],
@@ -555,89 +1170,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "CreateUser",
+    "name": "RemoveUser",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static string CreateUser(int portalId, string username, string email, string roleName = \u0022\u0022)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "email",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "roleName",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "string"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserDataByUsername",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static UserData GetUserDataByUsername(int portalId, string username)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "UserData"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserDataByEmail",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static UserData GetUserDataByEmail(int portalId, string email)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "email",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "UserData"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserData",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static UserData GetUserData(int portalId, int userId)",
+    "description": "Remove user from recyclebin (hard delete)",
+    "signature": "public static void RemoveUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -651,28 +1187,26 @@
         "name": "userId",
         "type": "int",
         "description": ""
+      },
+      {
+        "name": "notify",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "deleteAdmin",
+        "type": "bool",
+        "description": ""
       }
     ],
-    "returns": "UserData"
+    "returns": "void"
   },
   {
     "type": "csharp-method",
-    "name": "IsAuthorised",
+    "name": "RemoveUserRole",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
-    "signature": "public static bool IsAuthorised()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsAuthorised",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsAuthorised(int portalId, int userId)",
+    "signature": "public static void RemoveUserRole(int portalId, int userId, int roleId)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -686,27 +1220,9 @@
         "name": "userId",
         "type": "int",
         "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "UnAuthoriseUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void UnAuthoriseUser(int portalId, int userId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
       },
       {
-        "name": "userId",
+        "name": "roleId",
         "type": "int",
         "description": ""
       }
@@ -715,22 +1231,40 @@
   },
   {
     "type": "csharp-method",
-    "name": "AuthoriseUser",
+    "name": "ResetPass",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
-    "signature": "public static void AuthoriseUser(int portalId, int userId)",
+    "signature": "public static bool ResetPass(string emailaddress, bool sendEmail)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
     "parameters": [
       {
-        "name": "portalId",
-        "type": "int",
+        "name": "emailaddress",
+        "type": "string",
         "description": ""
       },
       {
-        "name": "userId",
-        "type": "int",
+        "name": "sendEmail",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "SetCurrentUserDisplayName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static void SetCurrentUserDisplayName(string displayName)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "displayName",
+        "type": "string",
         "description": ""
       }
     ],
@@ -738,61 +1272,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "UpdateEmail",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Updates the user\u0027s email address and, if the portal is configured to use email as username, also updates the username to match the new email.",
-    "signature": "public static UserData UpdateEmail(int portalId, int userId, string newEmail)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": "The portal ID the user belongs to."
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": "The ID of the user to update."
-      },
-      {
-        "name": "newEmail",
-        "type": "string",
-        "description": "The new email address."
-      }
-    ],
-    "returns": "UserData"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserProfileListField",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Returns the key/value pairs of a DNN profile list field (e.g. a dropdown such as \u0022Location\u0022). The list entries are looked up from the DNN Lists table using the profile property\u0027s list name.",
-    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileListField(int portalId, string fieldName)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": "The portal ID."
-      },
-      {
-        "name": "fieldName",
-        "type": "string",
-        "description": "The profile property name (e.g. \u0022Location\u0022)."
-      }
-    ],
-    "returns": "Dictionary\u003Cstring, string\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserProfileProperties",
+    "name": "SetRemovalRequest",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
-    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileProperties(int portalId, int userId)",
+    "signature": "public static void SetRemovalRequest(int portalId, int userId, bool remove = true)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -806,27 +1289,14 @@
         "name": "userId",
         "type": "int",
         "description": ""
-      }
-    ],
-    "returns": "Dictionary\u003Cstring, string\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserProfileProperties",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Dictionary\u003Cstring, string\u003E GetUserProfileProperties(string userId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
+      },
       {
-        "name": "userId",
-        "type": "string",
+        "name": "remove",
+        "type": "bool",
         "description": ""
       }
     ],
-    "returns": "Dictionary\u003Cstring, string\u003E"
+    "returns": "void"
   },
   {
     "type": "csharp-method",
@@ -881,593 +1351,6 @@
   },
   {
     "type": "csharp-method",
-    "name": "GetUserIdByUserName",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static int GetUserIdByUserName(int portalId, string username)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "int"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUsers",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Return list of users in XML SimplisityRecord.  XML Format \u0022user/email user/username user/userid user/displayname\u0022",
-    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, string inRole = \u0022\u0022)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "inRole",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "List\u003CSimplisityRecord\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUsers",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, int pageNumber, int pageSize, ref int totalRecord, bool includeDeleted = false, bool superUsersOnly = false)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "pageNumber",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "pageSize",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "totalRecord",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "includeDeleted",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "superUsersOnly",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "List\u003CSimplisityRecord\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUsers",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static List\u003CSimplisityRecord\u003E GetUsers(int portalId, string searchtext, int returnLimit = 100)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "searchtext",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "returnLimit",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "List\u003CSimplisityRecord\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUsersUserData",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static List\u003CUserData\u003E GetUsersUserData(int portalId, string searchtext, int returnLimit = 100)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "searchtext",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "returnLimit",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "List\u003CUserData\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetSuperUsers",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static List\u003CSimplisityRecord\u003E GetSuperUsers()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "List\u003CSimplisityRecord\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetUserIdByEmail",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static int GetUserIdByEmail(int portalId, string email)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "email",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "int"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsInRole",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsInRole(int portalId, int userId, string role)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "role",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsInRole",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsInRole(string role)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "role",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsSuperUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsSuperUser(int portalId, int userId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsSuperUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsSuperUser()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsClientOnly",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Boolean IsClientOnly()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "Boolean"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsManager",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Boolean IsManager()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "Boolean"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsEditor",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Boolean IsEditor()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "Boolean"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsAdministrator",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Boolean IsAdministrator()",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [],
-    "returns": "Boolean"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsAdministrator",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsAdministrator(int portalId, int userId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetValidUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static UserInfo GetValidUser(int PortalId, string username, string password)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "PortalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "password",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "UserInfo"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsValidUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsValidUser(int PortalId, string username)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "PortalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsValidUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsValidUser(int PortalId, string username, string password)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "PortalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "username",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "password",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "IsValidUser",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static bool IsValidUser(int portalId, int userId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "bool"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetRoleById",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static SimplisityRecord GetRoleById(int portalId, int roleId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "roleId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "SimplisityRecord"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetRoles",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static Dictionary\u003Cint, string\u003E GetRoles(int portalId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "Dictionary\u003Cint, string\u003E"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetRoleByName",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static SimplisityRecord GetRoleByName(int portalId, string roleName)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "roleName",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "SimplisityRecord"
-  },
-  {
-    "type": "csharp-method",
-    "name": "AddUserRole",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void AddUserRole(int portalId, int userId, int roleId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "roleId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
-    "name": "AddUserRole",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void AddUserRole(int portalId, int userId, int roleId, bool notifyUser)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "roleId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "notifyUser",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
-    "name": "RemoveUserRole",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "",
-    "signature": "public static void RemoveUserRole(int portalId, int userId, int roleId)",
-    "classname": "UserUtils",
-    "isstatic": "true",
-    "namespace": "DNNrocketAPI.Components",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "userId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "roleId",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "void"
-  },
-  {
-    "type": "csharp-method",
     "name": "SignOut",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
@@ -1480,10 +1363,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "HasModuleAccess",
+    "name": "UnAuthoriseUser",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Check if a user has access to a specific module",
-    "signature": "public static bool HasModuleAccess(int portalId, int userId, int moduleId, string permissionKey = \u0022VIEW\u0022)",
+    "description": "",
+    "signature": "public static void UnAuthoriseUser(int portalId, int userId)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
@@ -1491,68 +1374,38 @@
       {
         "name": "portalId",
         "type": "int",
-        "description": "Portal ID"
+        "description": ""
       },
       {
         "name": "userId",
         "type": "int",
-        "description": "User ID to check"
-      },
-      {
-        "name": "moduleId",
-        "type": "int",
-        "description": "Module ID to check access for"
-      },
-      {
-        "name": "permissionKey",
-        "type": "string",
-        "description": "Permission key to check (\u0022VIEW\u0022, \u0022EDIT\u0022, \u0022ADMIN\u0022)"
+        "description": ""
       }
     ],
-    "returns": "bool"
+    "returns": "void"
   },
   {
     "type": "csharp-method",
-    "name": "UpdateOrCreateUserProfileProperty",
+    "name": "UnDeleteUser",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
-    "description": "Updates or creates a DNN user profile property for a user in the specified portal. If the property definition doesn\u0027t exist in the portal, it will be created.",
-    "signature": "public static bool UpdateOrCreateUserProfileProperty(int userId, string key, string value, int portalId = 0, string category = \u0022Custom\u0022, bool visibilityAllUsers = false)",
+    "description": "",
+    "signature": "public static void UnDeleteUser(int portalId, int userId)",
     "classname": "UserUtils",
     "isstatic": "true",
     "namespace": "DNNrocketAPI.Components",
     "parameters": [
       {
-        "name": "userId",
-        "type": "int",
-        "description": "The user ID to update the profile for."
-      },
-      {
-        "name": "key",
-        "type": "string",
-        "description": "The profile property name/key."
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "description": "The value to set for the profile property."
-      },
-      {
         "name": "portalId",
         "type": "int",
-        "description": "The portal ID where the user profile should be updated (defaults to 0)."
+        "description": ""
       },
       {
-        "name": "category",
-        "type": "string",
-        "description": "The category for the profile property if it needs to be created (defaults to \u0022Custom\u0022)."
-      },
-      {
-        "name": "visibilityAllUsers",
-        "type": "bool",
-        "description": "The visibility mode for the property if it needs to be created (defaults to AdminOnly). True = All Users."
+        "name": "userId",
+        "type": "int",
+        "description": ""
       }
     ],
-    "returns": "bool"
+    "returns": "void"
   },
   {
     "type": "csharp-method",
@@ -1599,5 +1452,152 @@
       }
     ],
     "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UpdateEmail",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Updates the user\u0027s email address and, if the portal is configured to use email as username, also updates the username to match the new email.",
+    "signature": "public static UserData UpdateEmail(int portalId, int userId, string newEmail)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID the user belongs to."
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": "The ID of the user to update."
+      },
+      {
+        "name": "newEmail",
+        "type": "string",
+        "description": "The new email address."
+      }
+    ],
+    "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UpdateOrCreateUserProfileProperty",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Updates or creates a DNN user profile property for a user in the specified portal. If the property definition doesn\u0027t exist in the portal, it will be created.",
+    "signature": "public static bool UpdateOrCreateUserProfileProperty(int userId, string key, string value, int portalId = 0, string category = \u0022Custom\u0022, bool visibilityAllUsers = false)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "userId",
+        "type": "int",
+        "description": "The user ID to update the profile for."
+      },
+      {
+        "name": "key",
+        "type": "string",
+        "description": "The profile property name/key."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "description": "The value to set for the profile property."
+      },
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID where the user profile should be updated (defaults to 0)."
+      },
+      {
+        "name": "category",
+        "type": "string",
+        "description": "The category for the profile property if it needs to be created (defaults to \u0022Custom\u0022)."
+      },
+      {
+        "name": "visibilityAllUsers",
+        "type": "bool",
+        "description": "The visibility mode for the property if it needs to be created (defaults to AdminOnly). True = All Users."
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UserLogin",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Validates and logs in a user, using an explicit portalId rather than ambient PortalSettings.Current. This ensures the correct portal-level lockout/security settings (MaxInvalidPasswordAttempts, etc.) are enforced, which is critical in AJAX/API request pipelines where PortalSettings.Current may not be reliably populated.",
+    "signature": "public static bool UserLogin(int portalId, string userHostAddress, string username, string password, bool rememberme)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "userHostAddress",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "rememberme",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "bool"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UserLoginNoPassword",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Logs a user in WITHOUT password verification. Used for trust-based flows (e.g. SSO token consumption, auto-login) where identity has already been established by another mechanism (signed token, etc).",
+    "signature": "public static void UserLoginNoPassword(int portalId, string portalName, string userHostAddress, string username, bool rememberme)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "portalName",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "userHostAddress",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "rememberme",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
   }
 ]

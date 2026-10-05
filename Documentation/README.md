@@ -1,4 +1,4 @@
-# DNNrocket Documentation
+﻿# DNNrocket Documentation
 
 This folder contains the DocFx documentation for the DNNrocket project and all associated modules.
 
@@ -19,15 +19,17 @@ dotnet tool install -g docfx
 ### Option 3: Download Manually
 Download from [DocFx Releases](https://github.com/dotnet/docfx/releases) and add to your PATH.
 
-## Populating razortoken .md Documentation Files
+## Populating razortoken .json and .md Documentation Files
 
 > **For humans and AI:** This section explains how the files in `Documentation\razortokens\` are created and kept up to date.
 
-Each `.md` file in `Documentation\razortokens\` (e.g. `UserUtils.md`, `PortalUtils.md`) documents all the public methods in a corresponding C# utility class. The process is two steps:
+Each `.json` and `.md` file in `Documentation\razortokens\` (e.g. `UserUtils.json`/`UserUtils.md`, `PortalUtils.json`/`PortalUtils.md`) documents all the public methods in a corresponding C# utility class.
+
+> **Note:** As of the current build pipeline, **both** the `.json` and the `.md` files are generated **automatically** by `DNNpackager.exe` whenever a package is built in **Release mode**. You do not need to manually run AI prompts to regenerate these files during a normal release build — `DNNpackager.exe` parses the source, writes the `.json` summary, and then generates the matching `.md` accordion documentation file in the same step. The manual steps below are kept for reference (e.g. for one-off regeneration, troubleshooting, or when adding support for a new source file outside of the packager's automated flow).
 
 ### Step 1 — Generate the `.json` file from C# source
 
-The `.dnnpack` config file has a `<json>` section that maps a C# source file to an output `.json` file. Running the package build process parses the source and writes a structured JSON summary of every public, non-obsolete method.
+The `.dnnpack` config file has a `<json>` section that maps a C# source file to an output `.json` file. Building the package in Release mode (via `DNNpackager.exe`) parses the source and writes a structured JSON summary of every public, non-obsolete method.
 
 Example `.dnnpack` config entry:
 ```xml
@@ -41,9 +43,11 @@ Example `.dnnpack` config entry:
 
 Each JSON entry has: `name`, `signature`, `description`, `parameters` (name + type + description), and `returns`.
 
-### Step 2 — Generate the `.md` file from the `.json` file (using AI)
+### Step 2 — Generate the `.md` file from the `.json` file
 
-Once the `.json` file exists, open it and ask AI (GitHub Copilot or similar) to:
+`DNNpackager.exe` automatically generates the matching `.md` file for each `.json` file produced in Step 1, immediately after the `.json` file is written, as part of the same Release-mode build. The `.md` file uses the same HTML accordion format described below.
+
+If you need to regenerate or create a `.md` file manually (for example, outside of a packager build), open the `.json` file and ask AI (GitHub Copilot or similar) to:
 
 > "Generate a `PortalUtils.md` documentation file for the `razortokens` folder using the same HTML accordion format as `UserUtils.md`, based on the entries in `PortalUtils.json`. Infer a plain-English description for each method from its name and parameters where the `description` field in the JSON is empty."
 
@@ -56,6 +60,7 @@ The resulting `.md` uses `<details class="clean-accordion">` HTML blocks (the CS
 - The `<div class="token-details">` contains: **Description**, **Signature** (in a `<pre><code>` block), and optionally **Parameters** (as a `<ul>`).
 - Overloaded methods should have a disambiguating suffix in the `<summary>`, e.g. `LoginTabId (by portal ID)` vs `LoginTabId (current portal)`.
 - Descriptions with empty `""` values in the JSON should be inferred by AI from the method name and context.
+- These same rules apply to the `.md` files that `DNNpackager.exe` generates automatically in Release mode.
 
 ## Build JSON for intellisense
 

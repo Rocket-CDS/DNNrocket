@@ -24,10 +24,125 @@
   },
   {
     "type": "csharp-method",
-    "name": "DropDownLanguageList",
+    "name": "ButtonIcon",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of enabled languages for the portal, with flags.",
-    "signature": "public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
+    "description": "Renders a button with only an icon, using the button text as the title attribute for accessibility.",
+    "signature": "public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "buttontype",
+        "type": "ButtonTypes",
+        "description": ""
+      },
+      {
+        "name": "lang",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ButtonIconText",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a button with an icon followed by text, based on a button type.",
+    "signature": "public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "buttontype",
+        "type": "ButtonTypes",
+        "description": ""
+      },
+      {
+        "name": "lang",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ButtonText",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a button with an icon followed by text.",
+    "signature": "public IEncodedString ButtonText(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "buttontype",
+        "type": "ButtonTypes",
+        "description": ""
+      },
+      {
+        "name": "lang",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ButtonTextIcon",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a button with text followed by an icon, based on a button type.",
+    "signature": "public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "buttontype",
+        "type": "ButtonTypes",
+        "description": ""
+      },
+      {
+        "name": "lang",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "CheckBoxRowECOMode",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Creates a checkbox for ECOMode in the settings of a module. Creates a checkbox for ECOMode in the settings of a module.",
+    "signature": "public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "rowData",
+        "type": "SimplisityInfo",
+        "description": "The row data."
+      },
+      {
+        "name": "defaultValue",
+        "type": "bool",
+        "description": "Default Value"
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "CKEditor4legacy",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Legacy CKEditor 4 implementation. Consider using @Editor() instead. Legacy CKEditor 4 implementation. Consider using @Editor() instead.",
+    "signature": "public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = \u0022\u0022, string langauge = \u0022\u0022, bool coded = false, string filename = \u0022ckeditor4startup1.js\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
@@ -39,17 +154,7 @@
       },
       {
         "name": "xpath",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "defaultValue",
-        "type": "String",
+        "type": "string",
         "description": ""
       },
       {
@@ -66,16 +171,125 @@
         "name": "listname",
         "type": "string",
         "description": ""
+      },
+      {
+        "name": "langauge",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "coded",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "filename",
+        "type": "string",
+        "description": ""
       }
     ],
     "returns": "IEncodedString"
   },
   {
     "type": "csharp-method",
-    "name": "DropDownCurrencyList",
+    "name": "DataSourceList",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of available currencies.",
-    "signature": "public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
+    "description": "Renders a dropdown list of data sources (MODULEPARAMS) for a given system key.",
+    "signature": "public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = \u0022\u0022, bool allowEmpty = true, bool localized = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "info",
+        "type": "SimplisityInfo",
+        "description": ""
+      },
+      {
+        "name": "systemkey",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "xpath",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "attributes",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "allowEmpty",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DisplayEngineFlag",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Displays a flag image from a remote engine URL for a given culture code.",
+    "signature": "public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "engineUrl",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "classvalues",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DisplayFlag",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Displays a flag image for a given culture code, if the image file exists.",
+    "signature": "public IEncodedString DisplayFlag(string cultureCode, string classvalues = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "classvalues",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DropDownCountryCodeList",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a dropdown list of country codes.",
+    "signature": "public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
@@ -168,10 +382,58 @@
   },
   {
     "type": "csharp-method",
-    "name": "DropDownCountryCodeList",
+    "name": "DropDownCurrencyList",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of country codes.",
-    "signature": "public IEncodedString DropDownCountryCodeList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
+    "description": "Renders a dropdown list of available currencies.",
+    "signature": "public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "info",
+        "type": "SimplisityInfo",
+        "description": ""
+      },
+      {
+        "name": "xpath",
+        "type": "String",
+        "description": ""
+      },
+      {
+        "name": "attributes",
+        "type": "String",
+        "description": ""
+      },
+      {
+        "name": "defaultValue",
+        "type": "String",
+        "description": ""
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "row",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "listname",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "DropDownLanguageList",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a dropdown list of enabled languages for the portal, with flags.",
+    "signature": "public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, String defaultValue = \u0022\u0022, bool localized = false, int row = 0, string listname = \u0022\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
@@ -264,21 +526,133 @@
   },
   {
     "type": "csharp-method",
-    "name": "ResourceCSV",
+    "name": "EditFlag",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Output CSV list of resx values. \u003Cbr/\u003E @ResourceCSV(\u0022Resx File Name\u0022, \u0022csv list of resx file keys\u0022) Example:\u003Cbr/\u003E @ResourceCSV(\u0022RocketIntra\u0022, \u0022test1,test2,test3\u0022) Output CSV list of resx values. Example: @ResourceCSV(\u0022RocketIntra\u0022, \u0022test1,test2,test3\u0022)",
-    "signature": "public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = \u0022\u0022, string resourceExtension = \u0022Text\u0022)",
+    "description": "Displays the flag image for the current editing culture code from session parameters.",
+    "signature": "public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = \u0022\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "resourceFileKey",
-        "type": "String",
+        "name": "sessionParams",
+        "type": "SessionParams",
         "description": ""
       },
       {
-        "name": "keyListCSV",
+        "name": "classvalues",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "Editor",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a rich text editor (defaulting to Jodit). The specific editor template can be configured in the portal settings or specified directly.",
+    "signature": "public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = \u0022\u0022, string editorRazorTemplate = \u0022EditorJoditDefault.cshtml\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "info",
+        "type": "SimplisityInfo",
+        "description": ""
+      },
+      {
+        "name": "xpath",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "model",
+        "type": "SimplisityRazor",
+        "description": ""
+      },
+      {
+        "name": "row",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "listname",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "editorRazorTemplate",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetTabUrlByGuid",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Gets the URL for a tab by its unique GUID.",
+    "signature": "public IEncodedString GetTabUrlByGuid(String tabguid)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "tabguid",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetTabUrlByGuid",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString GetTabUrlByGuid(SimplisityInfo info, String xpath)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "info",
+        "type": "SimplisityInfo",
+        "description": ""
+      },
+      {
+        "name": "xpath",
+        "type": "String",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetTreeTabList",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Generates a tree-structured HTML list of portal tabs with checkboxes for selection.",
+    "signature": "public IEncodedString GetTreeTabList(int portalId, List\u003Cint\u003E selectedTabIdList, string treeviewId, string lang = \u0022\u0022, string attributes = \u0022\u0022, bool showAllTabs = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "selectedTabIdList",
+        "type": "List\u003Cint\u003E",
+        "description": ""
+      },
+      {
+        "name": "treeviewId",
         "type": "string",
         "description": ""
       },
@@ -288,7 +662,73 @@
         "description": ""
       },
       {
-        "name": "resourceExtension",
+        "name": "attributes",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "showAllTabs",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ImageUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "ImageUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = \u0022\u0022)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "imgType",
         "type": "string",
         "description": ""
       }
@@ -297,22 +737,37 @@
   },
   {
     "type": "csharp-method",
-    "name": "ButtonTextIcon",
+    "name": "ImageUrl",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a button with text followed by an icon, based on a button type.",
-    "signature": "public IEncodedString ButtonTextIcon(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "description": "",
+    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = \u0022\u0022, bool cropCenter = true)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "buttontype",
-        "type": "ButtonTypes",
+        "name": "url",
+        "type": "string",
         "description": ""
       },
       {
-        "name": "lang",
-        "type": "String",
+        "name": "width",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "imgType",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "cropCenter",
+        "type": "bool",
         "description": ""
       }
     ],
@@ -320,22 +775,42 @@
   },
   {
     "type": "csharp-method",
-    "name": "ButtonIconText",
+    "name": "ImageUrl",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a button with an icon followed by text, based on a button type.",
-    "signature": "public IEncodedString ButtonIconText(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "description": "Display Thumbnail Image  - DEFAULT RULE: PNG will always output as PNG all other supported image formats will output as WEBP. note: The default rule can be overwritten is the \u0022imgtype\u0022 is passed. default rule set by FMC on 9/1/2024  - IMPORTANT: If you need to delete the image file you MUST remove the cache first. The cache holds a link to the locked image file and must be disposed. use: DNNrocketUtils.ClearThumbnailLock(); Display Thumbnail Image. Creates and returns a URL for a resized version of an image. Supports various output formats and cropping. By default, PNGs remain PNGs, and other formats are converted to WEBP. The cache holds a lock on the image file, so use DNNrocketUtils.ClearThumbnailLock() before deleting the original image.",
+    "signature": "public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "buttontype",
-        "type": "ButtonTypes",
+        "name": "engineUrl",
+        "type": "string",
+        "description": "Domain URL, used to get full URL image path."
+      },
+      {
+        "name": "imgRelPath",
+        "type": "string",
         "description": ""
       },
       {
-        "name": "lang",
-        "type": "String",
+        "name": "width",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "imgType",
+        "type": "string",
+        "description": "Defines outpupt type: empty,png,jpg. Default = webp"
+      },
+      {
+        "name": "cropCenter",
+        "type": "bool",
         "description": ""
       }
     ],
@@ -343,22 +818,17 @@
   },
   {
     "type": "csharp-method",
-    "name": "ButtonText",
+    "name": "InjectHiddenFieldData",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a button with an icon followed by text.",
-    "signature": "public IEncodedString ButtonText(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "description": "Add all genxml/hidden/* fields to the template. Renders all nodes under \u0027genxml/hidden/*\u0027 as hidden input fields in the HTML. This is useful for passing data from the model to client-side scripts.",
+    "signature": "public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "buttontype",
-        "type": "ButtonTypes",
-        "description": ""
-      },
-      {
-        "name": "lang",
-        "type": "String",
+        "name": "sInfo",
+        "type": "SimplisityInfo",
         "description": ""
       }
     ],
@@ -366,22 +836,37 @@
   },
   {
     "type": "csharp-method",
-    "name": "ButtonIcon",
+    "name": "LinkInternalUrl",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a button with only an icon, using the button text as the title attribute for accessibility.",
-    "signature": "public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = \u0022\u0022)",
+    "description": "Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters. Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters.",
+    "signature": "public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "buttontype",
-        "type": "ButtonTypes",
+        "name": "portalid",
+        "type": "int",
         "description": ""
       },
       {
-        "name": "lang",
-        "type": "String",
+        "name": "tabid",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "cultureCode",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "portalSettings",
+        "type": "PortalSettings",
+        "description": ""
+      },
+      {
+        "name": "extraparams",
+        "type": "string[]",
         "description": ""
       }
     ],
@@ -389,32 +874,37 @@
   },
   {
     "type": "csharp-method",
-    "name": "ResourceKeyMod",
+    "name": "LinkPageURL",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Gets a resource string, automatically prepending the key with a module reference and an underscore.",
-    "signature": "public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
+    "description": "Creates an anchor tag linking to an internal DNN page. The tab ID is read from a SimplisityInfo field.",
+    "signature": "public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = \u0022\u0022, string attributes = \u0022\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "moduleRef",
-        "type": "String",
+        "name": "info",
+        "type": "SimplisityInfo",
         "description": ""
       },
       {
-        "name": "resourceFileKey",
-        "type": "String",
+        "name": "xpath",
+        "type": "string",
         "description": ""
       },
       {
-        "name": "lang",
-        "type": "String",
+        "name": "openInNewWindow",
+        "type": "bool",
         "description": ""
       },
       {
-        "name": "resourceExtension",
-        "type": "String",
+        "name": "text",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "attributes",
+        "type": "string",
         "description": ""
       }
     ],
@@ -422,27 +912,37 @@
   },
   {
     "type": "csharp-method",
-    "name": "ResourceKey",
+    "name": "LinkURL",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Gets a resource string from the resource paths previously added via AddProcessDataResx.",
-    "signature": "public IEncodedString ResourceKey(String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
+    "description": "Creates an anchor tag for a URL stored in a SimplisityInfo field. Automatically handles adding \u0027https://\u0027 if missing.",
+    "signature": "public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = \u0022\u0022, string attributes = \u0022\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "resourceFileKey",
-        "type": "String",
+        "name": "info",
+        "type": "SimplisityInfo",
         "description": ""
       },
       {
-        "name": "lang",
-        "type": "String",
+        "name": "xpath",
+        "type": "string",
         "description": ""
       },
       {
-        "name": "resourceExtension",
-        "type": "String",
+        "name": "openInNewWindow",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "text",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "attributes",
+        "type": "string",
         "description": ""
       }
     ],
@@ -450,27 +950,235 @@
   },
   {
     "type": "csharp-method",
-    "name": "ResourceKeyJS",
+    "name": "ModSelectList",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Gets a resource string and escapes single quotes for safe use within JavaScript code.",
-    "signature": "public IEncodedString ResourceKeyJS(String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
+    "description": "Renders a dropdown list of modules for a given portal, showing module references.",
+    "signature": "public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = \u0022\u0022, bool addEmpty = true )",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "resourceFileKey",
+        "name": "info",
+        "type": "SimplisityInfo",
+        "description": ""
+      },
+      {
+        "name": "xpath",
         "type": "String",
         "description": ""
       },
       {
-        "name": "lang",
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "attributes",
         "type": "String",
         "description": ""
       },
       {
-        "name": "resourceExtension",
-        "type": "String",
+        "name": "addEmpty",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderDocumentSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a document selection interface.",
+    "signature": "public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "systemKey",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "docFolderRel",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderDocumentSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString RenderDocumentSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "moduleid",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "systemKey",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderDocumentSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString RenderDocumentSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "moduleParams",
+        "type": "ModuleParams",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderImageSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders an image selection interface.",
+    "signature": "public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "systemKey",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "imageFolderRel",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderImageSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString RenderImageSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "moduleid",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "systemKey",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderImageSelect",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "",
+    "signature": "public IEncodedString RenderImageSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "moduleParams",
+        "type": "ModuleParams",
+        "description": ""
+      },
+      {
+        "name": "singleselect",
+        "type": "bool",
+        "description": ""
+      },
+      {
+        "name": "autoreturn",
+        "type": "bool",
         "description": ""
       }
     ],
@@ -527,6 +1235,34 @@
       {
         "name": "appThemeSystem",
         "type": "AppThemeSystemLimpet",
+        "description": ""
+      },
+      {
+        "name": "model",
+        "type": "SimplisityRazor",
+        "description": ""
+      }
+    ],
+    "returns": "IEncodedString"
+  },
+  {
+    "type": "csharp-method",
+    "name": "RenderPlugin",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
+    "description": "Renders a plugin based on its registered interface key. The \u0027systemdata\u0027 object must be available in the model.",
+    "signature": "public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)",
+    "classname": "DNNrocketTokens",
+    "isstatic": "false",
+    "namespace": "DNNrocketAPI.render",
+    "parameters": [
+      {
+        "name": "interfaceKey",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "cmd",
+        "type": "string",
         "description": ""
       },
       {
@@ -803,34 +1539,6 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderPlugin",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a plugin based on its registered interface key. The \u0027systemdata\u0027 object must be available in the model.",
-    "signature": "public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "interfaceKey",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "cmd",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "model",
-        "type": "SimplisityRazor",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
     "name": "RenderXml",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
     "description": "Renders a display of the XML model from a SimplisityInfo object for debugging purposes.",
@@ -854,32 +1562,32 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderImageSelect",
+    "name": "ResourceCSV",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders an image selection interface.",
-    "signature": "public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)",
+    "description": "Output CSV list of resx values. \u003Cbr/\u003E @ResourceCSV(\u0022Resx File Name\u0022, \u0022csv list of resx file keys\u0022) Example:\u003Cbr/\u003E @ResourceCSV(\u0022RocketIntra\u0022, \u0022test1,test2,test3\u0022) Output CSV list of resx values. Example: @ResourceCSV(\u0022RocketIntra\u0022, \u0022test1,test2,test3\u0022)",
+    "signature": "public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = \u0022\u0022, string resourceExtension = \u0022Text\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "systemKey",
+        "name": "resourceFileKey",
+        "type": "String",
+        "description": ""
+      },
+      {
+        "name": "keyListCSV",
         "type": "string",
         "description": ""
       },
       {
-        "name": "imageFolderRel",
+        "name": "lang",
         "type": "string",
         "description": ""
       },
       {
-        "name": "singleselect",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "autoreturn",
-        "type": "bool",
+        "name": "resourceExtension",
+        "type": "string",
         "description": ""
       }
     ],
@@ -887,37 +1595,27 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderImageSelect",
+    "name": "ResourceKey",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString RenderImageSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)",
+    "description": "Gets a resource string from the resource paths previously added via AddProcessDataResx.",
+    "signature": "public IEncodedString ResourceKey(String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "portalId",
-        "type": "int",
+        "name": "resourceFileKey",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "moduleid",
-        "type": "int",
+        "name": "lang",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "systemKey",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "singleselect",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "autoreturn",
-        "type": "bool",
+        "name": "resourceExtension",
+        "type": "String",
         "description": ""
       }
     ],
@@ -925,27 +1623,27 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderImageSelect",
+    "name": "ResourceKeyJS",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString RenderImageSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)",
+    "description": "Gets a resource string and escapes single quotes for safe use within JavaScript code.",
+    "signature": "public IEncodedString ResourceKeyJS(String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "moduleParams",
-        "type": "ModuleParams",
+        "name": "resourceFileKey",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "singleselect",
-        "type": "bool",
+        "name": "lang",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "autoreturn",
-        "type": "bool",
+        "name": "resourceExtension",
+        "type": "String",
         "description": ""
       }
     ],
@@ -953,32 +1651,32 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderDocumentSelect",
+    "name": "ResourceKeyMod",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a document selection interface.",
-    "signature": "public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)",
+    "description": "Gets a resource string, automatically prepending the key with a module reference and an underscore.",
+    "signature": "public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = \u0022\u0022, String resourceExtension = \u0022Text\u0022)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
     "parameters": [
       {
-        "name": "systemKey",
-        "type": "string",
+        "name": "moduleRef",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "docFolderRel",
-        "type": "string",
+        "name": "resourceFileKey",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "singleselect",
-        "type": "bool",
+        "name": "lang",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "autoreturn",
-        "type": "bool",
+        "name": "resourceExtension",
+        "type": "String",
         "description": ""
       }
     ],
@@ -986,76 +1684,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "RenderDocumentSelect",
+    "name": "TabSelectListOnTabId",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString RenderDocumentSelect(int portalId, int moduleid, string systemKey, bool singleselect = true, bool autoreturn = false)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "moduleid",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "systemKey",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "singleselect",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "autoreturn",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "RenderDocumentSelect",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString RenderDocumentSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "moduleParams",
-        "type": "ModuleParams",
-        "description": ""
-      },
-      {
-        "name": "singleselect",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "autoreturn",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "TranslationLock",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a lock/unlock icon for managing the translation state of a field. It includes a hidden checkbox to store the state.",
-    "signature": "public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)",
+    "description": "Renders a dropdown list of portal tabs (pages), structured as a tree. The value of each option is the TabId.",
+    "signature": "public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = \u0022\u0022, bool showAllTabs = false)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
@@ -1067,17 +1699,37 @@
       },
       {
         "name": "xpath",
-        "type": "string",
+        "type": "String",
         "description": ""
       },
       {
-        "name": "active",
+        "name": "attributes",
+        "type": "String",
+        "description": ""
+      },
+      {
+        "name": "allowEmpty",
+        "type": "Boolean",
+        "description": ""
+      },
+      {
+        "name": "localized",
         "type": "bool",
         "description": ""
       },
       {
         "name": "row",
         "type": "int",
+        "description": ""
+      },
+      {
+        "name": "listname",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "showAllTabs",
+        "type": "bool",
         "description": ""
       }
     ],
@@ -1146,244 +1798,10 @@
   },
   {
     "type": "csharp-method",
-    "name": "EditFlag",
+    "name": "TranslationLock",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Displays the flag image for the current editing culture code from session parameters.",
-    "signature": "public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "sessionParams",
-        "type": "SessionParams",
-        "description": ""
-      },
-      {
-        "name": "classvalues",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "DisplayFlag",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Displays a flag image for a given culture code, if the image file exists.",
-    "signature": "public IEncodedString DisplayFlag(string cultureCode, string classvalues = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "cultureCode",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "classvalues",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "DisplayEngineFlag",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Displays a flag image from a remote engine URL for a given culture code.",
-    "signature": "public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "engineUrl",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "cultureCode",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "classvalues",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ImageUrl",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "url",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "width",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "height",
-        "type": "int",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ImageUrl",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "url",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "width",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "height",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "imgType",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ImageUrl",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString ImageUrl(string url, int width = 0, int height = 0, string imgType = \u0022\u0022, bool cropCenter = true)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "url",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "width",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "height",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "imgType",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "cropCenter",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ImageUrl",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Display Thumbnail Image  - DEFAULT RULE: PNG will always output as PNG all other supported image formats will output as WEBP. note: The default rule can be overwritten is the \u0022imgtype\u0022 is passed. default rule set by FMC on 9/1/2024  - IMPORTANT: If you need to delete the image file you MUST remove the cache first. The cache holds a link to the locked image file and must be disposed. use: DNNrocketUtils.ClearThumbnailLock(); Display Thumbnail Image. Creates and returns a URL for a resized version of an image. Supports various output formats and cropping. By default, PNGs remain PNGs, and other formats are converted to WEBP. The cache holds a lock on the image file, so use DNNrocketUtils.ClearThumbnailLock() before deleting the original image.",
-    "signature": "public IEncodedString ImageUrl(string engineUrl, string imgRelPath, int width, int height, string imgType, bool cropCenter)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "engineUrl",
-        "type": "string",
-        "description": "Domain URL, used to get full URL image path."
-      },
-      {
-        "name": "imgRelPath",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "width",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "height",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "imgType",
-        "type": "string",
-        "description": "Defines outpupt type: empty,png,jpg. Default = webp"
-      },
-      {
-        "name": "cropCenter",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "InjectHiddenFieldData",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Add all genxml/hidden/* fields to the template. Renders all nodes under \u0027genxml/hidden/*\u0027 as hidden input fields in the HTML. This is useful for passing data from the model to client-side scripts.",
-    "signature": "public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "sInfo",
-        "type": "SimplisityInfo",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "CKEditor4legacy",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Legacy CKEditor 4 implementation. Consider using @Editor() instead. Legacy CKEditor 4 implementation. Consider using @Editor() instead.",
-    "signature": "public IEncodedString CKEditor4legacy(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = \u0022\u0022, string langauge = \u0022\u0022, bool coded = false, string filename = \u0022ckeditor4startup1.js\u0022)",
+    "description": "Renders a lock/unlock icon for managing the translation state of a field. It includes a hidden checkbox to store the state.",
+    "signature": "public IEncodedString TranslationLock(SimplisityInfo info, string xpath, bool active = true, int row = 0)",
     "classname": "DNNrocketTokens",
     "isstatic": "false",
     "namespace": "DNNrocketAPI.render",
@@ -1399,7 +1817,7 @@
         "description": ""
       },
       {
-        "name": "localized",
+        "name": "active",
         "type": "bool",
         "description": ""
       },
@@ -1407,424 +1825,6 @@
         "name": "row",
         "type": "int",
         "description": ""
-      },
-      {
-        "name": "listname",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "langauge",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "coded",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "filename",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "Editor",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a rich text editor (defaulting to Jodit). The specific editor template can be configured in the portal settings or specified directly.",
-    "signature": "public IEncodedString Editor(SimplisityInfo info, string xpath, SimplisityRazor model, int row = 0, string listname = \u0022\u0022, string editorRazorTemplate = \u0022EditorJoditDefault.cshtml\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "model",
-        "type": "SimplisityRazor",
-        "description": ""
-      },
-      {
-        "name": "row",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "listname",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "editorRazorTemplate",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "LinkInternalUrl",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters. Generates a URL for an internal DNN page (tab) with a specific culture code and optional extra parameters.",
-    "signature": "public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "portalid",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "tabid",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "cultureCode",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "portalSettings",
-        "type": "PortalSettings",
-        "description": ""
-      },
-      {
-        "name": "extraparams",
-        "type": "string[]",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "TabSelectListOnTabId",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of portal tabs (pages), structured as a tree. The value of each option is the TabId.",
-    "signature": "public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = \u0022\u0022, Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = \u0022\u0022, bool showAllTabs = false)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "allowEmpty",
-        "type": "Boolean",
-        "description": ""
-      },
-      {
-        "name": "localized",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "row",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "listname",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "showAllTabs",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetTabUrlByGuid",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Gets the URL for a tab by its unique GUID.",
-    "signature": "public IEncodedString GetTabUrlByGuid(String tabguid)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "tabguid",
-        "type": "String",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetTabUrlByGuid",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "",
-    "signature": "public IEncodedString GetTabUrlByGuid(SimplisityInfo info, String xpath)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "String",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "LinkPageURL",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Creates an anchor tag linking to an internal DNN page. The tab ID is read from a SimplisityInfo field.",
-    "signature": "public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = \u0022\u0022, string attributes = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "openInNewWindow",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "text",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "LinkURL",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Creates an anchor tag for a URL stored in a SimplisityInfo field. Automatically handles adding \u0027https://\u0027 if missing.",
-    "signature": "public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = \u0022\u0022, string attributes = \u0022\u0022)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "openInNewWindow",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "text",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "string",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "DataSourceList",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of data sources (MODULEPARAMS) for a given system key.",
-    "signature": "public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = \u0022\u0022, bool allowEmpty = true, bool localized = false)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "systemkey",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "allowEmpty",
-        "type": "bool",
-        "description": ""
-      },
-      {
-        "name": "localized",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "GetTreeTabList",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Generates a tree-structured HTML list of portal tabs with checkboxes for selection.",
-    "signature": "public IEncodedString GetTreeTabList(int portalId, List\u003Cint\u003E selectedTabIdList, string treeviewId, string lang = \u0022\u0022, string attributes = \u0022\u0022, bool showAllTabs = false)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "selectedTabIdList",
-        "type": "List\u003Cint\u003E",
-        "description": ""
-      },
-      {
-        "name": "treeviewId",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "lang",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "string",
-        "description": ""
-      },
-      {
-        "name": "showAllTabs",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "ModSelectList",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Renders a dropdown list of modules for a given portal, showing module references.",
-    "signature": "public IEncodedString ModSelectList(SimplisityInfo info, String xpath, int portalId, String attributes = \u0022\u0022, bool addEmpty = true )",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "info",
-        "type": "SimplisityInfo",
-        "description": ""
-      },
-      {
-        "name": "xpath",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "portalId",
-        "type": "int",
-        "description": ""
-      },
-      {
-        "name": "attributes",
-        "type": "String",
-        "description": ""
-      },
-      {
-        "name": "addEmpty",
-        "type": "bool",
-        "description": ""
-      }
-    ],
-    "returns": "IEncodedString"
-  },
-  {
-    "type": "csharp-method",
-    "name": "CheckBoxRowECOMode",
-    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\render\\DNNrocketTokens.cs",
-    "description": "Creates a checkbox for ECOMode in the settings of a module. Creates a checkbox for ECOMode in the settings of a module.",
-    "signature": "public IEncodedString CheckBoxRowECOMode(SimplisityInfo rowData, bool defaultValue = true)",
-    "classname": "DNNrocketTokens",
-    "isstatic": "false",
-    "namespace": "DNNrocketAPI.render",
-    "parameters": [
-      {
-        "name": "rowData",
-        "type": "SimplisityInfo",
-        "description": "The row data."
-      },
-      {
-        "name": "defaultValue",
-        "type": "bool",
-        "description": "Default Value"
       }
     ],
     "returns": "IEncodedString"

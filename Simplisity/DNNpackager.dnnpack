@@ -1,4 +1,4 @@
-<root>
+﻿<root>
 	<version>1.0.0</version>
   <websitedestrelpath>\DesktopModules\DNNrocket\Simplisity</websitedestrelpath>
   <websitedestbinrelpath>\bin</websitedestbinrelpath>
@@ -32,6 +32,10 @@
 			<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Simplisity\GeneralUtils.cs</input>
 			<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\GeneralUtils.json</output>
 		</file>
+		<file>
+			<input>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Simplisity\RazorEngineTokens.cs</input>
+			<output>D:\NEVOWEB\Project\DesktopModules\DNNrocket\Documentation\razortokens\RazorEngineTokens.json</output>
+		</file>		
 	</json>
 
 </root>
