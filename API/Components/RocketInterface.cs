@@ -55,6 +55,16 @@ namespace DNNrocketAPI.Components
             return (Info.GetXmlProperty("genxml/providertype") == providerType) ;
         }
 
+        /// <summary>
+        /// Sorts a plugin list by the "genxml/config/sortorder" value stored against each plugin in the
+        /// supplied portal "plugins" list.  Kept as a method here (rather than inline Razor) because
+        /// multi-line chained LINQ expressions in .cshtml files are not reliably parsed by the Razor host.
+        /// </summary>
+        public static List<RocketInterface> GetSortedPluginList(List<RocketInterface> pluginList, SimplisityInfo info)
+        {
+            return pluginList.OrderBy(o => info.GetListItem("plugins", "genxml/hidden/pluginkey", o.InterfaceKey)?.GetXmlPropertyInt("genxml/config/sortorder") ?? 0).ToList();
+        }
+
         public SimplisityInfo Info { get; }
 
         public bool Exists { get; }
