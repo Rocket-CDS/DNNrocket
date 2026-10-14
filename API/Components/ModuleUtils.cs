@@ -173,32 +173,41 @@ namespace DNNrocketAPI.Components
         }
         public static void AddModuleEditRights(int tabId, int moduleId, string roleName)
         {
-            //get the current ModuleInfo 
-            ModuleInfo newModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
+            //get the current ModuleInfo, ignoring the cache so we get a fresh copy
+            ModuleInfo newModule = ModuleController.Instance.GetModule(moduleId, tabId, true);
             if (newModule != null)
             {
                 var roleInfo = DNNrocketUtils.GetRoleByName(newModule.PortalID, roleName);
                 if (roleInfo != null)
                 {
-                    var permissionID = 2;
                     var pController = new PermissionController();
                     var permissions = pController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
-                    if (permissions != null && permissions.Count > 0) permissionID = ((PermissionInfo)permissions[0]).PermissionID;
+                    if (permissions != null)
+                    {
+                        foreach (PermissionInfo permission in permissions)
+                        {
+                            if (permission.PermissionKey == "EDIT")
+                            {
+                                //add admin edit permission
+                                var modulePermissionInfo2 = new ModulePermissionInfo(permission)
+                                {
+                                    ModuleID = moduleId,
+                                    //administrator role id (from Roles table in dnn database)
+                                    RoleID = roleInfo.RoleID,
+                                    RoleName = roleInfo.RoleName,
+                                    AllowAccess = true,
+                                    UserID = Null.NullInteger,
+                                    DisplayName = Null.NullString
+                                };
 
-                    //add admin edit permission
-                    ModulePermissionInfo modulePermissionInfo2 = new ModulePermissionInfo();
-                    modulePermissionInfo2.ModuleID = moduleId;
-                    modulePermissionInfo2.AllowAccess = true;
-                    //view permission id, 1 = view, 2 = edit
-                    modulePermissionInfo2.PermissionID = permissionID;
-                    //administrator role id (from Roles table in dnn database)
-                    modulePermissionInfo2.RoleID = roleInfo.RoleID;
-
-                    //add the ModulePermissionInfo to the module
-                    newModule.ModulePermissions.Add(modulePermissionInfo2);
+                                //add the ModulePermissionInfo to the module
+                                newModule.ModulePermissions.Add(modulePermissionInfo2, true);
+                            }
+                        }
+                    }
 
                     //save the permissions
-                    ModulePermissionController.SaveModulePermissions(newModule);
+                    ModuleController.Instance.UpdateModule(newModule);
 
                     //clear the dnn cache (if it is the current module, not a new one)
                     DotNetNuke.Common.Utilities.DataCache.ClearModuleCache(tabId);
