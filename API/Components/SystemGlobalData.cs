@@ -85,7 +85,10 @@ namespace DNNrocketAPI.Components
         {
             Info.RemoveListItem("externalapi", idx);
         }
-
+        public void DeleteExternalAPI(string apiRef)
+        {
+            Info.RemoveListItem("externalapi", "genxml/textbox/apiref", apiRef);
+        }
         public List<SimplisityInfo> GetExternalApiInfoList()
         {
             return Info.GetList("externalapi");
