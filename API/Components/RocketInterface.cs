@@ -133,58 +133,52 @@ namespace DNNrocketAPI.Components
         public bool SecurityCheckUser(int portalId, int userid)
         {
             var userInfo = UserController.Instance.GetUserById(portalId, userid);
-            var validUser = false;
-            if (userInfo != null && userInfo.UserID > 0 && !userInfo.IsDeleted && userInfo.Membership.Approved)
+            if (userInfo == null || userInfo.UserID <= 0 || userInfo.IsDeleted || !userInfo.Membership.Approved)
             {
-                validUser = true;
+                return false;
             }
 
-            if (!validUser) return false;
             if (userInfo.IsSuperUser) return true; //always allow access to su
 
-            if (Exists)
+            if (!Exists) return false;
+
+            var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
+            if (securityrolesall == 1) return true;
+
+            var hasAllow = false;
+            var hasBlock = false;
+
+            if (userInfo.Roles != null)
             {
-                var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
-
-                if (securityrolesall == 1) return true;
-
-                var userRoleNames = GetUserRoleNames(userInfo);
-
-                // ##### Force False #####
-                foreach (var roleName in userRoleNames)
+                foreach (var roleName in userInfo.Roles)
                 {
-                    var setting = GetSecurityRoleSetting(roleName);
-                    if (setting == 3) return false;
-                }
+                    if (string.IsNullOrEmpty(roleName)) continue;
 
-                // ##### Allow #####  (Do before block, so we allow access if 1 role has access and another does not.)
-                foreach (var roleName in userRoleNames)
-                {
                     var setting = GetSecurityRoleSetting(roleName);
-                    if (setting == 1) return true;
+                    switch (setting)
+                    {
+                        case 3:
+                            // Force False always wins - no need to check remaining roles.
+                            return false;
+                        case 1:
+                            hasAllow = true;
+                            break;
+                        case 2:
+                            hasBlock = true;
+                            break;
+                    }
                 }
-
-                // ##### block #####
-                foreach (var roleName in userRoleNames)
-                {
-                    var setting = GetSecurityRoleSetting(roleName);
-                    if (setting == 2 || setting == 3) return false;
-                }
-
-                if (securityrolesall == 2) return false; // su only
             }
 
-            return false;
-        }
+            // ##### Allow ##### (checked before block, same as original behavior)
+            if (hasAllow) return true;
 
-        /// <summary>
-        /// Returns the distinct role names assigned to the user (from DNN), used to dynamically
-        /// resolve matching "genxml/radio/securityroles{rolename}" settings in the .rule XML.
-        /// </summary>
-        private static IEnumerable<string> GetUserRoleNames(UserInfo userInfo)
-        {
-            if (userInfo?.Roles == null) return Enumerable.Empty<string>();
-            return userInfo.Roles.Where(r => !string.IsNullOrEmpty(r)).Distinct(StringComparer.OrdinalIgnoreCase);
+            // ##### Block #####
+            if (hasBlock) return false;
+
+            if (securityrolesall == 2) return false; // su only
+
+            return false;
         }
 
         /// <summary>
