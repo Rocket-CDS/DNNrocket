@@ -141,44 +141,63 @@ namespace DNNrocketAPI.Components
 
             if (!validUser) return false;
             if (userInfo.IsSuperUser) return true; //always allow access to su
+
             if (Exists)
             {
-                var securityrolesadministrators = Info.GetXmlPropertyInt("genxml/radio/securityrolesadministrators");
-                var securityrolesmanager = Info.GetXmlPropertyInt("genxml/radio/securityrolesmanager");
-                var securityroleseditor = Info.GetXmlPropertyInt("genxml/radio/securityroleseditor");
-                var securityrolesclienteditor = Info.GetXmlPropertyInt("genxml/radio/securityrolesclienteditor");
-                var securityrolesregisteredusers = Info.GetXmlPropertyInt("genxml/radio/securityrolesregisteredusers");
-                var securityrolessubscribers = Info.GetXmlPropertyInt("genxml/radio/securityrolessubscribers");
                 var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
 
-                var roleAdministrators = userInfo.IsInRole("Administrators");
-                var roleManager = userInfo.IsInRole("Manager") || userInfo.IsInRole("manager") || userInfo.IsInRole("MANAGER");
-                var roleEditor = userInfo.IsInRole("Editor") || userInfo.IsInRole("editor") || userInfo.IsInRole("EDITOR");
-                var roleClientEditor = userInfo.IsInRole("ClientEditor") || userInfo.IsInRole("clienteditor") || userInfo.IsInRole("CLIENTEDITOR");
-                var roleRegisteredUsers = userInfo.IsInRole("Registered Users");
-                var roleSubscribers = userInfo.IsInRole("Subscribers");
-
-                // ##### Allow #####  (Do before block, so we allow access if 1 roles has acccess and another does not.)
                 if (securityrolesall == 1) return true;
-                if (roleAdministrators && securityrolesadministrators == 1) return true;
-                if (roleManager && securityrolesmanager == 1) return true;
-                if (roleEditor && securityroleseditor == 1) return true;
-                if (roleClientEditor && securityrolesclienteditor == 1) return true;
-                if (roleRegisteredUsers && securityrolesregisteredusers == 1) return true;
-                if (roleSubscribers && securityrolessubscribers == 1) return true;
+
+                var userRoleNames = GetUserRoleNames(userInfo);
+
+                // ##### Force False #####
+                foreach (var roleName in userRoleNames)
+                {
+                    var setting = GetSecurityRoleSetting(roleName);
+                    if (setting == 3) return false;
+                }
+
+                // ##### Allow #####  (Do before block, so we allow access if 1 role has access and another does not.)
+                foreach (var roleName in userRoleNames)
+                {
+                    var setting = GetSecurityRoleSetting(roleName);
+                    if (setting == 1) return true;
+                }
 
                 // ##### block #####
-                if (roleAdministrators && securityrolesadministrators == 2) return false;
-                if (roleManager && securityrolesmanager == 2) return false;
-                if (roleEditor && securityroleseditor == 2) return false;
-                if (roleClientEditor && securityrolesclienteditor == 2) return false;
-                if (roleRegisteredUsers && securityrolesregisteredusers == 2) return false;
-                if (roleSubscribers && securityrolessubscribers == 2) return false;
-                if (securityrolesall == 2) return false; // su only
+                foreach (var roleName in userRoleNames)
+                {
+                    var setting = GetSecurityRoleSetting(roleName);
+                    if (setting == 2 || setting == 3) return false;
+                }
 
-           }
+                if (securityrolesall == 2) return false; // su only
+            }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns the distinct role names assigned to the user (from DNN), used to dynamically
+        /// resolve matching "genxml/radio/securityroles{rolename}" settings in the .rule XML.
+        /// </summary>
+        private static IEnumerable<string> GetUserRoleNames(UserInfo userInfo)
+        {
+            if (userInfo?.Roles == null) return Enumerable.Empty<string>();
+            return userInfo.Roles.Where(r => !string.IsNullOrEmpty(r)).Distinct(StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Looks up the "genxml/radio/securityroles{key}" setting for a given DNN role name.
+        /// The xml key is built by stripping spaces from the role name and lower-casing it,
+        /// e.g. "Registered Users" -> "securityrolesregisteredusers", "Manager" -> "securityrolesmanager".
+        /// This allows new roles (e.g. "Owner" -> "securityrolesowner") to work automatically,
+        /// without recompiling, as long as the .rule XML defines a matching radio setting.
+        /// </summary>
+        private int GetSecurityRoleSetting(string roleName)
+        {
+            var normalizedKey = "securityroles" + roleName.Replace(" ", string.Empty).ToLowerInvariant();
+            return Info.GetXmlPropertyInt("genxml/radio/" + normalizedKey);
         }
 
     }
