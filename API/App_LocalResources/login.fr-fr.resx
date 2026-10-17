@@ -208,7 +208,7 @@
     <value>Connexion réussie !</value>
   </data>
   <data name="welcomemessage.Text" xml:space="preserve">
-    <value>Bienvenue dans ProspectApp. Vous êtes maintenant connecté.</value>
+    <value>Vous êtes maintenant connecté.</value>
   </data>
   <data name="readytostart.Text" xml:space="preserve">
     <value>Prêt à commencer ?</value>
@@ -235,7 +235,7 @@
     <value>Inscription réussie !</value>
   </data>
   <data name="accountcreated.Text" xml:space="preserve">
-    <value>Votre compte a été créé avec succès. Bienvenue dans ProspectApp !</value>
+    <value>Votre compte a été créé avec succès.</value>
   </data>
   <data name="readytologin.Text" xml:space="preserve">
     <value>Prêt à vous connecter ?</value>

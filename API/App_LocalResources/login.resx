@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -208,7 +208,7 @@
     <value>Login Successful!</value>
   </data>
   <data name="welcomemessage.Text" xml:space="preserve">
-    <value>Welcome to ProspectApp. You are now logged in.</value>
+    <value>You are now logged in.</value>
   </data>
   <data name="readytostart.Text" xml:space="preserve">
     <value>Ready to Get Started?</value>
@@ -235,7 +235,7 @@
     <value>Registration Successful!</value>
   </data>
   <data name="accountcreated.Text" xml:space="preserve">
-    <value>Your account has been created successfully. Welcome to ProspectApp!</value>
+    <value>Your account has been created successfully.</value>
   </data>
   <data name="readytologin.Text" xml:space="preserve">
     <value>Ready to Sign In?</value>
