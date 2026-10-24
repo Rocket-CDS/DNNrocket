@@ -73,9 +73,10 @@ namespace DNNrocketAPI.ApiControllers
             {
                 var ps = new PortalSecurity();
                 ps.SignOut();
-                context.Response.ContentType = "text/plain";
-                context.Response.Write("");
-                context.Response.End();
+                var signOutRtn = this.Request.CreateResponse(HttpStatusCode.OK, "", "text/plain");
+                if (signOutRtn.Headers.Contains("Access-Control-Allow-Origin")) signOutRtn.Headers.Remove("Access-Control-Allow-Origin");
+                signOutRtn.Headers.Add("Access-Control-Allow-Origin", "*");
+                return signOutRtn;
             }
 
             var rtn = new HttpResponseMessage();
