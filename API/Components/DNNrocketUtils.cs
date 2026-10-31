@@ -2938,6 +2938,26 @@ namespace DNNrocketAPI.Components
             return PortalUtils.GetPortalAlias(lang, portalid);
         }
 
+        #endregion
+
+        #region "Host Settings"
+
+        /// <summary>
+        /// Gets a host setting value from the [HostSettings] table.
+        /// </summary>
+        public static string GetHostSetting(string settingName, string defaultValue = "")
+        {
+            return DotNetNuke.Entities.Controllers.HostController.Instance.GetString(settingName, defaultValue);
+        }
+
+        /// <summary>
+        /// Adds or updates a host setting value in the [HostSettings] table (upsert).
+        /// DNN has no separate Add method; Update creates the setting if it does not already exist.
+        /// </summary>
+        public static void UpdateHostSetting(string settingName, string settingValue, bool clearCache = true)
+        {
+            DotNetNuke.Entities.Controllers.HostController.Instance.Update(settingName, settingValue, clearCache);
+        }
 
         #endregion
 
