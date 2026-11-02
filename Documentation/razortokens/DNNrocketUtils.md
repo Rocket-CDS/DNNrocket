@@ -559,6 +559,16 @@
 	</div>
 </details>
 <details class="clean-accordion">
+	<summary>GetHostSetting</summary>
+	<div class="token-details">
+		<p><strong>Description:</strong> Gets a host setting value from the [HostSettings] table.</p>
+		<strong>Signature</strong>
+		<pre><code>public static string GetHostSetting(string settingName, string defaultValue = &quot;&quot;)</code></pre>
+		<strong>Example</strong>
+		<pre><code>GetHostSetting(settingName, defaultValue)</code></pre>
+	</div>
+</details>
+<details class="clean-accordion">
 	<summary>GetLanguageCode</summary>
 	<div class="token-details">
 		<p><strong>Description:</strong> Extracts the language code part from a full culture code.</p>
@@ -1306,6 +1316,16 @@
 		<pre><code>public static SimplisityRecord UpdateFieldXpath(SimplisityInfo postInfo, SimplisityRecord record, string listname)</code></pre>
 		<strong>Example</strong>
 		<pre><code>UpdateFieldXpath(postInfo, record, listname)</code></pre>
+	</div>
+</details>
+<details class="clean-accordion">
+	<summary>UpdateHostSetting</summary>
+	<div class="token-details">
+		<p><strong>Description:</strong> Adds or updates a host setting value in the [HostSettings] table (upsert). DNN has no separate Add method; Update creates the setting if it does not already exist.</p>
+		<strong>Signature</strong>
+		<pre><code>public static void UpdateHostSetting(string settingName, string settingValue, bool clearCache = true)</code></pre>
+		<strong>Example</strong>
+		<pre><code>UpdateHostSetting(settingName, settingValue, clearCache)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">

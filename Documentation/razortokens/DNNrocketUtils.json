@@ -1114,6 +1114,29 @@
   },
   {
     "type": "csharp-method",
+    "name": "GetHostSetting",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
+    "description": "Gets a host setting value from the [HostSettings] table.",
+    "signature": "public static string GetHostSetting(string settingName, string defaultValue = \u0022\u0022)",
+    "classname": "DNNrocketUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "settingName",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "defaultValue",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
     "name": "GetLanguageCode",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
     "description": "Extracts the language code part from a full culture code.",
@@ -3204,6 +3227,34 @@
       }
     ],
     "returns": "SimplisityRecord"
+  },
+  {
+    "type": "csharp-method",
+    "name": "UpdateHostSetting",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
+    "description": "Adds or updates a host setting value in the [HostSettings] table (upsert). DNN has no separate Add method; Update creates the setting if it does not already exist.",
+    "signature": "public static void UpdateHostSetting(string settingName, string settingValue, bool clearCache = true)",
+    "classname": "DNNrocketUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "settingName",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "settingValue",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "clearCache",
+        "type": "bool",
+        "description": ""
+      }
+    ],
+    "returns": "void"
   },
   {
     "type": "csharp-method",
