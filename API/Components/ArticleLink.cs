@@ -70,6 +70,24 @@ namespace DNNrocketAPI.Components
                 return Url;
             }
         }
+        public string UrlRaw
+        {
+            get
+            {
+                string rtn;
+                if (LinkType == 1)
+                {
+                    return Url;
+                }
+                else
+                {
+                    rtn = Info.GetXmlProperty("genxml/textbox/externallink" + FieldId);
+                    if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
+                }
+                if (Anchor != "" && rtn != "") rtn += "#" + Anchor;
+                return rtn;
+            }
+        }
         public string Name
         {
             get

@@ -22,7 +22,7 @@ namespace DNNrocketAPI.Components
                     var dockey = GeneralUtils.GetUniqueString();
                     Info.SetXmlProperty("genxml/hidden/dockey", dockey);
                 }
-                if (RelPath == "") Exists = false;
+                if (RelPath.Trim('/') == "") Exists = false;
             }
         }
 
