@@ -56,6 +56,20 @@ namespace DNNrocketAPI.Components
                 return rtn;
             }
         }
+        public string RelUrl
+        {
+            get
+            {
+                if (LinkType == 1)
+                {
+                    if (Uri.TryCreate(Url, UriKind.Absolute, out var uri))
+                    {
+                        return uri.PathAndQuery + uri.Fragment;
+                    }
+                }
+                return Url;
+            }
+        }
         public string Name
         {
             get
