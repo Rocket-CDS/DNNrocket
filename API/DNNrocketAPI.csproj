@@ -288,6 +288,7 @@
     <Compile Include="Components\SecurityInput.cs" />
     <Compile Include="Components\W3\W3Utils.cs" />
     <Compile Include="Components\DependencyData.cs" />
+    <None Include="Documents\AI_SimplisityFormValidation.md" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\MenuInterface.cs" />
     <Compile Include="Interfaces\RazorInterface.cs" />
