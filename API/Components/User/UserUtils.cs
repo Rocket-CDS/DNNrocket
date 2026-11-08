@@ -915,26 +915,17 @@ namespace DNNrocketAPI.Components
             var prop = new Dictionary<string, string>();
             if (userInfo == null) return prop;
 
-            // Bypass the DNN Profile API for reading - it is unreliable for custom fields
-            // that have never been set, and for cache reasons. Query the tables directly.
-            var objCtrl = new DNNrocketController();
-            var sql = @"
-        SELECT ppd.PropertyName, ISNULL(up.PropertyValue, '') AS PropertyValue
-        FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ppd
-        LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] up 
-            ON ppd.PropertyDefinitionID = up.PropertyDefinitionID 
-            AND up.UserID = " + userInfo.UserID + @"
-        WHERE ppd.PortalID = " + userInfo.PortalID + @" AND ppd.Deleted = 0
-        ORDER BY ppd.ViewOrder
-        FOR XML RAW";
+            // Use the DNN Profile API to load properties rather than querying
+            // ProfilePropertyDefinition/UserProfile directly with a guessed PortalID.
+            // DNNProfileProvider.GetUserProfile internally resolves the correct scope
+            // (e.g. Globals.glbSuperUserAppName for SuperUser accounts), so re-implementing
+            // that logic in raw SQL risks reading the wrong PortalID scope.
+            ProfileController.GetUserProfile(ref userInfo);
 
-            var xmlList = objCtrl.ExecSqlXmlList(sql);
-            foreach (var row in xmlList)
+            foreach (ProfilePropertyDefinition propDef in userInfo.Profile.ProfileProperties)
             {
-                var name = row.GetXmlProperty("row/@PropertyName");
-                var value = row.GetXmlProperty("row/@PropertyValue");
-                if (!string.IsNullOrEmpty(name) && !prop.ContainsKey(name))
-                    prop[name] = value;
+                if (!string.IsNullOrEmpty(propDef.PropertyName) && !prop.ContainsKey(propDef.PropertyName))
+                    prop[propDef.PropertyName] = propDef.PropertyValue ?? "";
             }
 
             if (!prop.ContainsKey("Email")) prop["Email"] = userInfo.Email;
@@ -962,14 +953,14 @@ namespace DNNrocketAPI.Components
                     propDef = ProfileController.GetPropertyDefinitionByName(userInfo.PortalID, p.Key);
                     if (propDef != null)
                     {
-                        propDef.PropertyValue = p.Value; // marks IsDirty = true
                         userInfo.Profile.ProfileProperties.Add(propDef);
                     }
                 }
-                else
-                {
-                    propDef.PropertyValue = p.Value; // marks IsDirty = true
-                }
+
+                // Use SetProfileProperty (not a direct PropertyValue assignment) because it is the
+                // only path that flips UserProfile.IsDirty, which UserController.UpdateUser relies
+                // on internally to decide whether to persist the profile at all.
+                userInfo.Profile.SetProfileProperty(p.Key, p.Value);
             }
 
             if (properties.ContainsKey("DisplayName"))
@@ -977,6 +968,10 @@ namespace DNNrocketAPI.Components
                 userInfo.UpdateDisplayName(properties["DisplayName"]);
             }
 
+            // ProfileController.UpdateUserProfile is the API that actually writes to the
+            // UserProfile table (gated by user.Profile.IsDirty, which SetProfileProperty sets).
+            // UserController.UpdateUser only persists core Users-table fields (e.g. DisplayName) -
+            // it does not reliably persist Profile property changes - so both calls are required.
             ProfileController.UpdateUserProfile(userInfo);
             UserController.UpdateUser(userInfo.PortalID, userInfo);
         }
