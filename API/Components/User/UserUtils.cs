@@ -825,6 +825,27 @@ namespace DNNrocketAPI.Components
             return GetUserData(portalId, userId);
         }
 
+        /// <summary>
+        /// Updates the user's display name.
+        /// </summary>
+        /// <param name="portalId">The portal ID the user belongs to.</param>
+        /// <param name="userId">The ID of the user to update.</param>
+        /// <param name="displayName">The new display name.</param>
+        /// <exception cref="ArgumentException">Thrown when the user cannot be found.</exception>
+        public static UserData UpdateDisplayName(int portalId, int userId, string displayName)
+        {
+            var user = UserController.Instance.GetUserById(portalId, userId);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with ID {userId} was not found in portal {portalId}.");
+            }
+
+            user.DisplayName = displayName;
+            UserController.UpdateUser(portalId, user);
+
+            return GetUserData(portalId, userId);
+        }
+
         #region "Obsolete"
 
         [Obsolete("Use UserUtils.GetUserData(portalId, userId) instead")]
