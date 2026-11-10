@@ -4,6 +4,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.UI.Skins;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -20,7 +21,6 @@ namespace DNNrocketAPI.Components
         {
             application.BeginRequest += OnBeginRequest; // Earlier!
             application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
-            application.EndRequest += OnEndRequest;
         }
 
         private void OnBeginRequest(object source, EventArgs e)
@@ -34,7 +34,7 @@ namespace DNNrocketAPI.Components
                 {
                     // Remove from request cookies (current request)
                     context.Request.Cookies.Remove(cookieName);
-                    
+
                     // Expire in response (future requests)
                     HttpCookie cookie = new HttpCookie(cookieName)
                     {
@@ -42,6 +42,60 @@ namespace DNNrocketAPI.Components
                     };
                     context.Response.Cookies.Add(cookie);
                 }
+            }
+
+            CheckLoginRedirect(context);
+        }
+
+        /// <summary>
+        /// Intercepts requests that resolve to DNN's own Login page (either via a direct
+        /// request to /Login or ctl=Login, or because DNN already issued its own 302 to
+        /// that page) and forwards the browser to an externally configured login hub,
+        /// when an External API entry with "LOGINREDIRECT" in its ApiKey is configured.
+        /// </summary>
+        private void CheckLoginRedirect(HttpContext context)
+        {
+            try
+            {
+                var rawUrl = context.Request.RawUrl ?? string.Empty;
+
+                bool isLoginRequest =
+                    rawUrl.IndexOf("/Login", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    rawUrl.IndexOf("ctl=Login", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    rawUrl.IndexOf("ctl/Login", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                // TEMP DIAGNOSTIC - remove after troubleshooting
+                LogUtils.LogException(new Exception(
+                    "LOGINREDIRECT-DEBUG: isLoginRequest=" + isLoginRequest + " RawUrl=" + rawUrl));
+
+                if (!isLoginRequest)
+                    return;
+
+                var globalData = new SystemGlobalData();
+                var apiList = globalData.GetExternalAPIs();
+
+                // TEMP DIAGNOSTIC - remove after troubleshooting
+                LogUtils.LogException(new Exception(
+                    "LOGINREDIRECT-DEBUG: ExternalAPI count=" + apiList.Count +
+                    " Keys=" + string.Join("|", apiList.Select(a => a.ApiKey))));
+
+                foreach (var apiEntry in apiList)
+                {
+                    if (!string.IsNullOrEmpty(apiEntry.ApiKey) &&
+                        apiEntry.ApiKey.Contains("LOGINREDIRECT") &&
+                        !string.IsNullOrEmpty(apiEntry.ApiUrl))
+                    {
+                        context.Response.Clear();
+                        context.Response.StatusCode = 302;
+                        context.Response.RedirectLocation = apiEntry.ApiUrl;
+                        context.Response.End();
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
             }
         }
 
@@ -235,45 +289,6 @@ namespace DNNrocketAPI.Components
                     return rocketEdit;
                 default:
                     return null;
-            }
-        }
-
-        private void OnEndRequest(object sender, EventArgs e)
-        {
-            try
-            {
-                var app = (HttpApplication)sender;
-                var response = app.Response;
-
-                if (response.StatusCode != 302)
-                    return;
-
-                var location = response.Headers["Location"];
-                if (string.IsNullOrEmpty(location))
-                    return;
-
-                if (location.IndexOf("/Login", StringComparison.OrdinalIgnoreCase) < 0 && location.IndexOf("ctl=Login", StringComparison.OrdinalIgnoreCase) < 0)
-                    return;
-
-                var globalData = new SystemGlobalData();
-                foreach (var apiEntry in globalData.GetExternalAPIs())
-                {
-                    if (!string.IsNullOrEmpty(apiEntry.ApiKey) &&
-                        apiEntry.ApiKey.Contains("LOGINREDIRECT") &&
-                        !string.IsNullOrEmpty(apiEntry.ApiUrl))
-                    {
-                        var returnUrl = Uri.EscapeDataString(app.Request.Url.ToString());
-                        response.Clear();
-                        response.StatusCode = 302;
-                        response.RedirectLocation = apiEntry.ApiUrl;
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // do not use this, to prevent any infite loop.
-                //LogUtils.LogException(ex);
             }
         }
 
