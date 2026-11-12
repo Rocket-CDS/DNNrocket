@@ -533,6 +533,16 @@
 	</div>
 </details>
 <details class="clean-accordion">
+	<summary>UpdateDisplayName</summary>
+	<div class="token-details">
+		<p><strong>Description:</strong> Updates the user&#39;s display name.</p>
+		<strong>Signature</strong>
+		<pre><code>public static UserData UpdateDisplayName(int portalId, int userId, string displayName)</code></pre>
+		<strong>Example</strong>
+		<pre><code>UpdateDisplayName(portalId, userId, displayName)</code></pre>
+	</div>
+</details>
+<details class="clean-accordion">
 	<summary>UpdateEmail</summary>
 	<div class="token-details">
 		<p><strong>Description:</strong> Updates the user&#39;s email address and, if the portal is configured to use email as username, also updates the username to match the new email.</p>

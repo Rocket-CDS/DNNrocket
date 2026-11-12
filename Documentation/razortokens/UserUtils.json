@@ -1455,6 +1455,34 @@
   },
   {
     "type": "csharp-method",
+    "name": "UpdateDisplayName",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "Updates the user\u0027s display name.",
+    "signature": "public static UserData UpdateDisplayName(int portalId, int userId, string displayName)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": "The portal ID the user belongs to."
+      },
+      {
+        "name": "userId",
+        "type": "int",
+        "description": "The ID of the user to update."
+      },
+      {
+        "name": "displayName",
+        "type": "string",
+        "description": "The new display name."
+      }
+    ],
+    "returns": "UserData"
+  },
+  {
+    "type": "csharp-method",
     "name": "UpdateEmail",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "Updates the user\u0027s email address and, if the portal is configured to use email as username, also updates the username to match the new email.",
