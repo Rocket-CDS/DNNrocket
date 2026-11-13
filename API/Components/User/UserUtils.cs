@@ -1236,6 +1236,37 @@ namespace DNNrocketAPI.Components
             }
             return rtnDic;
         }
+        public static Dictionary<int, string> GetRoles(int portalId, List<int> roleGroupIds)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = RoleController.Instance.GetRoles(portalId);
+            foreach (RoleInfo r in l)
+            {
+                if (roleGroupIds == null || roleGroupIds.Count == 0 || roleGroupIds.Contains(r.RoleGroupID))
+                {
+                    rtnDic.Add(r.RoleID, r.RoleName);
+                }
+            }
+            return rtnDic;
+        }
+        public static Dictionary<int, string> GetRoles(int portalId, List<string> roleGroupNames)
+        {
+            var roleGroupIds = new List<int>();
+            foreach (RoleGroupInfo rg in RoleController.GetRoleGroups(portalId))
+            {
+                if (roleGroupNames.Contains(rg.RoleGroupName)) roleGroupIds.Add(rg.RoleGroupID);
+            }
+            return GetRoles(portalId, roleGroupIds);
+        }
+        public static Dictionary<int, string> GetRoleGroups(int portalId)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            foreach (RoleGroupInfo rg in RoleController.GetRoleGroups(portalId))
+            {
+                rtnDic.Add(rg.RoleGroupID, rg.RoleGroupName);
+            }
+            return rtnDic;
+        }
         public static SimplisityRecord GetRoleByName(int portalId, string roleName)
         {
             var rtnRec = new SimplisityRecord();
