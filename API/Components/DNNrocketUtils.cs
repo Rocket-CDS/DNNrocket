@@ -2218,10 +2218,41 @@ namespace DNNrocketAPI.Components
                 return "";
             }
         }
-        
+        public static string DropFirstSubDomainFromUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return "";
+            try
+            {
+                if (!url.Contains("://"))
+                    url = "http://" + url;
+
+                var host = new Uri(url).Host; // e.g. "test1.dev.gomapp02.cloud"
+                var parts = host.Split('.');
+
+                if (parts.Length <= 2)
+                    return host; // already just "example.com"
+
+                // Country-code TLDs (e.g. .co.uk, .com.au) have a 2-char TLD — the base domain needs 3 parts
+                // Standard TLDs (e.g. .com, .org) — the base domain needs 2 parts
+                var tld = parts[parts.Length - 1];
+                var minParts = tld.Length == 2 ? 3 : 2;
+
+                if (parts.Length <= minParts)
+                    return host;
+
+                // Only strip the left-most label (the actual subdomain), keep the rest intact
+                // e.g. "test1.dev.gomapp02.cloud" -> "dev.gomapp02.cloud"
+                return string.Join(".", parts, 1, parts.Length - 1);
+            }
+            catch (UriFormatException)
+            {
+                return "";
+            }
+        }
+
         /// <summary>
-                 /// Obfuscates an email address in HTML to protect it from scrapers.
-                 /// </summary>
+        /// Obfuscates an email address in HTML to protect it from scrapers.
+        /// </summary>
         public static string ProtectEmail(this string email, string subject = "", string visibleText = "")
         {
             if (string.IsNullOrEmpty(email)) return "";

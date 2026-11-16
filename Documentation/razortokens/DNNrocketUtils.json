@@ -515,6 +515,24 @@
   },
   {
     "type": "csharp-method",
+    "name": "DropFirstSubDomainFromUrl",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
+    "description": "",
+    "signature": "public static string DropFirstSubDomainFromUrl(string url)",
+    "classname": "DNNrocketUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "description": ""
+      }
+    ],
+    "returns": "string"
+  },
+  {
+    "type": "csharp-method",
     "name": "Email",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\DNNrocketUtils.cs",
     "description": "Gets the email address of the specified portal or the current portal.",

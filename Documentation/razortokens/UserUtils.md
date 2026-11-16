@@ -165,12 +165,29 @@
 	</div>
 </details>
 <details class="clean-accordion">
+	<summary>GetRoleGroups</summary>
+	<div class="token-details">
+		<strong>Signature</strong>
+		<pre><code>public static Dictionary&lt;int, string&gt; GetRoleGroups(int portalId)</code></pre>
+		<strong>Example</strong>
+		<pre><code>GetRoleGroups(portalId)</code></pre>
+	</div>
+</details>
+<details class="clean-accordion">
 	<summary>GetRoles</summary>
 	<div class="token-details">
 		<strong>Signature</strong>
 		<pre><code>public static Dictionary&lt;int, string&gt; GetRoles(int portalId)</code></pre>
 		<strong>Example</strong>
 		<pre><code>GetRoles(portalId)</code></pre>
+		<strong>Signature</strong>
+		<pre><code>public static Dictionary&lt;int, string&gt; GetRoles(int portalId, List&lt;int&gt; roleGroupIds)</code></pre>
+		<strong>Example</strong>
+		<pre><code>GetRoles(portalId, roleGroupIds)</code></pre>
+		<strong>Signature</strong>
+		<pre><code>public static Dictionary&lt;int, string&gt; GetRoles(int portalId, List&lt;string&gt; roleGroupNames)</code></pre>
+		<strong>Example</strong>
+		<pre><code>GetRoles(portalId, roleGroupNames)</code></pre>
 	</div>
 </details>
 <details class="clean-accordion">

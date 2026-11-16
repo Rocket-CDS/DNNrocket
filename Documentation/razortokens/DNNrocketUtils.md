@@ -261,6 +261,15 @@
 	</div>
 </details>
 <details class="clean-accordion">
+	<summary>DropFirstSubDomainFromUrl</summary>
+	<div class="token-details">
+		<strong>Signature</strong>
+		<pre><code>public static string DropFirstSubDomainFromUrl(string url)</code></pre>
+		<strong>Example</strong>
+		<pre><code>DropFirstSubDomainFromUrl(url)</code></pre>
+	</div>
+</details>
+<details class="clean-accordion">
 	<summary>Email</summary>
 	<div class="token-details">
 		<p><strong>Description:</strong> Gets the email address of the specified portal or the current portal.</p>

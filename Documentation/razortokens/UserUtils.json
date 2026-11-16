@@ -357,6 +357,24 @@
   },
   {
     "type": "csharp-method",
+    "name": "GetRoleGroups",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cint, string\u003E GetRoleGroups(int portalId)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cint, string\u003E"
+  },
+  {
+    "type": "csharp-method",
     "name": "GetRoles",
     "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
     "description": "",
@@ -368,6 +386,52 @@
       {
         "name": "portalId",
         "type": "int",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cint, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRoles",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cint, string\u003E GetRoles(int portalId, List\u003Cint\u003E roleGroupIds)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "roleGroupIds",
+        "type": "List\u003Cint\u003E",
+        "description": ""
+      }
+    ],
+    "returns": "Dictionary\u003Cint, string\u003E"
+  },
+  {
+    "type": "csharp-method",
+    "name": "GetRoles",
+    "source_file": "D:\\NEVOWEB\\Project\\DesktopModules\\DNNrocket\\API\\Components\\User\\UserUtils.cs",
+    "description": "",
+    "signature": "public static Dictionary\u003Cint, string\u003E GetRoles(int portalId, List\u003Cstring\u003E roleGroupNames)",
+    "classname": "UserUtils",
+    "isstatic": "true",
+    "namespace": "DNNrocketAPI.Components",
+    "parameters": [
+      {
+        "name": "portalId",
+        "type": "int",
+        "description": ""
+      },
+      {
+        "name": "roleGroupNames",
+        "type": "List\u003Cstring\u003E",
         "description": ""
       }
     ],
