@@ -1,4 +1,4 @@
-# AI Reference: DNNrocket `system.rules` File
+﻿# AI Reference: DNNrocket `system.rules` File
 
 ## What is `system.rules`?
 
@@ -93,7 +93,7 @@ At startup, `SystemLimpet.InitSystem()` iterates `providerdata` and routes each 
     <securityrolesadministrators>1</securityrolesadministrators>
     <securityrolesmanager>0</securityrolesmanager>
     <securityroleseditor>0</securityroleseditor>
-    <securityrolesclienteditor>0</securityrolesclienteditor>
+    <securityrolescollaborator>0</securityrolescollaborator>
     <securityrolesregisteredusers>0</securityrolesregisteredusers>
     <securityrolessubscribers>0</securityrolessubscribers>
     <securityrolesall>0</securityrolesall>
@@ -149,7 +149,7 @@ The XML structure is **identical to `providerdata`**, with one important differe
     <securityrolesadministrators>1</securityrolesadministrators>
     <securityrolesmanager>1</securityrolesmanager>
     <securityroleseditor>1</securityroleseditor>
-    <securityrolesclienteditor>1</securityrolesclienteditor>
+    <securityrolescollaborator>1</securityrolescollaborator>
     <securityrolesregisteredusers>0</securityrolesregisteredusers>
     <securityrolessubscribers>0</securityrolessubscribers>
     <securityrolesall>0</securityrolesall>
@@ -216,7 +216,7 @@ Each entry tells the DNNrocket SQL index system to maintain a searchable/sortabl
 | `securityrolesadministrators` | DNN Administrators |
 | `securityrolesmanager` | RocketIntra Manager role |
 | `securityroleseditor` | RocketIntra Editor role |
-| `securityrolesclienteditor` | RocketIntra Client Editor role |
+| `securityrolescollaborator` | RocketIntra Client Editor role |
 | `securityrolesregisteredusers` | Any registered DNN user |
 | `securityrolessubscribers` | DNN Subscribers role |
 | `securityrolesall` | All users including anonymous |

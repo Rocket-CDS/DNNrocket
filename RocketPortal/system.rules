@@ -1,4 +1,4 @@
-  <genxml>
+﻿  <genxml>
     <systemkey>rocketportal</systemkey>
     <systemname>Rocket Portals</systemname>
     <databasetable></databasetable>
@@ -35,7 +35,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -64,7 +64,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
-          <securityrolesclienteditor>1</securityrolesclienteditor>
+          <securityrolescollaborator>1</securityrolescollaborator>
           <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -93,7 +93,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -123,7 +123,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -152,7 +152,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -181,7 +181,7 @@
           <securityrolesadministrators>0</securityrolesadministrators>
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -210,7 +210,7 @@
 				<securityrolesadministrators>1</securityrolesadministrators>
 				<securityrolesmanager>0</securityrolesmanager>
 				<securityroleseditor>0</securityroleseditor>
-				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolescollaborator>0</securityrolescollaborator>
 				<securityrolesregisteredusers>0</securityrolesregisteredusers>
 				<securityrolessubscribers>0</securityrolessubscribers>
 				<securityrolesall>0</securityrolesall>
@@ -239,7 +239,7 @@
 				<securityrolesadministrators>1</securityrolesadministrators>
 				<securityrolesmanager>1</securityrolesmanager>
 				<securityroleseditor>1</securityroleseditor>
-				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolescollaborator>0</securityrolescollaborator>
 				<securityrolesregisteredusers>1</securityrolesregisteredusers>
 				<securityrolessubscribers>0</securityrolessubscribers>
 				<securityrolesall>0</securityrolesall>
@@ -268,7 +268,7 @@
 				<securityrolesadministrators>1</securityrolesadministrators>
 				<securityrolesmanager>1</securityrolesmanager>
 				<securityroleseditor>1</securityroleseditor>
-				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolescollaborator>0</securityrolescollaborator>
 				<securityrolesregisteredusers>1</securityrolesregisteredusers>
 				<securityrolessubscribers>0</securityrolessubscribers>
 				<securityrolesall>0</securityrolesall>
@@ -297,7 +297,7 @@
 				<securityrolesadministrators>1</securityrolesadministrators>
 				<securityrolesmanager>1</securityrolesmanager>
 				<securityroleseditor>1</securityroleseditor>
-				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolescollaborator>0</securityrolescollaborator>
 				<securityrolesregisteredusers>1</securityrolesregisteredusers>
 				<securityrolessubscribers>0</securityrolessubscribers>
 				<securityrolesall>0</securityrolesall>
@@ -326,7 +326,7 @@
 				<securityrolesadministrators>1</securityrolesadministrators>
 				<securityrolesmanager>1</securityrolesmanager>
 				<securityroleseditor>1</securityroleseditor>
-				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolescollaborator>0</securityrolescollaborator>
 				<securityrolesregisteredusers>1</securityrolesregisteredusers>
 				<securityrolessubscribers>0</securityrolessubscribers>
 				<securityrolesall>0</securityrolesall>
@@ -361,7 +361,7 @@
           <securityrolesadministrators>0</securityrolesadministrators>
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolescollaborator>0</securityrolescollaborator>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>

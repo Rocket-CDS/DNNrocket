@@ -17,7 +17,7 @@ Where `{rolekey}` is the DNN role name, lower-cased and with spaces removed.
 | Administrators              | securityrolesadministrators    |
 | Manager                      | securityrolesmanager           |
 | Editor                       | securityroleseditor            |
-| ClientEditor                 | securityrolesclienteditor      |
+| Collaborator                 | securityrolescollaborator      |
 | Registered Users             | securityrolesregisteredusers   |
 | Subscribers                   | securityrolessubscribers      |
 | *(any future role, e.g. Owner)* | securityrolesowner *(automatic, no code change)* |
