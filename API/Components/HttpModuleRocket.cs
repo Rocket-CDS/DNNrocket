@@ -64,20 +64,11 @@ namespace DNNrocketAPI.Components
                     rawUrl.IndexOf("ctl=Login", StringComparison.OrdinalIgnoreCase) >= 0 ||
                     rawUrl.IndexOf("ctl/Login", StringComparison.OrdinalIgnoreCase) >= 0;
 
-                // TEMP DIAGNOSTIC - remove after troubleshooting
-                LogUtils.LogException(new Exception(
-                    "LOGINREDIRECT-DEBUG: isLoginRequest=" + isLoginRequest + " RawUrl=" + rawUrl));
-
                 if (!isLoginRequest)
                     return;
 
                 var globalData = new SystemGlobalData();
                 var apiList = globalData.GetExternalAPIs();
-
-                // TEMP DIAGNOSTIC - remove after troubleshooting
-                LogUtils.LogException(new Exception(
-                    "LOGINREDIRECT-DEBUG: ExternalAPI count=" + apiList.Count +
-                    " Keys=" + string.Join("|", apiList.Select(a => a.ApiKey))));
 
                 foreach (var apiEntry in apiList)
                 {
